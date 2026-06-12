@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speed Reading — L01 Why Zoos Are Important</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia','Times New Roman',serif;background:#f5f6f8;color:#222;line-height:1.85}
+.container{max-width:820px;margin:0 auto;padding:24px 20px 100px}
+.nav-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;font-family:sans-serif;font-size:.82rem;color:#9ca3af}
+.nav-back{background:none;border:none;color:#2563eb;cursor:pointer;font-size:.85rem;font-family:sans-serif;padding:0;text-decoration:underline}
+.nav-sep{color:#d1d5db}
+.page-header{margin-bottom:20px}
+.page-header h1{font-size:1.35rem;color:#1a3a5c;margin-bottom:4px}
+.page-header .meta{font-size:.82rem;color:#888;font-family:sans-serif}
+/* home */
+.home-hero{background:#1a3a5c;color:#fff;border-radius:12px;padding:28px 32px;margin-bottom:24px}
+.home-hero h1{font-size:1.5rem;margin-bottom:4px}
+.home-hero p{opacity:.75;font-size:.9rem;font-family:sans-serif}
+.home-cards{display:flex;flex-direction:column;gap:14px}
+.home-card{background:#fff;border-radius:12px;padding:22px 26px;box-shadow:0 2px 8px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:center;gap:20px;transition:transform .15s,box-shadow .15s;border:2px solid transparent}
+.home-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12);border-color:#2563eb}
+.home-card-icon{font-size:2.2rem;flex-shrink:0;width:48px;text-align:center}
+.home-card-title{font-size:1.08rem;font-weight:bold;color:#1a3a5c;margin-bottom:3px}
+.home-card-desc{font-size:.82rem;color:#6b7280;font-family:sans-serif}
+/* timer */
+.timer-box{background:#1a3a5c;color:#fff;border-radius:10px;padding:20px 24px;margin-bottom:16px;text-align:center}
+.timer-label{font-size:.78rem;letter-spacing:2px;opacity:.65;text-transform:uppercase;margin-bottom:6px;font-family:sans-serif}
+.timer-display{font-family:'Courier New',monospace;font-size:3.2rem;font-weight:bold;letter-spacing:6px}
+.wpm-live{font-size:1rem;margin-top:8px;opacity:.85;min-height:1.4em;font-family:sans-serif}
+/* passage */
+.passage-box{background:#fff;border-radius:10px;padding:30px 36px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:16px;font-size:1.08rem}
+.passage-box p{text-indent:1em;margin-bottom:2em}
+.passage-box p:last-child{margin-bottom:0}
+.sent{cursor:pointer;border-radius:3px;transition:background .12s}
+.sent:hover{background:#f0f9ff}
+.sent.active{background:#dbeafe}
+.dbl-hl{background:#bfdbfe;border-radius:3px;padding:1px 3px;cursor:pointer}
+.hint{font-size:.78rem;color:#9ca3af;text-align:center;margin-bottom:20px;font-family:sans-serif}
+/* buttons */
+.btn{display:inline-block;padding:13px 28px;border-radius:7px;border:none;font-size:1rem;cursor:pointer;font-family:'Georgia',serif;font-weight:bold;transition:opacity .15s}
+.btn:hover{opacity:.87}
+.btn-start{background:#2563eb;color:#fff}
+.btn-finish{background:#16a34a;color:#fff}
+.btn-submit{background:#2563eb;color:#fff}
+.btn-shadowing{background:#7c3aed;color:#fff}
+.btn-vocab{background:#0891b2;color:#fff}
+.btn-play{background:#16a34a;color:#fff}
+.btn-pause{background:#d97706;color:#fff}
+.btn-stop-s{background:#6b7280;color:#fff}
+.btn-back{background:#6b7280;color:#fff}
+.btn-home{background:#1a3a5c;color:#fff}
+.btn-sm{font-size:.88rem;padding:9px 18px}
+.btn-area{text-align:center;margin:16px 0;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}
+/* stats */
+.stats{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.stat-card{flex:1;min-width:130px;background:#fff;border-radius:10px;padding:14px 20px;box-shadow:0 2px 6px rgba(0,0,0,.06);text-align:center}
+.stat-card .value{font-size:2rem;font-weight:bold;color:#1a3a5c;font-family:'Courier New',monospace}
+.stat-card .label{font-size:.78rem;color:#888;margin-top:2px;font-family:sans-serif}
+/* quiz */
+.section-box{background:#fff;border-radius:10px;padding:28px 32px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:20px}
+.section-title{font-size:1.1rem;font-weight:bold;color:#1a3a5c;margin-bottom:22px;padding-bottom:10px;border-bottom:2px solid #e5e7eb}
+.question{margin-bottom:26px}
+.question .q-text{font-weight:bold;margin-bottom:10px}
+.option-label{display:flex;align-items:flex-start;gap:10px;margin:7px 0;cursor:pointer;padding:6px 8px;border-radius:5px;transition:background .1s;font-size:.97rem}
+.option-label:hover{background:#f0f4ff}
+.option-label input{margin-top:3px;flex-shrink:0}
+/* results */
+.score-banner{background:#1a3a5c;color:#fff;border-radius:10px;padding:22px;text-align:center;margin-bottom:20px}
+.score-banner .score-num{font-size:2.5rem;font-weight:bold;font-family:'Courier New',monospace}
+.score-banner .score-pct{font-size:1.05rem;opacity:.8;margin-top:4px;font-family:sans-serif}
+.result-item{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid #f0f0f0}
+.result-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.result-q-text{font-weight:bold;margin-bottom:8px}
+.tag-correct{display:inline-block;background:#dcfce7;color:#15803d;border-radius:4px;font-size:.78rem;font-weight:bold;padding:2px 7px;margin-right:6px;font-family:sans-serif}
+.tag-wrong{display:inline-block;background:#fee2e2;color:#b91c1c;border-radius:4px;font-size:.78rem;font-weight:bold;padding:2px 7px;margin-right:6px;font-family:sans-serif}
+.user-ans{margin-bottom:4px}
+.correct-ans{color:#15803d;margin-bottom:6px}
+.explanation{background:#f8faff;border-left:3px solid #93c5fd;padding:8px 12px;font-size:.87rem;color:#374151;border-radius:0 4px 4px 0;margin-top:6px;line-height:1.65;font-family:sans-serif}
+/* shadowing */
+.audio-controls{background:#fff;border-radius:10px;padding:14px 20px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.speed-control{display:flex;align-items:center;gap:8px;font-family:sans-serif;font-size:.85rem;color:#374151;margin-left:auto}
+.speed-control label{white-space:nowrap;color:#6b7280}
+.speed-control input[type=range]{width:90px;cursor:pointer}
+.speed-val{font-weight:bold;color:#7c3aed;min-width:30px}
+.audio-status-bar{font-size:.82rem;color:#7c3aed;font-family:sans-serif;flex:1;min-width:100px}
+.passage-shadowing{background:#fff;border-radius:10px;padding:30px 36px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:20px;font-size:1.08rem}
+.passage-shadowing p{text-indent:1em;margin-bottom:2em;line-height:2.1}
+.passage-shadowing p:last-child{margin-bottom:0}
+.word{display:inline}
+.sent.hl-sent{background:#fef3c7;border-radius:4px;transition:background .2s}
+/* bilingual */
+.bilingual-section{background:#fff;border-radius:10px;padding:28px 36px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:20px}
+.bilingual-para{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding-bottom:22px;margin-bottom:22px;border-bottom:1px solid #e5e7eb}
+.bilingual-para:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.bi-label{font-size:.68rem;font-family:sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.bi-en .bi-label{color:#2563eb}
+.bi-ja .bi-label{color:#7c3aed}
+.bi-en p{font-size:1rem;line-height:1.85;color:#1a3a5c}
+.bi-ja p{font-size:.95rem;line-height:1.85;color:#374151;font-family:sans-serif}
+.para-num{display:inline-block;background:#1a3a5c;color:#fff;border-radius:50%;width:20px;height:20px;font-size:.72rem;font-family:sans-serif;font-weight:bold;text-align:center;line-height:20px;margin-right:5px;vertical-align:middle}
+/* vocab */
+.vocab-section{margin-bottom:24px}
+.vocab-label{font-size:.8rem;font-family:sans-serif;font-weight:bold;color:#6b7280;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.vocab-table{width:100%;border-collapse:collapse;font-size:.93rem}
+.vocab-table th{background:#f1f5f9;text-align:left;padding:8px 12px;font-family:sans-serif;font-size:.78rem;color:#64748b;font-weight:bold;border-bottom:2px solid #e2e8f0}
+.vocab-table td{padding:8px 12px;border-bottom:1px solid #f1f5f9;vertical-align:top}
+.vocab-table tr:last-child td{border-bottom:none}
+.vocab-table tr:hover td{background:#f8faff}
+.vocab-en{font-weight:bold;color:#1a3a5c}
+.vocab-ja{color:#374151;font-family:sans-serif;font-size:.9rem}
+.vocab-ex{color:#6b7280;font-family:sans-serif;font-size:.82rem;font-style:italic}
+/* WPM history */
+.wpm-empty{text-align:center;padding:48px 20px;color:#9ca3af;font-family:sans-serif}
+.wpm-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f1f5f9;font-family:sans-serif;font-size:.87rem}
+.wpm-row:last-child{border-bottom:none}
+.wpm-date{color:#6b7280;min-width:140px;flex-shrink:0}
+.wpm-bar-wrap{flex:1;background:#f1f5f9;border-radius:4px;height:16px;overflow:hidden}
+.wpm-bar{height:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);border-radius:4px}
+.wpm-num{font-weight:bold;color:#1a3a5c;min-width:70px;text-align:right}
+.wpm-score{color:#15803d;min-width:48px;text-align:right}
+/* quiz placeholder */
+.coming-soon{text-align:center;padding:60px 20px}
+.coming-soon .cs-icon{font-size:3.5rem;margin-bottom:16px}
+.coming-soon p{font-family:sans-serif;color:#6b7280;font-size:1rem;margin-bottom:6px}
+.coming-soon small{font-family:sans-serif;color:#9ca3af;font-size:.85rem}
+/* translation panel */
+#tl-panel{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:3px solid #2563eb;padding:14px 20px 18px;box-shadow:0 -4px 20px rgba(0,0,0,.13);z-index:200;font-family:sans-serif}
+#tl-panel .tl-bar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+#tl-panel .tl-body{flex:1}
+#tl-en{font-size:.85rem;color:#6b7280;margin-bottom:6px;font-style:italic}
+#tl-ja{font-size:1.05rem;color:#1a3a5c;font-weight:bold;line-height:1.55}
+#tl-word-row{margin-top:10px}
+.weblio-btn{display:inline-block;background:#2563eb;color:#fff;border-radius:6px;padding:6px 14px;font-size:.82rem;font-weight:bold;text-decoration:none;transition:opacity .15s}
+.weblio-btn:hover{opacity:.85}
+.tl-close-btn{background:none;border:none;font-size:1.3rem;color:#9ca3af;cursor:pointer;padding:0 4px;flex-shrink:0;line-height:1}
+.tl-close-btn:hover{color:#374151}
+.hidden{display:none!important}
+@media(max-width:640px){
+  .passage-box,.section-box,.passage-shadowing,.bilingual-section{padding:20px 16px}
+  .timer-display{font-size:2.5rem}
+  .bilingual-para{grid-template-columns:1fr}
+  .vocab-ex{display:none}
+  .speed-control{margin-left:0;width:100%}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HOME -->
+<div id="phase-home">
+  <div class="home-hero">
+    <h1>L01 速読トレーニング</h1>
+    <p>Why Zoos Are Important for Our Planet &nbsp;／&nbsp; 400 words</p>
+  </div>
+  <div class="home-cards">
+    <div class="home-card" onclick="startReading()">
+      <div class="home-card-icon">📖</div>
+      <div>
+        <div class="home-card-title">速読トレーニング</div>
+        <div class="home-card-desc">タイマー計測 → 内容理解問題 → シャドーイング音声</div>
+      </div>
+    </div>
+    <div class="home-card" onclick="showWPMHistory()">
+      <div class="home-card-icon">📈</div>
+      <div>
+        <div class="home-card-title">WPM 履歴グラフ</div>
+        <div class="home-card-desc">過去の読書速度の記録を確認する</div>
+      </div>
+    </div>
+    <div class="home-card" onclick="goToVocabQuiz()">
+      <div class="home-card-icon">📝</div>
+      <div>
+        <div class="home-card-title">語彙テスト</div>
+        <div class="home-card-desc">L01 の重要語彙を問題形式で確認する</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 1: READING -->
+<div id="phase-reading" class="hidden">
+  <div class="nav-row">
+    <button class="nav-back" onclick="goHome()">← ホーム</button>
+    <span class="nav-sep">/</span><span>速読トレーニング</span>
+  </div>
+  <div class="timer-box">
+    <div class="timer-label">Reading Time</div>
+    <div class="timer-display" id="timer">0:00</div>
+    <div class="wpm-live" id="wpm-live">&nbsp;</div>
+  </div>
+  <div class="btn-area" id="start-area">
+    <button class="btn btn-start" onclick="startTimer()">▶ 計測スタート</button>
+  </div>
+  <div class="passage-box" id="passage-box">
+    <p>
+      <span class="sent" data-idx="0" onclick="sentClick(event,0)">Many people have visited a zoo at least once in their lives.</span>
+      <span class="sent" data-idx="1" onclick="sentClick(event,1)">Children love to see large animals, including lions, tigers, and elephants.</span>
+      <span class="sent" data-idx="2" onclick="sentClick(event,2)">However, some people think zoos are cruel because animals are kept in cages.</span>
+      <span class="sent" data-idx="3" onclick="sentClick(event,3)">Others recognize that zoos play an important role in protecting nature.</span>
+      <span class="sent" data-idx="4" onclick="sentClick(event,4)">So, are zoos truly good for our planet?</span>
+    </p>
+    <p>
+      <span class="sent" data-idx="5" onclick="sentClick(event,5)">First, zoos guard many animals that are in danger of disappearing.</span>
+      <span class="sent" data-idx="6" onclick="sentClick(event,6)">In the wild, animals must hunt for food, but human activity has caused damage to their homes.</span>
+      <span class="sent" data-idx="7" onclick="sentClick(event,7)">Forests have been cut down, and rivers have become polluted.</span>
+      <span class="sent" data-idx="8" onclick="sentClick(event,8)">Many species are now struggling to survive.</span>
+      <span class="sent" data-idx="9" onclick="sentClick(event,9)">Zoos work hard to keep these animals safe and secure.</span>
+      <span class="sent" data-idx="10" onclick="sentClick(event,10)">Some animals born in zoos have been returned to the wild after careful preparation.</span>
+      <span class="sent" data-idx="11" onclick="sentClick(event,11)">Scientists working at zoos study animal behavior and health every day.</span>
+      <span class="sent" data-idx="12" onclick="sentClick(event,12)">They share their findings with researchers around the world.</span>
+      <span class="sent" data-idx="13" onclick="sentClick(event,13)">Without zoos, some of the animals living on our planet would already be gone.</span>
+    </p>
+    <p>
+      <span class="sent" data-idx="14" onclick="sentClick(event,14)">Second, zoos play a key role in education.</span>
+      <span class="sent" data-idx="15" onclick="sentClick(event,15)">The fact is that many people have never seen a wild animal in their lives.</span>
+      <span class="sent" data-idx="16" onclick="sentClick(event,16)">A visit to a zoo gives them a unique chance to observe creatures they could not see anywhere else.</span>
+      <span class="sent" data-idx="17" onclick="sentClick(event,17)">This experience makes them curious about wildlife and nature.</span>
+      <span class="sent" data-idx="18" onclick="sentClick(event,18)">Children who visit zoos often grow up to treat the environment more carefully.</span>
+      <span class="sent" data-idx="19" onclick="sentClick(event,19)">Many zoos offer programs to teach young visitors about animals and their habitats.</span>
+      <span class="sent" data-idx="20" onclick="sentClick(event,20)">These programs have helped raise the next generation of scientists and nature lovers.</span>
+      <span class="sent" data-idx="21" onclick="sentClick(event,21)">In addition, zoos work with schools to help students learn about the natural world.</span>
+    </p>
+    <p>
+      <span class="sent" data-idx="22" onclick="sentClick(event,22)">Of course, not all zoos are the same.</span>
+      <span class="sent" data-idx="23" onclick="sentClick(event,23)">In the beginning, many zoos kept animals in typical small, dark cages.</span>
+      <span class="sent" data-idx="24" onclick="sentClick(event,24)">This was a harsh way to treat animals, and it caused many of them to become stressed and unhealthy.</span>
+      <span class="sent" data-idx="25" onclick="sentClick(event,25)">However, zoos have recognized the limit of this approach and have changed a lot.</span>
+      <span class="sent" data-idx="26" onclick="sentClick(event,26)">Today, many zoos give animals kept in large, open spaces the chance to live comfortably.</span>
+      <span class="sent" data-idx="27" onclick="sentClick(event,27)">Female animals and their young are given special care.</span>
+      <span class="sent" data-idx="28" onclick="sentClick(event,28)">These zoos train their staff to understand and care for animals in the best possible way.</span>
+    </p>
+    <p>
+      <span class="sent" data-idx="29" onclick="sentClick(event,29)">Zoos have definitely played an important role in protecting our planet.</span>
+      <span class="sent" data-idx="30" onclick="sentClick(event,30)">The tie between humans and the natural world matters more than ever today.</span>
+      <span class="sent" data-idx="31" onclick="sentClick(event,31)">Visiting a zoo can also help us gain a deeper understanding and remind us how much we need to protect it.</span>
+    </p>
+  </div>
+  <p class="hint">💡 文をクリック → 和訳　／　単語をダブルクリック → 青マーカー（もう一度でオフ）</p>
+  <div class="btn-area hidden" id="finish-area">
+    <button class="btn btn-finish" onclick="finishReading()">✓ 読み終わった！</button>
+  </div>
+</div>
+
+<!-- PHASE 2: QUESTIONS -->
+<div id="phase-questions" class="hidden">
+  <div class="stats" id="reading-stats"></div>
+  <div class="section-box">
+    <div class="section-title">内容理解問題（全8問）</div>
+    <form id="quiz-form">
+      <div class="question">
+        <p class="q-text">1. What have many people done, according to the passage?</p>
+        <label class="option-label"><input type="radio" name="q1" value="a"> a) They have helped to protect wild animals.</label>
+        <label class="option-label"><input type="radio" name="q1" value="b"> b) They have been to a zoo before.</label>
+        <label class="option-label"><input type="radio" name="q1" value="c"> c) They have seen lions and elephants up close.</label>
+        <label class="option-label"><input type="radio" name="q1" value="d"> d) They have learned about animals at school.</label>
+      </div>
+      <div class="question">
+        <p class="q-text">2. Why do some people think zoos are not good?</p>
+        <label class="option-label"><input type="radio" name="q2" value="a"> a) Because animals in old zoos had very little space.</label>
+        <label class="option-label"><input type="radio" name="q2" value="b"> b) Because zoos are too expensive for most people.</label>
+        <label class="option-label"><input type="radio" name="q2" value="c"> c) Because animals there cannot live freely.</label>
+        <label class="option-label"><input type="radio" name="q2" value="d"> d) Because zoos do not teach people anything.</label>
+      </div>
+      <div class="question">
+        <p class="q-text">3. According to the passage, why are many wild animals in danger?</p>
+        <label class="option-label"><input type="radio" name="q3" value="a"> a) People have destroyed the places where animals live.</label>
+        <label class="option-label"><input type="radio" name="q3" value="b"> b) Animals cannot find enough food in the wild.</label>
+        <label class="option-label"><input type="radio" name="q3" value="c"> c) Many species are struggling because zoos haven't done enough.</label>
+        <label class="option-label"><input type="radio" name="q3" value="d"> d) Too many tourists visit wild areas every year.</label>
+      </div>
+      <div class="question">
+        <p class="q-text">4. What do scientists at zoos do, according to the passage?</p>
+        <label class="option-label"><input type="radio" name="q4" value="a"> a) They teach visitors about animals and habitats.</label>
+        <label class="option-label"><input type="radio" name="q4" value="b"> b) They train animals born in zoos to go back to the wild.</label>
+        <label class="option-label"><input type="radio" name="q4" value="c"> c) They help wild animals get used to living in a zoo.</label>
+        <label class="option-label"><input type="radio" name="q4" value="d"> d) They study animals and share what they find with others.</label>
+      </div>
+      <div class="question">
+        <p class="q-text">5. According to the passage, what can visiting a zoo do for children?</p>
+        <label class="option-label"><input type="radio" name="q5" value="a"> a) It helps them do better in science at school.</label>
+        <label class="option-label"><input type="radio" name="q5" value="b"> b) It makes them more interested in animals and nature.</label>
+        <label class="option-label"><input type="radio" name="q5" value="c"> c) It makes children curious and turns them into scientists.</label>
+        <label class="option-label"><input type="radio" name="q5" value="d"> d) It teaches them how to care for animals at home.</label>
+      </div>
+      <div class="question">
+        <p class="q-text">6. What can we understand about modern zoos from the passage?</p>
+        <label class="option-label"><input type="radio" name="q6" value="a"> a) They now give animals much better living conditions.</label>
+        <label class="option-label"><input type="radio" name="q6" value="b"> b) They have become more popular with visitors.</label>
+        <label class="option-label"><input type="radio" name="q6" value="c"> c) Animals kept there can be returned to the wild.</label>
+        <label class="option-label"><input type="radio" name="q6" value="d"> d) They keep more kinds of animals than old zoos.</label>
+      </div>
+      <div class="question">
+        <p class="q-text">7. According to the passage, what would happen if zoos did not exist?</p>
+        <label class="option-label"><input type="radio" name="q7" value="a"> a) People would have less chance to learn about nature.</label>
+        <label class="option-label"><input type="radio" name="q7" value="b"> b) Scientists would share their findings in different ways.</label>
+        <label class="option-label"><input type="radio" name="q7" value="c"> c) Some animals on our planet might already be extinct.</label>
+        <label class="option-label"><input type="radio" name="q7" value="d"> d) Forests and rivers would be in more danger.</label>
+      </div>
+      <div class="question">
+        <p class="q-text">8. What is the main idea of this passage?</p>
+        <label class="option-label"><input type="radio" name="q8" value="a"> a) Zoos need to change more so animals can live freely.</label>
+        <label class="option-label"><input type="radio" name="q8" value="b"> b) Zoos have studied animal behavior and health for many years.</label>
+        <label class="option-label"><input type="radio" name="q8" value="c"> c) Old zoos were bad, but modern zoos have improved a lot.</label>
+        <label class="option-label"><input type="radio" name="q8" value="d"> d) Zoos are important for protecting animals and teaching people.</label>
+      </div>
+      <div class="btn-area">
+        <button type="button" class="btn btn-submit" onclick="submitQuiz()">答え合わせ</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- PHASE 3: RESULTS -->
+<div id="phase-results" class="hidden">
+  <div class="score-banner" id="score-banner"></div>
+  <div class="stats" id="result-stats"></div>
+  <div class="section-box">
+    <div class="section-title">問題の詳細・解説</div>
+    <div id="result-detail"></div>
+  </div>
+  <div class="btn-area">
+    <button class="btn btn-home btn-sm" onclick="goHome()">⌂ ホーム</button>
+    <button class="btn btn-shadowing" onclick="goToShadowing()">🔊 音声を聞きながら読む</button>
+    <button class="btn btn-vocab" onclick="goToVocab()">📖 対訳・語彙リスト</button>
+  </div>
+</div>
+
+<!-- PHASE 4: SHADOWING -->
+<div id="phase-shadowing" class="hidden">
+  <div class="nav-row">
+    <button class="nav-back" onclick="goHome()">← ホーム</button>
+    <span class="nav-sep">/</span><span>シャドーイング</span>
+  </div>
+  <div class="audio-controls">
+    <button class="btn btn-play btn-sm" id="btn-play" onclick="playAudio()">▶ 再生</button>
+    <button class="btn btn-pause btn-sm hidden" id="btn-pause" onclick="pauseAudio()">⏸ 一時停止</button>
+    <button class="btn btn-stop-s btn-sm hidden" id="btn-resume" onclick="resumeAudio()">▶ 再開</button>
+    <button class="btn btn-stop-s btn-sm" onclick="stopAudio()">■ 停止</button>
+    <span class="audio-status-bar" id="audio-status"></span>
+    <div class="speed-control">
+      <label>速度</label>
+      <input type="range" id="speed-slider" min="0.6" max="1.3" step="0.1" value="0.9" oninput="updateRate(this.value)">
+      <span class="speed-val" id="rate-val">0.9</span><span style="color:#9ca3af;font-family:sans-serif;font-size:.85rem">x</span>
+    </div>
+  </div>
+  <div class="passage-shadowing"><div id="shadowing-passage"></div></div>
+  <p class="hint">💡 文をクリック → 和訳 ／ 単語クリック → Weblio検索</p>
+  <div class="btn-area">
+    <button class="btn btn-back btn-sm" onclick="backTo('results')">← 結果に戻る</button>
+    <button class="btn btn-vocab btn-sm" onclick="goToVocab()">📖 対訳・語彙リスト</button>
+  </div>
+</div>
+
+<!-- PHASE 5: BILINGUAL + VOCAB -->
+<div id="phase-vocab" class="hidden">
+  <div class="nav-row">
+    <button class="nav-back" onclick="goHome()">← ホーム</button>
+    <span class="nav-sep">/</span><span>対訳・語彙リスト</span>
+  </div>
+  <div class="bilingual-section">
+    <div class="section-title">対訳</div>
+    <div class="bilingual-para">
+      <div class="bi-en"><div class="bi-label">English</div>
+        <p><span class="para-num">1</span>Many people have visited a zoo at least once in their lives. Children love to see large animals, including lions, tigers, and elephants. However, some people think zoos are cruel because animals are kept in cages. Others recognize that zoos play an important role in protecting nature. So, are zoos truly good for our planet?</p>
+      </div>
+      <div class="bi-ja"><div class="bi-label">日本語</div>
+        <p>多くの人が、これまでに少なくとも一度は動物園を訪れたことがある。子どもたちはライオン、トラ、ゾウなどの大きな動物を見ることが大好きだ。しかし、動物が檻の中に閉じ込められているため、動物園は残酷だと考える人もいる。一方で、動物園が自然を守るうえで重要な役割を果たしていると認識している人もいる。では、動物園は本当に地球にとってよいものなのだろうか？</p>
+      </div>
+    </div>
+    <div class="bilingual-para">
+      <div class="bi-en"><div class="bi-label">English</div>
+        <p><span class="para-num">2</span>First, zoos guard many animals that are in danger of disappearing. In the wild, animals must hunt for food, but human activity has caused damage to their homes. Forests have been cut down, and rivers have become polluted. Many species are now struggling to survive. Zoos work hard to keep these animals safe and secure. Some animals born in zoos have been returned to the wild after careful preparation. Scientists working at zoos study animal behavior and health every day. They share their findings with researchers around the world. Without zoos, some of the animals living on our planet would already be gone.</p>
+      </div>
+      <div class="bi-ja"><div class="bi-label">日本語</div>
+        <p>第一に、動物園は絶滅の危機にある多くの動物を守っている。野生では動物たちは自ら食べ物を探さなければならないが、人間の活動によってその生息地が傷つけられてきた。森は切り倒され、川は汚染されてきた。多くの種が今や生き延びるのに苦しんでいる。動物園はこれらの動物を安全に守るために懸命に取り組んでいる。動物園で生まれた動物の中には、入念な準備の末に野生へ戻されたものもある。動物園で働く科学者たちは毎日、動物の行動と健康を研究している。彼らはその発見を世界中の研究者と共有している。動物園がなければ、今この地球に生きている動物の一部はすでに絶滅していただろう。</p>
+      </div>
+    </div>
+    <div class="bilingual-para">
+      <div class="bi-en"><div class="bi-label">English</div>
+        <p><span class="para-num">3</span>Second, zoos play a key role in education. The fact is that many people have never seen a wild animal in their lives. A visit to a zoo gives them a unique chance to observe creatures they could not see anywhere else. This experience makes them curious about wildlife and nature. Children who visit zoos often grow up to treat the environment more carefully. Many zoos offer programs to teach young visitors about animals and their habitats. These programs have helped raise the next generation of scientists and nature lovers. In addition, zoos work with schools to help students learn about the natural world.</p>
+      </div>
+      <div class="bi-ja"><div class="bi-label">日本語</div>
+        <p>第二に、動物園は教育において重要な役割を果たしている。実際のところ、多くの人が生涯に一度も野生動物を見たことがない。動物園を訪れることで、ほかでは見ることのできない生き物を観察する絶好の機会が得られる。この経験が、野生動物や自然への好奇心を育む。動物園を訪れた子どもたちは、成長してから環境をより大切に扱うことが多い。多くの動物園では、若い来園者に動物とその生息地について教えるプログラムを提供している。こうしたプログラムは次世代の科学者や自然愛好家を育てるのに貢献してきた。さらに、動物園は学校と連携して生徒が自然界について学ぶ手助けをしている。</p>
+      </div>
+    </div>
+    <div class="bilingual-para">
+      <div class="bi-en"><div class="bi-label">English</div>
+        <p><span class="para-num">4</span>Of course, not all zoos are the same. In the beginning, many zoos kept animals in typical small, dark cages. This was a harsh way to treat animals, and it caused many of them to become stressed and unhealthy. However, zoos have recognized the limit of this approach and have changed a lot. Today, many zoos give animals kept in large, open spaces the chance to live comfortably. Female animals and their young are given special care. These zoos train their staff to understand and care for animals in the best possible way.</p>
+      </div>
+      <div class="bi-ja"><div class="bi-label">日本語</div>
+        <p>もちろん、すべての動物園が同じというわけではない。かつて多くの動物園は、動物を典型的な小さく薄暗い檻の中に閉じ込めていた。これは動物に対して過酷な扱いであり、多くの動物がストレスを受けて不健康になる原因となった。しかし、動物園はこのやり方の限界を認識し、大きく変わってきた。今日、多くの動物園は広い開放的な空間で動物が快適に暮らせるようにしている。メスの動物と子どもたちには特別なケアが与えられている。こうした動物園は、スタッフが可能な限り最善の方法で動物を理解し世話できるよう訓練している。</p>
+      </div>
+    </div>
+    <div class="bilingual-para">
+      <div class="bi-en"><div class="bi-label">English</div>
+        <p><span class="para-num">5</span>Zoos have definitely played an important role in protecting our planet. The tie between humans and the natural world matters more than ever today. Visiting a zoo can also help us gain a deeper understanding and remind us how much we need to protect it.</p>
+      </div>
+      <div class="bi-ja"><div class="bi-label">日本語</div>
+        <p>動物園は確かに、地球を守るうえで重要な役割を果たしてきた。人間と自然界との結びつきは、今日かつてないほど重要だ。動物園を訪れることはまた、私たちがより深い理解を得る手助けとなり、いかに自然を守る必要があるかを思い起こさせてくれる。</p>
+      </div>
+    </div>
+  </div>
+  <div class="section-box">
+    <div class="section-title">語彙リスト</div>
+    <div class="vocab-section">
+      <div class="vocab-label">教科書 L1・L2</div>
+      <table class="vocab-table">
+        <tr><th>語</th><th>意味</th><th>本文の用例</th></tr>
+        <tr><td class="vocab-en">including</td><td class="vocab-ja">〜を含めて</td><td class="vocab-ex">large animals, including lions, tigers, and elephants</td></tr>
+        <tr><td class="vocab-en">recognize</td><td class="vocab-ja">認める、認識する</td><td class="vocab-ex">Others recognize that zoos play an important role</td></tr>
+        <tr><td class="vocab-en">cage</td><td class="vocab-ja">檻</td><td class="vocab-ex">animals are kept in cages</td></tr>
+        <tr><td class="vocab-en">typical</td><td class="vocab-ja">典型的な</td><td class="vocab-ex">typical small, dark cages</td></tr>
+        <tr><td class="vocab-en">harsh</td><td class="vocab-ja">過酷な、厳しい</td><td class="vocab-ex">a harsh way to treat animals</td></tr>
+        <tr><td class="vocab-en">limit</td><td class="vocab-ja">限界</td><td class="vocab-ex">recognized the limit of this approach</td></tr>
+        <tr><td class="vocab-en">female</td><td class="vocab-ja">メスの</td><td class="vocab-ex">Female animals and their young</td></tr>
+        <tr><td class="vocab-en">definitely</td><td class="vocab-ja">確かに、間違いなく</td><td class="vocab-ex">definitely played an important role</td></tr>
+        <tr><td class="vocab-en">gain</td><td class="vocab-ja">得る</td><td class="vocab-ex">help us gain a deeper understanding</td></tr>
+        <tr><td class="vocab-en">remind</td><td class="vocab-ja">思い起こさせる</td><td class="vocab-ex">remind us how much we need to protect it</td></tr>
+        <tr><td class="vocab-en">behavior</td><td class="vocab-ja">行動</td><td class="vocab-ex">study animal behavior and health</td></tr>
+      </table>
+    </div>
+    <div class="vocab-section">
+      <div class="vocab-label">速単必修編 L1・L2</div>
+      <table class="vocab-table">
+        <tr><th>語</th><th>意味</th><th>本文の用例</th></tr>
+        <tr><td class="vocab-en">guard</td><td class="vocab-ja">守る</td><td class="vocab-ex">zoos guard many animals</td></tr>
+        <tr><td class="vocab-en">hunt</td><td class="vocab-ja">狩りをする、獲物を探す</td><td class="vocab-ex">animals must hunt for food</td></tr>
+        <tr><td class="vocab-en">cause</td><td class="vocab-ja">引き起こす</td><td class="vocab-ex">human activity has caused damage</td></tr>
+        <tr><td class="vocab-en">secure</td><td class="vocab-ja">安全な</td><td class="vocab-ex">keep these animals safe and secure</td></tr>
+        <tr><td class="vocab-en">unique</td><td class="vocab-ja">またとない、独自の</td><td class="vocab-ex">a unique chance to observe creatures</td></tr>
+        <tr><td class="vocab-en">treat</td><td class="vocab-ja">扱う</td><td class="vocab-ex">treat the environment more carefully</td></tr>
+        <tr><td class="vocab-en">raise</td><td class="vocab-ja">育てる、育む</td><td class="vocab-ex">helped raise the next generation</td></tr>
+        <tr><td class="vocab-en">generation</td><td class="vocab-ja">世代</td><td class="vocab-ex">the next generation of scientists</td></tr>
+        <tr><td class="vocab-en">tie</td><td class="vocab-ja">結びつき</td><td class="vocab-ex">The tie between humans and the natural world</td></tr>
+        <tr><td class="vocab-en">matter</td><td class="vocab-ja">重要である</td><td class="vocab-ex">matters more than ever today</td></tr>
+      </table>
+    </div>
+    <div class="vocab-section">
+      <div class="vocab-label">速単必修編 L3以降（参考）</div>
+      <table class="vocab-table">
+        <tr><th>語</th><th>意味</th><th>本文の用例</th></tr>
+        <tr><td class="vocab-en">role</td><td class="vocab-ja">役割（play a role：役割を果たす）</td><td class="vocab-ex">play an important role in protecting nature</td></tr>
+        <tr><td class="vocab-en">struggle</td><td class="vocab-ja">苦しむ、もがく</td><td class="vocab-ex">struggling to survive</td></tr>
+        <tr><td class="vocab-en">curious</td><td class="vocab-ja">好奇心の強い</td><td class="vocab-ex">makes them curious about wildlife</td></tr>
+        <tr><td class="vocab-en">researcher</td><td class="vocab-ja">研究者</td><td class="vocab-ex">researchers around the world</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="btn-area">
+    <button class="btn btn-home btn-sm" onclick="goHome()">⌂ ホーム</button>
+    <button class="btn btn-back btn-sm" onclick="backTo('results')">← 結果に戻る</button>
+    <button class="btn btn-shadowing btn-sm" onclick="goToShadowing()">🔊 シャドーイング</button>
+  </div>
+</div>
+
+<!-- WPM HISTORY -->
+<div id="phase-wpm" class="hidden">
+  <div class="nav-row">
+    <button class="nav-back" onclick="goHome()">← ホーム</button>
+    <span class="nav-sep">/</span><span>WPM 履歴グラフ</span>
+  </div>
+  <div class="section-box">
+    <div class="section-title">読書速度の記録 — L01</div>
+    <div id="wpm-history-content"></div>
+  </div>
+  <div class="btn-area">
+    <button class="btn btn-home btn-sm" onclick="goHome()">⌂ ホーム</button>
+  </div>
+</div>
+
+<!-- VOCAB QUIZ -->
+<div id="phase-quiz" class="hidden">
+  <div class="nav-row">
+    <button class="nav-back" onclick="goHome()">← ホーム</button>
+    <span class="nav-sep">/</span><span>語彙テスト</span>
+  </div>
+  <div class="section-box">
+    <div class="coming-soon">
+      <div class="cs-icon">🚧</div>
+      <p>語彙テスト機能は現在準備中です。</p>
+      <small>どんな形式にするか教えてください！</small>
+    </div>
+  </div>
+  <div class="btn-area">
+    <button class="btn btn-home btn-sm" onclick="goHome()">⌂ ホーム</button>
+  </div>
+</div>
+
+<!-- TRANSLATION PANEL (fixed bottom) -->
+<div id="tl-panel" class="hidden">
+  <div class="tl-bar">
+    <div class="tl-body">
+      <div id="tl-en"></div>
+      <div id="tl-ja"></div>
+      <div id="tl-word-row"></div>
+    </div>
+    <button class="tl-close-btn" onclick="closeTLPanel()">✕</button>
+  </div>
+</div>
+
+</div>
+<script>
+/* DATA */
+const SD=[
+  {en:"Many people have visited a zoo at least once in their lives.",ja:"多くの人が、これまでに少なくとも一度は動物園を訪れたことがある。"},
+  {en:"Children love to see large animals, including lions, tigers, and elephants.",ja:"子どもたちはライオン、トラ、ゾウなどの大きな動物を見ることが大好きだ。"},
+  {en:"However, some people think zoos are cruel because animals are kept in cages.",ja:"しかし、動物が檻の中に閉じ込められているため、動物園は残酷だと考える人もいる。"},
+  {en:"Others recognize that zoos play an important role in protecting nature.",ja:"一方で、動物園が自然を守るうえで重要な役割を果たしていると認識している人もいる。"},
+  {en:"So, are zoos truly good for our planet?",ja:"では、動物園は本当に地球にとってよいものなのだろうか？"},
+  {en:"First, zoos guard many animals that are in danger of disappearing.",ja:"第一に、動物園は絶滅の危機にある多くの動物を守っている。"},
+  {en:"In the wild, animals must hunt for food, but human activity has caused damage to their homes.",ja:"野生では動物たちは自ら食べ物を探さなければならないが、人間の活動によってその生息地が傷つけられてきた。"},
+  {en:"Forests have been cut down, and rivers have become polluted.",ja:"森は切り倒され、川は汚染されてきた。"},
+  {en:"Many species are now struggling to survive.",ja:"多くの種が今や生き延びるのに苦しんでいる。"},
+  {en:"Zoos work hard to keep these animals safe and secure.",ja:"動物園はこれらの動物を安全に守るために懸命に取り組んでいる。"},
+  {en:"Some animals born in zoos have been returned to the wild after careful preparation.",ja:"動物園で生まれた動物の中には、入念な準備の末に野生へ戻されたものもある。"},
+  {en:"Scientists working at zoos study animal behavior and health every day.",ja:"動物園で働く科学者たちは毎日、動物の行動と健康を研究している。"},
+  {en:"They share their findings with researchers around the world.",ja:"彼らはその発見を世界中の研究者と共有している。"},
+  {en:"Without zoos, some of the animals living on our planet would already be gone.",ja:"動物園がなければ、今この地球に生きている動物の一部はすでに絶滅していただろう。"},
+  {en:"Second, zoos play a key role in education.",ja:"第二に、動物園は教育において重要な役割を果たしている。"},
+  {en:"The fact is that many people have never seen a wild animal in their lives.",ja:"実際のところ、多くの人が生涯に一度も野生動物を見たことがない。"},
+  {en:"A visit to a zoo gives them a unique chance to observe creatures they could not see anywhere else.",ja:"動物園を訪れることで、ほかでは見ることのできない生き物を観察する絶好の機会が得られる。"},
+  {en:"This experience makes them curious about wildlife and nature.",ja:"この経験が、野生動物や自然への好奇心を育む。"},
+  {en:"Children who visit zoos often grow up to treat the environment more carefully.",ja:"動物園を訪れた子どもたちは、成長してから環境をより大切に扱うことが多い。"},
+  {en:"Many zoos offer programs to teach young visitors about animals and their habitats.",ja:"多くの動物園では、若い来園者に動物とその生息地について教えるプログラムを提供している。"},
+  {en:"These programs have helped raise the next generation of scientists and nature lovers.",ja:"こうしたプログラムは次世代の科学者や自然愛好家を育てるのに貢献してきた。"},
+  {en:"In addition, zoos work with schools to help students learn about the natural world.",ja:"さらに、動物園は学校と連携して生徒が自然界について学ぶ手助けをしている。"},
+  {en:"Of course, not all zoos are the same.",ja:"もちろん、すべての動物園が同じというわけではない。"},
+  {en:"In the beginning, many zoos kept animals in typical small, dark cages.",ja:"かつて多くの動物園は、動物を典型的な小さく薄暗い檻の中に閉じ込めていた。"},
+  {en:"This was a harsh way to treat animals, and it caused many of them to become stressed and unhealthy.",ja:"これは動物に対して過酷な扱いであり、多くの動物がストレスを受けて不健康になる原因となった。"},
+  {en:"However, zoos have recognized the limit of this approach and have changed a lot.",ja:"しかし、動物園はこのやり方の限界を認識し、大きく変わってきた。"},
+  {en:"Today, many zoos give animals kept in large, open spaces the chance to live comfortably.",ja:"今日、多くの動物園は広い開放的な空間で動物が快適に暮らせるようにしている。"},
+  {en:"Female animals and their young are given special care.",ja:"メスの動物と子どもたちには特別なケアが与えられている。"},
+  {en:"These zoos train their staff to understand and care for animals in the best possible way.",ja:"こうした動物園は、スタッフが可能な限り最善の方法で動物を理解し世話できるよう訓練している。"},
+  {en:"Zoos have definitely played an important role in protecting our planet.",ja:"動物園は確かに、地球を守るうえで重要な役割を果たしてきた。"},
+  {en:"The tie between humans and the natural world matters more than ever today.",ja:"人間と自然界との結びつきは、今日かつてないほど重要だ。"},
+  {en:"Visiting a zoo can also help us gain a deeper understanding and remind us how much we need to protect it.",ja:"動物園を訪れることはまた、私たちがより深い理解を得る手助けとなり、いかに自然を守る必要があるかを思い起こさせてくれる。"}
+];
+
+const PARA_GROUPS=[[0,1,2,3,4],[5,6,7,8,9,10,11,12,13],[14,15,16,17,18,19,20,21],[22,23,24,25,26,27,28],[29,30,31]];
+
+const PASSAGE_TEXT=`Many people have visited a zoo at least once in their lives. Children love to see large animals, including lions, tigers, and elephants. However, some people think zoos are cruel because animals are kept in cages. Others recognize that zoos play an important role in protecting nature. So, are zoos truly good for our planet?
+
+First, zoos guard many animals that are in danger of disappearing. In the wild, animals must hunt for food, but human activity has caused damage to their homes. Forests have been cut down, and rivers have become polluted. Many species are now struggling to survive. Zoos work hard to keep these animals safe and secure. Some animals born in zoos have been returned to the wild after careful preparation. Scientists working at zoos study animal behavior and health every day. They share their findings with researchers around the world. Without zoos, some of the animals living on our planet would already be gone.
+
+Second, zoos play a key role in education. The fact is that many people have never seen a wild animal in their lives. A visit to a zoo gives them a unique chance to observe creatures they could not see anywhere else. This experience makes them curious about wildlife and nature. Children who visit zoos often grow up to treat the environment more carefully. Many zoos offer programs to teach young visitors about animals and their habitats. These programs have helped raise the next generation of scientists and nature lovers. In addition, zoos work with schools to help students learn about the natural world.
+
+Of course, not all zoos are the same. In the beginning, many zoos kept animals in typical small, dark cages. This was a harsh way to treat animals, and it caused many of them to become stressed and unhealthy. However, zoos have recognized the limit of this approach and have changed a lot. Today, many zoos give animals kept in large, open spaces the chance to live comfortably. Female animals and their young are given special care. These zoos train their staff to understand and care for animals in the best possible way.
+
+Zoos have definitely played an important role in protecting our planet. The tie between humans and the natural world matters more than ever today. Visiting a zoo can also help us gain a deeper understanding and remind us how much we need to protect it.`;
+
+const WORD_COUNT=400;
+const ANSWERS={q1:'b',q2:'c',q3:'a',q4:'d',q5:'b',q6:'a',q7:'c',q8:'d'};
+const QT=['1. What have many people done, according to the passage?','2. Why do some people think zoos are not good?','3. According to the passage, why are many wild animals in danger?','4. What do scientists at zoos do, according to the passage?','5. According to the passage, what can visiting a zoo do for children?','6. What can we understand about modern zoos from the passage?','7. According to the passage, what would happen if zoos did not exist?','8. What is the main idea of this passage?'];
+const OT={q1:['a) They have helped to protect wild animals.','b) They have been to a zoo before.','c) They have seen lions and elephants up close.','d) They have learned about animals at school.'],q2:['a) Because animals in old zoos had very little space.','b) Because zoos are too expensive for most people.','c) Because animals there cannot live freely.','d) Because zoos do not teach people anything.'],q3:['a) People have destroyed the places where animals live.','b) Animals cannot find enough food in the wild.',"c) Many species are struggling because zoos haven't done enough.",'d) Too many tourists visit wild areas every year.'],q4:['a) They teach visitors about animals and habitats.','b) They train animals born in zoos to go back to the wild.','c) They help wild animals get used to living in a zoo.','d) They study animals and share what they find with others.'],q5:['a) It helps them do better in science at school.','b) It makes them more interested in animals and nature.','c) It makes children curious and turns them into scientists.','d) It teaches them how to care for animals at home.'],q6:['a) They now give animals much better living conditions.','b) They have become more popular with visitors.','c) Animals kept there can be returned to the wild.','d) They keep more kinds of animals than old zoos.'],q7:['a) People would have less chance to learn about nature.','b) Scientists would share their findings in different ways.','c) Some animals on our planet might already be extinct.','d) Forests and rivers would be in more danger.'],q8:['a) Zoos need to change more so animals can live freely.','b) Zoos have studied animal behavior and health for many years.','c) Old zoos were bad, but modern zoos have improved a lot.','d) Zoos are important for protecting animals and teaching people.']};
+const EX={q1:'第1段落1文目より b が正解。"have visited a zoo" ＝「動物園に行ったことがある」。c は「子どもがライオンなどを見たがる」の話で「多くの人がしてきたこと」ではない。',q2:'第1段落「some people think zoos are cruel because animals are kept in cages」より c が正解。「檻の中＝自由に生きられない」。a の「スペースが狭い」は第4段落の昔の動物園の話。',q3:'第2段落「human activity has caused damage to their homes. Forests have been cut down, and rivers have become polluted.」より a が正解。b の「食べ物が見つからない」は直接の原因として明示されていない。',q4:'第2段落「Scientists working at zoos study animal behavior and health every day. They share their findings with researchers around the world.」より d が正解。',q5:'第3段落「This experience makes them curious about wildlife and nature.」より b が正解。c は "curious" と "next generation of scientists" を組み合わせた引っかけ。',q6:'第4段落「Today, many zoos give animals kept in large, open spaces the chance to live comfortably.」より a が正解。',q7:'第2段落末尾「Without zoos, some of the animals living on our planet would already be gone.」より c が正解。gone ＝ 絶滅した。',q8:'第2段落「動物の保護」・第3段落「教育」の2本柱で構成されており、両方を含む d が主旨として正解。'};
+
+/* STATE */
+let startTime=null,timerInterval=null,elapsedSecs=0,quizScore=0;
+let sentSpans=[];
+let currentSentIdx=-1;
+let speechPaused=false,speechRate=0.9;
+
+/* NAVIGATION */
+const ALL_PHASES=['phase-home','phase-reading','phase-questions','phase-results','phase-shadowing','phase-vocab','phase-wpm','phase-quiz'];
+function hideAll(){ALL_PHASES.forEach(id=>document.getElementById(id).classList.add('hidden'));}
+function show(id){document.getElementById(id).classList.remove('hidden');}
+
+function goHome(){stopAudio();hideAll();show('phase-home');closeTLPanel();window.scrollTo(0,0);}
+function startReading(){hideAll();show('phase-reading');window.scrollTo(0,0);}
+function backTo(dest){stopAudio();hideAll();closeTLPanel();if(dest==='results')show('phase-results');window.scrollTo(0,0);}
+function goToVocab(){stopAudio();hideAll();show('phase-vocab');closeTLPanel();window.scrollTo(0,0);}
+function goToVocabQuiz(){hideAll();show('phase-quiz');window.scrollTo(0,0);}
+
+function showWPMHistory(){
+  hideAll();show('phase-wpm');
+  const hist=JSON.parse(localStorage.getItem('wpm-L01')||'[]');
+  const maxWPM=hist.length?Math.max(...hist.map(r=>r.wpm)):1;
+  let html='';
+  if(!hist.length){
+    html='<div class="wpm-empty"><p style="font-size:2rem;margin-bottom:12px">📭</p><p>まだ記録がありません。</p><small>速読トレーニングを完了すると自動的に記録されます。</small></div>';
+  }else{
+    hist.forEach(r=>{
+      const pct=Math.round(r.wpm/maxWPM*100);
+      html+=`<div class="wpm-row"><span class="wpm-date">${r.date}</span><div class="wpm-bar-wrap"><div class="wpm-bar" style="width:${pct}%"></div></div><span class="wpm-num">${r.wpm} WPM</span><span class="wpm-score">🎯${r.score}</span></div>`;
+    });
+  }
+  document.getElementById('wpm-history-content').innerHTML=html;
+  window.scrollTo(0,0);
+}
+
+function saveWPMRecord(){
+  const now=new Date();
+  const d=`${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const rec={date:d,wpm:calcWPM(elapsedSecs),secs:elapsedSecs,score:quizScore+'/8'};
+  const hist=JSON.parse(localStorage.getItem('wpm-L01')||'[]');
+  hist.unshift(rec);if(hist.length>30)hist.length=30;
+  localStorage.setItem('wpm-L01',JSON.stringify(hist));
+}
+
+/* PHASE 1 */
+function startTimer(){
+  startTime=Date.now();
+  document.getElementById('start-area').classList.add('hidden');
+  document.getElementById('finish-area').classList.remove('hidden');
+  timerInterval=setInterval(()=>{
+    elapsedSecs=Math.floor((Date.now()-startTime)/1000);
+    document.getElementById('timer').textContent=fmt(elapsedSecs);
+    if(elapsedSecs>0)document.getElementById('wpm-live').textContent=calcWPM(elapsedSecs)+' WPM';
+  },500);
+}
+function finishReading(){
+  clearInterval(timerInterval);
+  elapsedSecs=Math.floor((Date.now()-startTime)/1000);
+  document.getElementById('reading-stats').innerHTML=statsHTML();
+  hideAll();show('phase-questions');closeTLPanel();window.scrollTo(0,0);
+}
+
+/* Phase 1 double-click → toggle blue word marker */
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('passage-box').addEventListener('dblclick',e=>{
+    const sel=window.getSelection();
+    if(!sel||!sel.rangeCount)return;
+    const word=sel.toString().trim();
+    if(!word||/\s/.test(word))return;
+    const range=sel.getRangeAt(0);
+    const parentEl=range.commonAncestorContainer.nodeType===3
+      ?range.commonAncestorContainer.parentElement
+      :range.commonAncestorContainer;
+    if(parentEl.classList.contains('dbl-hl')){
+      parentEl.replaceWith(document.createTextNode(parentEl.textContent));
+    }else{
+      try{const span=document.createElement('span');span.className='dbl-hl';range.surroundContents(span);}catch(_){}
+    }
+    sel.removeAllRanges();
+    const clean=word.replace(/[.,;:!?'"()\[\]]/g,'').trim();
+    if(clean)window.open(`https://ejje.weblio.jp/content/${encodeURIComponent(clean.toLowerCase())}`, '_blank');
+  });
+});
+
+/* PHASE 2 */
+function submitQuiz(){
+  const keys=Object.keys(ANSWERS);
+  if(keys.some(q=>!document.querySelector(`input[name="${q}"]:checked`))){alert('すべての問題に答えてから「答え合わせ」を押してください。');return;}
+  quizScore=0;let html='';
+  keys.forEach((q,i)=>{
+    const uv=document.querySelector(`input[name="${q}"]:checked`).value;
+    const cv=ANSWERS[q];const ok=uv===cv;if(ok)quizScore++;
+    const tag=ok?'<span class="tag-correct">✓ 正解</span>':'<span class="tag-wrong">✗ 不正解</span>';
+    html+=`<div class="result-item"><p class="result-q-text">${QT[i]}</p><p class="user-ans">${tag} ${OT[q]['abcd'.indexOf(uv)]}</p>${!ok?`<p class="correct-ans">正解：${OT[q]['abcd'.indexOf(cv)]}</p>`:''}<div class="explanation">解説：${EX[q]}</div></div>`;
+  });
+  const pct=Math.round(quizScore/8*100);
+  document.getElementById('score-banner').innerHTML=`<div class="score-num">${quizScore} / 8</div><div class="score-pct">${pct}% 正解 &nbsp;|&nbsp; 読了 ${fmt(elapsedSecs)} &nbsp;|&nbsp; ${calcWPM(elapsedSecs)} WPM</div>`;
+  document.getElementById('result-stats').innerHTML=statsHTML();
+  document.getElementById('result-detail').innerHTML=html;
+  saveWPMRecord();
+  hideAll();show('phase-results');window.scrollTo(0,0);
+}
+
+/* PHASE 4 */
+function goToShadowing(){
+  stopAudio();buildSpannedPassage();
+  hideAll();show('phase-shadowing');resetAudioUI();closeTLPanel();window.scrollTo(0,0);
+}
+
+function buildSpannedPassage(){
+  const container=document.getElementById('shadowing-passage');
+  let html='';
+  PARA_GROUPS.forEach(group=>{
+    html+='<p>';
+    group.forEach(si=>{
+      html+=`<span class="sent" data-idx="${si}" onclick="sentClick(event,${si})">`;
+      SD[si].en.split(/(\s+)/).forEach(tok=>{
+        if(/^\s+$/.test(tok))html+=' ';
+        else if(tok)html+=`<span class="word">${tok}</span>`;
+      });
+      html+='</span> ';
+    });
+    html+='</p>';
+  });
+  container.innerHTML=html;
+  sentSpans=Array.from(container.querySelectorAll('.sent'));
+}
+
+function updateRate(v){
+  speechRate=parseFloat(v);
+  document.getElementById('rate-val').textContent=speechRate.toFixed(1);
+}
+
+function getGoogleVoice(){
+  const vs=window.speechSynthesis.getVoices();
+  return vs.find(v=>v.name.toLowerCase().includes('google')&&v.lang.startsWith('en'))
+      ||vs.find(v=>v.lang.startsWith('en-US'))
+      ||vs.find(v=>v.lang.startsWith('en'))||null;
+}
+
+function hlSent(si){
+  sentSpans.forEach(el=>el.classList.remove('hl-sent'));
+  if(si>=0&&si<sentSpans.length){
+    sentSpans[si].classList.add('hl-sent');
+    sentSpans[si].scrollIntoView({block:'nearest',behavior:'smooth'});
+  }
+}
+function clearHL(){
+  sentSpans.forEach(el=>el.classList.remove('hl-sent'));
+}
+
+function makeSentenceUtt(si){
+  const utt=new SpeechSynthesisUtterance(SD[si].en);
+  const voice=getGoogleVoice();if(voice)utt.voice=voice;
+  utt.lang='en-US';utt.rate=speechRate;utt.pitch=1.0;
+  utt.onstart=()=>{
+    if(speechPaused)return;
+    currentSentIdx=si;hlSent(si);
+    setStatus(`読み上げ中... 声に合わせてシャドーイングしよう (${si+1}/${SD.length})`);
+    if(si+1<SD.length)window.speechSynthesis.speak(makeSentenceUtt(si+1));
+  };
+  utt.onend=()=>{if(!speechPaused&&si+1>=SD.length){clearHL();resetAudioUI();}};
+  utt.onerror=e=>{if(e.error!=='interrupted'&&e.error!=='canceled'){clearHL();resetAudioUI();}};
+  return utt;
+}
+
+function playAudio(){
+  if(!('speechSynthesis' in window)){alert('このブラウザは音声読み上げに対応していません。ChromeまたはEdgeをご利用ください。');return;}
+  window.speechSynthesis.cancel();
+  speechPaused=false;currentSentIdx=-1;clearHL();
+  document.getElementById('btn-play').classList.add('hidden');
+  document.getElementById('btn-pause').classList.remove('hidden');
+  window.speechSynthesis.speak(makeSentenceUtt(0));
+}
+function pauseAudio(){
+  if(!speechPaused&&(window.speechSynthesis.speaking||window.speechSynthesis.pending)){
+    speechPaused=true;
+    window.speechSynthesis.cancel();
+    document.getElementById('btn-pause').classList.add('hidden');
+    document.getElementById('btn-resume').classList.remove('hidden');
+    setStatus('一時停止中');
+  }
+}
+function resumeAudio(){
+  if(speechPaused){
+    speechPaused=false;
+    document.getElementById('btn-resume').classList.add('hidden');
+    document.getElementById('btn-pause').classList.remove('hidden');
+    const si=currentSentIdx>=0?currentSentIdx:0;
+    hlSent(si);
+    window.speechSynthesis.speak(makeSentenceUtt(si));
+  }
+}
+function stopAudio(){
+  speechPaused=false;
+  window.speechSynthesis.cancel();
+  currentSentIdx=-1;clearHL();resetAudioUI();
+}
+function resetAudioUI(){
+  document.getElementById('btn-play').classList.remove('hidden');
+  document.getElementById('btn-pause').classList.add('hidden');
+  document.getElementById('btn-resume').classList.add('hidden');
+  setStatus('');
+}
+function setStatus(m){document.getElementById('audio-status').textContent=m;}
+
+/* TRANSLATION PANEL */
+function sentClick(event,idx){
+  if(event.detail>=2)return;
+  event.stopPropagation();
+  let word='';
+  if(event.target.classList.contains('word')){
+    word=event.target.textContent.replace(/[.,;:!?'"()\[\]]/g,'').trim();
+  }
+  document.querySelectorAll('.sent.active').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll(`.sent[data-idx="${idx}"]`).forEach(el=>el.classList.add('active'));
+  document.getElementById('tl-en').textContent=SD[idx].en;
+  document.getElementById('tl-ja').textContent=SD[idx].ja;
+  let wlink='';
+  if(word){
+    const url=`https://ejje.weblio.jp/content/${encodeURIComponent(word.toLowerCase())}`;
+    window.open(url,'_blank');
+    wlink=`<a href="${url}" target="_blank" class="weblio-btn">「${word}」をWeblioで調べる →</a>`;
+  }
+  document.getElementById('tl-word-row').innerHTML=wlink;
+  document.getElementById('tl-panel').classList.remove('hidden');
+}
+function closeTLPanel(){
+  document.getElementById('tl-panel').classList.add('hidden');
+  document.querySelectorAll('.sent.active').forEach(el=>el.classList.remove('active'));
+}
+
+/* HELPERS */
+function fmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function calcWPM(s){return s>0?Math.round(WORD_COUNT/s*60):0;}
+function statsHTML(){return`<div class="stat-card"><div class="value">${fmt(elapsedSecs)}</div><div class="label">読了時間</div></div><div class="stat-card"><div class="value">${calcWPM(elapsedSecs)}</div><div class="label">WPM（語／分）</div></div><div class="stat-card"><div class="value">${WORD_COUNT}</div><div class="label">総語数</div></div>`;}
+</script>
+</body>
+</html>

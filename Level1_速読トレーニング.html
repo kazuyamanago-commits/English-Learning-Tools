@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speed Reading — Level 1</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia','Times New Roman',serif;background:#f5f6f8;color:#222;line-height:1.85}
+.container{max-width:820px;margin:0 auto;padding:24px 20px 100px}
+/* nav */
+.nav-row{display:flex;align-items:center;gap:10px;margin-bottom:18px;font-family:sans-serif;font-size:.82rem;color:#9ca3af;flex-wrap:wrap}
+.nav-back{background:none;border:none;color:#2563eb;cursor:pointer;font-size:.83rem;font-family:sans-serif;padding:0;text-decoration:underline}
+.nav-sep{color:#d1d5db}
+.nav-home{background:#1a3a5c;color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:.78rem;font-family:sans-serif;padding:3px 9px;font-weight:bold;text-decoration:none;transition:opacity .15s}
+.nav-home:hover{opacity:.8}
+/* home */
+.home-hero{background:#1a3a5c;color:#fff;border-radius:12px;padding:28px 32px;margin-bottom:24px}
+.home-hero h1{font-size:1.5rem;margin-bottom:4px}
+.home-hero p{opacity:.75;font-size:.9rem;font-family:sans-serif}
+.home-cards{display:flex;flex-direction:column;gap:14px}
+.home-card{background:#fff;border-radius:12px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:center;gap:18px;transition:transform .15s,box-shadow .15s;border:2px solid transparent}
+.home-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12);border-color:#2563eb}
+.home-card-icon{font-size:2rem;flex-shrink:0;width:44px;text-align:center}
+.home-card-title{font-size:1rem;font-weight:bold;color:#1a3a5c;margin-bottom:2px}
+.home-card-desc{font-size:.8rem;color:#6b7280;font-family:sans-serif}
+/* level cards */
+.level-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mat-num{font-size:1.1rem;font-weight:bold;color:#1a3a5c;font-family:'Courier New',monospace}
+.wpm-badge{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:4px;font-size:.72rem;font-weight:bold;padding:1px 5px;margin-left:3px;font-family:sans-serif;vertical-align:middle}
+.completed-badge{display:inline-block;background:#16a34a;color:#fff;border-radius:4px;font-size:.7rem;font-weight:bold;padding:1px 6px;margin-left:4px;font-family:sans-serif;vertical-align:middle}
+.card-done{border-color:#bbf7d0!important;background:#f0fdf4}
+.card-done .mat-num{color:#15803d}
+.progress-card{background:linear-gradient(135deg,#1a3a5c 0%,#2563eb 100%);border:none}
+.progress-card .home-card-title{color:#fff}
+.progress-card .home-card-desc{color:rgba(255,255,255,.75)}
+/* timer */
+.timer-box{background:#1a3a5c;color:#fff;border-radius:10px;padding:20px 24px;margin-bottom:16px;text-align:center}
+.timer-label{font-size:.78rem;letter-spacing:2px;opacity:.65;text-transform:uppercase;margin-bottom:6px;font-family:sans-serif}
+.timer-display{font-family:'Courier New',monospace;font-size:3.2rem;font-weight:bold;letter-spacing:6px}
+.wpm-live{font-size:1rem;margin-top:8px;opacity:.85;min-height:1.4em;font-family:sans-serif}
+/* passage */
+.passage-box{background:#fff;border-radius:10px;padding:30px 36px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:16px;font-size:1.08rem}
+.passage-box p{text-indent:1em;margin-bottom:2em}
+.passage-box p:last-child{margin-bottom:0}
+.sent{cursor:pointer;border-radius:3px;transition:background .12s}
+.sent:hover{background:#f0f9ff}
+.sent.active{background:#dbeafe}
+.dbl-hl{background:#bfdbfe;border-radius:3px;padding:1px 3px;cursor:pointer}
+.hint{font-size:.78rem;color:#9ca3af;text-align:center;margin-bottom:20px;font-family:sans-serif}
+/* buttons */
+.btn{display:inline-block;padding:13px 28px;border-radius:7px;border:none;font-size:1rem;cursor:pointer;font-family:'Georgia',serif;font-weight:bold;transition:opacity .15s}
+.btn:hover{opacity:.87}
+.btn-start{background:#2563eb;color:#fff}
+.btn-finish{background:#16a34a;color:#fff}
+.btn-submit{background:#2563eb;color:#fff}
+.btn-shadowing{background:#7c3aed;color:#fff}
+.btn-vocab{background:#0891b2;color:#fff}
+.btn-play{background:#16a34a;color:#fff}
+.btn-pause{background:#d97706;color:#fff}
+.btn-stop-s{background:#6b7280;color:#fff}
+.btn-back{background:#6b7280;color:#fff}
+.btn-home{background:#1a3a5c;color:#fff}
+.btn-sm{font-size:.88rem;padding:9px 18px}
+.btn-area{text-align:center;margin:16px 0;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}
+/* stats */
+.stats{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.stat-card{flex:1;min-width:130px;background:#fff;border-radius:10px;padding:14px 20px;box-shadow:0 2px 6px rgba(0,0,0,.06);text-align:center}
+.stat-card .value{font-size:2rem;font-weight:bold;color:#1a3a5c;font-family:'Courier New',monospace}
+.stat-card .label{font-size:.78rem;color:#888;margin-top:2px;font-family:sans-serif}
+/* quiz */
+.section-box{background:#fff;border-radius:10px;padding:28px 32px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:20px}
+.section-title{font-size:1.1rem;font-weight:bold;color:#1a3a5c;margin-bottom:22px;padding-bottom:10px;border-bottom:2px solid #e5e7eb}
+.question{margin-bottom:26px}
+.question .q-text{font-weight:bold;margin-bottom:10px}
+.option-label{display:flex;align-items:flex-start;gap:10px;margin:7px 0;cursor:pointer;padding:6px 8px;border-radius:5px;transition:background .1s;font-size:.97rem}
+.option-label:hover{background:#f0f4ff}
+.option-label input{margin-top:3px;flex-shrink:0}
+/* results */
+.score-banner{background:#1a3a5c;color:#fff;border-radius:10px;padding:22px;text-align:center;margin-bottom:20px}
+.score-banner .score-num{font-size:2.5rem;font-weight:bold;font-family:'Courier New',monospace}
+.score-banner .score-pct{font-size:1.05rem;opacity:.8;margin-top:4px;font-family:sans-serif}
+.result-item{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid #f0f0f0}
+.result-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.result-q-text{font-weight:bold;margin-bottom:8px}
+.tag-correct{display:inline-block;background:#dcfce7;color:#15803d;border-radius:4px;font-size:.78rem;font-weight:bold;padding:2px 7px;margin-right:6px;font-family:sans-serif}
+.tag-wrong{display:inline-block;background:#fee2e2;color:#b91c1c;border-radius:4px;font-size:.78rem;font-weight:bold;padding:2px 7px;margin-right:6px;font-family:sans-serif}
+.user-ans{margin-bottom:4px}
+.correct-ans{color:#15803d;margin-bottom:6px}
+/* shadowing */
+.audio-controls{background:#fff;border-radius:10px;padding:14px 20px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.speed-control{display:flex;align-items:center;gap:8px;font-family:sans-serif;font-size:.85rem;color:#374151;margin-left:auto}
+.speed-control label{white-space:nowrap;color:#6b7280}
+.speed-control input[type=range]{width:90px;cursor:pointer}
+.speed-val{font-weight:bold;color:#7c3aed;min-width:30px}
+.audio-status-bar{font-size:.82rem;color:#7c3aed;font-family:sans-serif;flex:1;min-width:100px}
+.passage-shadowing{background:#fff;border-radius:10px;padding:30px 36px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:20px;font-size:1.08rem}
+.passage-shadowing p{text-indent:1em;margin-bottom:2em;line-height:2.1}
+.passage-shadowing p:last-child{margin-bottom:0}
+.word{display:inline}
+.sent.hl-sent{background:#fef3c7;border-radius:4px;transition:background .2s}
+/* bilingual */
+.bilingual-section{background:#fff;border-radius:10px;padding:28px 36px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:20px}
+.bilingual-para{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding-bottom:22px;margin-bottom:22px;border-bottom:1px solid #e5e7eb}
+.bilingual-para:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.bi-label{font-size:.68rem;font-family:sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.bi-en .bi-label{color:#2563eb}
+.bi-ja .bi-label{color:#7c3aed}
+.bi-en p{font-size:1rem;line-height:1.85;color:#1a3a5c}
+.bi-ja p{font-size:.95rem;line-height:1.85;color:#374151;font-family:sans-serif}
+.para-num{display:inline-block;background:#1a3a5c;color:#fff;border-radius:50%;width:20px;height:20px;font-size:.72rem;font-family:sans-serif;font-weight:bold;text-align:center;line-height:20px;margin-right:5px;vertical-align:middle}
+/* WPM history */
+.wpm-empty{text-align:center;padding:48px 20px;color:#9ca3af;font-family:sans-serif}
+.wpm-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f1f5f9;font-family:sans-serif;font-size:.87rem}
+.wpm-row:last-child{border-bottom:none}
+.wpm-date{color:#6b7280;min-width:140px;flex-shrink:0}
+.wpm-bar-wrap{flex:1;background:#f1f5f9;border-radius:4px;height:16px;overflow:hidden}
+.wpm-bar{height:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);border-radius:4px}
+.wpm-num{font-weight:bold;color:#1a3a5c;min-width:70px;text-align:right}
+.wpm-score{color:#15803d;min-width:48px;text-align:right}
+/* progress chart */
+.chart-no-data{text-align:center;padding:56px 20px;color:#9ca3af;font-family:sans-serif;font-size:.95rem}
+/* translation panel */
+#tl-panel{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:3px solid #2563eb;padding:14px 20px 18px;box-shadow:0 -4px 20px rgba(0,0,0,.13);z-index:200;font-family:sans-serif}
+#tl-panel .tl-bar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+#tl-panel .tl-body{flex:1}
+#tl-en{font-size:.85rem;color:#6b7280;margin-bottom:6px;font-style:italic}
+#tl-ja{font-size:1.05rem;color:#1a3a5c;font-weight:bold;line-height:1.55}
+#tl-word-row{margin-top:10px}
+.weblio-btn{display:inline-block;background:#2563eb;color:#fff;border-radius:6px;padding:6px 14px;font-size:.82rem;font-weight:bold;text-decoration:none;transition:opacity .15s}
+.weblio-btn:hover{opacity:.85}
+.tl-close-btn{background:none;border:none;font-size:1.3rem;color:#9ca3af;cursor:pointer;padding:0 4px;flex-shrink:0;line-height:1}
+.tl-close-btn:hover{color:#374151}
+.hidden{display:none!important}
+@media(max-width:640px){
+  .passage-box,.section-box,.passage-shadowing,.bilingual-section{padding:20px 16px}
+  .timer-display{font-size:2.5rem}
+  .bilingual-para{grid-template-columns:1fr}
+  .level-card-grid{grid-template-columns:1fr}
+  .speed-control{margin-left:0;width:100%}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- LEVEL HOME -->
+<div id="phase-level-home">
+  <div class="home-hero">
+    <h1>Level 1 速読トレーニング</h1>
+    <p>全20教材 ／ 各約300語 ／ 英語民話・昔話</p>
+  </div>
+  <div id="level-cards" class="level-card-grid"></div>
+  <div style="margin-top:14px">
+    <div class="home-card progress-card" onclick="goToProgress()">
+      <div class="home-card-icon">📊</div>
+      <div>
+        <div class="home-card-title">進捗グラフ</div>
+        <div class="home-card-desc">全教材のWPM・正答数の推移を折れ線グラフで確認</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MATERIAL HOME -->
+<div id="phase-mat-home" class="hidden">
+  <div class="nav-row">
+    <button class="nav-home" onclick="goLevelHome()">⌂ 一覧</button>
+    <span class="nav-sep">/</span>
+    <span id="mat-nav-title"></span>
+  </div>
+  <div class="home-hero">
+    <h1 id="mat-hero-title"></h1>
+    <p id="mat-hero-desc"></p>
+  </div>
+  <div class="home-cards">
+    <div class="home-card" onclick="startReading()">
+      <div class="home-card-icon">📖</div>
+      <div>
+        <div class="home-card-title">速読トレーニング</div>
+        <div class="home-card-desc">タイマー計測 → 内容理解問題 → シャドーイング音声</div>
+      </div>
+    </div>
+    <div class="home-card" onclick="showWPMHistory()">
+      <div class="home-card-icon">📈</div>
+      <div>
+        <div class="home-card-title">WPM 履歴</div>
+        <div class="home-card-desc">この教材の過去の記録を確認する</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 1: READING -->
+<div id="phase-reading" class="hidden">
+  <div class="nav-row">
+    <button class="nav-home" onclick="goLevelHome()">⌂ 一覧</button>
+    <span class="nav-sep">/</span>
+    <button class="nav-back" onclick="goMatHome()">← 教材ホーム</button>
+    <span class="nav-sep">/</span>
+    <span>速読トレーニング</span>
+  </div>
+  <div class="timer-box">
+    <div class="timer-label">Reading Time</div>
+    <div class="timer-display" id="timer">0:00</div>
+    <div class="wpm-live" id="wpm-live">&nbsp;</div>
+  </div>
+  <div class="btn-area" id="start-area">
+    <button class="btn btn-start" onclick="startTimer()">▶ 計測スタート</button>
+  </div>
+  <div class="passage-box" id="passage-box"></div>
+  <p class="hint">💡 文・単語クリック → 和訳パネル（Weblio検索ボタン付き）　／　単語ダブルクリック → 青マーカー</p>
+  <div class="btn-area hidden" id="finish-area">
+    <button class="btn btn-finish" onclick="finishReading()">✓ 読み終わった！</button>
+  </div>
+</div>
+
+<!-- PHASE 2: QUESTIONS -->
+<div id="phase-questions" class="hidden">
+  <div class="nav-row">
+    <button class="nav-home" onclick="confirmLeave('level')">⌂ 一覧</button>
+    <span class="nav-sep">/</span>
+    <button class="nav-back" onclick="confirmLeave('mat')">← 教材ホーム</button>
+    <span class="nav-sep">/</span>
+    <span>内容理解問題</span>
+  </div>
+  <div class="stats" id="reading-stats"></div>
+  <div class="section-box">
+    <div class="section-title">内容理解問題（全8問）</div>
+    <form id="quiz-form"></form>
+  </div>
+</div>
+
+<!-- PHASE 3: RESULTS -->
+<div id="phase-results" class="hidden">
+  <div class="nav-row">
+    <button class="nav-home" onclick="goLevelHome()">⌂ 一覧</button>
+    <span class="nav-sep">/</span>
+    <button class="nav-back" onclick="goMatHome()">← 教材ホーム</button>
+    <span class="nav-sep">/</span>
+    <span>結果</span>
+  </div>
+  <div class="score-banner" id="score-banner"></div>
+  <div class="stats" id="result-stats"></div>
+  <div class="section-box">
+    <div class="section-title">問題の詳細</div>
+    <div id="result-detail"></div>
+  </div>
+  <div class="btn-area">
+    <button class="btn btn-shadowing" onclick="goToShadowing()">🔊 音声を聞きながら読む</button>
+    <button class="btn btn-vocab btn-sm" onclick="goToBilingual()">📖 対訳を見る</button>
+  </div>
+</div>
+
+<!-- PHASE 4: SHADOWING -->
+<div id="phase-shadowing" class="hidden">
+  <div class="nav-row">
+    <button class="nav-home" onclick="goLevelHome()">⌂ 一覧</button>
+    <span class="nav-sep">/</span>
+    <button class="nav-back" onclick="goMatHome()">← 教材ホーム</button>
+    <span class="nav-sep">/</span>
+    <span>シャドーイング</span>
+  </div>
+  <div class="audio-controls">
+    <button class="btn btn-play btn-sm" id="btn-play" onclick="playAudio()">▶ 再生</button>
+    <button class="btn btn-pause btn-sm hidden" id="btn-pause" onclick="pauseAudio()">⏸ 一時停止</button>
+    <button class="btn btn-stop-s btn-sm hidden" id="btn-resume" onclick="resumeAudio()">▶ 再開</button>
+    <button class="btn btn-stop-s btn-sm" onclick="stopAudio()">■ 停止</button>
+    <span class="audio-status-bar" id="audio-status"></span>
+    <div class="speed-control">
+      <label>速度</label>
+      <input type="range" id="speed-slider" min="0.6" max="1.3" step="0.1" value="0.9" oninput="updateRate(this.value)">
+      <span class="speed-val" id="rate-val">0.9</span><span style="color:#9ca3af;font-family:sans-serif;font-size:.85rem">x</span>
+    </div>
+  </div>
+  <div class="passage-shadowing"><div id="shadowing-passage"></div></div>
+  <p class="hint">💡 段落・単語クリック → 和訳パネル（Weblio検索ボタン付き）</p>
+  <div class="btn-area">
+    <button class="btn btn-back btn-sm" onclick="backTo('results')">← 結果に戻る</button>
+    <button class="btn btn-vocab btn-sm" onclick="goToBilingual()">📖 対訳を見る</button>
+  </div>
+</div>
+
+<!-- PHASE 5: BILINGUAL -->
+<div id="phase-bilingual" class="hidden">
+  <div class="nav-row">
+    <button class="nav-home" onclick="goLevelHome()">⌂ 一覧</button>
+    <span class="nav-sep">/</span>
+    <button class="nav-back" onclick="goMatHome()">← 教材ホーム</button>
+    <span class="nav-sep">/</span>
+    <span>対訳</span>
+  </div>
+  <div class="bilingual-section">
+    <div class="section-title" id="bilingual-title"></div>
+    <div id="bilingual-content"></div>
+  </div>
+  <div class="btn-area">
+    <button class="btn btn-back btn-sm" onclick="backTo('results')">← 結果に戻る</button>
+    <button class="btn btn-shadowing btn-sm" onclick="goToShadowing()">🔊 シャドーイング</button>
+  </div>
+</div>
+
+<!-- PHASE WPM (per material) -->
+<div id="phase-wpm" class="hidden">
+  <div class="nav-row">
+    <button class="nav-home" onclick="goLevelHome()">⌂ 一覧</button>
+    <span class="nav-sep">/</span>
+    <button class="nav-back" onclick="goMatHome()">← 教材ホーム</button>
+    <span class="nav-sep">/</span>
+    <span>WPM 履歴</span>
+  </div>
+  <div class="section-box">
+    <div class="section-title" id="wpm-section-title">読書速度の記録</div>
+    <div id="wpm-history-content"></div>
+  </div>
+  <div class="btn-area">
+    <button class="btn btn-home btn-sm" onclick="goMatHome()">← 教材ホームに戻る</button>
+  </div>
+</div>
+
+<!-- PHASE PROGRESS -->
+<div id="phase-progress" class="hidden">
+  <div class="nav-row">
+    <button class="nav-home" onclick="goLevelHome()">⌂ 一覧</button>
+    <span class="nav-sep">/</span>
+    <span>進捗グラフ</span>
+  </div>
+  <div class="section-box">
+    <div class="section-title">学習進捗 — WPM・正答数の推移</div>
+    <div id="progress-chart-wrap"></div>
+  </div>
+  <div class="btn-area">
+    <button class="btn btn-home btn-sm" onclick="goLevelHome()">← 教材一覧に戻る</button>
+  </div>
+</div>
+
+<!-- TRANSLATION PANEL -->
+<div id="tl-panel" class="hidden">
+  <div class="tl-bar">
+    <div class="tl-body">
+      <div id="tl-en"></div>
+      <div id="tl-ja"></div>
+      <div id="tl-word-row"></div>
+    </div>
+    <button class="tl-close-btn" onclick="closeTLPanel()">&#x2715;</button>
+  </div>
+</div>
+
+</div>
+<script>
+const MATERIALS=[{"id":1,"title":"Peach Boy","wordCount":300,"SD":[{"en":"A long time ago in Japan, an old man and an old woman lived in a little house by a river. They were happy except for one thing. They didn’t have any children.","ja":"昔，日本のある川のほとりの小さな家に，老夫婦が住んでいた。二人は幸せだったが，ただ一つ，子供がいないことが悩みだった。"},{"en":"One day the old man said, “I’m going to cut down a tree for the fire”. The old woman said, “I’m going to the river to wash the clothes”.","ja":"ある日，老人は「薪を切ってくる」と言い，老婆は「川で洗濯をしてくる」と言った。"},{"en":"While the old woman was washing the clothes, she saw a big peach coming down the river. The old woman thought the peach would be very good to eat so she caught it and took it home. When the old people cut the peach open, a little boy jumped out of the middle. They were happy and they called him Peach Boy.","ja":"老婆が洗濯をしていると，川上から大きな桃が流れてきた。老婆は桃を家に持ち帰った。二人が桃を切ると，中から元気な男の子が生まれた。二人はその子を桃太郎と名付けた。"},{"en":"Peach Boy was a happy child and the family lived together for many years. One day the old woman said, “Our boy is now a man”.","ja":"桃太郎はすくすくと育ち，一家は幸せに暮らした。ある日，老婆が言った。「もうお前は大人の男になったね」"},{"en":"Some bad people lived a long way from the little town. Every year, they came and took all the money from the people. The people were very scared of them.","ja":"遠い山の向こうに，悪い人たちが住んでいた。毎年やってきて，村人のお金を全部奪っていった。"},{"en":"Peach Boy thought to himself, “I’m going to kill the bad people”. He left home with some food his mother made for him. On the way he saw a dog. The dog said, give me some food and I’ll help you kill the bad people. So he did. Next he saw a monkey and the same thing happened. Then they saw a bird. Peach Boy gave the bird some food and they all started on their way to find the bad people.","ja":"桃太郎は「悪い人たちをやっつけに行く」と心に決め，母がつくってくれたきびだんごを持って出発した。道中，一羽の鳥，一匹の犬，一匹のサルと出会い，みんなが仲間になった。"},{"en":"When they got there, the bad people fought hard, but the four friends were very smart and in the end, they killed them all. The friends took all the money back to the people and everyone was happy.","ja":"いよいよ乗り込んでみると，悪い人たちは激しく戦ったが，四人の仲間はとても賢く，ついに悪い人たちをやっつけた。奪われたお金はすべて村人に返された。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5],[6]],"questions":[{"text":"The old people lived in a:","options":{"a":"little house","b":"big house","c":"a very big house"},"answer":"a"},{"text":"They were unhappy about:","options":{"a":"one thing","b":"two things","c":"many things"},"answer":"a"},{"text":"The old woman was washing:","options":{"a":"her hands","b":"clothes","c":"children"},"answer":"b"},{"text":"She saw a big:","options":{"a":"apple","b":"peach","c":"fish"},"answer":"b"},{"text":"Who made the food for Peach Boy?","options":{"a":"His mother","b":"His father","c":"His mother and father"},"answer":"a"},{"text":"Peach Boy saw:","options":{"a":"a bird and a dog","b":"a dog and a monkey","c":"a bird, a dog and a monkey"},"answer":"c"},{"text":"What did the bad people take?","options":{"a":"Animals","b":"Children","c":"Money"},"answer":"c"},{"text":"How many friends fought the bad people?","options":{"a":"2","b":"4","c":"6"},"answer":"b"}]},{"id":2,"title":"How Māui slowed the sun","wordCount":300,"SD":[{"en":"One day, Māui and his brothers were making their food. Then everything was black because the sun went away. They couldn’t see what they were doing.","ja":"ある日，マウイと兄弟たちは食事を作っていた。すると太陽が消えて，すべてが真っ黒になった。自分たちが何をしているのか見えなくなった。"},{"en":"Māui was not happy. He said “Why does the sun move so fast? We don’t have time in the day to do all our work. I’m going to catch the sun and teach it how to go across the sky slowly”.","ja":"マウイは不満だった。どうして太陽はこんなに速く動くんだろう？一日に仕事をする時間がないんだ。僕は太陽を捕まえて，ゆっくり空を横切る方法を教えるんだ」。"},{"en":"His brothers said he couldn’t catch the sun because it was too big and too hot. Māui said “I have done many hard things and I can do this thing too.” The people thought about this and they all said they would help him.","ja":"兄弟たちは，太陽は大きすぎるし熱すぎるから捕まえられないと言った。マウイは言った。「僕はこれまで大変なことをたくさんやってきた。だからこれもできると思うんだ。」人々はこのことを考え，みんな彼を助けると言った。"},{"en":"The next day all the people made a lot of big ropes. Then they started to go to where the sun first gets up in the morning. After 12 days they saw a very big hole in the ground. It was night and they saw that the sun was sleeping in the hole. They got the ropes and said, “Soon we will catch the sun and make it slow down.”","ja":"翌日，人々は大きなロープをたくさん作った。そして，朝，太陽が最初に昇る場所に行き始めた。12日後，彼らは地面にとても大きな穴を見た。夜だったので，太陽はその穴の中で眠っているのが見えた。彼らはロープを手に持ち，言った。「すぐに僕たちが太陽を捕まえて，ゆっくり動くようにさせるんだ。」"},{"en":"The next morning, when the sun tried to climb up into the sky, all the people caught it in the ropes and wouldn’t let it go. The sun was very hot and very unhappy but Māui told the sun to slow down. At first the sun would not slow down and tried to go faster, but in the end, Māui hit it with his stick many times and the sun slowed down. The sun went slowly up into the sky and from that day the sun moved slowly across the sky and the days were longer. The people had time to do all their work and they were happy.","ja":"翌朝，太陽が空に登ろうとすると，人々は皆，ロープで太陽を捕らえ，離そうとしなかった。太陽はとても熱く，とても不機嫌だったが，マウイは太陽にスピードを落とすように言った。最初は太陽はスピードを落とそうとせず，もっと速くいこうとしたが，マウイが棒で何度も叩くと，太陽はスピードを落とした。その日から，太陽はゆっくりと空を横切り，日が長くなった。人々はすべての仕事をする時間ができ，幸せになった。"},{"en":"This is the story of how Māui slowed the sun.","ja":"これが，マウイがどうやって太陽を遅らせたかという話である。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5]],"questions":[{"text":"Who were making food?","options":{"a":"The women","b":"The men","c":"Everyone"},"answer":"b"},{"text":"What went away?","options":{"a":"The sun","b":"The people","c":"The food"},"answer":"a"},{"text":"The sun:","options":{"a":"moved too slowly","b":"didn’t move","c":"moved too fast"},"answer":"c"},{"text":"Who helped him?","options":{"a":"Some people","b":"All the people","c":"Nobody"},"answer":"b"},{"text":"They made:","options":{"a":"a lot of ropes","b":"a lot of suns","c":"a lot of food"},"answer":"a"},{"text":"How many days did it take to find the sun?","options":{"a":"6","b":"12","c":"18"},"answer":"b"},{"text":"They found the sun:","options":{"a":"in the sky","b":"in the water","c":"in a hole"},"answer":"c"},{"text":"In the end, the days were:","options":{"a":"longer","b":"shorter","c":"the same"},"answer":"a"}]},{"id":3,"title":"The tortoise and the hare","wordCount":300,"SD":[{"en":"Many years ago there was a very fast hare. His name was Hare. Hare was always talking about how fast he could run. He talked about himself so much that all the other animals got tired of his talking.","ja":"昔，とても足の速いウサギがいた。彼の名前はヘアだった。ヘアはいつも自分がどれだけ速く走れるかを話していた。あまりに自分のことばかり話すので，他の動物たちはみんなうんざりしてしまった。"},{"en":"There was a very slow tortoise too. The tortoise’s name was Slow and Steady. One day Slow and Steady got tired of Hare’s talking and said to him, “Let’s have a race.” Then Hare said, “How can you run faster than me? I am the fastest animal. It will be nothing for me to win the race.” Slow and Steady said, “I will do my best.”","ja":"とても遅いカメもいた。その亀の名前はスロー・アンド・ステディだった。ある日，スロー・アンド・ステディはウサギのおしゃべりに飽きて，彼に言った。「競争をしようよ。」するとヘアは言った。「どうやって僕より速く走るつもりだい？僕が一番速い動物なんだ。競争に勝つなんてなんてことでもないさ。」スロー・アンド・ステディは「ベストを尽くすよ。」と言った。"},{"en":"On the day of the race, all the animals came to watch. They were interested to see who would win the race.","ja":"レース当日，動物たちはみんな見に来た。誰がレースに勝つのか興味津々だった。"},{"en":"Hare and Slow and Steady stood in line and somebody said, “Go!”","ja":"ヘアとスロー・アンド・ステディは列に並び，誰かが言った。「スタート！」"},{"en":"Hare started running very fast. He ran hard and soon he couldn’t see the tortoise. After a short time, Hare started to get sleepy so he stopped. He said to himself, “I can run much faster than Slow and Steady. I’m going to have a sleep.” He lay down and went to sleep.","ja":"ウサギはとても速く走り出した。彼は懸命に走り，やがて亀が見えなくなった。しばらくすると，ウサギは眠くなったので立ち止まった。「私はスロー・アンド・ステディよりずっと速く走れる。ちょっと寝てしまおう。」彼は横になって眠った。"},{"en":"Slow and steady walked and walked. She walked and walked and she never stopped walking until she got to the end of the race. All the animals were very happy. They ran to Hare and said, “Get up! Get up!”","ja":"スロー・アンド・ステディは歩いて，歩いた。歩いても歩いても，競争の最後まで歩みを止めなかった。動物たちはみんな大喜びだった。動物たちはヘアのところに走っていって言った。「起きろ！起きろ！」"},{"en":"Hare got up and started running, but he was too late. Slow and Steady had already won the race.","ja":"ヘアは立ち上がって走り出したが，遅すぎた。スロー・アンド・ステディはすでにレースに勝っていた。"},{"en":"Hare was very unhappy and said to himself, “I will never talk about how fast I can run again.”","ja":"ヘアはとても不機嫌になり，「もう二度と自分がどれだけ速く走れるかについて話すことはないだろう」と自分に言い聞かせた。"},{"en":"This story tells us that slow and steady wins the race. This means that if you keep going and never give up, you will do what you want to do.","ja":"この物語は，スロー・アンド・ステディがレースに勝つことを教えてくれる。つまり，あきらめずにやり続ければ，やりたいことがやりとげられるということだ。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5],[6],[7],[8]],"questions":[{"text":"The story happened:","options":{"a":"2 years ago","b":"10 years ago","c":"many years ago"},"answer":"c"},{"text":"Who talked and talked all the time?","options":{"a":"Hare","b":"Slow and Steady","c":"Another animal"},"answer":"a"},{"text":"Hare could run:","options":{"a":"not very fast","b":"very slowly","c":"very fast"},"answer":"c"},{"text":"The tortoise could:","options":{"a":"run fast","b":"run slowly","c":"not run"},"answer":"c"},{"text":"Who said they would have a race?","options":{"a":"Hare","b":"The tortoise","c":"The people"},"answer":"b"},{"text":"After Hare ran for a short time, he started to get:","options":{"a":"happy","b":"hungry","c":"sleepy"},"answer":"c"},{"text":"Who was unhappy?","options":{"a":"Slow and Steady","b":"Hare","c":"The people"},"answer":"b"},{"text":"The story means:","options":{"a":"run fast","b":"have a sleep","c":"never give up"},"answer":"c"}]},{"id":4,"title":"The King’s New Clothes","wordCount":300,"SD":[{"en":"A long time ago, there was a king who loved to have beautiful new clothes. Every day he wore different new clothes and he used all his money to buy new clothes.","ja":"昔，美しい新しい服を着るのが大好きな王様がいた。彼は毎日違う新しい服を着て，新しい服を買うために全財産を使っていた。"},{"en":"One day two bad men came to the town. They saw how much the king loved clothes and they thought they could get a lot of money. They told the king that they could make very beautiful clothes. Not only were the clothes beautiful, but they were magic too. The magic was this. Only good people could see the clothes. Bad people could not see them.","ja":"ある日，二人の悪い男が町にやってきた。彼らは王様がどれほど服を愛しているかを見て，大金が手に入ると思った。彼らは王に，自分たちがとても美しい服を作れると言った。その服は美しいだけでなく，魔法でもあった。その魔法とはこうだった。善人だけがその服を見ることができた。悪人には見えないのだ。"},{"en":"The bad men could not really make magic clothes and they didn’t make any clothes at all. But the king thought they were telling the truth. He was very happy. He thought to himself, “This is very good. Now I can find out which of my people are good and which of my people are bad”.","ja":"悪人たちは本当に魔法の服を作ることはできず，服はまったく作らなかった。しかし，王は彼らが本当のことを言っていると思った。王様はとても喜んだ。「これで我が民の誰が善人で，誰が悪人なのかがわかる」と思った。"},{"en":"The two bad men said they were working very hard day and night. They always needed more money to buy everything for the magic clothes.","ja":"二人の悪い男は，昼も夜も一生懸命働いていると言った。魔法の服を買うために，彼らはいつももっとお金が必要だった（と王様に言った）。"},{"en":"After many days of waiting, the clothes were done. But when the bad men showed the king","ja":"何日も待った後，服は出来上がった。しかし，悪い男たちが王様に新しい服を見せたとき，王様は何も見ることができなかった。"},{"en":"his new clothes, he couldn’t see anything.","ja":"「ああ，だめだ，これは！」彼は心の中で思った。「私は本当は悪人なのだ。」"},{"en":"“Oh, no, this is not good!” he thought to himself. “I really am a very bad person.”","ja":"しかし，彼は自分が悪人であることを誰にも知られたくなかったので，「ああ，私の新しい服はとても美しい！\"と言った。"},{"en":"But he didn’t want anyone to know he was a bad person so he said, “Oh, my new clothes are very beautiful!”","ja":"そして王様はその美しい新しい服を着て，すべての民と話をしなければならなかった。まず，人々は皆，その服がいかに美しいかを語った。すると，とても小さな女の子が言った。「王様は服を着ていないわ」。するとみんなが 「王様は服を着ていない」と言い始めた。"},{"en":"Then the king had to put on his beautiful new clothes and go and talk with all his people. First, all the people said how beautiful the clothes were. Then a very little girl called out. “The king isn’t wearing any clothes.” Then everyone started calling out, “The king hasn’t got any clothes on.”","ja":"そして彼らは正しかった。"},{"en":"And they were right.","ja":""}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5],[6],[7],[8],[9]],"questions":[{"text":"The king didn’t like:","options":{"a":"new clothes","b":"old clothes","c":"beautiful clothes"},"answer":"b"},{"text":"How many bad men came to town?","options":{"a":"One","b":"Two","c":"Three"},"answer":"b"},{"text":"They said, the clothes were:","options":{"a":"expensive","b":"new","c":"magic"},"answer":"c"},{"text":"If you could not see the clothes, you were:","options":{"a":"a good person","b":"a bad person","c":"a smart person"},"answer":"b"},{"text":"How long did it take to make the clothes?","options":{"a":"One day","b":"Two days","c":"Many days"},"answer":"c"},{"text":"What did the people say when they first saw his new clothes?","options":{"a":"They are beautiful.","b":"They are new.","c":"Nothing"},"answer":"a"},{"text":"What was the king wearing when he talked to his people?","options":{"a":"New clothes","b":"Magic clothes","c":"No clothes"},"answer":"c"},{"text":"Who called out first?","options":{"a":"A little girl","b":"The bad men","c":"All the people"},"answer":"a"}]},{"id":5,"title":"A man, his son and a donkey","wordCount":300,"SD":[{"en":"One day, a man and his son were taking their donkey to the town close to their house. They were going to sell the donkey in the town. As they were walking to the town, a person said to them, “Why don’t you ride on the donkey”. So the man put his boy onto the donkey and they started walking again.","ja":"ある日，男とその息子がロバを連れて家の近くの町まで行っていた。彼らはロバを町で売ろうとしていたのだ。彼らが町に向かっていると，ある人が彼らに声をかけてきた。「ロバに乗ったらどうですか」そこで男は自分の子供をロバに乗せ，彼らはまた歩き始めた。"},{"en":"Soon, they came to some more people and they said, “What a bad boy! He lets his father walk while he is riding the donkey.” So the man made the boy get down and he climbed onto the donkey’s back and they started walking again.","ja":"やがて，彼らが何人かの人のところに行きつくと，その人達は言った。「わるい男の子だ！自分がロバに乗っているのに，父親を歩かせるなんて。」そこで男は少年を降りさせ，ロバの背中によじ登ると，彼らはまた歩き始めた。"},{"en":"Soon they came to some more people who said, “Look at that bad man! He makes his son walk while he rides.” The man didn’t know what to do. After thinking for a long time, he said to the boy, “Get up on the donkey with me. We will both ride to town on the donkey.”","ja":"やがて彼らがまた何人かの人のところに行き着くと，「あのわるい男を見て！息子に歩かせながら自分はロバに乗っている。」男はどうしたらいいかわからなかった。長い間考えた後，彼は少年に言った。「私と一緒にロバに乗りなさい。二人でロバに乗って町まで行こう」"},{"en":"When they came to the town, a lot of people saw them and said, “Look at those big people riding on the back of the little donkey.” So the man and his son got off the donkey and sat down to think about what to do. At last they thought they would carry the donkey so they got some rope and put it around the donkey’s feet. The man and the boy started to carry the donkey. At the time they were walking by a river. The donkey was too much for them and it fell into the river and died. Both the man and the boy were very unhappy. They had to go home with no donkey and no money.","ja":"彼らが町に着くと，多くの人が二人を見て言った。「あの小さなロバの背中に乗っている大きな人たちを見てごらん」そこで男と息子はロバから降り，座ってどうするか考えた。ついに二人はロバを運ぼうと考え，ロープを手に入れ，ロバの足に巻いた。男と少年はロバを運び始めた。その時，二人は川のそばを歩いていた。ロバは二人には重すぎて，ロバは川に落ちて死んでしまった。彼らはロバもお金も持たずに家に帰らなければならなかった。"},{"en":"The meaning of the story: If you try to make everybody happy, you will make nobody happy.","ja":"この物語の意味： すべての人を幸せにしようとすると，誰も幸せにできなくなる。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4]],"questions":[{"text":"Where was their house?","options":{"a":"Close to the town","b":"Far away from the town","c":"Close to the river"},"answer":"a"},{"text":"Where were they taking the donkey?","options":{"a":"To the river","b":"To the town","c":"Home"},"answer":"b"},{"text":"Why were they taking it?","options":{"a":"To sell","b":"To ride","c":"To carry"},"answer":"a"},{"text":"Who rode the donkey first?","options":{"a":"The man and the boy","b":"The man","c":"The boy"},"answer":"c"},{"text":"Who rode on the donkey next?","options":{"a":"The man and the boy","b":"The man","c":"The boy"},"answer":"b"},{"text":"Then who rode on the donkey?","options":{"a":"The man and the boy","b":"The man","c":"The boy"},"answer":"a"},{"text":"At last, the donkey:","options":{"a":"swam in the river","b":"died","c":"was sold"},"answer":"b"},{"text":"What is the meaning of the story?","options":{"a":"Don’t ride donkeys.","b":"Don’t carry donkeys.","c":"Don’t try to make everyone happy."},"answer":"c"}]},{"id":6,"title":"The Christmas presents","wordCount":300,"SD":[{"en":"A young man and a young woman lived in New York. They were in love and they got married. The young woman had beautiful long hair. The young man loved her beautiful long hair and every day he looked at it and thought how beautiful she was.","ja":"若い男と若い女がニューヨークに住んでいた。二人は愛し合っており，結婚した。若い女性は美しい長い髪をしていた。若い男は彼女の美しい長い髪が大好きで，毎日それを眺めては，彼女の美しさを思っていた。"},{"en":"The young man owned an old watch which his father had given him many years ago.","ja":"若い男は父親から何年も前にもらった古い時計を持っていた。青年は父親の時計が大好きだった。それは彼のお気に入りだった。"},{"en":"The young man loved his father’s watch. It was his favorite thing.","ja":"若者たちはとても幸せだったが，あまりお金を持っていなかった。"},{"en":"The young people were very happy but they didn’t have very much money.","ja":"その日はクリスマスの前日で，若い女性は男性にクリスマスプレゼントを買うお金がなく，不機嫌だった。彼女は，彼が腕時計をとても気に入っているけれど，ストラップが壊れていたため，身につけることができないことを知っていた。"},{"en":"It was the day before Christmas and the young woman was unhappy because she had no money to buy her man a Christmas present. She knew he loved his watch but he couldn’t wear it because the strap was broken.","ja":"「どうしたらいいのだろう？長い間考えた後，彼女はこう言った。「そうだ。髪を切って売ろう。髪を切れば大金が手に入る。」そうしたら，彼の腕時計の新しいストラップが買えるわ」。"},{"en":"“What can I do?” she thought. After thinking for a long time, she said to herself,","ja":"彼女は髪を切り落とし，それを買ってくれる女性のところに持っていった。そして彼のために腕時計のストラップを買った。彼女は家に帰り，彼が仕事から帰ってくるのを待った。彼に会うときに，彼に不愉快な思いをさせたくなかったのだ。"},{"en":"“I know. I will cut off my hair and sell it. I can get a lot of money for my hair.","ja":"ドアが開く音がして，彼が 「ハッピー・クリスマス 」と言った。彼は彼女の短い髪を見てとても驚いた。"},{"en":"Then I can buy a new strap for his watch.”","ja":"二人はクリスマスプレゼントを贈り合った。プレゼントを見た二人は顔を見合わせた。彼は腕時計を売って，彼女の髪のための美しい櫛を買った。彼女は自分の髪を切り落とし，それを売って彼の腕時計のストラップを買った。"},{"en":"She cut off her hair and took it to a woman who bought it. Then she bought the watch strap for her man. She went home and waited for him to come home from work. She didn’t want him to be unhappy when he saw her.","ja":"二人はとても幸せだった。なぜなら彼らは互いがどれだけ互いのことを愛しているのか分かったからだ。"},{"en":"She heard the door open and he said “Happy Christmas.” He was very surprised to see her","ja":""},{"en":"short hair.","ja":""},{"en":"They gave each other their Christmas presents. When they saw the presents, they looked at each other. He had sold his watch to buy a beautiful comb for her hair. She had cut off her hair and sold it to buy a strap for his watch.","ja":""},{"en":"They were both so happy because they knew how much they loved each other.","ja":""}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12]],"questions":[{"text":"They lived in:","options":{"a":"New York","b":"London","c":"Tokyo"},"answer":"a"},{"text":"The woman’s hair was:","options":{"a":"short","b":"very short","c":"long"},"answer":"c"},{"text":"The young man owned:","options":{"a":"a dog","b":"a lot of money","c":"a watch"},"answer":"c"},{"text":"Who gave him the watch?","options":{"a":"His mother","b":"His father","c":"His brother"},"answer":"b"},{"text":"The two young people:","options":{"a":"were unhappy","b":"were in love","c":"had a lot of money"},"answer":"b"},{"text":"They had:","options":{"a":"a lot of money","b":"not much money","c":"not much food"},"answer":"b"},{"text":"When he saw her short hair, he was:","options":{"a":"happy","b":"unhappy","c":"surprised"},"answer":"c"},{"text":"In the end, they were both:","options":{"a":"very happy","b":"very unhappy","c":"very hungry"},"answer":"a"}]},{"id":7,"title":"Stone Soup","wordCount":300,"SD":[{"en":"A long time ago, two friends were walking to the next little town. They had been walking and looking for work for a long time. It was hard to find work in those times. They were hungry and they didn’t have any money or any food. They were tired and they didn’t have a place to sleep.","ja":"昔，二人の友人が隣の小さな町まで歩いていた。彼らは長い間，仕事を探しながら歩いていた。当時は仕事を見つけるのが大変だった。彼らは空腹で，お金も食べ物も持っていなかった。疲れていたし，寝る場所もなかった。"},{"en":"At night, they came to the little town but they couldn’t see any people. All the people of the town were sleeping in their beds. The two friends found a place in the middle of the town and lay down and went to sleep. In the morning they were very hungry so they took out their cooking pot, and put water into it and put it on the fire. They put some stones in the cooking pot and they waited. Soon the people of the town got out of their beds and came outside.","ja":"夜になって，二人は小さな町にやってきたが，誰にも会うことができなかった。町の人たちはみんなベッドで寝ていた。二人は町の真ん中に場所を見つけて横になり，眠りについた。朝になると，二人はとてもお腹が空いていたので，調理鍋を取り出し，水を入れて火にかけた。彼らは鍋の中に石をいくつか入れて待った。やがて町の人たちが寝床から出て外に出てきた。"},{"en":"They looked at the two people and their fire.","ja":"彼らは二人とその火を見た。"},{"en":"“What are you cooking?” someone asked.","ja":"「何を作っているんだい？」"},{"en":"“Stone soup” they said. “It will be very good, but . . . it would be better if it had some chicken.”","ja":"「石のスープだよ。」と彼らは答えた。「おいしいとおもいます。でも，もし鶏肉があればもっとおいしいのですが…」と言った。"},{"en":"One of the women said, “I’ve got some chicken.” And she ran to her house to get it. The two friends put the chicken into the soup and then they tried a little of the soup.","ja":"女性の一人が言った。「鶏肉，あるわよ。」そして彼女はそれを取りに家に走った。二人の友人は鶏肉をスープに入れ，スープを少し飲んでみた。"},{"en":"“Much better.” They said.  “But . . . it would be better if it had some potatoes.” Someone said, “I’ve got three potatoes”, and ran off to get the potatoes.","ja":"「（石だけよりも）ずっとおいしい。」と二人は言った。「でも......ジャガイモがあればもっといいのに」。誰かが「ジャガイモが3つある」と言って，ジャガイモを取りに走り去った。"},{"en":"Slowly all the people thought of something they could put into the soup and they all ran back to their houses to get more food.","ja":"ゆっくりと，すべての人がスープに何か入れられるものを考え，もっと多くの食べ物を取るためにみんな自分の家に走って戻った。"},{"en":"In the end, there was soup for all the people of the town as well as the two hungry happy friends.","ja":"結局，お腹を空かせた二人の友だちだけでなく，町の人たち全員分のスープができた。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5],[6],[7],[8]],"questions":[{"text":"How many friends were walking?","options":{"a":"1","b":"2","c":"3"},"answer":"b"},{"text":"What were they looking for?","options":{"a":"Work","b":"A town","c":"Soup"},"answer":"a"},{"text":"How many people did they see in the town that night?","options":{"a":"A lot","b":"Not many","c":"None"},"answer":"c"},{"text":"They slept:","options":{"a":"in the middle of the town","b":"outside the town","c":"by a river"},"answer":"a"},{"text":"In the morning, they were:","options":{"a":"tired","b":"hungry","c":"happy"},"answer":"b"},{"text":"What did they put in their cooking pot first?","options":{"a":"Chicken","b":"Water","c":"Potatoes"},"answer":"b"},{"text":"They were making:","options":{"a":"potato soup","b":"chicken soup","c":"stone soup"},"answer":"c"},{"text":"Who ate the soup?","options":{"a":"The two friends","b":"The people of the town","c":"The two friends and the people of the town"},"answer":"c"}]},{"id":8,"title":"The boy who cried wolf","wordCount":300,"SD":[{"en":"A long time ago, there was a boy. His work was to look after the sheep every day. All the children had to look after the sheep every day. This boy really didn’t like his work because all day long, he had to sit and watch the sheep. If he didn’t watch them, they ran away and got lost. Day after day he sat and watched the sheep. He thought, “I want something interesting to happen to me. I’m tired of doing the same thing every day.”","ja":"昔，一人の少年がいた。彼の仕事は毎日羊の世話をすることだった。子供たちは皆，毎日羊の世話をしなければならなかった。少年はこの仕事が大嫌いだった。なぜなら一日中座って羊の見ていなければならなかったからだ。彼が羊を見ていなければ，羊たちは逃げていなくなってしまうのだ。来る日も来る日も，彼は座って羊を見ていた。彼は「何か面白いことが起きないかな。毎日同じことの繰り返しで飽き飽きするよ」と言った。"},{"en":"One day he thought to himself, “I know what I’ll do. I’ll tell all the other children that I can see a very big wolf, and I’ll say that the wolf is going to eat my sheep.”","ja":"ある日，彼は考えた。「そうだ，こうしよう。他の子どもたちに，とても大きなオオカミが見えると言って，オオカミが僕の羊を食べようとしていると言おう」"},{"en":"He stood up and cried out, “Help! Help! There is a big wolf and it’s going to eat all my sheep”. All the other children left their sheep and ran over to help the boy. But there was no wolf. The other children were very angry with him. They said, “Don’t tell lies.” They went back to look after their sheep.","ja":"彼は立ち上がり，叫んだ。「助けて！助けて！大きなオオカミがいて，僕の羊を全部食べようとしているんだ」他の子どもたちは皆，羊を置いて少年を助けに駆け寄った。しかしオオカミはいなかった。他の子どもたちは少年にとても怒った。彼らは「嘘をつくなよ」と言って，そして羊の世話に戻った。"},{"en":"The next day, the same thing happened. “Help! Help!” cried the boy. All the other children ran to him as fast as they could. Again they saw that the boy had told them a lie. There was no wolf.","ja":"次の日も同じことが起こった。「助けて！助けて！」男の子は叫んだ。他の子どもたちもみんな，できるかぎり急いで少年のところへ走った。またしても，少年は嘘をついたのだとわかった。オオカミはいなかったのだ。"},{"en":"The next day, the boy was sitting looking at his sheep. He looked up and saw a big hungry wolf running at him.","ja":"次の日，少年は座って羊を見ていた。見上げると，お腹を空かせた大きなオオカミが自分に向かって走ってくるのが見えた。"},{"en":"“Help! Help!” he cried out. “There is a wolf and it is going to eat me!”","ja":"「助けて！助けて！」少年は叫んだ。「オオカミが僕を食べようとしている！」。"},{"en":"He called and called but nobody came. They all thought he was telling lies again. The wolf ate the boy and that is the end of the story. The meaning of the story is: Don’t tell lies!","ja":"彼が助けを呼んでも呼んでも，誰も来なかった。彼らはまた少年が嘘をついていると思ったのだ。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5],[6]],"questions":[{"text":"Who had to look after the sheep?","options":{"a":"Boys","b":"Girls","c":"Boys and girls"},"answer":"c"},{"text":"The boy:","options":{"a":"liked his work a lot","b":"liked his work a little","c":"didn’t like his work"},"answer":"c"},{"text":"Every day he did:","options":{"a":"different things","b":"the same things","c":"new things"},"answer":"b"},{"text":"The first time, the children:","options":{"a":"helped him","b":"didn’t help him","c":"didn’t hear him"},"answer":"a"},{"text":"They were:","options":{"a":"unhappy","b":"angry","c":"hungry"},"answer":"b"},{"text":"On the third day, the boy saw:","options":{"a":"a wolf","b":"a lot of angry children","c":"a lot of hungry sheep"},"answer":"a"},{"text":"Which is right?","options":{"a":"The wolf ate the children.","b":"The wolf ate the sheep.","c":"The wolf ate the boy."},"answer":"c"},{"text":"What is the meaning of the story?","options":{"a":"Don’t help people.","b":"Don’t eat sheep.","c":"Don’t tell lies."},"answer":"c"}]},{"id":9,"title":"The 1001 nights （千一夜物語）","wordCount":300,"SD":[{"en":"A long time ago there was a king and queen in Arabia. For some time, they were happy but one day the queen ran away with another man. The king was very angry. He caught the queen and the man and killed them both. After that, he married a different woman every day. The next day she was killed, and he married another woman.","ja":"昔，アラビアに王と王妃がいた。しばらくの間，二人は幸せだったが，ある日，王妃が他の男と駆け落ちした。王はとても怒った。王妃とその男を捕まえて二人とも殺した。その後，王は毎日違う女性と結婚するようになった。（結婚した日の）翌日，王妃は殺され，王はまた別の女性と結婚するのだった。"},{"en":"He had killed 1000 woman before he found Scheherazade. At first, her father said, “No. You will not marry the king because the next day you will die and I will never see you again.” But Scheherazade was a very smart woman. She said she would stay with the king for one night.","ja":"シェヘラザードという女性を見つけるまでに，王は1000人もの女性を殺した。彼女の父親は最初，「王と結婚してはいけない。次の日には死んでしまって，私は二度とお前に会えなくなるだろう」しかし，シェヘラザードはとても賢い女性だった。彼女は王と一晩をともにするつもりだと言った。"},{"en":"When that night came, she asked the king if her sister could stay with them because she wanted to say her last goodbye to her and to tell her a story. The king said yes.","ja":"その夜が来て，シェヘラザードは王様に，妹に最後のお別れをして，物語を聞かせてあげたいので，妹と一緒に泊まってもいいかどうかを尋ねた。王は了承した。"},{"en":"That night, Scheherazade, started to tell her story. It was a very interesting story and a very long story. The king and her sister listened all night, but then they saw it was morning. Scheherazade stopped before she got to the end of the story. The king said, “Please don’t stop your story”, but she said there was no time because the king had to kill her.","ja":"その夜，シェヘラザードは自分の物語を語り始めた。それはとても興味深い話で，とても長い話だった。王とその妹は一晩中話を聞いていたが，気がつくと朝になっていた。シェヘラザードは話が終わる前にやめてしまった。王様は「お願いだから話を止めないで」と言ったが，シェヘラザードは「王様が彼女を殺さなければならないので，時間がない」と言った。"},{"en":"The king really wanted to hear what happened at the end of the story so he said he wouldn’t kill her until the next day. That night Scheherazade told the end of the first story, and started the second story. By morning, she had only told half the story so the king had to let her live for another day.","ja":"王はどうしても物語の最後に何が起こったのかが聞きたかったので，次の日まで彼女を殺さないと言った。その夜，シェヘラザードは最初の物語の終わりを話し，二番目の物語を始めた。朝になってもシェヘラザードは話の半分しか話さなかったので，王は彼女をもう一日生かしておかなければならなかった。"},{"en":"After 1001 stories and 1001 nights, the king fell in love with Scheherazade and they lived happily together for many years.","ja":"1001の物語と1001の夜の後，王はシェヘラザードと恋に落ち，二人は何年も幸せに暮らした。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5]],"questions":[{"text":"The king and queen were in:","options":{"a":"Arabia","b":"France","c":"Japan"},"answer":"a"},{"text":"At first, they were:","options":{"a":"unhappy","b":"happy","c":"angry"},"answer":"b"},{"text":"The king killed:","options":{"a":"the queen","b":"the man","c":"the queen and the man"},"answer":"c"},{"text":"How many woman did he kill before he knew Scheherazade?","options":{"a":"100","b":"1,000","c":"10,000"},"answer":"b"},{"text":"Why did Scheherazade really want her sister to stay with them?","options":{"a":"To say good bye","b":"To help her start her stories","c":"Because she was scared"},"answer":"b"},{"text":"The first night, she told:","options":{"a":"half a story","b":"one and a half stories","c":"two and a half stories"},"answer":"a"},{"text":"Why did she stop telling the story?","options":{"a":"It was morning","b":"They were sleeping","c":"The king killed her"},"answer":"a"},{"text":"In the end, the king:","options":{"a":"fell in love with Scheherazade","b":"fell in love with her sister","c":"fell asleep"},"answer":"a"}]},{"id":10,"title":"The fox and the crow","wordCount":300,"SD":[{"en":"One morning, a fox was walking through the trees looking for something to eat for her breakfast. She was very hungry but she couldn’t find any food. As she was walking, she looked up and saw a crow sitting in a tree. The crow had a piece of cheese in his mouth.","ja":"ある朝，一匹のキツネが朝食に食べるものを探して木々の間を歩いていた。彼女はとてもお腹が空いていたのだが，食べ物を見つけられなかった。キツネが歩いていたところ，ふと見上げるとカラスが木の上に座っていた。カラスはチーズをくわえていた。"},{"en":"“Yes!” said the fox. “Here is my breakfast.”","ja":"「よし！」キツネは言った。「私の朝ごはんがあるな」"},{"en":"“Good morning, beautiful crow”, she said. The crow looked at the fox but he did not open his mouth. He did not let go of the little bit of cheese.","ja":"「おはよう，きれいなカラスさん」とキツネは言った。カラスはキツネを見たが，口を開かなかった。カラスは小さなチーズを離さなかった。"},{"en":"“What a beautiful black color you are”, she said. “What beautiful black eyes you have.” The crow did not open his mouth because he did not want to lose his breakfast.","ja":"「あなたはなんて美しい黒色をしているんだろう」キツネは言った。「なんてきれいな黒い目をしているんだろう」 カラスは自分の朝食を失いたくなかったので，口を開かなかった。"},{"en":"“You are the most beautiful bird in the land”, said the fox. “You are the king of the land.” The crow really wanted to be the king of the land, but he really wanted to eat his piece of cheese, so he didn’t open his mouth.","ja":"「あなたはこの国で一番美しい鳥です」とキツネは言った。「君はこの国の王様だ」。カラスは王様になりたいと思ったが，本当にチーズを食べたかったので口を開かなかった。"},{"en":"The fox sat down and thought. Then she said. “I know you are beautiful, but I don’t know if you have a beautiful song.” When the fox said this, the crow opened his mouth to sing. He wanted to show the fox that he could sing a beautiful song. The piece of cheese fell out of his mouth and into the open mouth of the fox waiting under the tree.","ja":"キツネは座って考えた。そして言った。「あなたが美しいのはわかるけど，美しい歌を持っているかどうかはわからないわ」 キツネがそう言うと，カラスは口を開けて歌った。カラスは自分が美しい歌を歌えることをキツネに見せたかったのだ。カラスの口からチーズのかけらが落ちて，木の下で待っていたキツネの開いた口に入った。"},{"en":"The fox ate the cheese and said “Thank you very much, Crow. You are not really beautiful and you are not very smart”. The crow was very unhappy and hungry because he had lost his breakfast.","ja":"キツネはチーズを食べ，「ありがとう，カラス。あなたは美しくないし，賢くもないわ」と言った。カラスは朝食を失ったので，とても不機嫌で腹を空かせていた。"},{"en":"The meaning of the story is: Don’t listen to people who say nice things about","ja":"この物語の意味はこうだ： あなたについてお世辞を言う人の言うことを聞いてはいけない。"},{"en":"you, when they really only want to take something away from you.","ja":"本当はあなたから何かを奪いたいだけなのだ。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5],[6],[7],[8]],"questions":[{"text":"The fox was walking through the trees:","options":{"a":"in the morning","b":"last week","c":"at night"},"answer":"a"},{"text":"She was looking for:","options":{"a":"cheese","b":"food","c":"a crow"},"answer":"b"},{"text":"The fox said the crow had:","options":{"a":"beautiful black hair","b":"a beautiful black head","c":"beautiful black eyes"},"answer":"c"},{"text":"Why didn’t the crow open his mouth?","options":{"a":"He didn’t want to lose his breakfast.","b":"He didn’t want to talk to the fox.","c":"He didn’t hear the fox."},"answer":"a"},{"text":"The crow did not want:","options":{"a":"to be king of the land","b":"to be hungry","c":"to look beautiful"},"answer":"b"},{"text":"The crow lost the cheese when he:","options":{"a":"talked","b":"sang","c":"fell from the tree"},"answer":"b"},{"text":"Who was hungry at the end?","options":{"a":"The fox","b":"The crow","c":"The king"},"answer":"b"},{"text":"What is the meaning of the story?","options":{"a":"Everything you hear isn’t always true.","b":"Don’t eat cheese for breakfast.","c":"Don’t try to sing beautiful songs."},"answer":"a"}]},{"id":11,"title":"Tom and the fence","wordCount":300,"SD":[{"en":"A long time ago in America, there was a boy called Tom. He lived with his aunt in a very little town by a very big river. One day, his aunt said, “Tom, please go and do your work. Tom said, “I don’t want to do my work. I want to go to the river with my friends”. His aunt said, “Please do your work now!” She was starting to get angry.","ja":"昔，アメリカにトムという少年がいた。彼はとても大きな川のほとりのとても小さな町で叔母と暮らしていた。ある日，叔母さんが言った。「トムや，お手伝いをしてくれるかい」トムは言った。「お手伝いなんてやりたくないよ。僕は友達と川に行きたいんだ」　おばさんは「今すぐやりなさい！」と言った。おばさんは怒りだしていた。"},{"en":"Tom’s work was to paint the fence. He really didn’t want to do it, but he really didn’t want to make his aunt angry. Tom went outside and sat down next to the fence. After a while he got up and started painting the fence. He worked as hard as he could. He tried to look happy and he sang a happy song.","ja":"トムのお手伝いは柵のペンキ塗りだった。彼は本当にやりたくなかったが，おばさんを怒らせたくなかった。トムは外に出て，柵の横に座った。しばらくすると立ち上がり，柵を塗り始めた。彼は一生懸命に働いた。トムは嬉しそうな顔に見えるようにして，楽しい歌を歌った。"},{"en":"Soon one of his friends came by. He said, “Ha ha! Tom has to paint the fence!” Tom said, “HAVE to paint the fence? No! I LOVE painting the fence. It is my favorite thing. Only really smart people can paint a fence”. He went on painting the fence singing happily to himself.","ja":"やがて友人の一人が通りかかった。彼は言った。「ハハハ！トムが柵を塗らされている！」。トムは言った。「柵を塗らされているだって？いいや！僕は柵を塗るのが大好きなんだ。お気に入りの仕事さ。本当に賢い人だけが柵を塗れるんだ」彼は楽しそうに歌いながら柵を塗り続けた。"},{"en":"“Can I try?” said his friend. “Oh no” said Tom. “You are not smart. You couldn’t do it”","ja":"「やってみてもいいかい？」と友達が言った。「君は賢くない。君には無理だ」とトムは言った。"},{"en":"“Please let me try. Please. Please. Please! I’ll give you my apple.”","ja":"「やらせてよ。お願い。お願いだ。お願い！僕のリンゴをあげるよ」"},{"en":"Tom took the apple and sat down while his friend worked as hard as he could. Soon their other friends came by, and they all wanted to paint the fence.","ja":"トムはリンゴを受け取ると，友達が一生懸命働いている間，座っていた。やがて他の友達もやってきて，みんな柵を塗りたがった。"},{"en":"When Tom’s aunt came outside, she saw that the fence had been painted three times. She was surprised, but she said, “You are a good boy, Tom. I will make your favorite - apple pie - for dinner.”","ja":"トムのおばさんが外に出てくると，柵が3回も塗られているのを見た。おばさんは驚いたが，「あなたはいい子ね，トム。夕食にあなたの好きなアップルパイを作りましょう」と言った。"},{"en":"Tom thought about the five apples he had eaten that day. He wasn’t hungry.","ja":"トムはその日食べた5個のリンゴのことを考えた。お腹は空いていなかった。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5],[6],[7]],"questions":[{"text":"Tom and his aunt lived in:","options":{"a":"New Zealand","b":"Australia","c":"America"},"answer":"c"},{"text":"They lived in:","options":{"a":"a little town by a big river","b":"a big town by a big river","c":"a big town by a little river"},"answer":"a"},{"text":"Tom wanted to:","options":{"a":"go to the river","b":"eat apples","c":"play computer games"},"answer":"a"},{"text":"Tom was:","options":{"a":"an angry boy","b":"a smart boy","c":"a hungry boy"},"answer":"b"},{"text":"Tom said his favorite thing was:","options":{"a":"singing songs","b":"eating apples","c":"painting fences"},"answer":"c"},{"text":"Where did Tom sit down?","options":{"a":"Next to the fence","b":"By the river","c":"In the house"},"answer":"a"},{"text":"How many times did they paint the fence?","options":{"a":"One","b":"Two","c":"Three"},"answer":"c"},{"text":"How many apples had Tom eaten that day?","options":{"a":"Three","b":"Five","c":"Seven"},"answer":"b"}]},{"id":12,"title":"The rat catcher","wordCount":300,"SD":[{"en":"It was 1842 in a little town by a river in Germany. There were many rats in the town and people were getting sick and dying because of the rats. The people of the town didn’t know what to do. One day, a man came to the town. He said he could make all the rats run after him by playing music. The people of the town were happy and they said they would give him a lot of money.","ja":"1842年，ドイツの川沿いの小さな町でのことである。町にはたくさんのネズミがいて，人々はネズミのせいで病気になったり死んだりしていた。町の人々はどうしていいかわからなかった。ある日，一人の男が町にやってきた。彼は音楽を演奏することで，すべてのネズミに自分の後を追わせることができると言った。町の人々は喜び，彼に大金を渡すと言った。"},{"en":"He started playing music and all the rats came out of the houses and ran after him to the river. When they came to the river, all the rats jumped into the water and died.","ja":"彼が音楽を奏で始めると，ネズミたちは家々から出てきて，彼の後を追って川まで走っていった。川まで来ると，ネズミはみんな水に飛び込んで死んでしまった。"},{"en":"At first, the people of the town were very happy, but when the rat catcher asked them for the money, they were not so happy. They talked about what to do for a long time and in the end they said they would only give the rat catcher half of his money. The rat catcher was very angry and said, “You will all be very unhappy!”","ja":"最初は町の人たちはとても喜んだが，ネズミ捕りがお金を要求すると，町の人たちはあまりいい顔をしなかった。彼らは長い間どうするか話し合ったが，結局ネズミ捕りには（当初の約束の）半分しか渡さないと言った。ネズミ捕りはとても怒り，こう言った。「あなたたちはとても不幸な目にあいますからね！」"},{"en":"The rat catcher left the town, but the next day he came back. There were no people in the streets. All the mothers and fathers were in church. He started playing his music again, but this time all the children ran after him to the river. Only three children didn’t go with him. One child had a bad foot and couldn’t walk, one could not hear the music. The other couldn’t see so she couldn’t go with them. When the people came out of the church, the three children told them the story. All the people cried out and started looking everywhere for their children. They couldn’t find them. The children and the rat catcher were never seen again.","ja":"ネズミ捕りは町を出たが，翌日また戻ってきた。通りに人はいなかった。父親たち，母親たちはみんな教会にいた。ネズミ捕りはまた音楽を奏で始めたが，今度は子どもたちがみんな，ネズミ捕りのあとを追って川まで走っていった。一緒に行かなかったのは3人だけだった。一人は足が悪くて歩けず，一人は音楽が聞こえなかった。もう一人は目が見えなかったので，一緒に行くことができなかった。人々が教会から出てきたとき，3人の子供たちはその話をした。人々は皆泣き叫び，そこかしこで子供たちを探し回った。子供たちは見つからなかった。子供たちとネズミ捕りは二度と姿を見せなかった。"}],"PARA_GROUPS":[[0],[1],[2],[3]],"questions":[{"text":"The little town was in:","options":{"a":"England","b":"France","c":"Germany"},"answer":"c"},{"text":"People were dying because:","options":{"a":"of the cold","b":"of the rats","c":"they had no food"},"answer":"b"},{"text":"The people of the town said they would give the rat catcher:","options":{"a":"a lot of money","b":"a good dinner","c":"three children"},"answer":"a"},{"text":"All the rats:","options":{"a":"jumped into the river","b":"stayed in the town","c":"ran to the church"},"answer":"a"},{"text":"The angry rat catcher said, “You will be very:","options":{"a":"happy.”","b":"unhappy.”","c":"angry.”"},"answer":"b"},{"text":"Who went to church the next day?","options":{"a":"The children","b":"The mothers and fathers","c":"The rat catcher"},"answer":"b"},{"text":"How many children didn’t go with the rat catcher?","options":{"a":"3","b":"2","c":"1"},"answer":"a"},{"text":"In the end:","options":{"a":"the people found the children","b":"the people found the rat catcher","c":"no one found anyone"},"answer":"c"}]},{"id":13,"title":"The man who worried too much","wordCount":300,"SD":[{"en":"A long time ago in China, there was a man called Yoyo who worried about everything. He worried that he didn’t have a lot of money. He worried that his children wouldn’t study hard. He worried that his family would not have any food and that they would get sick. He worried there would not be any water and everything would die. He worried about his animals and about his work. He worried that his house would catch fire. Yoyo worried about everything and he couldn’t stop worrying.","ja":"昔，中国にヨーヨーという，何についても心配する男がいた。彼はお金がたくさんないことを心配した。子供たちが一生懸命勉強しないことを心配した。家族に食べ物がなくなって，病気になることを心配した。水がなくなって，すべて（の生き物）が死んでしまうのではないかと心配した。家畜のことや仕事のことを心配した。家が火事になることも心配した。ヨーヨーはあらゆることを心配し，心配が止まらなかった。"},{"en":"One day, after he had eaten a good dinner with his family, he was sitting outside his house. He looked up into the sky and saw the stars. He started to get worried that the stars would fall down on his head. The stars were so big! How could they stay up in the sky? Why didn’t they fall down onto his head? The man sat and looked at the night sky and he got more and more worried. He called out to his friends and family.","ja":"ある日，家族とおいしい夕食を食べた後，彼は家の外に座っていた。空を見上げると星が見えた。彼は星が自分の頭の上に落ちてくるのではないかと心配になった。星はとても大きかった！星はあんなに大きいのに，どうやって空にとどまっていられるのだろう？どうして頭の上に落ちてこないのだろう？男は座って夜空を眺め，ますます心配になった。彼は友人や家族に向かって叫んだ。"},{"en":"“Come here! Come here!” he said, “The stars are going to fall down on my head! Please, help me. What can we do?”","ja":"「こっちへ来い！こっちへ来い！」彼は言った。「星が頭の上に落ちてくる！頼む，助けてくれ。どうしたらいいんだ？」"},{"en":"All his friends and family came to him. They all tried to talk to him and tell him that there was nothing to worry about. The stars had been in the sky for many years. They were not going to fall from the sky.","ja":"友人も家族もみんな彼のところに来た。彼らは皆，彼に話しかけ，心配することは何もないと伝えようとした。星は長い年月の間空にありつづけたのだ。星が空から降ってくることはないのだ。"},{"en":"The man could not stop himself worrying. He worried and worried. There was nothing his friends could do to help him. In the end, he got very sick from all his worrying and died.","ja":"男は心配が止まらなかった。心配で心配でたまらなかった。友人たちが彼のためにできることはなかった。結局，彼は心配しすぎて病気になり，死んでしまった。"},{"en":"The meaning of the story is: Don’t worry too much. Life isn’t all about bad things. Don’t worry about things that will never happen.","ja":"この物語の意味はこうだ： 心配しすぎるな。人生は悪いことばかりじゃない。決して起こらないことを心配するな。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5]],"questions":[{"text":"This story happened in:","options":{"a":"Japan","b":"China","c":"Korea"},"answer":"b"},{"text":"Yoyo worried about:","options":{"a":"everything","b":"nothing","c":"most things"},"answer":"a"},{"text":"He worried that his children wouldn’t:","options":{"a":"study hard","b":"eat their dinner","c":"look after the animals"},"answer":"a"},{"text":"He worried that his house:","options":{"a":"would fall down","b":"would catch fire","c":"was too little"},"answer":"b"},{"text":"Yoyo sat outside:","options":{"a":"before dinner","b":"in the morning","c":"after dinner"},"answer":"c"},{"text":"He looked:","options":{"a":"at the trees","b":"at the house","c":"at the sky"},"answer":"c"},{"text":"Who came to talk to him?","options":{"a":"His friends","b":"His family","c":"His friends and family"},"answer":"c"},{"text":"What is the meaning of the story?","options":{"a":"Life isn’t all bad.","b":"Life is always good.","c":"Don’t look up at the sky."},"answer":"a"}]},{"id":14,"title":"Going home","wordCount":300,"SD":[{"en":"In 1961, Sheila Burnford wrote a book about three animals that walked almost 500 kilometers to get back to their old home. In 1963, it was made into a movie.","ja":"1961年，シーラ・バーンフォードは，自分の家に戻るために500キロ近くを歩いた3匹の動物についての本を書いた。その話は1963年に映画化もされた。"},{"en":"The story happened in Canada. Two dogs and a cat lived happily with their family for many years. One day the family had to go away for three months. While they were away, the animals stayed with a good friend of the family, John, who lived in a little town about 500 kilometers away.","ja":"この物語はカナダで起こった。2匹の犬と1匹の猫が，長年家族と幸せに暮らしていた。ある日，一家は3ヶ月間留守にしなければならなくなった。留守の間，動物たちは500キロほど離れた小さな町に住む親友のジョンの家に預けられた。"},{"en":"The three animals liked living with John, but one day he had to go away so he asked his friends to look after them. Soon after John went away in his car, the animals started their long walk home.","ja":"3匹の動物たちはジョンとの生活が気に入っていたが，ある日，ジョンが留守にしなければならなくなったので，ジョンが友人たちに世話を頼んだ。ジョンが車で出かけてから間もなく，動物たちは家までの長い道のりを歩き始めた。"},{"en":"Many bad things happened to them on their way home. A fast car almost ran them over. The old dog got tired and slowed down, so they always had to stop to sleep. The young dog took some food from some people who got very angry and chased them. After that, they only walked at night and slept in the day so no one would see them. Then they came to a river. The two dogs swam across but the cat fell into the river. The dogs thought the cat had died but a week later they found her next to the river. She was very cold and sick. After she got better, they started walking again.","ja":"家までの帰り道で，動物たちには悪いことがたくさん起こった。速い車が動物たちを轢きそうになった。動物たちのうち，老いた犬は疲れてスピードが落ちたので，いつも眠るために止まらなければならなかった。若い犬は，ある人たちから食べ物を盗んでしまったため，怒った人々に追いかけられた。それ以来，ふたりは夜だけ歩き，昼間は誰にも見られないように眠った。そして彼らは川に差し掛かった。二匹の犬は泳いで渡ったのだが，猫は川に落ちてしまった。犬たちは猫が死んだと思ったが，一週間後，川のそばで猫を見つけた。猫は凍えていて，具合が悪かった。猫の調子がよくなると，2匹はまた歩き始めた。"},{"en":"When the family came home three months later, they were very unhappy. But a week later, they heard something outside. They went outside and saw their three lovely animal friends.","ja":"3ヵ月後，一家が家に戻ったとき，彼らはとてもつらい気持ちだった。しかし一週間後，外で何か物音がした。外に出てみると，3匹のかわいい動物たちがいた。"},{"en":"This is not a true story, but if you look on the internet you can see many true stories about animals that have walked a long way to get home.","ja":"これは実話ではないが，インターネットを見れば，長い道のりを歩いて家に帰った動物たちの実話をたくさん見ることができる。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5]],"questions":[{"text":"When was the book written?","options":{"a":"1921","b":"1961","c":"2001"},"answer":"b"},{"text":"How many kilometers did the three friends walk?","options":{"a":"5","b":"50","c":"500"},"answer":"c"},{"text":"The story happened in:","options":{"a":"Canada","b":"Cuba","c":"Cambodia"},"answer":"a"},{"text":"The friend of the family was called:","options":{"a":"Peter","b":"John","c":"Susan"},"answer":"b"},{"text":"Who got angry?","options":{"a":"The cat","b":"The old dog","c":"Some people"},"answer":"c"},{"text":"The three friends:","options":{"a":"walked at night and slept in the day","b":"slept at night and walked in the day","c":"walked in the day and slept at night"},"answer":"a"},{"text":"Who fell into the river?","options":{"a":"The old dog","b":"The young dog","c":"The cat"},"answer":"c"},{"text":"This story:","options":{"a":"is true","b":"could not be true","c":"is not true"},"answer":"c"}]},{"id":15,"title":"Ondal and the King’s daughter","wordCount":300,"SD":[{"en":"A long time ago in Korea, there was a man called Ondal. He lived with his mother. Everyone thought he was not very smart. Children called him bad names. No one wanted to marry him. But he was a good kind man and he was big and strong.","ja":"昔，韓国にオンダルという名前の男がいた。彼は母親と一緒に暮らしていた。みんな，彼はあまり賢くないと思っていた。子供たちは彼を悪い名前（あだ名）で呼んだ。誰も彼と結婚したがらなかった。しかし，彼は親切な善人で，体格もよく，強かった。"},{"en":"The king had a beautiful daughter. When she was young she was sometimes a bad girl and didn’t do what her mother and father told her. When she was bad, her father said, \"If you are a bad girl, I will make you marry Ondal when you are older.”","ja":"王には美しい娘がいた。幼い頃，彼女は時々悪い子で，母親や父親の言うことを聞かなかった。彼女が悪いことをすると，父親は言った。「悪い娘なら，大きくなったらオンダルと結婚させるからな」"},{"en":"Many young men wanted to marry her but she always said no. One day her father asked her why she always said no to the young men. She said. “When I was young, you always told me that I would marry Ondal, so I will marry him.”","ja":"多くの若い男たちが彼女との結婚を望んだが，彼女はいつも断っていた。ある日，父親が彼女に，なぜいつも若い男たちの求婚を断るのかと尋ねた。彼女は言った。「私が幼い頃，あなたはいつも私をオンダルと結婚させると言っていました，だから私はオンダルと結婚します」"},{"en":"The king was very angry with his daughter and said, “You can’t marry Ondal!” But the girl said, “You told me I would marry Ondal and I will marry him.”","ja":"王は娘に怒り，「オンダルと結婚してはいけない！」と言った。しかし娘は言った，「あなたが私にオンダルと結婚するように言ったのですから。私はオンダルと結婚しますよ」"},{"en":"The king told her to leave his house.","ja":"王は娘に家を出るように言った。"},{"en":"She went to look for Ondal. She lived with Ondal and his mother. No one knew she was the king’s daughter. After some time they got married. They loved each other very much. She taught him to read and write and how to ride a horse and fight.","ja":"彼女はオンダルを探しに行った。（その後）彼女はオンダルと彼の母親と一緒に暮らした。誰も彼女が王の娘だとは知らなかった。しばらくして二人は結婚した。二人はとても愛し合っていた。彼女は彼に読み書きを教え，馬の乗り方や戦い方を教えた。"},{"en":"One day the king was looking for a big, strong, smart man to help him. Many men wanted to help the king but the king liked one man. Later he found out that the man was Ondal. The king was very happy and asked his daughter, Ondal and his mother to come and live with him.","ja":"ある日，王は自分を助けてくれる大きくて強くて賢い男を探していた。多くの男が王を助けたいと言ったが，王は一人の男を気に入った。後に，その男がオンダルであることがわかった。王は大喜びで，娘のオンダルとその母親に一緒に暮らすように頼んだ。"},{"en":"Ondal was known as the biggest, strongest, smartest, and kindest man in the land.","ja":"オンダルはこの国で最も大きく，強く，賢く，親切な男として知られていた。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5],[6],[7]],"questions":[{"text":"The story happened:","options":{"a":"10 years ago","b":"50 years ago","c":"many years ago"},"answer":"c"},{"text":"Ondal lived with:","options":{"a":"his mother","b":"his father","c":"his family"},"answer":"a"},{"text":"The king’s daughter was:","options":{"a":"always good","b":"always bad","c":"sometimes bad"},"answer":"c"},{"text":"How many men wanted to marry her?","options":{"a":"A lot","b":"Not many","c":"One"},"answer":"a"},{"text":"The king said:","options":{"a":"You can marry Ondal.","b":"You can’t marry Ondal.","c":"You have to marry Ondal."},"answer":"b"},{"text":"Who left the house?","options":{"a":"The king","b":"His daughter","c":"Ondal"},"answer":"b"},{"text":"Who came to live with the king?","options":{"a":"His daughter","b":"His daughter and Ondal","c":"His daughter, Ondal and his mother"},"answer":"c"},{"text":"In the end, the king was:","options":{"a":"happy","b":"angry","c":"hungry"},"answer":"a"}]},{"id":16,"title":"Frida and the animals","wordCount":300,"SD":[{"en":"Not so long ago, there was a little girl called Frida. She lived in a big town with her two mothers called Jenny and Olivia. When Frida was a little girl, she loved animals. She had a lovely black and white cat and a lovely little dog. Every day she looked after them. She gave them their food and she took her little dog for a walk while her cat slept on her bed. When Frida was 12 years old, she said to her mothers, “I love animals so much I want to be an animal doctor when I am older”. Her mothers were very happy when they heard this because they loved animals too.","ja":"少し前のこと，フリーダという小さな女の子がいた。彼女はジェニーとオリビアという二人の母親と大きな町に住んでいた。フリーダは幼い頃，動物が大好きだった。彼女はかわいい白黒の猫と，かわいい小さな犬を飼っていた。フリーダは毎日動物たちの世話をしていた。彼女は動物たちに餌をあげ，猫が彼女のベッドで寝ている間は小さな犬を散歩に連れて行った。フリーダが12歳のとき，母親たちに「私は動物が大好きだから，大きくなったら動物のお医者さんになりたいの」と言った。それを聞いた母親たちは，自分たちも動物が大好きだったので，とても喜んだ。"},{"en":"Frida studied hard every day because only the very best students could be animal doctors. By this time, Frida’s lovely cat and lovely dog were getting very old. One day when she came home from school, she saw her lovely dog lying very still with the cat very close to her. That night she cried herself to sleep.","ja":"フリーダは毎日一生懸命勉強した。なぜならとても賢い（最上位の）学生だけが獣医になれたからだ。その頃，フリーダが飼っていた可愛い猫と可愛い犬はとても年寄りになろうとしていた。ある日，フリーダが学校から帰ると，可愛い犬が猫のそばでじっとしているのを見た（犬は亡くなろうとしていた）。その夜，彼女は泣きながら眠った。"},{"en":"The next morning, her cat had died too. All the family cried together, but it made Frida want to be an animal doctor more than ever.","ja":"翌朝，猫も死んでしまっていた。家族はみんなで一緒に泣いたが，フリーダはこれまでよりもますます動物の医者になりたいと思うようになった。"},{"en":"After she left school, she had to study hard for another six years. She studied and studied and at last she was an animal doctor.","ja":"フリーダは学校を出てからもう6年間，必死に勉強しなければならなかった。勉強に勉強を重ね，ついに彼女は動物の医者になった。"},{"en":"Frida started her work. Every day she helped many cats and dogs and other animals too. Soon she was well known in the town.","ja":"フリーダは仕事を始めた。フリーダは毎日，たくさんの猫や犬，その他の動物を助けた。やがて彼女は町で有名になった。"},{"en":"One day, someone from TV came to talk to Frida. She wanted to show everyone about Frida’s work. Frida was surprised and happy.","ja":"ある日，テレビ局の人がフリーダに話を聞きに来た。彼女はフリーダの仕事をみんなに共有したかったのだ。フリーダは驚き，喜んだ。"},{"en":"Now Frida lives in a beautiful little house with her new cat. Every Saturday, Jenny and Olivia come over for dinner and they all watch Frida on TV together.","ja":"今フリーダは，新しい猫と一緒に美しい小さな家に住んでいる。毎週土曜日に，ジェニーとオリビアが夕食にやってきて，みんなでフリーダをテレビで見るのだ。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5],[6]],"questions":[{"text":"The little girl’s name was:","options":{"a":"Frida","b":"Olivia","c":"Jenny"},"answer":"a"},{"text":"How many mothers did she have?","options":{"a":"1","b":"2","c":"3"},"answer":"b"},{"text":"How old was she when she said she loved animals?","options":{"a":"10","b":"12","c":"14"},"answer":"b"},{"text":"Was she a good student?","options":{"a":"Yes","b":"No","c":"Sometimes"},"answer":"a"},{"text":"Her lovely cat and dog died when she was:","options":{"a":"a very young child","b":"a student","c":"an animal doctor"},"answer":"b"},{"text":"After she left school, how many more years did she study?","options":{"a":"2","b":"4","c":"6"},"answer":"c"},{"text":"She helped:","options":{"a":"cats","b":"cats and dogs","c":"cats and dogs and other animals"},"answer":"c"},{"text":"Who watches her on TV on Saturday night?","options":{"a":"Frida","b":"Frida and Olivia","c":"Frida, Olivia and Jenny."},"answer":"c"}]},{"id":17,"title":"The party","wordCount":300,"SD":[{"en":"Last Saturday, I went to a party. My friends’ daughter, Betty, and her boyfriend, John, are going to get married. I have known Betty from when she was born 26 years ago and I have been friends with her parents for a lot longer than that. Betty and John have been going out together for about three years. They held a big party for all their friends and family. They had a BBQ and everyone brought their favorite food to eat with everyone. Some people brought food from their own countries for everyone to try. Everyone brought their own drinks as well.","ja":"先週の土曜日，私はパーティーに行った。私の友人の娘，ベティとそのボーイフレンドのジョンが結婚するのだ。ベティとは彼女が26年前に生まれたときからの付き合いで，彼女の両親とはそれよりもずっと長い付き合いだ。ベティとジョンは3年ほど前から付き合っている。二人は友人や家族みんなを招いて盛大なパーティーを開いた。バーベキューをして，みんなが好きな食べ物を持ち寄ってみんなで食べた。みんなが試しに食べられるように，自分の国の料理を持ってくる人もいた。飲み物も各自が持ち寄った。"},{"en":"The party was held at John’s house. He bought the house about six months ago. It is an old house and needs a lot of work, but he is a builder so he can do everything. His builder friends are going to help him.","ja":"パーティーはジョンの家で行われた。彼は半年ほど前にこの家を買った。古い家なのでいろいろ手を加える必要があるが，彼は建築業者なので何でもできる。彼の建築家の友人たちが手伝ってくれることになっている。"},{"en":"At the party there were many different people to talk to. Betty’s parents aren’t married. They don’t eat meat so they couldn’t have any BBQ. Betty’s sister couldn’t come because she is away studying in another town. Betty is a teacher so her teacher friends came and her Church friends were there too. John’s mother, who lives close to his house, came to the party but his father couldn’t come because he lives in America now with his new family. But his parents, John’s grandparents, came. All his work friends were there. There were lots of aunties and uncles and even a little dog.","ja":"パーティーでは，いろいろな人と話すことができた。ベティの両親は結婚していない。彼らは肉を食べないから，バーベキューの料理は食べられなかった。ベティの妹は別の町で勉強しているので来られなかった。ベティは教師なので，教師の友達も来てくれたし，教会の友達も来てくれた。ジョンの家の近くに住む母親はパーティーに来たが，父親は新しい家族とアメリカに住んでいるので来られなかった。しかし，彼らの両親，つまりジョンの祖父母たちは来てくれた。仕事仲間もみんな来てくれた。おばさんやおじさんもたくさんいたし，小さな犬もいた。"},{"en":"The party started at 4 and ended late. I don’t know what time it ended because the older people left at about 8. The young ones stayed till . . .","ja":"パーティーは4時に始まり，遅くまで続いた。年配の人たちは8時くらいに帰ったから，何時に終わったのかわからない。若者たちは何時まで残っていたのだろう…。"},{"en":"Betty and John are going to get married in six months. That will be a very good party too.","ja":"ベティとジョンは半年後に結婚する。それもとてもいいパーティーになるだろう。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4]],"questions":[{"text":"How old is Betty?","options":{"a":"16","b":"26","c":"36"},"answer":"b"},{"text":"Her boyfriend’s name is:","options":{"a":"Jack","b":"John","c":"Chris"},"answer":"b"},{"text":"How long have they been going out?","options":{"a":"1 year","b":"2 years","c":"3 years"},"answer":"c"},{"text":"Betty is a:","options":{"a":"teacher","b":"doctor","c":"builder"},"answer":"a"},{"text":"Her parents don’t eat:","options":{"a":"potatoes","b":"apples","c":"meat"},"answer":"c"},{"text":"When did John buy his house?","options":{"a":"6 weeks ago","b":"6 months ago","c":"6 years ago"},"answer":"b"},{"text":"The story writer:","options":{"a":"was young","b":"was older","c":"didn’t like the party"},"answer":"b"},{"text":"What time did the party end?","options":{"a":"8","b":"10","c":"We don’t know."},"answer":"c"}]},{"id":18,"title":"Where did coffee come from?","wordCount":300,"SD":[{"en":"A long long time ago in a country called Ethiopia there was a man who had a lot of goats. He got up at 5 every day and he took his goats to the hills to find food. One day, some of the goats started eating something from some trees. The man saw that these goats looked happier than the other goats, and they were running around a lot and playing. He looked at the happy goats and he looked at the trees. There were little red berries on the trees. He thought, “I’m going to eat one of those red berries”. He ate one berry and then another and another. Soon, the man started to feel happy and he didn’t feel tired anymore. He put a lot of the berries into a little box and took them back to the people of his town. They all tried the little red berries and soon they started to feel very happy too. “Now, I don’t feel tired at all”, they said.","ja":"昔，エチオピアという国に，たくさんのヤギを飼っている男がいた。彼は毎日5時に起き，ヤギを連れて丘に餌を探しに行った。ある日，何頭かのヤギがある木から実を食べ始めた。男は，そのヤギたちが他のヤギたちよりも元気そうに見え，たくさん走り回って遊んでいるのを見た。元気そうなヤギたちを見て，男は木を見た。木には小さな赤い実がなっていた。彼は「あの赤い実をひとつ食べてみよう」と思った。彼は赤い実をひとつ食べ，またひとつ食べ，そしてまたひとつ食べた。やがて男は幸せな気分になり，疲れを感じなくなった。彼はその赤い実をたくさん小さな箱に入れて，町の人たちのところに持って帰った。町の人たちが皆，小さな赤い実を食べてみたところ，彼らもすぐに幸せな気分になりはじめた。「全く疲れた気持ちがないよ！」と彼らは言った。"},{"en":"The people of the town said, “If we cook the berries in water they might be even better.” They got some water and put some berries into the water and then they put the cooking pot onto the fire. Soon they started to smell a very good smell. They drank the water and it was very good. Everyone in the town wanted to try the new drink.","ja":"町の人たちは，「木の実を水で煮たらもっとおいしいかもしれない」と言った。彼らは水を汲んできてベリーを水に入れ，鍋を火にかけた。やがて，とてもいい香りがしてきた。彼らはその水を飲んだ。とても美味しかった。町の誰もがその新しい飲み物を試したがった。"},{"en":"That was the first time anyone drank . . .","ja":"そのときが，人が初めて（コーヒーを）飲んだときだった。"},{"en":"“We need a name for the new drink. What will we call it?” the people said. Someone said, “The name of our town is Kaffa. Let’s call the new drink Kaffa! So they did. That was many years ago and now we call the drink coffee and it is loved by people everywhere.","ja":"「新しい飲み物の名前が必要だ。どんな名前で呼ぼうか。」と人々は言った。誰かが言った。「私達の街の名前はカッファだ。新しい飲み物をカッファと呼ぼう」！と言った。そうして，彼らは飲み物をカッファと呼んだ。それは何年も前のことで，今ではその飲み物をコーヒーと呼び，世界中の人々に愛されている。"}],"PARA_GROUPS":[[0],[1],[2],[3]],"questions":[{"text":"This story happened:","options":{"a":"many years ago","b":"some years ago","c":"100 years ago"},"answer":"a"},{"text":"The man had a lot of:","options":{"a":"pigs","b":"goats","c":"horses"},"answer":"b"},{"text":"The berries were:","options":{"a":"red","b":"white","c":"blue"},"answer":"a"},{"text":"The animals were:","options":{"a":"unhappy and tired","b":"unhappy and not tired","c":"happy and not tired"},"answer":"c"},{"text":"The man ate:","options":{"a":"one berry","b":"some berries","c":"no berries"},"answer":"b"},{"text":"The people put the berries into:","options":{"a":"very hot water","b":"cold water","c":"very cold water"},"answer":"a"},{"text":"They had:","options":{"a":"a funny smell","b":"a bad smell","c":"a good smell"},"answer":"c"},{"text":"Today, coffee is loved:","options":{"a":"only in Ethiopia","b":"only in Kaffa","c":"everywhere"},"answer":"c"}]},{"id":19,"title":"Beautiful Men","wordCount":300,"SD":[{"en":"A long time ago, there was a little town on an island in the Pacific. The town didn’t have many men. The women of the town wanted to find more men but they didn’t know how they could do it.","ja":"昔，太平洋のある島に小さな町があった。その町には男性が少なかった。町の女たちは男を増やしたかったが，どうすればいいのかわからなかった。"},{"en":"Every day, the young women got up at 6. They got into their boats and went to catch fish. An old woman lived by the boat place. When she saw the young women, she said “Stop and talk with me. I will give you food”. But the young women would not stop and talk with her. Every day was the same.","ja":"若い女性たちは毎日6時に起きた。彼女たちはボートに乗って魚を捕りに行った。ボート場のそばには老婆が住んでいた。若い女性たちを見ると，老婆は言った。「立ち止まって私と話をしておくれ。食べ物をあげよう」しかし，若い女性たちは立ち止まって話をしようとしなかった。毎日同じことの繰り返しだった。"},{"en":"One day, some different young women walked by. “Come and eat with me”, the old woman said. These women stopped to talk. While they were eating, the old woman asked, “Why are you so unhappy?” The young woman told her their story.","ja":"ある日，違う若い女性たちが通りかかった。「こちらにきて一緒に食事をしよう」と老婆は言った。彼女たちは立ち止まって話をした。食事をしている間，老婆は尋ねた「どうしてそんなに不幸せそうなの？」若い女性は老婆に自分たちの話をした。"},{"en":"“I will help you”, she said. “When you go out in your boat, take some of the new leaves from this tree. When you get to the fishing place turn the boat over. You will get a surprise.”","ja":"「私が助けてあげよう」老婆は言った。「ボートで出かけたら，この木の新しい葉を少し取りなさい（取ってボートに入れなさい）。漁場に着いたら，ボートをひっくり返して。きっと驚くことが起こるよ」。"},{"en":"The young women did what she said and they were very surprised because when they looked at the boat, they saw some beautiful young men. They were all very happy.","ja":"若い女性たちは彼女の言うとおりにして，舟を見ると美しい若い男たちがいたので，とても驚いた。みんな大喜びだった。"},{"en":"The other unkind young women of the town were not happy at all. They ran to","ja":"町の他の不親切な若い女たちは，まったく嬉しくなかった。彼女たちは老婆に駆け寄り"},{"en":"the old woman and said, “Tell us what to do now!”","ja":"老婆のところへ駆け寄って言った「私たちにも何をすべきか教えなさいよ！」"},{"en":"The old woman told them to pick some old leaves from the tree and put them into their boat. They did what she said, but when they looked at their boat they saw a lot of very old men. They were very angry with the old woman, but the kind women lived happily with their beautiful men and had lots of children.","ja":"老婆は彼女たちに，木から古い葉っぱを拾って舟に入れるように言った。彼らは老婆の言うとおりにしたが，舟を見ると，たくさんの老人がいた。彼らは老婆にとても腹を立てたが，親切な女性たちは美しい男たちと幸せに暮らし，たくさんの子供をもうけた。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5],[6],[7]],"questions":[{"text":"The little town was:","options":{"a":"by a river","b":"on a hill","c":"on an island"},"answer":"c"},{"text":"There were:","options":{"a":"too many men","b":"not many men","c":"no men"},"answer":"b"},{"text":"The young women got up at:","options":{"a":"5","b":"6","c":"7"},"answer":"b"},{"text":"They started:","options":{"a":"cooking","b":"fishing","c":"washing"},"answer":"b"},{"text":"What did the old woman want to give them?","options":{"a":"Food","b":"Drink","c":"Fish"},"answer":"a"},{"text":"What did the women put in their boats?","options":{"a":"Food","b":"Leaves","c":"Water"},"answer":"b"},{"text":"What happened at the end of the story?","options":{"a":"The kind women were happy.","b":"The unkind women were happy.","c":"The kind women were angry."},"answer":"a"},{"text":"What is the meaning of the story?","options":{"a":"Don’t get old.","b":"Don’t go fishing.","c":"Be nice."},"answer":"c"}]},{"id":20,"title":"The last straw that broke the camel’s back","wordCount":300,"SD":[{"en":"A long time ago in Arabia, a family had a camel. It was a big strong camel and it could carry a lot of things on its back. It could walk a long way and didn’t need to drink water all the time. The camel worked very hard and the family loved it and looked after it very well.","ja":"昔アラビアで，ある家族がラクダを飼っていた。大きく，強いラクダで，背中にたくさんのものを乗せて運ぶことができた。そのラクダは長い距離を歩くことができ，いつも水を飲む必要もなかった。ラクダはとてもよく働き，家族はラクダを愛し，とてもよく世話をした。"},{"en":"One day the family had to go to a little town far from their home. Two of the young people in their family were getting married.","ja":"ある日，家族は家から遠く離れた小さな町へ行くことになった。家族の若い二人が結婚することになったのだ。"},{"en":"The man said, “Our big strong camel can carry everything and we can all walk by its side”.","ja":"男は言った。「うちの大きな強いラクダなら何でも運べるし，みんなでラクダのそばを歩けるよ」"},{"en":"The big day came. It was very hot. The family put everything they wanted to take in one place. They cooked food to eat on the way and they had a lot of things to give to the young people.","ja":"大事な日がやってきた。その日はとても暑かった。家族は持っていきたいものをすべて一箇所にまとめた。途中で食べるものを作るし，若者たちに渡すものもたくさんあった。"},{"en":"When they saw how much stuff there was they looked at each other. “Can our camel carry all our things?” they said.","ja":"荷物の多さを見て，彼らは顔を見合わせた。「私たちのラクダは私たちの荷物を全部運べるだろうか？」彼らは言った。"},{"en":"They started to put things on the camel’s back. First they put on some straw. This was food for the camel on the way. Then they put on their clothes, their food and all the other things. The camel stood very still and waited but it was getting hard for it to keep standing. More and more things went onto its back. The camel thought it would fall over if one more thing was put on.","ja":"彼らはラクダの背中に荷物を乗せ始めた。まず藁をかぶせた。これはラクダが途中で食べる食料だった。それから，衣服，食べ物，その他の品を乗せた。ラクダはじっと立って待っていたが，だんだん立っているのがつらくなってきた。どんどん多くのものがラクダの背中に乗っていった。ラクダは，これ以上物を乗せたら倒れてしまうと思った。"},{"en":"When everything was on the camel’s back, it could not move at all.","ja":"全てがラクダの背中にのしかかると，ラクダは全く動けなくなった。"},{"en":"Then the man saw a very little piece of straw on the ground. He picked it up and put it on the camel’s back.","ja":"その時，男は地面に落ちている小さな一本のわらを見つけた。男はそれを拾ってラクダの背中に乗せた。"},{"en":"It was too much! The camel cried out and fell over dead.","ja":"荷物の限界を超えてしまったのだ！ラクダは泣き叫び，倒れて死んでしまった。"},{"en":"It was the last straw that broke the camel’s back.","ja":"それがラクダの背中を折った最後のわらの一本だった。"}],"PARA_GROUPS":[[0],[1],[2],[3],[4],[5],[6],[7],[8],[9]],"questions":[{"text":"The story happened in:","options":{"a":"Australia","b":"Arabia","c":"America"},"answer":"b"},{"text":"The camel was:","options":{"a":"little and funny","b":"big and strong","c":"little and strong"},"answer":"b"},{"text":"Did the family love their camel?","options":{"a":"Yes","b":"No","c":"Not much"},"answer":"a"},{"text":"The family go to the other town:","options":{"a":"to buy food","b":"to work","c":"to see people get married"},"answer":"c"},{"text":"The family were going to:","options":{"a":"ride the camel","b":"sell the camel","c":"walk next to the camel"},"answer":"c"},{"text":"What is straw?","options":{"a":"Food for the camel","b":"Food for the people","c":"A kind of drink"},"answer":"a"},{"text":"What made the camel fall over?","options":{"a":"The first thing","b":"The next thing","c":"The last thing"},"answer":"c"},{"text":"The camel was:","options":{"a":"sleeping","b":"eating","c":"dead"},"answer":"c"}]}];
+
+const TARGET_WPM=170;
+
+let currentMat=null;
+let SD=[],PARA_GROUPS=[],WORD_COUNT=300;
+let startTime=null,timerInterval=null,elapsedSecs=0,quizScore=0;
+let sentSpans=[];
+let currentSentIdx=-1;
+let speechPaused=false,speechRate=0.9;
+
+const ALL_PHASES=['phase-level-home','phase-mat-home','phase-reading','phase-questions','phase-results','phase-shadowing','phase-bilingual','phase-wpm','phase-progress'];
+function hideAll(){ALL_PHASES.forEach(id=>document.getElementById(id).classList.add('hidden'));}
+function show(id){document.getElementById(id).classList.remove('hidden');}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+/* ===== LEVEL HOME ===== */
+document.addEventListener('DOMContentLoaded',()=>{
+  buildLevelCards();
+  document.getElementById('passage-box').addEventListener('dblclick',e=>{
+    const sel=window.getSelection();
+    if(!sel||!sel.rangeCount)return;
+    const word=sel.toString().trim();
+    if(!word||/\s/.test(word))return;
+    const range=sel.getRangeAt(0);
+    const parentEl=range.commonAncestorContainer.nodeType===3
+      ?range.commonAncestorContainer.parentElement
+      :range.commonAncestorContainer;
+    if(parentEl.classList.contains('dbl-hl')){
+      parentEl.replaceWith(document.createTextNode(parentEl.textContent));
+    }else{
+      try{const span=document.createElement('span');span.className='dbl-hl';range.surroundContents(span);}catch(_){}
+    }
+    sel.removeAllRanges();
+  });
+});
+
+function buildLevelCards(){
+  const grid=document.getElementById('level-cards');
+  let html='';
+  MATERIALS.forEach(mat=>{
+    const key='wpm-L1-'+mat.id;
+    const hist=JSON.parse(localStorage.getItem(key)||'[]');
+    const done=hist.length>0;
+    const bestWPM=done?Math.max(...hist.map(r=>r.wpm)):null;
+    const bestScore=done?Math.max(...hist.map(r=>parseInt(r.score)||0)):null;
+    const doneCls=done?' card-done':'';
+    const doneBadge=done?'<span class="completed-badge">✓ '+bestScore+'/8</span>':'';
+    const wpmBadge=done?'<span class="wpm-badge">Best '+bestWPM+' WPM</span>':'';
+    html+='<div class="home-card'+doneCls+'" onclick="selectMaterial('+mat.id+')">'
+      +'<div class="home-card-icon"><span class="mat-num">'+String(mat.id).padStart(2,'0')+'</span></div>'
+      +'<div>'
+      +'<div class="home-card-title">'+esc(mat.title)+doneBadge+'</div>'
+      +'<div class="home-card-desc">'+mat.wordCount+' words'+wpmBadge+'</div>'
+      +'</div></div>';
+  });
+  grid.innerHTML=html;
+}
+
+function goLevelHome(){
+  stopAudio();hideAll();show('phase-level-home');closeTLPanel();
+  buildLevelCards();window.scrollTo(0,0);
+}
+
+function selectMaterial(id){
+  currentMat=MATERIALS.find(m=>m.id===id);
+  SD=currentMat.SD;PARA_GROUPS=currentMat.PARA_GROUPS;WORD_COUNT=currentMat.wordCount;
+  document.getElementById('mat-nav-title').textContent=currentMat.title;
+  document.getElementById('mat-hero-title').textContent=currentMat.title;
+  document.getElementById('mat-hero-desc').textContent=currentMat.wordCount+' words · 8問';
+  hideAll();show('phase-mat-home');window.scrollTo(0,0);
+}
+
+function goMatHome(){
+  stopAudio();hideAll();show('phase-mat-home');closeTLPanel();
+  resetTimer();window.scrollTo(0,0);
+}
+
+/* 問題フェーズからの離脱確認 */
+function confirmLeave(dest){
+  if(!confirm('問題を途中でやめると採点されません。よろしいですか？'))return;
+  if(dest==='level')goLevelHome();else goMatHome();
+}
+
+/* ===== READING ===== */
+function startReading(){
+  buildReadingPassage();resetTimer();
+  hideAll();show('phase-reading');window.scrollTo(0,0);
+}
+
+function buildReadingPassage(){
+  const box=document.getElementById('passage-box');
+  let html='';
+  PARA_GROUPS.forEach(group=>{
+    html+='<p>';
+    group.forEach(si=>{
+      html+='<span class="sent" data-idx="'+si+'" onclick="sentClick(event,'+si+')">';
+      SD[si].en.split(/(\s+)/).forEach(tok=>{
+        if(/^\s+$/.test(tok))html+=' ';
+        else if(tok)html+='<span class="word">'+esc(tok)+'</span>';
+      });
+      html+='</span> ';
+    });
+    html+='</p>';
+  });
+  box.innerHTML=html;
+}
+
+function resetTimer(){
+  clearInterval(timerInterval);
+  startTime=null;timerInterval=null;elapsedSecs=0;quizScore=0;
+  document.getElementById('timer').textContent='0:00';
+  document.getElementById('wpm-live').innerHTML='&nbsp;';
+  document.getElementById('start-area').classList.remove('hidden');
+  document.getElementById('finish-area').classList.add('hidden');
+}
+function startTimer(){
+  startTime=Date.now();
+  document.getElementById('start-area').classList.add('hidden');
+  document.getElementById('finish-area').classList.remove('hidden');
+  timerInterval=setInterval(()=>{
+    elapsedSecs=Math.floor((Date.now()-startTime)/1000);
+    document.getElementById('timer').textContent=fmt(elapsedSecs);
+    if(elapsedSecs>0)document.getElementById('wpm-live').textContent=calcWPM(elapsedSecs)+' WPM';
+  },500);
+}
+function finishReading(){
+  clearInterval(timerInterval);
+  elapsedSecs=Math.floor((Date.now()-startTime)/1000);
+  buildQuiz();
+  document.getElementById('reading-stats').innerHTML=statsHTML();
+  hideAll();show('phase-questions');closeTLPanel();window.scrollTo(0,0);
+}
+
+/* ===== QUIZ ===== */
+function buildQuiz(){
+  const form=document.getElementById('quiz-form');
+  let html='';
+  currentMat.questions.forEach((q,i)=>{
+    html+='<div class="question"><p class="q-text">'+(i+1)+'. '+esc(q.text)+'</p>';
+    ['a','b','c'].forEach(letter=>{
+      html+='<label class="option-label"><input type="radio" name="q'+(i+1)+'" value="'+letter+'"> '
+        +letter+') '+esc(q.options[letter])+'</label>';
+    });
+    html+='</div>';
+  });
+  html+='<div class="btn-area"><button type="button" class="btn btn-submit" onclick="submitQuiz()">答え合わせ</button></div>';
+  form.innerHTML=html;
+}
+function submitQuiz(){
+  const qs=currentMat.questions;
+  for(let i=0;i<qs.length;i++){
+    if(!document.querySelector('input[name="q'+(i+1)+'"]:checked')){
+      alert('すべての問題に答えてから「答え合わせ」を押してください。');return;
+    }
+  }
+  quizScore=0;let html='';
+  qs.forEach((q,i)=>{
+    const uv=document.querySelector('input[name="q'+(i+1)+'"]:checked').value;
+    const cv=q.answer;const ok=uv===cv;if(ok)quizScore++;
+    const tag=ok?'<span class="tag-correct">✓ 正解</span>':'<span class="tag-wrong">✗ 不正解</span>';
+    html+='<div class="result-item"><p class="result-q-text">'+(i+1)+'. '+esc(q.text)+'</p>'
+      +'<p class="user-ans">'+tag+' '+esc(q.options[uv])+'</p>'
+      +(!ok?'<p class="correct-ans">正解：'+esc(q.options[cv])+'</p>':'')+'</div>';
+  });
+  const pct=Math.round(quizScore/8*100);
+  document.getElementById('score-banner').innerHTML='<div class="score-num">'+quizScore+' / 8</div><div class="score-pct">'+pct+'% 正解 &nbsp;|&nbsp; 読了 '+fmt(elapsedSecs)+' &nbsp;|&nbsp; '+calcWPM(elapsedSecs)+' WPM</div>';
+  document.getElementById('result-stats').innerHTML=statsHTML();
+  document.getElementById('result-detail').innerHTML=html;
+  saveWPMRecord();
+  hideAll();show('phase-results');window.scrollTo(0,0);
+}
+
+/* ===== SHADOWING ===== */
+function goToShadowing(){
+  stopAudio();buildSpannedPassage();
+  hideAll();show('phase-shadowing');resetAudioUI();closeTLPanel();window.scrollTo(0,0);
+}
+function buildSpannedPassage(){
+  const container=document.getElementById('shadowing-passage');
+  let html='';
+  PARA_GROUPS.forEach(group=>{
+    html+='<p>';
+    group.forEach(si=>{
+      html+='<span class="sent" data-idx="'+si+'" onclick="sentClick(event,'+si+')">';
+      SD[si].en.split(/(\s+)/).forEach(tok=>{
+        if(/^\s+$/.test(tok))html+=' ';
+        else if(tok)html+='<span class="word">'+esc(tok)+'</span>';
+      });
+      html+='</span> ';
+    });
+    html+='</p>';
+  });
+  container.innerHTML=html;
+  sentSpans=Array.from(container.querySelectorAll('.sent'));
+}
+
+/* ===== BILINGUAL ===== */
+function goToBilingual(){
+  stopAudio();buildBilingual();
+  hideAll();show('phase-bilingual');closeTLPanel();window.scrollTo(0,0);
+}
+function buildBilingual(){
+  document.getElementById('bilingual-title').textContent=currentMat.title;
+  let html='';
+  SD.forEach((item,i)=>{
+    html+='<div class="bilingual-para">'
+      +'<div class="bi-en"><div class="bi-label">English</div><p><span class="para-num">'+(i+1)+'</span>'+esc(item.en)+'</p></div>'
+      +'<div class="bi-ja"><div class="bi-label">日本語</div><p>'+esc(item.ja)+'</p></div>'
+      +'</div>';
+  });
+  document.getElementById('bilingual-content').innerHTML=html;
+}
+
+/* ===== WPM (per material) ===== */
+function showWPMHistory(){
+  hideAll();show('phase-wpm');
+  document.getElementById('wpm-section-title').textContent='読書速度の記録 — '+currentMat.title;
+  const key='wpm-L1-'+currentMat.id;
+  const hist=JSON.parse(localStorage.getItem(key)||'[]');
+  const maxWPM=hist.length?Math.max(...hist.map(r=>r.wpm)):1;
+  let html='';
+  if(!hist.length){
+    html='<div class="wpm-empty"><p style="font-size:2rem;margin-bottom:12px">💭</p><p>まだ記録がありません。</p></div>';
+  }else{
+    hist.forEach(r=>{
+      const pct=Math.round(r.wpm/maxWPM*100);
+      html+='<div class="wpm-row"><span class="wpm-date">'+r.date+'</span>'
+        +'<div class="wpm-bar-wrap"><div class="wpm-bar" style="width:'+pct+'%"></div></div>'
+        +'<span class="wpm-num">'+r.wpm+' WPM</span>'
+        +'<span class="wpm-score">🎯'+r.score+'</span></div>';
+    });
+  }
+  document.getElementById('wpm-history-content').innerHTML=html;
+  window.scrollTo(0,0);
+}
+function saveWPMRecord(){
+  const now=new Date();
+  const d=now.getFullYear()+'/'
+    +String(now.getMonth()+1).padStart(2,'0')+'/'
+    +String(now.getDate()).padStart(2,'0')+' '
+    +String(now.getHours()).padStart(2,'0')+':'
+    +String(now.getMinutes()).padStart(2,'0');
+  const rec={date:d,wpm:calcWPM(elapsedSecs),secs:elapsedSecs,score:quizScore+'/8'};
+  const key='wpm-L1-'+currentMat.id;
+  const hist=JSON.parse(localStorage.getItem(key)||'[]');
+  hist.unshift(rec);if(hist.length>30)hist.length=30;
+  localStorage.setItem(key,JSON.stringify(hist));
+}
+
+/* ===== PROGRESS CHART ===== */
+function goToProgress(){
+  buildProgressChart();
+  hideAll();show('phase-progress');window.scrollTo(0,0);
+}
+function buildProgressChart(){
+  const wrap=document.getElementById('progress-chart-wrap');
+  const all=[];
+  MATERIALS.forEach(mat=>{
+    const hist=JSON.parse(localStorage.getItem('wpm-L1-'+mat.id)||'[]');
+    hist.forEach(r=>{
+      all.push({date:r.date,wpm:r.wpm,score:parseInt(r.score)||0,matId:mat.id,title:mat.title});
+    });
+  });
+  if(!all.length){
+    wrap.innerHTML='<div class="chart-no-data">📭 まだ記録がありません。<br><small>速読トレーニングを完了すると自動的に記録されます。</small></div>';
+    return;
+  }
+  all.sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+  wrap.innerHTML=drawProgressSVG(all);
+}
+
+function drawProgressSVG(recs){
+  const W=680,H=340;
+  const ml=58,mr=46,mt=24,mb=90;
+  const cw=W-ml-mr,ch=H-mt-mb;
+  const n=recs.length;
+
+  const maxWPM=Math.max(...recs.map(r=>r.wpm));
+  /* 目標WPM(170)も必ず収まるよう上限を決める */
+  const wpmTop=Math.max(Math.ceil(maxWPM/50)*50,Math.ceil(TARGET_WPM/50)*50)||200;
+
+  const xs=i=>ml+(n===1?cw/2:i/(n-1)*cw);
+  const yw=w=>mt+ch-(w/wpmTop)*ch;
+  const ys=s=>mt+ch-(s/8)*ch;
+
+  let s='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:'+W+'px;height:auto;display:block;font-family:sans-serif">';
+
+  /* 背景 */
+  s+='<rect x="'+ml+'" y="'+mt+'" width="'+cw+'" height="'+ch+'" fill="#f8faff" rx="3"/>';
+
+  /* グリッド線（正答数 0,2,4,6,8 基準） */
+  [0,2,4,6,8].forEach(sc=>{
+    const y=ys(sc).toFixed(1);
+    const wpmLabel=Math.round(wpmTop*sc/8);
+    s+='<line x1="'+ml+'" y1="'+y+'" x2="'+(ml+cw)+'" y2="'+y+'" stroke="'+(sc===0?'#d1d5db':'#e5e7eb')+'" stroke-width="1" stroke-dasharray="'+(sc===0?'none':'4,3')+'"/>';
+    s+='<text x="'+(ml-7)+'" y="'+(parseFloat(y)+4)+'" text-anchor="end" font-size="11" fill="#6b7280">'+wpmLabel+'</text>';
+    s+='<text x="'+(ml+cw+7)+'" y="'+(parseFloat(y)+4)+'" text-anchor="start" font-size="11" fill="#15803d">'+sc+'</text>';
+  });
+
+  /* 目標WPM線（170） */
+  const tyRaw=yw(TARGET_WPM);
+  if(tyRaw>=mt&&tyRaw<=mt+ch){
+    const ty=tyRaw.toFixed(1);
+    s+='<line x1="'+ml+'" y1="'+ty+'" x2="'+(ml+cw)+'" y2="'+ty+'" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="7,4"/>';
+    s+='<rect x="'+(ml+cw-78)+'" y="'+(parseFloat(ty)-16)+'" width="76" height="15" rx="3" fill="#fef3c7"/>';
+    s+='<text x="'+(ml+cw-4)+'" y="'+(parseFloat(ty)-5)+'" text-anchor="end" font-size="10" fill="#d97706" font-weight="bold">目標 '+TARGET_WPM+' WPM</text>';
+  }
+
+  /* WPM 面積 */
+  if(n>1){
+    const pts=recs.map((r,i)=>xs(i).toFixed(1)+','+yw(r.wpm).toFixed(1)).join(' ');
+    const area='M'+xs(0).toFixed(1)+','+(mt+ch).toFixed(1)+' '+pts+' L'+xs(n-1).toFixed(1)+','+(mt+ch).toFixed(1)+' Z';
+    s+='<path d="'+area+'" fill="#2563eb" opacity="0.08"/>';
+    s+='<polyline points="'+pts+'" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.9"/>';
+  }
+
+  /* 正答数 面積 */
+  if(n>1){
+    const pts=recs.map((r,i)=>xs(i).toFixed(1)+','+ys(r.score).toFixed(1)).join(' ');
+    const area='M'+xs(0).toFixed(1)+','+(mt+ch).toFixed(1)+' '+pts+' L'+xs(n-1).toFixed(1)+','+(mt+ch).toFixed(1)+' Z';
+    s+='<path d="'+area+'" fill="#16a34a" opacity="0.08"/>';
+    s+='<polyline points="'+pts+'" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.9"/>';
+  }
+
+  /* WPM移動平均線（3点、データ3件以上） */
+  if(n>=3){
+    const ma=recs.map((r,i)=>{
+      if(i===0||i===n-1)return r.wpm;
+      return(recs[i-1].wpm+r.wpm+recs[i+1].wpm)/3;
+    });
+    const pts=ma.map((w,i)=>xs(i).toFixed(1)+','+yw(w).toFixed(1)).join(' ');
+    s+='<polyline points="'+pts+'" fill="none" stroke="#93c5fd" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" opacity="0.75"/>';
+  }
+
+  /* データ点：WPM（教材番号ラベル付き） */
+  recs.forEach((r,i)=>{
+    const x=xs(i),y=yw(r.wpm);
+    const xf=x.toFixed(1),yf=y.toFixed(1);
+    /* 点の上にラベル背景＋番号 */
+    const labelY=y-12;
+    s+='<circle cx="'+xf+'" cy="'+yf+'" r="7" fill="#2563eb" stroke="#fff" stroke-width="2">'
+      +'<title>No.'+r.matId+' '+r.title+'\n'+r.date+'\nWPM: '+r.wpm+'</title></circle>';
+    s+='<text x="'+xf+'" y="'+(y+4).toFixed(1)+'" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">'+r.matId+'</text>';
+    /* 点の上にWPM値を小さく */
+    s+='<text x="'+xf+'" y="'+labelY.toFixed(1)+'" text-anchor="middle" font-size="9" fill="#1d4ed8">'+r.wpm+'</text>';
+  });
+
+  /* データ点：正答数（教材番号ラベル付き、円の下） */
+  recs.forEach((r,i)=>{
+    const x=xs(i),y=ys(r.score);
+    const xf=x.toFixed(1),yf=y.toFixed(1);
+    s+='<circle cx="'+xf+'" cy="'+yf+'" r="6" fill="#16a34a" stroke="#fff" stroke-width="2">'
+      +'<title>No.'+r.matId+' '+r.title+'\n'+r.date+'\n正答数: '+r.score+'/8</title></circle>';
+    s+='<text x="'+xf+'" y="'+(y+4).toFixed(1)+'" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">'+r.matId+'</text>';
+  });
+
+  /* X軸日付ラベル */
+  const step=Math.max(1,Math.ceil(n/10));
+  recs.forEach((r,i)=>{
+    if(i===0||i===n-1||i%step===0){
+      const x=xs(i).toFixed(1);
+      const label=r.date.length>=16?r.date.slice(5,16):r.date;
+      const baseY=mt+ch+16;
+      s+='<text x="'+x+'" y="'+baseY+'" text-anchor="end" font-size="10" fill="#6b7280"'
+        +' transform="rotate(-40,'+x+','+baseY+')">'+label+'</text>';
+    }
+  });
+
+  /* 外枠 */
+  s+='<line x1="'+ml+'" y1="'+mt+'" x2="'+ml+'" y2="'+(mt+ch)+'" stroke="#d1d5db" stroke-width="1.5"/>';
+  s+='<line x1="'+(ml+cw)+'" y1="'+mt+'" x2="'+(ml+cw)+'" y2="'+(mt+ch)+'" stroke="#d1d5db" stroke-width="1.5"/>';
+  s+='<line x1="'+ml+'" y1="'+(mt+ch)+'" x2="'+(ml+cw)+'" y2="'+(mt+ch)+'" stroke="#d1d5db" stroke-width="1.5"/>';
+
+  /* 軸ラベル */
+  const midY=(mt*2+ch)/2;
+  s+='<text x="14" y="'+midY+'" text-anchor="middle" font-size="11" fill="#2563eb" transform="rotate(-90,14,'+midY+')">WPM</text>';
+  s+='<text x="'+(W-14)+'" y="'+midY+'" text-anchor="middle" font-size="11" fill="#15803d" transform="rotate(90,'+(W-14)+','+midY+')">正答数</text>';
+
+  /* 凡例 */
+  const ly=mt+ch+68;
+  s+='<circle cx="'+(ml+12)+'" cy="'+ly+'" r="6" fill="#2563eb"/>';
+  s+='<text x="'+(ml+12)+'" y="'+(ly+4)+'" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">N</text>';
+  s+='<text x="'+(ml+24)+'" y="'+(ly+4)+'" font-size="12" fill="#2563eb">WPM</text>';
+  s+='<circle cx="'+(ml+80)+'" cy="'+ly+'" r="6" fill="#16a34a"/>';
+  s+='<text x="'+(ml+80)+'" y="'+(ly+4)+'" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">N</text>';
+  s+='<text x="'+(ml+92)+'" y="'+(ly+4)+'" font-size="12" fill="#16a34a">正答数（/8）</text>';
+  /* 移動平均線の凡例 */
+  if(recs.length>=3){
+    s+='<line x1="'+(ml+180)+'" y1="'+ly+'" x2="'+(ml+202)+'" y2="'+ly+'" stroke="#93c5fd" stroke-width="3" stroke-linecap="round"/>';
+    s+='<text x="'+(ml+207)+'" y="'+(ly+4)+'" font-size="12" fill="#93c5fd">移動平均</text>';
+  }
+  /* 目標線の凡例 */
+  s+='<line x1="'+(ml+300)+'" y1="'+ly+'" x2="'+(ml+322)+'" y2="'+ly+'" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,3"/>';
+  s+='<text x="'+(ml+327)+'" y="'+(ly+4)+'" font-size="12" fill="#d97706">目標 '+TARGET_WPM+' WPM</text>';
+  /* 件数 */
+  s+='<text x="'+(ml+cw)+'" y="'+(ly+4)+'" text-anchor="end" font-size="11" fill="#9ca3af">'+recs.length+' 件</text>';
+
+  s+='</svg>';
+  return s;
+}
+
+/* ===== AUDIO ===== */
+function getGoogleVoice(){
+  const vs=window.speechSynthesis.getVoices();
+  return vs.find(v=>v.name.toLowerCase().includes('google')&&v.lang.startsWith('en'))
+      ||vs.find(v=>v.lang.startsWith('en-US'))
+      ||vs.find(v=>v.lang.startsWith('en'))||null;
+}
+function hlSent(si){
+  sentSpans.forEach(el=>el.classList.remove('hl-sent'));
+  if(si>=0&&si<sentSpans.length){sentSpans[si].classList.add('hl-sent');sentSpans[si].scrollIntoView({block:'nearest',behavior:'smooth'});}
+}
+function clearHL(){sentSpans.forEach(el=>el.classList.remove('hl-sent'));}
+function makeSentenceUtt(si){
+  const utt=new SpeechSynthesisUtterance(SD[si].en);
+  const voice=getGoogleVoice();if(voice)utt.voice=voice;
+  utt.lang='en-US';utt.rate=speechRate;utt.pitch=1.0;
+  utt.onstart=()=>{
+    if(speechPaused)return;
+    currentSentIdx=si;hlSent(si);
+    setStatus('読み上げ中... 声に合わせてシャドーイングしよう ('+(si+1)+'/'+SD.length+')');
+    if(si+1<SD.length)window.speechSynthesis.speak(makeSentenceUtt(si+1));
+  };
+  utt.onend=()=>{if(!speechPaused&&si+1>=SD.length){clearHL();resetAudioUI();}};
+  utt.onerror=e=>{if(e.error!=='interrupted'&&e.error!=='canceled'){clearHL();resetAudioUI();}};
+  return utt;
+}
+function playAudio(){
+  if(!('speechSynthesis' in window)){alert('このブラウザは音声読み上げに対応していません。ChromeまたはEdgeをご利用ください。');return;}
+  window.speechSynthesis.cancel();
+  speechPaused=false;currentSentIdx=-1;clearHL();
+  document.getElementById('btn-play').classList.add('hidden');
+  document.getElementById('btn-pause').classList.remove('hidden');
+  window.speechSynthesis.speak(makeSentenceUtt(0));
+}
+function pauseAudio(){
+  if(!speechPaused&&(window.speechSynthesis.speaking||window.speechSynthesis.pending)){
+    speechPaused=true;window.speechSynthesis.cancel();
+    document.getElementById('btn-pause').classList.add('hidden');
+    document.getElementById('btn-resume').classList.remove('hidden');
+    setStatus('一時停止中');
+  }
+}
+function resumeAudio(){
+  if(speechPaused){
+    speechPaused=false;
+    document.getElementById('btn-resume').classList.add('hidden');
+    document.getElementById('btn-pause').classList.remove('hidden');
+    const si=currentSentIdx>=0?currentSentIdx:0;
+    hlSent(si);window.speechSynthesis.speak(makeSentenceUtt(si));
+  }
+}
+function stopAudio(){
+  if(typeof window!=='undefined'&&window.speechSynthesis)window.speechSynthesis.cancel();
+  speechPaused=false;currentSentIdx=-1;clearHL();resetAudioUI();
+}
+function resetAudioUI(){
+  const bp=document.getElementById('btn-play'),bpa=document.getElementById('btn-pause'),br=document.getElementById('btn-resume');
+  if(bp)bp.classList.remove('hidden');if(bpa)bpa.classList.add('hidden');if(br)br.classList.add('hidden');
+  setStatus('');
+}
+function setStatus(m){const el=document.getElementById('audio-status');if(el)el.textContent=m;}
+function updateRate(v){speechRate=parseFloat(v);document.getElementById('rate-val').textContent=speechRate.toFixed(1);}
+
+/* ===== NAV / TL ===== */
+function backTo(dest){stopAudio();hideAll();closeTLPanel();if(dest==='results')show('phase-results');window.scrollTo(0,0);}
+function sentClick(event,idx){
+  if(event.detail>=2)return;
+  event.stopPropagation();
+  let word='';
+  if(event.target.classList.contains('word'))word=event.target.textContent.replace(/[.,;:!?'"()\[\]""'']/g,'').trim();
+  document.querySelectorAll('.sent.active').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.sent[data-idx="'+idx+'"]').forEach(el=>el.classList.add('active'));
+  document.getElementById('tl-en').textContent=SD[idx].en;
+  document.getElementById('tl-ja').textContent=SD[idx].ja;
+  let wlink='';
+  if(word){
+    const url='https://ejje.weblio.jp/content/'+encodeURIComponent(word.toLowerCase());
+    wlink='<a href="'+url+'" target="_blank" class="weblio-btn">「'+esc(word)+'」をWeblioで調べる →</a>';
+  }
+  document.getElementById('tl-word-row').innerHTML=wlink;
+  document.getElementById('tl-panel').classList.remove('hidden');
+}
+function closeTLPanel(){
+  document.getElementById('tl-panel').classList.add('hidden');
+  document.querySelectorAll('.sent.active').forEach(el=>el.classList.remove('active'));
+}
+
+/* ===== HELPERS ===== */
+function fmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function calcWPM(s){return s>0?Math.round(WORD_COUNT/s*60):0;}
+function statsHTML(){return'<div class="stat-card"><div class="value">'+fmt(elapsedSecs)+'</div><div class="label">読了時間</div></div><div class="stat-card"><div class="value">'+calcWPM(elapsedSecs)+'</div><div class="label">WPM（語／分）</div></div><div class="stat-card"><div class="value">'+WORD_COUNT+'</div><div class="label">総語数</div></div>';}
+</script>
+</body>
+</html>

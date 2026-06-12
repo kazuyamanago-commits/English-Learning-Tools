@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英語学習ツールガイド — 使い方マニュアル</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Hiragino Sans', 'Meiryo', sans-serif; background: #f5f6f8; color: #222; font-size: 16px; line-height: 1.75; }
+
+/* Hero */
+.hero { background: linear-gradient(135deg, #1a3a5c 0%, #2563eb 100%); color: white; padding: 36px 24px 30px; text-align: center; }
+.hero h1 { font-size: 1.85rem; margin-bottom: 6px; letter-spacing: .03em; }
+.hero p { font-size: 1rem; opacity: 0.88; }
+
+/* Container */
+.container { max-width: 780px; margin: 0 auto; padding: 28px 16px 72px; }
+
+/* Section headings */
+h2 { font-size: 1.2rem; color: #1a3a5c; border-left: 5px solid #2563eb; padding-left: 12px; margin: 40px 0 14px; }
+h3 { font-size: 1.02rem; color: #333; margin: 18px 0 7px; font-weight: bold; }
+
+/* Cards */
+.card { background: #fff; border-radius: 12px; padding: 18px 22px; margin: 12px 0; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+p { margin: 8px 0; }
+ul, ol { padding-left: 1.5em; margin: 8px 0; }
+li { margin: 6px 0; }
+
+/* Tool overview cards */
+.tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+.tool-card { background: #fff; border-radius: 12px; padding: 18px 18px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.07); border-top: 4px solid #ccc; }
+.tool-card.green  { border-top-color: #16a34a; }
+.tool-card.blue   { border-top-color: #2563eb; }
+.tool-card.purple { border-top-color: #7c3aed; }
+.tool-card.teal   { border-top-color: #0891b2; }
+.tool-icon { font-size: 2rem; margin-bottom: 6px; }
+.tool-name { font-weight: bold; font-size: 1rem; margin-bottom: 4px; }
+.tool-desc { font-size: .84rem; color: #6b7280; line-height: 1.55; }
+
+/* Badge */
+.badge { display: inline-block; color: white; border-radius: 16px; padding: 2px 12px; font-size: .8rem; margin-bottom: 6px; }
+.b-green  { background: #16a34a; }
+.b-blue   { background: #2563eb; }
+.b-purple { background: #7c3aed; }
+.b-teal   { background: #0891b2; }
+.b-gray   { background: #6b7280; }
+
+/* Steps */
+.step-row { display: flex; gap: 12px; margin: 10px 0; align-items: flex-start; }
+.step-num { background: #2563eb; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; font-size: .9rem; margin-top: 2px; }
+.step-num.green  { background: #16a34a; }
+.step-num.purple { background: #7c3aed; }
+.step-num.teal   { background: #0891b2; }
+.step-num.gray   { background: #374151; }
+.step-body { flex: 1; }
+
+/* Phase phases for speed reading */
+.phase-row { display: flex; gap: 10px; margin: 10px 0; }
+.phase-num { background: #16a34a; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+.phase-body { flex: 1; }
+
+/* Alerts */
+.warn { background: #fff8e1; border-left: 4px solid #f0b429; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: .93rem; }
+.tip  { background: #eff6ff; border-left: 4px solid #2563eb; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: .93rem; }
+.tip.green  { background: #f0fdf4; border-left-color: #16a34a; }
+.tip.purple { background: #faf5ff; border-left-color: #7c3aed; }
+.tip.teal   { background: #f0f9ff; border-left-color: #0891b2; }
+
+/* Prompt box */
+.prompt-box { background: #faf5ff; border: 1.5px solid #c4b5fd; border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: .9rem; line-height: 1.9; }
+.prompt-box strong { color: #7c3aed; }
+
+/* Bookmark section */
+.bm-steps { counter-reset: bm; }
+.bm-step { display: flex; gap: 14px; margin: 14px 0; align-items: flex-start; }
+.bm-step-num { background: #1a3a5c; color: #fff; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; font-size: .95rem; }
+.bm-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+.bm-item { background: #fff; border-radius: 8px; padding: 10px 14px; box-shadow: 0 1px 5px rgba(0,0,0,.07); font-size: .88rem; display: flex; gap: 8px; align-items: flex-start; text-decoration: none; color: inherit; transition: box-shadow .15s; }
+.bm-item:hover { box-shadow: 0 3px 12px rgba(0,0,0,.14); }
+.bm-item .bi { font-size: 1.3rem; flex-shrink: 0; }
+.bm-cat { font-size: .73rem; font-family: sans-serif; font-weight: bold; letter-spacing: 1px; color: #9ca3af; text-transform: uppercase; margin: 14px 0 5px; grid-column: 1 / -1; }
+
+/* Device grid */
+.device-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin: 12px 0; }
+.device-card { background: white; border-radius: 10px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+.device-card h4 { font-size: .95rem; margin-bottom: 8px; color: #1a3a5c; }
+.device-card ol { padding-left: 1.2em; font-size: .88rem; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 10px 0; }
+th { background: #1a3a5c; color: white; padding: 8px 12px; text-align: left; }
+td { padding: 8px 12px; border-bottom: 1px solid #e5e7eb; }
+tr:nth-child(even) td { background: #f9fafb; }
+
+/* FAQ */
+.faq-q { font-weight: bold; color: #1a3a5c; margin: 6px 0 2px; }
+.faq-a { font-size: .93rem; color: #374151; }
+
+/* Footer */
+.footer { text-align: center; color: #9ca3af; font-size: .82rem; margin-top: 48px; }
+
+/* nav pills */
+.nav-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+.pill { background: #fff; border: 1.5px solid #d1d5db; border-radius: 20px; padding: 4px 14px; font-size: .83rem; color: #374151; text-decoration: none; transition: all .15s; }
+.pill:hover { border-color: #2563eb; color: #2563eb; }
+
+@media (max-width: 540px) {
+  .hero h1 { font-size: 1.4rem; }
+  .tool-grid { grid-template-columns: 1fr; }
+  .bm-list { grid-template-columns: 1fr; }
+  .device-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>英語学習ツールガイド</h1>
+  <p>Speed Reading ／ 大学入試過去問 ／ SchoolAI ／ NotebookLM — 使い方マニュアル</p>
+</div>
+
+<div class="container">
+
+  <!-- ▼ クイックナビ -->
+  <div class="nav-pills">
+    <a class="pill" href="#tools">ツール一覧</a>
+    <a class="pill" href="#bookmark">ブックマーク</a>
+    <a class="pill" href="#speed">速読アプリ</a>
+    <a class="pill" href="#exam">過去問アプリ</a>
+    <a class="pill" href="#schoolai">SchoolAI</a>
+    <a class="pill" href="#notebooklm">NotebookLM</a>
+    <a class="pill" href="#download">ダウンロード</a>
+    <a class="pill" href="#faq">よくある質問</a>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ▼ ツール一覧 -->
+  <!-- ══════════════════════════════════════════ -->
+  <h2 id="tools">今日使うツール一覧</h2>
+  <div class="tool-grid">
+    <div class="tool-card green">
+      <div class="tool-icon">📖</div>
+      <div class="tool-name">速読トレーニング</div>
+      <div class="tool-desc">タイマーで英文を読む → 問題を解く → シャドーイング。Level 1・Level 2 各20本。</div>
+    </div>
+    <div class="tool-card blue">
+      <div class="tool-icon">🎓</div>
+      <div class="tool-name">大学入試過去問</div>
+      <div class="tool-desc">岡山大学の入試問題をブラウザで解く。T/F・選択は自動採点。記述はAIサポート。</div>
+    </div>
+    <div class="tool-card purple">
+      <div class="tool-icon">🤖</div>
+      <div class="tool-name">SchoolAI</div>
+      <div class="tool-desc">記述問題・英作文をAIが対話形式でサポート。すぐに答えを教えず、ヒントをくれる。</div>
+    </div>
+    <div class="tool-card teal">
+      <div class="tool-icon">📚</div>
+      <div class="tool-name">NotebookLM</div>
+      <div class="tool-desc">和文英訳に必要な語彙・文法をAIに質問できる。参考資料をもとに根拠つきで回答。</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ▼ ブックマーク -->
+  <!-- ══════════════════════════════════════════ -->
+  <h2 id="bookmark">⭐ ブックマークを作ろう</h2>
+  <p style="margin-bottom:10px;">よく使うツールのリンクをまとめてブックマークしておくと、次回からすぐに開けます。「英語学習ツール」というフォルダを作って保存しましょう。</p>
+
+  <div class="card">
+    <span class="badge b-blue">Chrome / Edge（Chromebook・Windows・Mac）</span>
+    <div class="bm-step">
+      <div class="bm-step-num">1</div>
+      <div>ブックマークバーを表示する<br>
+        <span style="font-size:.88rem;color:#6b7280">Windows: <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> ／ Mac: <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd></span>
+      </div>
+    </div>
+    <div class="bm-step">
+      <div class="bm-step-num">2</div>
+      <div>ブックマークバーを<strong>右クリック</strong> → 「フォルダを追加」→ フォルダ名を <strong>「英語学習ツール」</strong> にして保存</div>
+    </div>
+    <div class="bm-step">
+      <div class="bm-step-num">3</div>
+      <div>下のリンクを<strong>1つずつクリックして開き</strong>、<kbd>Ctrl</kbd>+<kbd>D</kbd>（Mac: <kbd>⌘</kbd>+<kbd>D</kbd>）→ 「フォルダ」で <strong>「英語学習ツール」</strong> を選んで保存しよう
+        <div class="bm-list" style="margin-top:14px">
+          <div class="bm-cat">● 今日使うAIツール</div>
+          <a class="bm-item" href="https://school-ai-app.mingaku.net/redirect?mode=v4cgCdC3WYvOrsCZbfEB&common=false&showheader=true&showfooter=false&ref=schools/PR3Wc2GdpN8GA9edVgHJ/prompts/v4cgCdC3WYvOrsCZbfEB" target="_blank"><span class="bi">🤖</span><div><strong>SchoolAI</strong><br><span style="font-size:.75rem;color:#6b7280">記述問題・英作文ヒント</span></div></a>
+          <a class="bm-item" href="https://notebooklm.google.com/notebook/607bb9e0-807c-4ed7-b536-f48bc058c526" target="_blank"><span class="bi">📝</span><div><strong>NotebookLM（過去問）</strong><br><span style="font-size:.75rem;color:#6b7280">大問3 和文英訳 語彙・文法</span></div></a>
+          <a class="bm-item" href="https://notebooklm.google.com/notebook/7cc1232f-a698-4886-82b9-b336de575baf?authuser=1" target="_blank"><span class="bi">📚</span><div><strong>NotebookLM（文法解説）</strong><br><span style="font-size:.75rem;color:#6b7280">英文法・構文の参考資料</span></div></a>
+          <a class="bm-item" href="https://gelpweb.benesse.ne.jp/public/start" target="_blank"><span class="bi">🎓</span><div><strong>GELP</strong><br><span style="font-size:.75rem;color:#6b7280">英語学習プラットフォーム</span></div></a>
+          <div class="bm-cat">● 辞書・翻訳</div>
+          <a class="bm-item" href="https://ejje.weblio.jp" target="_blank"><span class="bi">📘</span><div><strong>Weblio英和辞典</strong><br><span style="font-size:.75rem;color:#6b7280">単語の意味・用例を調べる</span></div></a>
+          <a class="bm-item" href="https://auth-school.japanknowledge.com/auth_school/login/" target="_blank"><span class="bi">📖</span><div><strong>ジャパンナレッジ</strong><br><span style="font-size:.75rem;color:#6b7280">学校契約の辞書サービス</span></div></a>
+          <a class="bm-item" href="https://www.deepl.com" target="_blank"><span class="bi">🌐</span><div><strong>DeepL翻訳</strong><br><span style="font-size:.75rem;color:#6b7280">自然な英語翻訳</span></div></a>
+          <div class="bm-cat">● 自主学習・リスニング</div>
+          <a class="bm-item" href="https://ed.ted.com" target="_blank"><span class="bi">🎬</span><div><strong>TED-Ed</strong><br><span style="font-size:.75rem;color:#6b7280">短い教養動画・字幕あり</span></div></a>
+          <a class="bm-item" href="https://www3.nhk.or.jp/nhkworld/" target="_blank"><span class="bi">📰</span><div><strong>NHK World Japan</strong><br><span style="font-size:.75rem;color:#6b7280">日本のニュースを英語で</span></div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge b-gray">Safari（iPad）</span>
+    <div class="bm-step">
+      <div class="bm-step-num">1</div>
+      <div>ページを開いた状態で画面下部の <strong>「共有」ボタン（□↑）</strong> をタップ</div>
+    </div>
+    <div class="bm-step">
+      <div class="bm-step-num">2</div>
+      <div>「ブックマークに追加」→ 場所を <strong>「お気に入り」</strong> または新しいフォルダ「英語学習ツール」に設定して保存</div>
+    </div>
+    <div class="bm-step">
+      <div class="bm-step-num">3</div>
+      <div>URLバー左の <strong>📖 ブックマークアイコン</strong> → フォルダから開けるようになります</div>
+    </div>
+  </div>
+
+  <div class="tip">
+    💡 <strong>HTMLファイル（速読・過去問アプリ）はダウンロードして使います。</strong><br>
+    Driveのリンクをブックマークしておけば、次回すぐにダウンロードし直せます。
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ▼ 速読アプリ -->
+  <!-- ══════════════════════════════════════════ -->
+  <h2 id="speed">📖 速読トレーニングアプリの使い方</h2>
+
+  <div class="card">
+    <span class="badge b-green">Level 1</span> 民話・昔話（各約300〜350語）／ 3択 × 8問<br>
+    <span class="badge b-green" style="margin-top:4px">Level 2</span> ニュージーランドの話題（各約390〜410語）／ 4択 × 10問
+  </div>
+
+  <div class="card">
+    <div class="phase-row">
+      <div class="phase-num">0</div>
+      <div class="phase-body"><strong>教材を選ぶ</strong><br>ホーム画面で20本のタイトルから選択。完了した教材には ✓ バッジが付きます。</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num">1</div>
+      <div class="phase-body"><strong>速読（Reading）</strong><br>「計測スタート」→ 英文を読む → 「読み終わった！」。<br><span style="color:#16a34a;font-size:.9rem;">→ WPM（1分あたりの語数）が自動表示されます。</span></div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num">2</div>
+      <div class="phase-body"><strong>内容理解問題（Questions）</strong><br>読んだ内容をもとに選択問題（8〜10問）に答えます。</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num">3</div>
+      <div class="phase-body"><strong>結果（Results）</strong><br>スコアと各問の正誤・解説が表示されます。</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num">4</div>
+      <div class="phase-body"><strong>シャドーイング（Shadowing）</strong><br>音声を聴きながら後を追って音読練習。速度スライダーで 0.6〜1.3倍に調整できます。</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num">5</div>
+      <div class="phase-body"><strong>対訳（Translation）</strong><br>英語と日本語を並べて確認。意味や表現を復習しましょう。</div>
+    </div>
+  </div>
+
+  <div class="tip green">
+    📈 <strong>WPM の目安：</strong>高校生は 150〜200 WPM が目標。<br>
+    ホーム画面の「WPM履歴」で過去の記録をグラフで確認できます。
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ▼ 過去問アプリ -->
+  <!-- ══════════════════════════════════════════ -->
+  <h2 id="exam">🎓 大学入試過去問アプリの使い方</h2>
+  <p>岡山大学の英語入試（大問1〜4）をブラウザで解くアプリです。本番の試験問題に挑戦してみよう。</p>
+
+  <div class="card">
+    <span class="badge b-blue">大問の構成</span>
+    <table style="margin-top:10px">
+      <tr><th>大問</th><th>内容</th><th>採点</th></tr>
+      <tr><td>大問 1</td><td>長文読解（Super-Agers）— T/F × 5 ／ 記述 × 2</td><td>T/F は自動 ／ 記述は SchoolAI</td></tr>
+      <tr><td>大問 2</td><td>長文読解（Procrastination）— 選択 × 2 ／ 計算 × 1 ／ 記述 × 2</td><td>選択・計算は自動 ／ 記述は SchoolAI</td></tr>
+      <tr><td>大問 3</td><td>和文英訳 × 3</td><td>NotebookLM で語彙・文法確認</td></tr>
+      <tr><td>大問 4</td><td>自由英作文（約10行）</td><td>SchoolAI でフィードバック</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="badge b-blue">使い方の流れ</span>
+    <div class="step-row" style="margin-top:10px">
+      <div class="step-num">1</div>
+      <div class="step-body"><strong>大問を選ぶ</strong><br>ホーム画面のカードをクリックして大問のページに進みます。</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-body"><strong>本文を読む</strong><br>青い点線の単語をクリックすると、その場で意味がポップアップ表示されます。</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div class="step-body"><strong>問題を解く</strong><br>T/F・選択式は「答え合わせ」ボタンで即座に確認。記述はメモ欄に自分の答えを書こう。</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">4</div>
+      <div class="step-body"><strong>記述・英作文はAIに相談</strong><br>「SchoolAI でヒントを受ける」ボタンを押すと、AIとの対話画面が別タブで開きます。<br><em style="font-size:.88rem;color:#6b7280">→ SchoolAI の使い方は下の節を読んでください。</em></div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">5</div>
+      <div class="step-body"><strong>大問 3 の英訳は NotebookLM</strong><br>「NotebookLM を開く」ボタンから文法・語彙の参考資料を参照できます。</div>
+    </div>
+  </div>
+
+  <div class="tip">
+    💡 文字サイズは画面右上の <strong>小 ／ 中 ／ 大</strong> ボタンで変更できます。
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ▼ SchoolAI -->
+  <!-- ══════════════════════════════════════════ -->
+  <h2 id="schoolai">🤖 SchoolAI の使い方</h2>
+  <p>記述問題・英作文のヒントをもらえるAIチャットです。<strong>答えをそのまま教えることはしません</strong>。ヒントをもとに自分で考える練習です。</p>
+
+  <div class="card">
+    <span class="badge b-purple">基本的な使い方</span>
+    <div class="step-row" style="margin-top:10px">
+      <div class="step-num purple">1</div>
+      <div class="step-body"><strong>過去問アプリの「SchoolAI でヒントを受ける」ボタン</strong>を押す<br><span style="font-size:.88rem;color:#6b7280">または先生から共有されたURLを直接開く</span></div>
+    </div>
+    <div class="step-row">
+      <div class="step-num purple">2</div>
+      <div class="step-body"><strong>どの設問か明記して話しかける</strong><br>例：「大問1 設問2について答えます：スーパーエイジャーに関係すると思っていた食事や睡眠に差がなかったこと」</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num purple">3</div>
+      <div class="step-body"><strong>ヒントをもとに自分で考え直す</strong><br>AIが「不足している要素」や「本文のどこを確認すればよいか」を示してくれます。</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num purple">4</div>
+      <div class="step-body"><strong>答えを改善して再度入力する</strong><br>「ほぼ正解です。〇〇の要素を加えると完璧です」と言われたら、もう一息！</div>
+    </div>
+  </div>
+
+  <div class="prompt-box">
+    <strong>💬 話しかけ方の例：</strong><br>
+    「大問1 設問2について答えます：スーパーエイジャーに意外なことが見られなかった例として、食事や睡眠の量に差がなかったことが挙げられます。」<br><br>
+    「大問2 設問4について答えます：問題を解く責任が学生自身にあるということ。」<br><br>
+    「大問4 英作文です：（書いた英文をそのまま貼り付ける）」
+  </div>
+
+  <div class="tip purple">
+    💡 <strong>コツ：</strong>まず自分でメモ欄に答えを書いてから SchoolAI に送ろう。<br>何も考えずに「答えを教えて」と言っても、ヒントしか返ってきません。
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ▼ NotebookLM -->
+  <!-- ══════════════════════════════════════════ -->
+  <h2 id="notebooklm">📚 NotebookLM の使い方</h2>
+  <p>大問3（和文英訳）に取り組むとき、英訳に必要な語彙・文法・構文を参考資料をもとに教えてくれるAIです。</p>
+
+  <div class="card">
+    <span class="badge b-teal">基本的な使い方</span>
+    <div class="step-row" style="margin-top:10px">
+      <div class="step-num teal">1</div>
+      <div class="step-body">過去問アプリ 大問3 の「<strong>NotebookLM を開く</strong>」ボタンを押す</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num teal">2</div>
+      <div class="step-body">下のプロンプト例を<strong>コピーして貼り付け</strong>て送信する</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num teal">3</div>
+      <div class="step-body">解説を参考にしながら英訳を書いてみる</div>
+    </div>
+  </div>
+
+  <div class="prompt-box">
+    <strong>📋 コピーして使えるプロンプト：</strong><br><br>
+    ・この英作文が書けるために必要な<strong>語彙</strong>を一覧にして教えて<br>
+    ・この英作文が書けるために必要な<strong>文法事項や構文をソースつき</strong>で教えて<br><br>
+    <span style="font-size:.85rem;color:#6b7280">※ 英訳したい日本語文（①〜③のどれか）を添えるとより具体的な回答が得られます。</span>
+  </div>
+
+  <div class="tip teal">
+    💡 NotebookLM は「参考資料にもとづいて回答する」AIです。<br>
+    出典や根拠が表示されるので、信頼性の高い文法解説が得られます。
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ▼ ダウンロード -->
+  <!-- ══════════════════════════════════════════ -->
+  <h2 id="download">ファイルのダウンロードと開き方</h2>
+  <p>速読アプリ・過去問アプリは HTML ファイルをダウンロードして使います。</p>
+
+  <div class="warn">
+    ⚠️ Google Drive のリンクを開いても、そのままでは正しく動きません。<br>
+    必ず「<strong>ダウンロード</strong>」してから、保存したファイルをブラウザで開いてください。
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4>🖥 Chromebook</h4>
+      <ol>
+        <li>Drive でファイルを開く</li>
+        <li>右上「⬇ ダウンロード」</li>
+        <li>「ファイル」アプリ → ダウンロード</li>
+        <li>ファイルをダブルクリック ✅</li>
+      </ol>
+    </div>
+    <div class="device-card">
+      <h4>💻 Windows</h4>
+      <ol>
+        <li>Drive でファイルを開く</li>
+        <li>右上「⬇ ダウンロード」</li>
+        <li>エクスプローラーで開く</li>
+        <li>Chrome/Edge で開く ✅</li>
+      </ol>
+    </div>
+    <div class="device-card">
+      <h4>🍎 Mac</h4>
+      <ol>
+        <li>Drive でファイルを開く</li>
+        <li>右上「⬇ ダウンロード」</li>
+        <li>Finder → ダウンロード</li>
+        <li>Chrome で開く ✅</li>
+      </ol>
+    </div>
+    <div class="device-card">
+      <h4>📱 iPad</h4>
+      <ol>
+        <li>Drive アプリで開く</li>
+        <li>「…」→「別のアプリで開く」</li>
+        <li>「Safari」を選択</li>
+        <li>Safari で動作 ✅</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="tip">
+    💡 <strong>推奨ブラウザ：Google Chrome または Microsoft Edge</strong><br>
+    シャドーイングの音声機能が最もよく動きます。Internet Explorer は非対応。
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ▼ FAQ -->
+  <!-- ══════════════════════════════════════════ -->
+  <h2 id="faq">よくある質問</h2>
+
+  <div class="card">
+    <div class="faq-q">Q. 速読アプリの音声が出ない</div>
+    <div class="faq-a">ブラウザの音声許可が必要な場合があります。アドレスバー横の 🔒 または 🔊 アイコンをクリックして「音声を許可」してください。iPad（Safari）の場合はシャドーイング開始前に画面をタップする必要があります。</div>
+  </div>
+
+  <div class="card">
+    <div class="faq-q">Q. ファイルをクリックしても開けない</div>
+    <div class="faq-a">HTML ファイルはブラウザで開く必要があります。右クリック → 「プログラムから開く」→「Chrome」または「Edge」を選んでください。</div>
+  </div>
+
+  <div class="card">
+    <div class="faq-q">Q. WPMの記録が消えてしまった</div>
+    <div class="faq-a">WPM の記録はブラウザの閲覧データとして保存されます。「閲覧履歴の削除」を行うと消えることがあります。大切な記録はスクリーンショットで残しておきましょう。</div>
+  </div>
+
+  <div class="card">
+    <div class="faq-q">Q. SchoolAI が英語で返答してくる</div>
+    <div class="faq-a">日本語で話しかけると日本語で答えてくれます。「〇〇について日本語でヒントをください」と書いてみましょう。</div>
+  </div>
+
+  <div class="card">
+    <div class="faq-q">Q. SchoolAI が答えをそのまま教えてくれない</div>
+    <div class="faq-a">それが正しい動作です！ このAIは「すぐに答えを教えない」ように設定されています。ヒントをもとに自分で考えることが学習効果を高めます。</div>
+  </div>
+
+  <div class="card">
+    <div class="faq-q">Q. NotebookLM でうまく質問できない</div>
+    <div class="faq-a">上のプロンプト例をそのままコピーして使ってみましょう。英訳したい日本語文を一緒に送ると、より具体的な解説が返ってきます。</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ▼ 動作環境 -->
+  <!-- ══════════════════════════════════════════ -->
+  <h2>動作環境まとめ</h2>
+  <table>
+    <tr><th>ツール</th><th>Chrome / Edge</th><th>Safari (iPad)</th></tr>
+    <tr><td>速読アプリ（タイマー・問題）</td><td>✅</td><td>✅</td></tr>
+    <tr><td>速読アプリ（シャドーイング音声）</td><td>✅（推奨）</td><td>✅</td></tr>
+    <tr><td>速読アプリ（WPM履歴グラフ）</td><td>✅</td><td>✅</td></tr>
+    <tr><td>過去問アプリ（T/F・選択・計算）</td><td>✅</td><td>✅</td></tr>
+    <tr><td>過去問アプリ（辞書ポップアップ）</td><td>✅</td><td>✅</td></tr>
+    <tr><td>SchoolAI（ブラウザ）</td><td>✅</td><td>✅</td></tr>
+    <tr><td>NotebookLM（ブラウザ）</td><td>✅</td><td>✅ ※要ログイン</td></tr>
+  </table>
+
+  <div class="footer">
+    <p>広島大学附属福山高等学校 英語科 ／ 英語学習ツールガイド v2.0（2026-06-13）</p>
+  </div>
+
+</div><!-- /container -->
+</body>
+</html>

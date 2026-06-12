@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>岡山大学 英語過去問演習</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--fs:1.05rem;--lh:1.9}
+body{font-family:'Georgia','Times New Roman',serif;background:#f5f6f8;color:#222;line-height:var(--lh)}
+.container{max-width:820px;margin:0 auto;padding:70px 20px 60px}
+
+/* ── Top bar ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:#1a3a5c;color:#fff;display:flex;align-items:center;gap:8px;padding:8px 16px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.topbar-title{flex:1;font-size:.92rem;font-weight:bold;font-family:sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fs-controls{display:flex;align-items:center;gap:4px;margin-left:auto}
+.fs-label{font-size:.7rem;color:rgba(255,255,255,.6);font-family:sans-serif;margin-right:2px}
+.fs-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:4px;cursor:pointer;font-family:sans-serif;transition:background .12s;padding:3px 7px;line-height:1}
+.fs-btn:hover{background:rgba(255,255,255,.3)}
+#fs-s{font-size:.7rem}#fs-m{font-size:.82rem}#fs-l{font-size:.95rem}
+.btn-back{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:5px;cursor:pointer;font-size:.8rem;padding:4px 11px;font-family:sans-serif;display:none}
+.btn-back:hover{background:rgba(255,255,255,.3)}
+
+/* ── Home ── */
+.home-hero{background:linear-gradient(135deg,#1a3a5c 0%,#2563eb 100%);color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:22px}
+.home-hero h1{font-size:1.35rem;margin-bottom:4px}
+.home-hero .sub{opacity:.75;font-size:.88rem;font-family:sans-serif;margin-top:5px;line-height:1.6}
+.home-cards{display:flex;flex-direction:column;gap:13px}
+.home-card{background:#fff;border-radius:12px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:flex-start;gap:16px;transition:transform .15s,box-shadow .15s,border-color .15s;border:2px solid transparent}
+.home-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12);border-color:#2563eb}
+.card-icon{font-size:2rem;flex-shrink:0;width:44px;text-align:center;padding-top:2px}
+.card-body{flex:1}
+.card-num{font-size:.7rem;font-family:sans-serif;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}
+.card-title{font-size:.98rem;font-weight:bold;color:#1a3a5c;margin-bottom:4px}
+.card-desc{font-size:.8rem;color:#6b7280;font-family:sans-serif;line-height:1.55}
+.tags{margin-top:7px;display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-size:.66rem;font-family:sans-serif;font-weight:bold;padding:2px 7px;border-radius:10px}
+.t-mcq{background:#dbeafe;color:#1d4ed8}
+.t-tf{background:#fef9c3;color:#854d0e}
+.t-desc{background:#fce7f3;color:#9d174d}
+.t-trans{background:#f0fdf4;color:#15803d}
+.t-write{background:#faf5ff;color:#7e22ce}
+.t-num{background:#fff7ed;color:#c2410c}
+
+/* ── Screens ── */
+.screen{display:none}
+.screen.active{display:block}
+.sec-hero{background:#1a3a5c;color:#fff;border-radius:12px;padding:18px 26px;margin-bottom:18px}
+.sec-hero h2{font-size:1.15rem;margin-bottom:2px}
+.sec-hero .hero-sub{font-size:.8rem;opacity:.73;font-family:sans-serif;margin-top:5px;line-height:1.5}
+.vocab-hint{background:#eff6ff;border-radius:8px;padding:9px 14px;font-size:.78rem;font-family:sans-serif;color:#1d4ed8;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+
+/* ── Passage ── */
+.passage-wrap{background:#fff;border-radius:10px;padding:26px 32px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:10px;font-size:var(--fs)}
+.passage-label{font-size:.7rem;font-family:sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:2px;color:#9ca3af;margin-bottom:14px}
+.passage-wrap p{text-indent:1.2em;margin-bottom:1.6em;line-height:var(--lh)}
+.passage-wrap p:last-child{margin-bottom:0}
+.vocab{border-bottom:1.5px dotted #2563eb;cursor:pointer;color:inherit}
+.vocab:hover{background:#eff6ff;border-radius:2px}
+.ul1{text-decoration:underline;text-decoration-color:#dc2626;text-decoration-style:solid;font-weight:normal}
+
+/* ── Vocab popup ── */
+#vpop{position:fixed;z-index:300;background:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.22);padding:14px 18px;min-width:200px;max-width:300px;display:none;border-top:3px solid #2563eb}
+#vpop .vword{font-size:1.05rem;font-weight:bold;color:#1a3a5c;margin-bottom:1px}
+#vpop .vpos{font-size:.72rem;color:#9ca3af;font-family:sans-serif;margin-bottom:7px}
+#vpop .vmean{font-size:.93rem;color:#222;line-height:1.65}
+#vpop .vex{font-size:.8rem;color:#6b7280;font-family:sans-serif;margin-top:5px;font-style:italic}
+#vpop .vcl{position:absolute;top:8px;right:10px;background:none;border:none;cursor:pointer;color:#9ca3af;font-size:1rem;line-height:1;padding:2px}
+#vpop .vcl:hover{color:#374151}
+
+/* ── Translation toggle ── */
+.btn-trans{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:6px;border:2px solid #0891b2;background:#fff;color:#0891b2;font-size:.8rem;cursor:pointer;font-family:sans-serif;font-weight:bold;margin:6px 0 14px;transition:all .15s}
+.btn-trans:hover,.btn-trans.open{background:#0891b2;color:#fff}
+.trans-panel-ja{display:none;background:#f0f9ff;border-radius:10px;padding:22px 28px;margin-bottom:18px;border-left:4px solid #0891b2;font-size:calc(var(--fs) - .05rem);line-height:var(--lh)}
+.trans-panel-ja p{text-indent:0;margin-bottom:1.4em;color:#1e3a5f}
+.trans-panel-ja p:last-child{margin-bottom:0}
+.trans-para-num{font-size:.65rem;font-family:sans-serif;font-weight:bold;color:#0891b2;margin-right:5px;letter-spacing:.5px}
+
+/* ── Questions ── */
+.q-section{background:#fff;border-radius:10px;padding:24px 30px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:16px}
+.q-sec-title{font-size:.93rem;font-weight:bold;color:#1a3a5c;padding-bottom:9px;border-bottom:2px solid #e5e7eb;margin-bottom:18px;font-family:sans-serif}
+.q-block{margin-bottom:22px}
+.q-block:last-child{margin-bottom:0}
+.q-num{font-size:.72rem;font-family:sans-serif;font-weight:bold;letter-spacing:1px;color:#9ca3af;text-transform:uppercase;margin-bottom:4px}
+.q-text{font-size:var(--fs);font-weight:bold;margin-bottom:10px;line-height:1.7}
+.q-sub{font-size:calc(var(--fs) - .07rem);color:#374151;margin-top:6px;margin-bottom:10px;line-height:1.75}
+.option-label{display:flex;align-items:flex-start;gap:10px;margin:6px 0;cursor:pointer;padding:6px 10px;border-radius:6px;transition:background .1s;font-size:calc(var(--fs) - .05rem)}
+.option-label:hover{background:#f0f4ff}
+.option-label input{margin-top:3px;flex-shrink:0;cursor:pointer}
+
+/* T/F rows */
+.tf-table{width:100%;border-collapse:collapse;margin-bottom:14px}
+.tf-table tr{border-bottom:1px solid #f1f5f9}
+.tf-table tr:last-child{border-bottom:none}
+.tf-lbl{width:24px;padding:10px 6px;font-family:sans-serif;font-weight:bold;font-size:.82rem;color:#374151;vertical-align:top}
+.tf-stmt{padding:10px 8px;font-size:calc(var(--fs) - .05rem);line-height:1.75;vertical-align:top}
+.tf-btns{padding:10px 4px;vertical-align:top;white-space:nowrap}
+.tf-btn{padding:4px 11px;border-radius:5px;border:2px solid #d1d5db;background:#fff;cursor:pointer;font-family:sans-serif;font-weight:bold;font-size:.8rem;transition:all .15s;margin-left:4px}
+.tf-btn.sel-t{border-color:#2563eb;background:#dbeafe;color:#1d4ed8}
+.tf-btn.sel-f{border-color:#dc2626;background:#fee2e2;color:#dc2626}
+.tf-feedback{display:none;font-size:.78rem;font-family:sans-serif;padding:4px 8px;border-radius:4px;margin-top:4px}
+.fb-ok{background:#f0fdf4;color:#15803d}
+.fb-ng{background:#fff7ed;color:#c2410c}
+
+/* MCQ result */
+.btn-check{display:inline-block;padding:9px 22px;border-radius:7px;border:none;font-size:.9rem;cursor:pointer;font-family:sans-serif;font-weight:bold;transition:opacity .15s;background:#2563eb;color:#fff;margin-top:10px}
+.btn-check:hover{opacity:.87}
+.mcq-result{display:none;margin-top:12px}
+.r-item{padding:9px 14px;border-radius:7px;margin-bottom:8px;font-size:.86rem;line-height:1.6;font-family:sans-serif}
+.r-ok{background:#f0fdf4;border-left:3px solid #16a34a}
+.r-ng{background:#fff7ed;border-left:3px solid #ea580c}
+.tag-c{display:inline-block;background:#dcfce7;color:#15803d;border-radius:4px;font-size:.68rem;font-weight:bold;padding:1px 6px;margin-right:4px}
+.tag-w{display:inline-block;background:#fee2e2;color:#b91c1c;border-radius:4px;font-size:.68rem;font-weight:bold;padding:1px 6px;margin-right:4px}
+
+/* Numeric */
+.num-row{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.num-row input{width:90px;padding:8px 12px;border:2px solid #d1d5db;border-radius:7px;font-size:1.1rem;font-family:'Courier New',monospace;text-align:center}
+.num-row input:focus{outline:none;border-color:#2563eb}
+.num-unit{font-family:sans-serif;font-size:.88rem;color:#374151}
+.num-result{display:none;margin-top:10px;padding:10px 14px;border-radius:7px;font-family:sans-serif;font-size:.88rem}
+.num-ok{background:#f0fdf4;color:#15803d}
+.num-ng{background:#fee2e2;color:#b91c1c}
+
+/* Descriptive / SchoolAI */
+.desc-block{background:#fdf4ff;border-radius:8px;padding:14px 18px;margin-top:4px;border-left:4px solid #7c3aed}
+.desc-hint{font-size:.8rem;color:#6d28d9;font-family:sans-serif;margin-top:8px;line-height:1.6}
+.btn-ai{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:7px;border:none;font-size:.88rem;cursor:pointer;font-family:sans-serif;font-weight:bold;background:#7c3aed;color:#fff;transition:opacity .15s;text-decoration:none;margin-top:12px}
+.btn-ai:hover{opacity:.87}
+.ai-note{font-size:.73rem;color:#7c3aed;font-family:sans-serif;margin-top:5px}
+
+/* ── Model answer ── */
+.btn-model{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:6px;border:2px solid #16a34a;background:#fff;color:#16a34a;font-size:.82rem;cursor:pointer;font-family:sans-serif;font-weight:bold;margin-top:12px;transition:all .15s}
+.btn-model:hover,.btn-model.open{background:#16a34a;color:#fff}
+.model-wrap{display:none;margin-top:12px;background:#f0fdf4;border-radius:9px;padding:18px 22px;border-left:4px solid #16a34a}
+.model-head{font-size:.72rem;font-family:sans-serif;font-weight:bold;color:#15803d;letter-spacing:1px;margin-bottom:10px;text-transform:uppercase}
+.model-body{font-size:calc(var(--fs) - .05rem);line-height:var(--lh);color:#1a3a5c;white-space:pre-wrap}
+.model-pt{margin-top:12px;background:#fff;border-radius:7px;padding:11px 15px;font-size:.78rem;font-family:sans-serif;color:#374151;line-height:1.75;border:1px solid #bbf7d0}
+.model-pt-head{font-weight:bold;color:#15803d;margin-bottom:5px}
+
+/* Translation */
+.trans-block{margin-bottom:20px}
+.trans-block:last-child{margin-bottom:0}
+.trans-num-lbl{font-size:.72rem;font-family:sans-serif;font-weight:bold;letter-spacing:1px;color:#0891b2;text-transform:uppercase;margin-bottom:6px}
+.trans-src{background:#fff;border-radius:8px;padding:14px 18px;font-size:var(--fs);line-height:var(--lh);border-left:4px solid #0891b2;margin-bottom:8px;color:#1a3a5c}
+
+/* Textarea memo */
+.memo-area{width:100%;min-height:100px;padding:11px 14px;border:2px solid #e5e7eb;border-radius:8px;font-size:calc(var(--fs) - .05rem);line-height:1.75;font-family:'Georgia',serif;resize:vertical;margin-top:10px;transition:border-color .15s}
+.memo-area:focus{outline:none;border-color:#7c3aed}
+.memo-label{font-size:.72rem;font-family:sans-serif;color:#9ca3af;margin-top:4px}
+
+/* Bottom nav */
+.nav-bottom{margin-top:28px;display:flex;justify-content:center}
+.btn-tohome{padding:10px 28px;border-radius:7px;border:none;font-size:.9rem;cursor:pointer;font-family:sans-serif;font-weight:bold;background:#1a3a5c;color:#fff;transition:opacity .15s}
+.btn-tohome:hover{opacity:.85}
+</style>
+</head>
+<body>
+
+<!-- ════════ TOP BAR ════════ -->
+<div class="topbar">
+  <button class="btn-back" id="btn-back" onclick="goHome()">← 戻る</button>
+  <div class="topbar-title" id="topbar-title">岡山大学 英語過去問演習</div>
+  <div class="fs-controls">
+    <span class="fs-label">文字</span>
+    <button class="fs-btn" id="fs-s" onclick="setFs('s')">小</button>
+    <button class="fs-btn" id="fs-m" onclick="setFs('m')" style="background:rgba(255,255,255,.35)">中</button>
+    <button class="fs-btn" id="fs-l" onclick="setFs('l')">大</button>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ════════ HOME ════════ -->
+<div id="screen-home" class="screen active">
+  <div class="home-hero">
+    <h1>岡山大学 英語過去問演習</h1>
+    <div class="sub">
+      前期試験（文・教・法・経・理・医・歯・薬・工・農）　120分<br>
+      青い点線の単語をクリックすると意味が表示されます。
+    </div>
+  </div>
+  <div class="home-cards">
+    <div class="home-card" onclick="showScreen('q1')">
+      <div class="card-icon">📖</div>
+      <div class="card-body">
+        <div class="card-num">大問 1</div>
+        <div class="card-title">Super-Agers — 記憶力が衰えない人々</div>
+        <div class="card-desc">加齢と記憶力に関する英語論文。長文読解。</div>
+        <div class="tags">
+          <span class="tag t-tf">T/F × 5</span>
+          <span class="tag t-desc">記述 × 2</span>
+        </div>
+      </div>
+    </div>
+    <div class="home-card" onclick="showScreen('q2')">
+      <div class="card-icon">📝</div>
+      <div class="card-body">
+        <div class="card-num">大問 2</div>
+        <div class="card-title">Procrastination — 先延ばしと締め切り</div>
+        <div class="card-desc">大学の授業での締め切り実験。長文読解。</div>
+        <div class="tags">
+          <span class="tag t-mcq">MCQ × 2</span>
+          <span class="tag t-num">計算 × 1</span>
+          <span class="tag t-desc">記述 × 2</span>
+        </div>
+      </div>
+    </div>
+    <div class="home-card" onclick="showScreen('q3')">
+      <div class="card-icon">🔤</div>
+      <div class="card-body">
+        <div class="card-num">大問 3</div>
+        <div class="card-title">和文英訳 — 建築の混乱</div>
+        <div class="card-desc">20世紀末の建築状況に関する文章を英訳する。</div>
+        <div class="tags">
+          <span class="tag t-trans">英訳 × 3</span>
+        </div>
+      </div>
+    </div>
+    <div class="home-card" onclick="showScreen('q4')">
+      <div class="card-icon">✍️</div>
+      <div class="card-body">
+        <div class="card-num">大問 4</div>
+        <div class="card-title">自由英作文 — 岡山大学で学びたいこと</div>
+        <div class="card-desc">志望理由・動機・能力を英語で約10行にまとめる。</div>
+        <div class="tags">
+          <span class="tag t-write">英作文</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /home -->
+
+
+<!-- ════════ 大問 1 ════════ -->
+<div id="screen-q1" class="screen">
+  <div class="sec-hero">
+    <h2>大問 1　長文読解</h2>
+    <div class="hero-sub">Super-Agers — 記憶力が衰えない高齢者の脳</div>
+  </div>
+  <div class="vocab-hint">📘 青い点線の単語をタップ・クリックすると意味が表示されます</div>
+
+  <div class="passage-wrap" id="p1"></div>
+
+  <!-- 対訳トグル -->
+  <button class="btn-trans" id="btn-trans-p1" onclick="toggleTrans('p1')">🇯🇵 日本語訳を見る</button>
+  <div class="trans-panel-ja" id="trans-p1"></div>
+
+  <!-- 設問 1: T/F -->
+  <div class="q-section">
+    <div class="q-sec-title">設問 1　T / F</div>
+    <p style="font-size:.85rem;font-family:sans-serif;color:#374151;margin-bottom:14px;line-height:1.7">
+      各文の内容がパッセージの情報と一致する場合は <strong>T</strong>、矛盾する場合は <strong>F</strong> を選んでください。
+    </p>
+    <table class="tf-table" id="tf1"></table>
+    <button class="btn-check" onclick="checkTF('tf1', TF1_ANS, TF1_EXP)">答え合わせ</button>
+    <div class="mcq-result" id="tf1-result"></div>
+  </div>
+
+  <!-- 設問 2: 記述 -->
+  <div class="q-section">
+    <div class="q-sec-title">設問 2　記述問題</div>
+
+    <div class="q-block">
+      <div class="q-num">問 2</div>
+      <div class="q-text">下線部①が示す内容について，具体的な例を挙げて日本語で説明しなさい。</div>
+      <div class="desc-block">
+        <div style="font-size:.82rem;font-family:sans-serif;color:#374151;line-height:1.7">
+          下線部① ："<em>some surprising omissions</em>"
+        </div>
+        <div class="desc-hint">✏️ まず自分で答えを考えてメモしてから、AIのヒントを使いましょう。</div>
+        <textarea class="memo-area" placeholder="自分の考えをここにメモ…（提出不要）"></textarea>
+        <div class="memo-label">※ このメモは採点・送信されません</div>
+        <a class="btn-ai" href="https://school-ai-app.mingaku.net/redirect?mode=v4cgCdC3WYvOrsCZbfEB&common=false&showheader=true&showfooter=false&ref=schools/PR3Wc2GdpN8GA9edVgHJ/prompts/v4cgCdC3WYvOrsCZbfEB" target="_blank">🤖 SchoolAI でヒント・添削を受ける →</a>
+        <div class="ai-note">※ 別タブでSchoolAIが開きます。</div>
+        <button class="btn-model" id="btn-model-q1-2" onclick="toggleModel('q1-2')">✅ 模範解答を見る</button>
+        <div class="model-wrap" id="model-q1-2">
+          <div class="model-head">模範解答</div>
+          <div class="model-body">スーパーエイジャーに関連すると予想されていたのに、実際にはスーパーエイジャーと通常の高齢者の間で差が見られなかった事柄のこと。具体的には、食事・睡眠時間・職歴・アルコールやタバコの使用に関して、2グループ間に有意な差がなかった。</div>
+          <div class="model-pt">
+            <div class="model-pt-head">ポイント</div>
+            「スーパーエイジャーに期待されるが実際にはなかった差異」であることを説明した上で、具体例（食事・睡眠・職歴・喫煙など）を1つ以上挙げること。根拠：第12段落 "things that you would expect to be associated with super-agers weren't really there"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block" style="margin-top:24px">
+      <div class="q-num">問 3</div>
+      <div class="q-text">Harrison 氏のコメントから今後どのような研究が行われると予測されるか，日本語で説明しなさい。</div>
+      <div class="desc-block">
+        <div class="desc-hint">✏️ Harrison 氏の最後の発言（本文末付近）をもとに考えましょう。</div>
+        <textarea class="memo-area" placeholder="自分の考えをここにメモ…（提出不要）"></textarea>
+        <div class="memo-label">※ このメモは採点・送信されません</div>
+        <a class="btn-ai" href="https://school-ai-app.mingaku.net/redirect?mode=v4cgCdC3WYvOrsCZbfEB&common=false&showheader=true&showfooter=false&ref=schools/PR3Wc2GdpN8GA9edVgHJ/prompts/v4cgCdC3WYvOrsCZbfEB" target="_blank">🤖 SchoolAI でヒント・添削を受ける →</a>
+        <div class="ai-note">※ 別タブでSchoolAIが開きます。</div>
+        <button class="btn-model" id="btn-model-q1-3" onclick="toggleModel('q1-3')">✅ 模範解答を見る</button>
+        <div class="model-wrap" id="model-q1-3">
+          <div class="model-head">模範解答</div>
+          <div class="model-body">スーパーエイジャーが高い認知機能を維持できる理由として考えられる、脳内に存在する分子レベルの「老化への抵抗メカニズム」の解明を目指した研究が行われると予測される。</div>
+          <div class="model-pt">
+            <div class="model-pt-head">ポイント</div>
+            「分子レベル（molecular level）」への言及が必要。根拠：第15段落 "some sort of lucky physical condition or resistance mechanism in the brain that's on the molecular level that we don't understand yet" — 現在は未解明であることを踏まえ、「今後明らかにしようとする研究」という形でまとめること。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div><!-- /q1 -->
+
+
+<!-- ════════ 大問 2 ════════ -->
+<div id="screen-q2" class="screen">
+  <div class="sec-hero">
+    <h2>大問 2　長文読解</h2>
+    <div class="hero-sub">Procrastination — 先延ばしと締め切りの心理学</div>
+  </div>
+  <div class="vocab-hint">📘 青い点線の単語をタップ・クリックすると意味が表示されます</div>
+
+  <div class="passage-wrap" id="p2"></div>
+
+  <!-- 対訳トグル -->
+  <button class="btn-trans" id="btn-trans-p2" onclick="toggleTrans('p2')">🇯🇵 日本語訳を見る</button>
+  <div class="trans-panel-ja" id="trans-p2"></div>
+
+  <!-- 設問 MCQ 1 & 2 -->
+  <div class="q-section">
+    <div class="q-sec-title">設問 1 〜 3　選択式・計算</div>
+
+    <div class="q-block">
+      <div class="q-num">問 1</div>
+      <div class="q-text">What is the meaning of the word "procrastination" based on the passage?</div>
+      <label class="option-label"><input type="radio" name="q2q1" value="A"> (A) Advance planning</label>
+      <label class="option-label"><input type="radio" name="q2q1" value="B"> (B) Delaying tasks</label>
+      <label class="option-label"><input type="radio" name="q2q1" value="C"> (C) Future anticipation</label>
+      <label class="option-label"><input type="radio" name="q2q1" value="D"> (D) Immediate action</label>
+    </div>
+
+    <div class="q-block">
+      <div class="q-num">問 2</div>
+      <div class="q-text">What is the main point of the passage?</div>
+      <label class="option-label"><input type="radio" name="q2q2" value="A"> (A) Even with help, students have difficulties managing their time on projects.</label>
+      <label class="option-label"><input type="radio" name="q2q2" value="B"> (B) It is better for teachers to control when deadlines are set.</label>
+      <label class="option-label"><input type="radio" name="q2q2" value="C"> (C) Students have different levels of self-control.</label>
+      <label class="option-label"><input type="radio" name="q2q2" value="D"> (D) With the right support, students can learn to control themselves.</label>
+    </div>
+
+    <button class="btn-check" onclick="checkQ2MCQ()">答え合わせ（問 1・2）</button>
+    <div class="mcq-result" id="q2-mcq-result"></div>
+
+    <div class="q-block" style="margin-top:24px;padding-top:18px;border-top:1px solid #e5e7eb">
+      <div class="q-num">問 3</div>
+      <div class="q-text">If a student in Gaurav's class hands in all the papers one week late, how many points will they lose in total?</div>
+      <div class="q-sub">授業中の説明を思い出して計算してみよう。</div>
+      <div class="num-row">
+        <input type="number" id="q2q3-ans" min="0" max="999" placeholder="?">
+        <span class="num-unit">point(s)</span>
+        <button class="btn-check" style="margin-top:0" onclick="checkQ3Num()">確認</button>
+      </div>
+      <div class="num-result" id="q2q3-result"></div>
+    </div>
+  </div>
+
+  <!-- 設問 4: 記述 -->
+  <div class="q-section">
+    <div class="q-sec-title">設問 4 〜 5　記述問題</div>
+
+    <div class="q-block">
+      <div class="q-num">問 4</div>
+      <div class="q-text">下線部①の内容について，日本語で説明しなさい。</div>
+      <div class="desc-block">
+        <div style="font-size:.82rem;font-family:sans-serif;color:#374151;line-height:1.7">
+          下線部① ："<em>the ball was in their court</em>"
+        </div>
+        <div class="desc-hint">✏️ これは英語の慣用句です。直前のコンテキスト（deadlineの話）と合わせて考えましょう。</div>
+        <textarea class="memo-area" placeholder="自分の考えをここにメモ…（提出不要）"></textarea>
+        <div class="memo-label">※ このメモは採点・送信されません</div>
+        <a class="btn-ai" href="https://school-ai-app.mingaku.net/redirect?mode=v4cgCdC3WYvOrsCZbfEB&common=false&showheader=true&showfooter=false&ref=schools/PR3Wc2GdpN8GA9edVgHJ/prompts/v4cgCdC3WYvOrsCZbfEB" target="_blank">🤖 SchoolAI でヒント・添削を受ける →</a>
+        <div class="ai-note">※ 別タブでSchoolAIが開きます。</div>
+        <button class="btn-model" id="btn-model-q2-4" onclick="toggleModel('q2-4')">✅ 模範解答を見る</button>
+        <div class="model-wrap" id="model-q2-4">
+          <div class="model-head">模範解答</div>
+          <div class="model-body">「次に行動するのは彼ら（学生）次第だ」という意味の慣用句。具体的には、締め切りを自分で設定する責任と主導権が学生側に委ねられた、ということ。</div>
+          <div class="model-pt">
+            <div class="model-pt-head">ポイント</div>
+            "the ball is in one's court" ＝「次の番だ／決定権が相手にある」という慣用句の理解が必要。直訳（「ボールが彼らのコートにあった」）ではなく、文脈（締め切りを自分で決めるという状況）と結びつけて説明すること。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block" style="margin-top:24px">
+      <div class="q-num">問 5</div>
+      <div class="q-text">Gaurav のクラスの成績順位はどうだったか，またその原因は何か，日本語で説明しなさい。</div>
+      <div class="desc-block">
+        <div class="desc-hint">✏️ 3つのクラスの比較と，Gauravのクラス内での差異に着目しましょう。</div>
+        <textarea class="memo-area" placeholder="自分の考えをここにメモ…（提出不要）"></textarea>
+        <div class="memo-label">※ このメモは採点・送信されません</div>
+        <a class="btn-ai" href="https://school-ai-app.mingaku.net/redirect?mode=v4cgCdC3WYvOrsCZbfEB&common=false&showheader=true&showfooter=false&ref=schools/PR3Wc2GdpN8GA9edVgHJ/prompts/v4cgCdC3WYvOrsCZbfEB" target="_blank">🤖 SchoolAI でヒント・添削を受ける →</a>
+        <div class="ai-note">※ 別タブでSchoolAIが開きます。</div>
+        <button class="btn-model" id="btn-model-q2-5" onclick="toggleModel('q2-5')">✅ 模範解答を見る</button>
+        <div class="model-wrap" id="model-q2-5">
+          <div class="model-head">模範解答</div>
+          <div class="model-body">Gauravのクラスは3クラス中2位（中間）だった。原因は、クラス内で成績にばらつきがあったからである。締め切りを学期全体に均等に分散させた学生は独裁者クラスと同程度の高成績を収めたが、締め切りを十分に分散させなかった一部の学生が平均成績を引き下げたため、全体として中間の結果となった。</div>
+          <div class="model-pt">
+            <div class="model-pt-head">ポイント</div>
+            順位（中間・2位）を明示すること。「分散した学生の高成績」と「分散しなかった学生による平均引き下げ」の2つを両方書くこと。根拠：第13段落（順位）・第14段落（原因）。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div><!-- /q2 -->
+
+
+<!-- ════════ 大問 3 ════════ -->
+<div id="screen-q3" class="screen">
+  <div class="sec-hero">
+    <h2>大問 3　和文英訳</h2>
+    <div class="hero-sub">以下の文章（①〜③）を英語にしなさい。</div>
+  </div>
+
+  <div class="q-section">
+    <div class="q-sec-title">出典文章（『新・建築入門』隈研吾）</div>
+    <div style="font-size:var(--fs);line-height:var(--lh);color:#374151;padding:4px 0">
+      <p style="text-indent:0;margin-bottom:1.4em">
+        <span class="ul1">①二十世紀の末にいたって、こうした建築家も気が狂ってしまったのではないか</span>、そう思われても仕方がないほどに、二十世紀末の建築状況は混乱をきわめた。十八世紀末、十九世紀末にも確かに、似たようなデザインの混乱状況が、建築の世界をおそったが、それらの時代とは比較にならないほどの混乱が、建築の世界をおそった。
+      </p>
+      <p style="text-indent:0;margin-bottom:1.4em">
+        モダニズム、ポストモダニズム、ディコンストラクティビズム、ハイパーモダンなどと呼ばれる諸建築スタイルが驚くべきショートスパンで、あらわれては消えていくその速度は、「様式の交替」という建築史上の概念の枠をすでに逸脱してしまっているといってもいい。しかしそれぞれの様式は連続的にとか段階的にとかいった形容詞で記述できるような変化、交替の形をとらない。<span class="ul1">②思ってもみなかったような姿、形をともなって、全く唐突に新しいスタイルが出現するのである。</span>いっそのこと「狂乱の世紀末」という言葉ひとつでくくって、それぞれの様式の特徴やディティール、その様式の背後にある思想や背景などは無視してしまった方がいい。
+      </p>
+      <p style="text-indent:0">
+        <span class="ul1">③そう考える人がでてきても不思議ではないほどに、この混乱を整理することはむずかしい。</span>また事実、建築の世界に身を置いている人の中においても、そのような思考停止の波がひろがりつつある。しかし、いつの時代においても、混乱はいたずらに存在するわけではない。混乱の背後には必ずやひとつの明確な問題がひそんでおり、その問題に到達しえない人々が、狂乱とか病いとかいう名前でくくることで混乱をやりすごそうとするだけの話である。
+      </p>
+    </div>
+  </div>
+
+  <div class="q-section">
+    <div class="q-sec-title">英訳に挑戦</div>
+
+    <div class="trans-block">
+      <div class="trans-num-lbl">英訳 ①</div>
+      <div class="trans-src">二十世紀の末にいたって、こうした建築家も気が狂ってしまったのではないか、そう思われても仕方がないほどに、二十世紀末の建築状況は混乱をきわめた。</div>
+      <textarea class="memo-area" placeholder="英訳をここに書いてみよう…"></textarea>
+      <button class="btn-model" id="btn-model-q3-1" onclick="toggleModel('q3-1')">✅ 模範解答を見る</button>
+      <div class="model-wrap" id="model-q3-1">
+        <div class="model-head">模範解答</div>
+        <div class="model-body">By the end of the twentieth century, the state of architecture had become so chaotic that it would have been quite understandable to think that even these architects had gone insane.</div>
+        <div class="model-pt">
+          <div class="model-pt-head">ポイント</div>
+          「〜のではないか、そう思われても仕方がないほどに」→ so ... that it would be understandable to think ... の構文で表す。「気が狂った」→ go insane / lose their mind。「混乱をきわめた」→ become extremely chaotic / reach the peak of confusion。過去完了（had become）で「末に至って」という時間の流れを表せると良い。
+        </div>
+      </div>
+    </div>
+
+    <div class="trans-block">
+      <div class="trans-num-lbl">英訳 ②</div>
+      <div class="trans-src">思ってもみなかったような姿、形をともなって、全く唐突に新しいスタイルが出現するのである。</div>
+      <textarea class="memo-area" placeholder="英訳をここに書いてみよう…"></textarea>
+      <button class="btn-model" id="btn-model-q3-2" onclick="toggleModel('q3-2')">✅ 模範解答を見る</button>
+      <div class="model-wrap" id="model-q3-2">
+        <div class="model-head">模範解答</div>
+        <div class="model-body">New styles emerge completely out of nowhere, accompanied by forms and appearances that no one could have ever imagined.</div>
+        <div class="model-pt">
+          <div class="model-pt-head">ポイント</div>
+          「思ってもみなかったような」→ that no one could have imagined / unimaginable。「全く唐突に」→ completely out of nowhere / abruptly。「〜をともなって」→ accompanied by ...（分詞構文）が使えると高評価。
+        </div>
+      </div>
+    </div>
+
+    <div class="trans-block">
+      <div class="trans-num-lbl">英訳 ③</div>
+      <div class="trans-src">そう考える人がでてきても不思議ではないほどに、この混乱を整理することはむずかしい。</div>
+      <textarea class="memo-area" placeholder="英訳をここに書いてみよう…"></textarea>
+      <button class="btn-model" id="btn-model-q3-3" onclick="toggleModel('q3-3')">✅ 模範解答を見る</button>
+      <div class="model-wrap" id="model-q3-3">
+        <div class="model-head">模範解答</div>
+        <div class="model-body">It is so difficult to make sense of this confusion that it would not be surprising at all if people began to think that way.</div>
+        <div class="model-pt">
+          <div class="model-pt-head">ポイント</div>
+          "so ... that ..." 構文（「〜ほどに…だ」）が有効。「整理する」→ make sense of / put in order / sort out。「不思議ではない」→ not surprising / quite understandable。
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#f0fdf4;border-radius:10px;padding:16px 20px;margin-top:20px;border-left:4px solid #16a34a">
+      <div style="font-size:.88rem;font-family:sans-serif;font-weight:bold;color:#15803d;margin-bottom:10px">📚 NotebookLM で文法・語彙を確認しよう</div>
+      <div style="font-size:.82rem;font-family:sans-serif;color:#374151;margin-bottom:10px;line-height:1.75">
+        英訳を書いたら、NotebookLM を開いて以下のプロンプトをコピーして貼り付けてみよう：
+      </div>
+      <div style="background:#fff;border-radius:7px;padding:12px 16px;font-size:.82rem;font-family:sans-serif;color:#374151;margin-bottom:14px;line-height:2;border:1px solid #bbf7d0">
+        💡 <strong>こんなプロンプトを書いて貼り付けてみよう：</strong><br>
+        ・この英作文が書けるために必要な語彙を一覧にして教えて<br>
+        ・この英作文が書けるために必要な文法事項や構文をソースつきで教えて
+      </div>
+      <a class="btn-ai" href="https://notebooklm.google.com/notebook/607bb9e0-807c-4ed7-b536-f48bc058c526" target="_blank" style="background:#16a34a">📚 NotebookLM を開く →</a>
+      <div class="ai-note" style="color:#15803d">※ 別タブでNotebookLMが開きます。</div>
+    </div>
+  </div>
+
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div><!-- /q3 -->
+
+
+<!-- ════════ 大問 4 ════════ -->
+<div id="screen-q4" class="screen">
+  <div class="sec-hero">
+    <h2>大問 4　自由英作文</h2>
+    <div class="hero-sub">岡山大学で学びたいことを英語で書く</div>
+  </div>
+
+  <div class="q-section">
+    <div class="q-sec-title">課題</div>
+    <div style="font-size:var(--fs);line-height:var(--lh);color:#1a3a5c;padding:4px 0">
+      What would you like to study at Okayama University? Why will you be a good student in that field of study? Give reasons why your choice of major is suitable for you. For example, write about your motivations and interests. How do your skills and abilities relate to that field of study? Write your answers in about 10 lines in English.
+    </div>
+    <div style="margin-top:12px;font-size:.82rem;font-family:sans-serif;color:#6b7280;line-height:1.7">
+      【書くポイント】① 志望する専攻・分野　② その分野を選んだ動機・興味　③ 自分の能力・スキルとの関係　の3点を盛り込もう。
+    </div>
+  </div>
+
+  <div class="q-section">
+    <div class="q-sec-title">英作文エリア</div>
+    <textarea class="memo-area" style="min-height:200px" placeholder="ここに英文を書いてみよう（約10行）…"></textarea>
+    <div class="memo-label">※ このメモは採点・送信されません</div>
+    <a class="btn-ai" href="https://school-ai-app.mingaku.net/redirect?mode=v4cgCdC3WYvOrsCZbfEB&common=false&showheader=true&showfooter=false&ref=schools/PR3Wc2GdpN8GA9edVgHJ/prompts/v4cgCdC3WYvOrsCZbfEB" target="_blank" style="margin-top:14px">🤖 SchoolAI でフィードバックを受ける →</a>
+    <div class="ai-note">※ 書いた英文をSchoolAIに貼り付けてフィードバックをもらいましょう。</div>
+    <button class="btn-model" id="btn-model-q4" onclick="toggleModel('q4')">✅ 模範解答例を見る</button>
+    <div class="model-wrap" id="model-q4">
+      <div class="model-head">模範解答例</div>
+      <div class="model-body">I would like to study education at Okayama University. I have been deeply interested in how people learn languages, especially English. Watching my classmates struggle with English in junior high school made me want to become a teacher who can make language learning more enjoyable and effective.
+
+I believe I will be a good student in this field because I enjoy researching and reading about teaching methods. I have experience helping younger students prepare for exams as a tutor, which gave me practical insight into what makes instruction effective.
+
+Furthermore, my ability to communicate in English and my enthusiasm for cross-cultural understanding are strengths that are directly relevant to the study of education. I am confident that studying at Okayama University will allow me to develop these skills further and contribute to the field of language education.</div>
+      <div class="model-pt">
+        <div class="model-pt-head">3つの要素を確認しよう</div>
+        ① 志望する専攻・分野（education）→ 第1文で明示<br>
+        ② 動機・興味（language learning, classmates' struggle）→ 第1〜2段落<br>
+        ③ 自分の能力・スキルとの関係（tutoring experience, English skills）→ 第2〜3段落<br>
+        目安：約10行（7〜12行）。具体的なエピソードが説得力を高める。
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div><!-- /q4 -->
+
+</div><!-- /container -->
+
+<!-- ════════ Vocab popup ════════ -->
+<div id="vpop">
+  <button class="vcl" onclick="closeVpop()">✕</button>
+  <div class="vword" id="vword"></div>
+  <div class="vpos" id="vpos"></div>
+  <div class="vmean" id="vmean"></div>
+  <div class="vex" id="vex"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// DICTIONARY
+// ══════════════════════════════════════════════════
+const DICT = {
+  "cognition":     { pos:"名詞",   ja:"認知，認識能力" },
+  "cognition.":    { pos:"名詞",   ja:"認知，認識能力" },
+  "assume":        { pos:"動詞",   ja:"（根拠なく）〜と思い込む，決めてかかる" },
+  "subset":        { pos:"名詞",   ja:"特定のグループ，部分集合" },
+  "dementia":      { pos:"名詞",   ja:"認知症" },
+  "spectrum":      { pos:"名詞",   ja:"全体像，幅，スペクトル" },
+  "shrinkage":     { pos:"名詞",   ja:"（脳の）萎縮，縮小" },
+  "striking":      { pos:"形容詞", ja:"著しい，際立った，目を引く" },
+  "resistance":    { pos:"名詞",   ja:"耐性，抵抗力" },
+  "mobility":      { pos:"名詞",   ja:"運動能力，身体の動きやすさ" },
+  "omissions":     { pos:"名詞",   ja:"省略，欠落，欠如（omissionの複数形）" },
+  "omission":      { pos:"名詞",   ja:"省略，欠落，欠如" },
+  "consistency":   { pos:"名詞",   ja:"一貫性，共通して見られる特徴" },
+  "molecular":     { pos:"形容詞", ja:"分子の，分子レベルの" },
+  "criteria":      { pos:"名詞",   ja:"基準（criterionの複数形）" },
+  "connectivity":  { pos:"名詞",   ja:"（脳の）結合性，つながり" },
+  "notably":       { pos:"副詞",   ja:"とりわけ，特に，注目すべきことに" },
+  "conducted":     { pos:"動詞",   ja:"（research/study を）実施した，行った" },
+  "companion":     { pos:"形容詞", ja:"対になる，関連する（companion study = 関連研究）" },
+  "preserved":     { pos:"形容詞", ja:"保たれた，維持された" },
+  "initially":     { pos:"副詞",   ja:"最初は，当初は" },
+  "mechanism":     { pos:"名詞",   ja:"メカニズム，仕組み" },
+  "energetic":     { pos:"形容詞", ja:"活動的な，精力的な" },
+  "shed":          { pos:"動詞",   ja:"shed light on〜：〜を解明する，明らかにする" },
+  "undergo":       { pos:"動詞",   ja:"（検査・試験などを）受ける，経験する" },
+  "assess":        { pos:"動詞",   ja:"評価する，測定する" },
+  "assessing":     { pos:"動詞",   ja:"評価する，測定する" },
+  "decline":       { pos:"名詞",   ja:"衰退，低下，老化による機能低下" },
+  "neurology":     { pos:"名詞",   ja:"神経学" },
+  "relatively":    { pos:"副詞",   ja:"比較的，相対的に" },
+  "peers":         { pos:"名詞",   ja:"同世代の人々，仲間（peer = 同等の人）" },
+  "capture":       { pos:"動詞",   ja:"（全体像・実態などを）把握する，とらえる" },
+  "regions":       { pos:"名詞",   ja:"（脳の）領域，部位（region の複数形）" },
+  "involved":      { pos:"形容詞", ja:"involved in〜：〜に関与している，携わっている" },
+  "procrastination":{ pos:"名詞",  ja:"先延ばし，ぐずぐずすること" },
+  "procrastinate": { pos:"動詞",   ja:"先延ばしにする，ぐずぐずする" },
+  "procrastinating":{ pos:"動詞",  ja:"先延ばしにしている（procrastinateのing形）" },
+  "semester":      { pos:"名詞",   ja:"（大学の）学期（通常15〜18週間）" },
+  "syllabus":      { pos:"名詞",   ja:"授業計画，シラバス（講義の概要・課題一覧）" },
+  "constitute":    { pos:"動詞",   ja:"〜を構成する，〜を占める" },
+  "penalty":       { pos:"名詞",   ja:"ペナルティ，罰則，減点" },
+  "penalized":     { pos:"動詞",   ja:"ペナルティを科された，減点された" },
+  "incentive":     { pos:"名詞",   ja:"動機づけ，インセンティブ，報酬" },
+  "incentives":    { pos:"名詞",   ja:"動機づけ，インセンティブ（incentiveの複数形）" },
+  "rational":      { pos:"形容詞", ja:"合理的な，理性的な" },
+  "flexibility":   { pos:"名詞",   ja:"柔軟性，融通のきくこと" },
+  "impose":        { pos:"動詞",   ja:"（義務・罰則などを）課す，押しつける" },
+  "imposed":       { pos:"動詞",   ja:"課された，押しつけられた" },
+  "punctuality":   { pos:"名詞",   ja:"時間厳守，定刻に行動すること" },
+  "anticipation":  { pos:"名詞",   ja:"期待，予期，わくわく感" },
+  "tempted":       { pos:"形容詞", ja:"誘惑された，〜したくなった" },
+  "workload":      { pos:"名詞",   ja:"仕事量，こなすべき課題の量" },
+  "vowing":        { pos:"動詞",   ja:"誓う，（必ず〜すると）約束する" },
+  "sufficiently":  { pos:"副詞",   ja:"十分に，必要なだけ" },
+  "spaced":        { pos:"動詞",   ja:"間隔をあけた，分散させた（space の過去形）" },
+  "variation":     { pos:"名詞",   ja:"バリエーション，変形版，別条件の実験" },
+  "intermediate":  { pos:"形容詞", ja:"中間の，途中の" },
+  "dictator":      { pos:"名詞",   ja:"独裁者" },
+  "heroic":        { pos:"形容詞", ja:"英雄的な；（約束などが）大げさな，意気込んだ" },
+  "impressing":    { pos:"動詞",   ja:"感銘を与える，感心させる（impressのing形）" },
+  "submission":    { pos:"名詞",   ja:"提出（物）" },
+};
+
+// ══════════════════════════════════════════════════
+// PASSAGE DATA
+// ══════════════════════════════════════════════════
+const P1 = [
+  "When it comes to aging, we tend to assume that cognition gets worse as we get older. Our thoughts may slow down or become confused, or we may start to forget things, like the name of our high school English teacher or what we meant to buy at the grocery store. But that's not the case for everyone.",
+  "For a little more than a decade, scientists have been studying a subset of people they call \"super-agers.\" These individuals are age 80 and older, but they have the memory ability of a person 20 to 30 years younger.",
+  "Most research on aging and memory focuses on the other side of the relationship — people who develop dementia in their later years. But, \"if we're constantly talking about what's going wrong in aging, it's not capturing the full spectrum of what's happening in the older adult population,\" said Emily Rogalski, a professor of neurology at the University of Chicago, who published one of the first studies on super-agers in 2012.",
+  "A paper published in the Journal of Neuroscience helps shed light on what's so special about the brains of super-agers. The most important finding, in combination with a companion study that came out last year on the same group of individuals, is that their brains have less shrinkage than their peers' do.",
+  "The research was conducted on 119 people in their eighties from Spain: 64 super-agers and 55 adults with normal memory abilities for their age. The participants completed multiple tests assessing their memory, motor and verbal skills; underwent brain scans and blood tests; and answered questions about their lifestyle and behaviors.",
+  "The scientists found that the super-agers had more volume in areas of the brain important for memory. They also had better preserved connectivity between regions in the front of the brain that are involved in cognition. Both the super-agers and the normal agers showed minimal signs of Alzheimer's disease in their brains.",
+  "\"By having two groups that have low levels of Alzheimer's markers, but striking cognitive differences and striking differences in their brains, we're really seeing some evidence of a resistance to age-related decline,\" said Dr. Bryan Strange, a professor of clinical neuroscience at the Polytechnic University of Madrid, who led the studies.",
+  "These findings are backed up by Rogalski's research, initially conducted when she was at Northwestern University, which showed that super-agers' brains looked more like 50- or 60-year-olds' brains than their 80-year-old peers'. When followed over several years, the super-agers' brains shrank at a slower rate than average.",
+  "No precise numbers exist on how many super-agers there are among us, but Rogalski said they're \"relatively rare,\" noting that \"far less than 10%\" of the people she sees end up meeting the criteria.",
+  "\"But when you meet a super-ager, you know it,\" Strange said. \"They are really quite energetic people, you can see. Motivated, responsive, older individuals.\"",
+  "Experts don't know how someone becomes a super-ager, though there were a few differences in health and lifestyle behaviors between the two groups in the Spanish study. Most notably, the super-agers had slightly better physical health, in terms of blood pressure, for example, and they performed better on a test of mobility. The super-agers didn't report doing more exercise at their current age than the typical older adults, but they were more active in middle age. They also reported better mental health.",
+  "But overall, Strange said, there were a lot of similarities between the super-agers and the regular agers. \"There are a lot of things that are not particularly striking about them,\" he said. And, he added, \"we see <span class='ul1'>① some surprising omissions</span>: things that you would expect to be associated with super-agers weren't really there.\" For example, there were no differences between the groups in terms of their diets, the amount of sleep they got, their professional backgrounds or their alcohol and tobacco use.",
+  "The behaviors of some of the Chicago super-agers were similarly a surprise. Some exercised regularly, but some never had; some stuck to a Mediterranean diet, others ate a lot of ready-made dinners; and a few of them still smoked cigarettes. However, one consistency among the group was that they tended to have strong social relationships, Rogalski said.",
+  "\"In an ideal world, you'd find out that, like, all the super-agers, you know, ate six tomatoes every day and that was the key,\" said Tessa Harrison, an assistant project scientist at the University of California, Berkeley, who collaborated with Rogalski on the first Chicago super-ager study.",
+  "Instead, Harrison continued, super-agers probably have \"some sort of lucky physical condition or resistance mechanism in the brain that's on the molecular level that we don't understand yet.\"",
+  "While there isn't a recipe for becoming a super-ager, scientists do know that, in general, eating healthily, staying physically active, getting enough sleep and maintaining social connections are important for healthy brain aging.",
+];
+
+const P2 = [
+  "When we promise to save our money, we are in a cool state. When we promise to exercise and watch our diet, again we're cool. But then the flow of hot emotion comes rushing in: just when we plan to exercise regularly, we find a reason to sit all day in front of the television. And as for the diet? I'll take that slice of chocolate cake and begin the diet more seriously tomorrow. Giving up on our long-term goals for immediate satisfaction is procrastination.",
+  "As a university professor, I'm all too familiar with procrastination. At the beginning of every semester my students make heroic promises to themselves — vowing to read their assignments on time, submit their papers on time. And every semester I've watched them tempted out on a date, and off on a ski trip while their workload falls farther and farther behind. In the end, they wind up impressing me, not with their punctuality, but with their creativity — inventing stories, excuses, and family tragedies to explain being late (Why do family tragedies generally occur during the last two weeks of the semester?).",
+  "My colleague and I decided to research this problem in my classes. As my students settled into their chairs that first morning, full of anticipation, they listened to me review the syllabus for the course. There would be three main papers to submit over the 12-week semester, I explained. Together, these papers would constitute much of their final grade.",
+  "\"And what are the deadlines?\" asked one of them, waving his hand from the back. I smiled. \"You can hand in the papers at any time before the end of the semester,\" I replied. \"It's entirely up to you.\" The students looked confused.",
+  "\"Here's the deal,\" I explained. \"By the end of the week, you must set a deadline date for each paper. Once you set your deadlines, they can't be changed.\" Late papers, I added, would be penalized one point off the grade for each day late. The students could always turn in their papers before their deadlines without penalty, of course, but there would be no particular advantage in terms of grades. <span class='ul1'>① In other words, the ball was in their court.</span> Would they have the self-control to play the game well?",
+  "\"But Professor,\" asked a student called Gaurav, \"given these instructions and incentives, wouldn't it make sense for us to select the last date possible?\"",
+  "\"You can do that,\" I replied. \"If you find that it makes sense, by all means do it.\" Under these conditions, what would you have done?",
+  "What deadlines did the students pick for themselves? A perfectly rational student would follow Gaurav's advice and set all the deadlines for the last day of class — after all, it was always possible to submit papers earlier without a penalty, so why take a chance and select an earlier deadline than needed? Delaying the deadlines to the end was clearly the best decision if students were perfectly rational. But what if the students are not rational? What if they give in to temptation and are likely to procrastinate? What if they realize their weakness? If the students are not rational, and they know it, they could use the deadlines to force themselves to behave better. They could set early deadlines and by doing so force themselves to start working on the projects earlier in the semester.",
+  "What did my students do? They used the scheduling tool I provided and spaced the timing of their papers across the whole semester. This suggests that the students realize their problems with procrastination and that if given the opportunity they try to control themselves — but was the tool helpful in improving their grades? To find out, we conducted other variations of the same experiments in other classes and compared the quality of papers.",
+  "I went to my other two classes with completely different deals. In the second class, I told the students that they would have no deadlines at all during the semester. They merely needed to submit their papers by the end of the last class. I suppose they should have been happy. I had given them complete flexibility and freedom of choice. Not only that, but they also had the lowest risk of being penalized for missing an intermediate deadline.",
+  "The third class received what might be called the dictator's treatment: I decided three deadlines for the three papers, set at the fourth, eighth, and twelfth weeks. These were my orders, and they left no room for choice or flexibility.",
+  "Of these three classes, which do you think achieved the best final grades? Was it Gaurav and his classmates, who had some flexibility? Or the second class, which had a single deadline at the end, and thus complete flexibility? Or the third class, which had its deadlines decided from above, and therefore had no flexibility?",
+  "We found that the students in the class with the three firm deadlines got the best grades; the class in which I set no deadlines at all had the worst grades; and the class in which Gaurav and his classmates were allowed to choose their own three deadlines (but with penalties for failing to meet them) finished in the middle.",
+  "When I looked at the deadlines set by the students in Gaurav's class, the vast majority of the students in this class spaced their deadlines substantially (and got grades that were as good as those earned by students in the dictator's class), some did not space their deadlines much, and a few did not space their deadlines at all. These students who did not space their deadlines sufficiently pulled down the average grades of this class. Without properly spaced deadlines the final work was generally rushed and poorly written.",
+  "What do these results suggest? First, students do procrastinate (big news); and second, tightly restricting their freedom (equally spaced deadlines, imposed from above) is the best cure for procrastination. But the biggest discovery is that simply offering the students a tool by which they could commit to deadlines in advance helped them achieve better grades.",
+];
+
+// ══════════════════════════════════════════════════
+// JAPANESE TRANSLATIONS
+// ══════════════════════════════════════════════════
+const P1_JA = [
+  "加齢について言えば、年をとるにつれて認知能力は低下すると思い込みがちだ。思考が遅くなったり混乱したり、あるいは高校の英語の先生の名前やスーパーで何を買うつもりだったかを忘れ始めたりする。しかし、それはすべての人に当てはまるわけではない。",
+  "10年あまりの間、科学者たちは「スーパーエイジャー」と呼ぶ特定グループの人々を研究してきた。こうした人々は80歳以上でありながら、20〜30歳若い人と同程度の記憶能力を持つ。",
+  "加齢と記憶に関する研究の多くは、逆の関係——後年に認知症を発症した人々——に焦点を当てている。しかし、「加齢において何が悪くなっているかを常に論じているだけでは、高齢者集団で実際に起きていることの全体像を把握できていない」と、2012年にスーパーエイジャーに関する最初期の研究を発表したシカゴ大学神経学教授のEmily Rogalski氏は述べる。",
+  "「Journal of Neuroscience」誌に掲載された論文が、スーパーエイジャーの脳の何が特別なのかを解明する手がかりを与えてくれる。最も重要な発見は——同じグループの人々を対象に昨年発表された関連研究と組み合わせると——スーパーエイジャーの脳は同年代の人々に比べて萎縮が少ないという点だ。",
+  "研究はスペインで80代の119人（スーパーエイジャー64人と、年齢相応の記憶能力を持つ通常の高齢者55人）を対象に実施された。参加者は記憶・運動・言語能力を評価する複数のテストを受け、脳スキャンと血液検査を受け、生活習慣についての質問に答えた。",
+  "研究者たちは、スーパーエイジャーは記憶に重要な脳領域においてより多くの体積を持つことを発見した。また、認知に関与する脳前部の領域間の結合性もより良好に保たれていた。スーパーエイジャーも通常の高齢者も、ともに脳内のアルツハイマー病の兆候はごくわずかだった。",
+  "「アルツハイマーマーカーが低い2つのグループが、認知能力と脳の両方で際立った差異を示しているということは、加齢に伴う低下への抵抗性の証拠を実際に見ているのだ」と、マドリード工科大学の臨床神経科学教授でこの研究を率いたBryan Strange博士は述べた。",
+  "これらの知見はRogalski氏の研究（当初はノースウエスタン大学で実施）によっても裏づけられている。スーパーエイジャーの脳は80代の同年代よりも50〜60代の脳に近い外見を持ち、数年にわたる追跡調査では、スーパーエイジャーの脳は平均より遅い速度でしか萎縮しなかった。",
+  "スーパーエイジャーが私たちの中にどれくらいいるかを示す正確な数字はないが、Rogalski氏によれば「比較的まれ」であり、彼女が見る人の「10%をはるかに下回る」割合しか基準を満たさない。",
+  "「しかし、スーパーエイジャーに会えばわかります」とStrange氏は言う。「本当に活動的な人たちで、すぐにわかります。意欲的で反応が良く、年齢を感じさせない人々です。」",
+  "スーパーエイジャーになる方法は専門家にも分かっていないが、スペインの研究では2グループ間に健康・生活習慣上のわずかな差異があった。特筆すべきは、スーパーエイジャーは血圧などの面で身体的健康状態がやや良好で、運動能力テストでも良好な成績を示した点だ。現在の年齢での運動量は通常の高齢者より多くなかったが、中年期にはより活動的だった。また精神的健康状態も良好だった。",
+  "しかし全体的に見ると、スーパーエイジャーと通常の高齢者の間には多くの共通点があるとStrange氏は言う。「特に際立った点がないことも多い」と述べ、「①驚くべき欠如も見られる——スーパーエイジャーに関連すると予想されていたことが、実際にはそこになかったのだ」と付け加えた。例えば、食事、睡眠時間、職歴、アルコールとタバコの使用に関してはグループ間に差がなかった。",
+  "シカゴのスーパーエイジャーの一部の行動も同様に驚きだった。定期的に運動する人もいれば、まったくしたことがない人もいた。地中海式食事を守る人もいれば、出来合いの食事が多い人もいた。さらに喫煙を続けている人さえいた。ただ、グループに共通する特徴が1つあり、社会的なつながりが強い傾向があったとRogalski氏は言う。",
+  "「理想を言えば、例えばスーパーエイジャーは全員、毎日トマトを6個食べていてそれが秘訣だった、という結論が出れば良いのですが」とTessa Harrison氏（カリフォルニア大学バークレー校の助手プロジェクト研究員、Rogalski氏との共同研究者）は言う。",
+  "しかし実際のところ、Harrison氏によれば、スーパーエイジャーはおそらく「分子レベルで存在する、まだ解明されていない何らかの幸運な身体的状態や脳の抵抗メカニズム」を持っているのだろう。",
+  "スーパーエイジャーになるレシピはないものの、健康的な食事、身体活動、十分な睡眠、社会的つながりの維持が一般的に健康な脳の老化に重要であることは科学者も知っている。",
+];
+
+const P2_JA = [
+  "お金を貯めると約束するとき、私たちは冷静な状態にある。運動して食事に気をつけると約束するときも、同様に冷静だ。しかし、その後に熱い感情の波が押し寄せてくる——定期的に運動しようと計画したまさにそのとき、一日中テレビの前に座っている理由を見つけてしまう。食事については？チョコレートケーキを一切れ食べて、ダイエットは明日から本格的に始めればいい。即時の満足のために長期的な目標を諦めることが、先延ばし（procrastination）だ。",
+  "大学教授として、私は先延ばしをよく知っている。毎学期の初め、学生たちは自分に英雄的な約束をする——課題を期限通りに読み、レポートを期限通りに提出すると誓う。しかし毎学期、デートや、課題が遅れていく中でのスキー旅行に誘惑されていく様を見てきた。結局、彼らが私に見せてくれるのは時間厳守ではなく創造性——遅刻を説明するための話、言い訳、家族の悲劇の発明だ（なぜ家族の悲劇はいつも学期最後の2週間に起きるのだろう？）。",
+  "私と同僚はこの問題を私のクラスで研究することにした。学生たちが初日の朝、期待を胸に席につくと、私はコースのシラバスを説明した。12週間の学期中に3本の主要なレポートを提出すること、これらのレポートが最終成績の多くを占めると説明した。",
+  "「締め切りはいつですか？」と、後ろから手を挙げた学生が尋ねた。私は微笑んだ。「学期終了前のいつでも提出できます」と答えた。「完全にあなた方次第です。」学生たちは困惑した表情を見せた。",
+  "「条件はこうです」と私は説明した。「週末までに、各レポートの締め切り日を自分で設定しなければなりません。一度設定したら変更できません。」遅れたレポートは1日につき1点減点されると付け加えた。もちろん締め切りより前に提出するのはペナルティなしだが、成績上の特別な利点もない。①つまり、ボールは彼らのコートにあった。彼らはゲームをうまくプレーできる自制心を持っているだろうか？",
+  "「でも先生」とGauravという学生が尋ねた。「この指示とインセンティブを考えると、全部できるだけ最後の日に設定するのが合理的ではないですか？」",
+  "「そうしていいですよ」と私は答えた。「それが合理的だと思うなら、ぜひそうしてください。」このような条件なら、あなたならどうする？",
+  "完全に合理的な学生なら、Gauravのアドバイスに従い、全ての締め切りを最終日に設定するだろう——ペナルティなしでいつでも早く提出できるのだから、必要以上に早い締め切りを設定するリスクを取る理由はない。締め切りを最後まで延ばすのは、学生が完全に合理的であれば明らかに最善の決断だ。しかし、学生が合理的でないとしたら？誘惑に負けて先延ばしにしがちだとしたら？自分の弱さを自覚しているとしたら？合理的でなく、かつそれを自覚しているなら、締め切りを使って自分をより良く振る舞うよう強制することができる——早い締め切りを設定することで、学期の早い段階からプロジェクトに取り掛かるよう自分を追い込めるのだ。",
+  "学生たちは実際に何をしたか？私が用意した日程設定ツールを使い、レポートの時期を学期全体に分散させた。これは学生たちが先延ばしの問題を認識し、機会があれば自制しようとすることを示唆する——しかしこのツールは実際に成績向上に役立ったのか？それを確かめるため、他のクラスで同じ実験のさまざまなバリエーションを行い、レポートの質を比較した。",
+  "私は他の2クラスに全く異なる条件を提示した。第2クラスには、学期中に一切締め切りを設けないと伝えた。最終授業終了までに提出するだけでよい。彼らは喜ぶべきだったかもしれない。完全な柔軟性と選択の自由を与えたのだから。それだけでなく、中間締め切りを逃すペナルティのリスクも最も低い。",
+  "第3クラスにはいわゆる「独裁者の処遇」が与えられた——3本のレポートの締め切りを、第4週、第8週、第12週に設定した。これは私の命令であり、選択や柔軟性の余地は一切なかった。",
+  "この3クラスのうち、どのクラスが最も良い最終成績を収めたと思うか？ある程度の柔軟性があったGauravたちのクラスか？学期末に単一の締め切りがあり完全な柔軟性があった第2クラスか？それとも上から締め切りを決められ柔軟性が全くなかった第3クラスか？",
+  "3つの固定締め切りがあったクラスの学生が最も良い成績を収め、締め切りを全く設けなかったクラスが最も悪い成績で、Gauravたちが自分で3つの締め切りを選んだクラス（ただし未達成にはペナルティあり）が中間だった。",
+  "Gauravのクラスで学生が設定した締め切りを見ると、大多数が締め切りをかなり均等に分散させており（独裁者クラスの学生と同程度の成績を収めた）、あまり分散させなかった学生もおり、全く分散させなかった学生も少数いた。締め切りを十分に分散させなかった学生がこのクラスの平均成績を引き下げた。適切に分散された締め切りがなければ、最終的な作業は概して急いで行われ、質が低かった。",
+  "これらの結果は何を示唆するか？第一に、学生は先延ばしをする（大きなニュース）。第二に、自由を厳しく制限すること（上から課された均等な締め切り）が先延ばしに対する最善の対処法だ。しかし最大の発見は、締め切りをあらかじめ決める手段を単純に提供しただけで、学生がより良い成績を達成するのに役立ったということだ。",
+];
+
+// ══════════════════════════════════════════════════
+// T/F DATA
+// ══════════════════════════════════════════════════
+const TF1 = [
+  "(A) Super-agers' brains exhibit less shrinkage compared to those of other individuals in the same age group.",
+  "(B) Super-agers have lower levels of Alzheimer's markers than regular agers.",
+  "(C) A consistent trait among super-agers is that they have strong social relationships.",
+  "(D) Regular exercise is essential to becoming a super-ager.",
+  "(E) Eating six tomatoes every day is the key to becoming a super-ager.",
+];
+const TF1_ANS = ["T","F","T","F","F"];
+const TF1_EXP = [
+  "【T】第4段落：\"their brains have less shrinkage than their peers' do\"（同年代と比べて萎縮が少ない）",
+  "【F】第6段落：\"Both the super-agers and the normal agers showed minimal signs of Alzheimer's disease\"（両グループともアルツハイマーマーカーは低い。スーパーエイジャーだけが低いわけではない）",
+  "【T】第13段落：\"one consistency among the group was that they tended to have strong social relationships\"",
+  "【F】第13段落：\"Some exercised regularly, but some never had\"（運動をまったくしたことがないスーパーエイジャーもいる）",
+  "【F】第14段落でHarrison氏が「トマト6個が秘訣なら理想的」と述べたのはあくまで仮定の話。第15段落で実際には分子レベルの未解明なメカニズムによると続けている",
+];
+
+// ══════════════════════════════════════════════════
+// RENDER PASSAGES
+// ══════════════════════════════════════════════════
+function markVocab(text) {
+  if (text.includes('<span')) return text;
+  return text.replace(/\b([a-zA-Z']+)\b/g, (match) => {
+    const key = match.toLowerCase().replace(/['.]/g,'');
+    if (DICT[key] || DICT[match.toLowerCase()]) {
+      const k = DICT[key] ? key : match.toLowerCase();
+      return `<span class="vocab" data-word="${k}">${match}</span>`;
+    }
+    return match;
+  });
+}
+
+function renderPassage(arr, containerId) {
+  const el = document.getElementById(containerId);
+  const label = document.createElement('div');
+  label.className = 'passage-label';
+  label.textContent = 'Passage';
+  el.appendChild(label);
+  arr.forEach(txt => {
+    const p = document.createElement('p');
+    p.innerHTML = markVocab(txt);
+    el.appendChild(p);
+  });
+  el.addEventListener('click', onVocabClick);
+}
+
+function renderTranslation(arr, containerId) {
+  const el = document.getElementById(containerId);
+  arr.forEach((txt, i) => {
+    const p = document.createElement('p');
+    p.innerHTML = `<span class="trans-para-num">第${i+1}段落</span>${txt}`;
+    el.appendChild(p);
+  });
+}
+
+function onVocabClick(e) {
+  const span = e.target.closest('.vocab');
+  if (!span) { closeVpop(); return; }
+  const word = span.dataset.word;
+  const entry = DICT[word] || DICT[word + 's'] || DICT[word.replace(/ing$/,'')];
+  if (!entry) return;
+  const rect = span.getBoundingClientRect();
+  showVpop(span.textContent, entry, rect);
+}
+
+function showVpop(word, entry, rect) {
+  const pop = document.getElementById('vpop');
+  document.getElementById('vword').textContent = word;
+  document.getElementById('vpos').textContent = entry.pos || '';
+  document.getElementById('vmean').textContent = entry.ja || '';
+  document.getElementById('vex').textContent = entry.ex || '';
+  pop.style.display = 'block';
+  const pw = pop.offsetWidth, ph = pop.offsetHeight;
+  let top = rect.bottom + window.scrollY + 6;
+  let left = rect.left + window.scrollX;
+  if (left + pw > window.innerWidth - 12) left = window.innerWidth - pw - 12;
+  if (left < 8) left = 8;
+  if (top + ph > window.scrollY + window.innerHeight - 10) {
+    top = rect.top + window.scrollY - ph - 6;
+  }
+  pop.style.top = top + 'px';
+  pop.style.left = left + 'px';
+}
+
+function closeVpop() {
+  document.getElementById('vpop').style.display = 'none';
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('#vpop') && !e.target.closest('.vocab')) closeVpop();
+});
+
+// ══════════════════════════════════════════════════
+// TRANSLATION TOGGLE
+// ══════════════════════════════════════════════════
+function toggleTrans(id) {
+  const panel = document.getElementById('trans-' + id);
+  const btn = document.getElementById('btn-trans-' + id);
+  const isOpen = panel.style.display === 'block';
+  panel.style.display = isOpen ? 'none' : 'block';
+  btn.textContent = isOpen ? '🇯🇵 日本語訳を見る' : '🇯🇵 日本語訳を閉じる';
+  btn.classList.toggle('open', !isOpen);
+}
+
+// ══════════════════════════════════════════════════
+// MODEL ANSWER TOGGLE
+// ══════════════════════════════════════════════════
+function toggleModel(id) {
+  const wrap = document.getElementById('model-' + id);
+  const btn = document.getElementById('btn-model-' + id);
+  const isOpen = wrap.style.display === 'block';
+  wrap.style.display = isOpen ? 'none' : 'block';
+  btn.textContent = isOpen ? '✅ 模範解答を見る' : '✅ 模範解答を閉じる';
+  btn.classList.toggle('open', !isOpen);
+}
+
+// ══════════════════════════════════════════════════
+// T/F
+// ══════════════════════════════════════════════════
+function renderTF(stmts, tableId) {
+  const tbl = document.getElementById(tableId);
+  stmts.forEach((stmt, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="tf-lbl">${String.fromCharCode(65+i)}</td>
+      <td class="tf-stmt">${stmt}</td>
+      <td class="tf-btns">
+        <button class="tf-btn" id="${tableId}-t-${i}" onclick="selTF('${tableId}',${i},'T')">T</button>
+        <button class="tf-btn" id="${tableId}-f-${i}" onclick="selTF('${tableId}',${i},'F')">F</button>
+      </td>`;
+    tbl.appendChild(tr);
+  });
+}
+const tfState = {};
+function selTF(tblId, i, val) {
+  if (!tfState[tblId]) tfState[tblId] = {};
+  tfState[tblId][i] = val;
+  const tBtn = document.getElementById(`${tblId}-t-${i}`);
+  const fBtn = document.getElementById(`${tblId}-f-${i}`);
+  tBtn.className = 'tf-btn' + (val==='T' ? ' sel-t' : '');
+  fBtn.className = 'tf-btn' + (val==='F' ? ' sel-f' : '');
+}
+
+function checkTF(tblId, ans, exp) {
+  const state = tfState[tblId] || {};
+  let correct = 0;
+  const html = ans.map((a, i) => {
+    const sel = state[i];
+    const ok = sel === a;
+    if (ok) correct++;
+    return `<div class="r-item ${ok?'r-ok':'r-ng'}">
+      <span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span>
+      <strong>(${String.fromCharCode(65+i)})</strong>　正解: <strong>${a}</strong>　あなたの答え: ${sel||'未回答'}
+      <div style="margin-top:5px;color:#374151">${exp[i]}</div>
+    </div>`;
+  }).join('');
+  const res = document.getElementById(`${tblId}-result`);
+  res.innerHTML = `<div style="font-size:.9rem;font-family:sans-serif;margin-bottom:10px;font-weight:bold;color:#1a3a5c">${correct} / ${ans.length} 正解</div>${html}`;
+  res.style.display = 'block';
+}
+
+// ══════════════════════════════════════════════════
+// MCQ (大問2)
+// ══════════════════════════════════════════════════
+function checkQ2MCQ() {
+  const ans = {q2q1:'B', q2q2:'D'};
+  const exp = {
+    q2q1: '根拠：第1段落末文 "Giving up on our long-term goals for immediate satisfaction is procrastination." → 先延ばし＝即時の満足のために長期目標を諦めること＝(B) Delaying tasks',
+    q2q2: '根拠：最終段落 "simply offering the students a tool by which they could commit to deadlines in advance helped them achieve better grades." → 適切なサポートがあれば学生は自己管理できる → (D)',
+  };
+  let html = '';
+  let correct = 0;
+  ['q2q1','q2q2'].forEach((name,idx) => {
+    const sel = (document.querySelector(`input[name="${name}"]:checked`) || {}).value;
+    const ok = sel === ans[name];
+    if (ok) correct++;
+    html += `<div class="r-item ${ok?'r-ok':'r-ng'}">
+      <span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span>
+      問${idx+1}　正解: <strong>(${ans[name]})</strong>　あなたの答え: ${sel ? '('+sel+')' : '未回答'}
+      <div style="margin-top:5px;color:#374151">${exp[name]}</div>
+    </div>`;
+  });
+  const res = document.getElementById('q2-mcq-result');
+  res.innerHTML = `<div style="font-size:.9rem;font-family:sans-serif;margin-bottom:10px;font-weight:bold;color:#1a3a5c">${correct} / 2 正解</div>${html}`;
+  res.style.display = 'block';
+}
+
+// ══════════════════════════════════════════════════
+// Numeric Q3
+// ══════════════════════════════════════════════════
+function checkQ3Num() {
+  const val = parseInt(document.getElementById('q2q3-ans').value);
+  const res = document.getElementById('q2q3-result');
+  if (val === 21) {
+    res.className = 'num-result num-ok';
+    res.innerHTML = '✓ 正解！　1週間 = 7日、3本 × 7日 = <strong>21点</strong>の減点になります。';
+  } else {
+    res.className = 'num-result num-ng';
+    res.innerHTML = `✗ もう一度考えてみよう。「1日遅れ = 1点減点」「1週間 = 何日？」「提出物は何本？」の順に計算してみてください。（あなたの答え: ${isNaN(val)?'未入力':val}）`;
+  }
+  res.style.display = 'block';
+}
+
+// ══════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════
+const TITLES = {
+  home: '岡山大学 英語過去問演習',
+  q1:   '大問 1　Super-Agers',
+  q2:   '大問 2　Procrastination',
+  q3:   '大問 3　和文英訳',
+  q4:   '大問 4　自由英作文',
+};
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.getElementById('topbar-title').textContent = TITLES[id] || '';
+  const backBtn = document.getElementById('btn-back');
+  backBtn.style.display = (id === 'home') ? 'none' : 'inline-block';
+  window.scrollTo(0, 0);
+}
+function goHome() { showScreen('home'); }
+
+// ══════════════════════════════════════════════════
+// FONT SIZE
+// ══════════════════════════════════════════════════
+const FS_MAP = { s: {fs:'0.92rem', lh:'1.85'}, m: {fs:'1.05rem', lh:'1.9'}, l: {fs:'1.2rem', lh:'2.0'} };
+function setFs(size) {
+  const v = FS_MAP[size];
+  document.documentElement.style.setProperty('--fs', v.fs);
+  document.documentElement.style.setProperty('--lh', v.lh);
+  ['s','m','l'].forEach(s => {
+    const btn = document.getElementById('fs-' + s);
+    btn.style.background = s === size ? 'rgba(255,255,255,.38)' : 'rgba(255,255,255,.15)';
+  });
+  localStorage.setItem('examFs', size);
+}
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  renderPassage(P1, 'p1');
+  renderPassage(P2, 'p2');
+  renderTranslation(P1_JA, 'trans-p1');
+  renderTranslation(P2_JA, 'trans-p2');
+  renderTF(TF1, 'tf1');
+  const savedFs = localStorage.getItem('examFs') || 'm';
+  setFs(savedFs);
+});
+</script>
+</body>
+</html>
