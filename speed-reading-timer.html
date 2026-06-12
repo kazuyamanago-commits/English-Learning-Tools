@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>速読タイマー</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
+            background: #f0f4f8;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 16px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: #2d6a4f;
+            margin-bottom: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .subtitle {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 24px;
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 16px;
+        }
+        .card h2 {
+            font-size: 1rem;
+            color: #444;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e8f5e9;
+        }
+
+        /* 語数選択 */
+        select {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            appearance: auto;
+        }
+        select:focus { outline: none; border-color: #2d6a4f; }
+        #custom-input { display: none; margin-top: 10px; }
+        #custom-input input {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+        #custom-input input:focus { outline: none; border-color: #2d6a4f; }
+
+        /* タイマー */
+        .timer-display {
+            text-align: center;
+            font-size: 4.5rem;
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+            color: #2d6a4f;
+            letter-spacing: 2px;
+            margin: 12px 0 20px;
+        }
+        .timer-display.running { color: #e63946; }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .btn:disabled { background: #d0d0d0; color: #999; cursor: not-allowed; }
+        .btn-start { background: #2d6a4f; color: white; }
+        .btn-start:not(:disabled):hover { background: #245a41; }
+        .btn-stop { background: #e63946; color: white; display: none; margin-top: 0; }
+        .btn-stop:hover { background: #c1121f; }
+        .btn-reset { background: #eee; color: #555; font-size: 0.95rem; margin-top: 12px; display: none; }
+        .btn-reset:hover { background: #ddd; }
+
+        /* WPM結果 */
+        #wpm-result {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 16px;
+            background: #e8f5e9;
+            border-radius: 10px;
+        }
+        .wpm-number { font-size: 3rem; font-weight: bold; color: #2d6a4f; }
+        .wpm-unit { font-size: 1rem; color: #2d6a4f; font-weight: bold; }
+        .wpm-detail { font-size: 0.85rem; color: #666; margin-top: 8px; }
+
+        /* Weblio */
+        .weblio-row { display: flex; gap: 8px; }
+        .weblio-row input {
+            flex: 1;
+            padding: 10px 14px;
+            font-size: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+        .weblio-row input:focus { outline: none; border-color: #e07b00; }
+        .btn-weblio {
+            background: #e07b00;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.15s;
+        }
+        .btn-weblio:hover { background: #c96d00; }
+        .weblio-hint { font-size: 0.8rem; color: #999; margin-top: 6px; }
+
+        footer { margin-top: 8px; font-size: 0.8rem; color: #bbb; text-align: center; }
+    </style>
+</head>
+<body>
+
+<h1>速読タイマー</h1>
+<p class="subtitle">Speed Reading Timer — 英コミュⅠ</p>
+
+<!-- ① 語数 -->
+<div class="card">
+    <h2>① 語数を選ぶ</h2>
+    <select id="word-count-select" onchange="handleWordCountChange()">
+        <option value="">— 語数を選んでください —</option>
+        <option value="400">400語</option>
+        <option value="300">300語</option>
+        <option value="custom">自分で入力する</option>
+    </select>
+    <div id="custom-input">
+        <input type="number" id="custom-word-count" placeholder="語数を入力（例: 350）" min="1" oninput="validateCustomInput()">
+    </div>
+</div>
+
+<!-- ② タイマー -->
+<div class="card">
+    <h2>② タイマー</h2>
+    <div class="timer-display" id="timer-display">0:00</div>
+    <button class="btn btn-start" id="start-btn" onclick="startTimer()" disabled>スタート</button>
+    <button class="btn btn-stop"  id="stop-btn"  onclick="stopTimer()">読み終わった！</button>
+    <button class="btn btn-reset" id="reset-btn" onclick="resetTimer()">リセット</button>
+
+    <div id="wpm-result">
+        <div><span class="wpm-number" id="wpm-number">—</span> <span class="wpm-unit">WPM</span></div>
+        <div class="wpm-detail" id="wpm-detail"></div>
+    </div>
+</div>
+
+<!-- ③ 単語調べ -->
+<div class="card">
+    <h2>③ 分からない単語を調べる</h2>
+    <div class="weblio-row">
+        <input type="text" id="weblio-input" placeholder="単語を入力（例: ecosystem）" onkeydown="handleWeblioKey(event)">
+        <button class="btn-weblio" onclick="openWeblio()">Weblio →</button>
+    </div>
+    <p class="weblio-hint">Enterキーでも検索できます</p>
+</div>
+
+<footer>広島大学附属福山高校 英語科</footer>
+
+<script>
+    let timerInterval = null;
+    let startTime = null;
+    let elapsedSeconds = 0;
+    let isRunning = false;
+
+    function getWordCount() {
+        const sel = document.getElementById('word-count-select').value;
+        if (sel === 'custom') return parseInt(document.getElementById('custom-word-count').value) || 0;
+        return parseInt(sel) || 0;
+    }
+
+    function handleWordCountChange() {
+        const sel = document.getElementById('word-count-select').value;
+        document.getElementById('custom-input').style.display = (sel === 'custom') ? 'block' : 'none';
+        if (sel === 'custom') {
+            document.getElementById('start-btn').disabled = true;
+        } else {
+            document.getElementById('start-btn').disabled = !sel;
+        }
+    }
+
+    function validateCustomInput() {
+        const val = parseInt(document.getElementById('custom-word-count').value);
+        document.getElementById('start-btn').disabled = !(val > 0);
+    }
+
+    function formatTime(sec) {
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        return `${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+        if (isRunning) return;
+        isRunning = true;
+        startTime = Date.now() - elapsedSeconds * 1000;
+
+        timerInterval = setInterval(() => {
+            elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('timer-display').textContent = formatTime(elapsedSeconds);
+        }, 200);
+
+        document.getElementById('timer-display').classList.add('running');
+        document.getElementById('start-btn').style.display = 'none';
+        document.getElementById('stop-btn').style.display = 'block';
+        document.getElementById('word-count-select').disabled = true;
+        document.getElementById('custom-word-count').disabled = true;
+        document.getElementById('wpm-result').style.display = 'none';
+        document.getElementById('reset-btn').style.display = 'none';
+    }
+
+    function stopTimer() {
+        if (!isRunning) return;
+        isRunning = false;
+        clearInterval(timerInterval);
+
+        const words = getWordCount();
+        const minutes = elapsedSeconds / 60;
+        const wpm = minutes > 0 ? Math.round(words / minutes) : 0;
+
+        document.getElementById('timer-display').classList.remove('running');
+        document.getElementById('wpm-number').textContent = wpm;
+        document.getElementById('wpm-detail').textContent =
+            `${words}語 ÷ ${formatTime(elapsedSeconds)}（${Math.floor(minutes)}分${elapsedSeconds % 60}秒）`;
+        document.getElementById('wpm-result').style.display = 'block';
+        document.getElementById('stop-btn').style.display = 'none';
+        document.getElementById('reset-btn').style.display = 'block';
+    }
+
+    function resetTimer() {
+        isRunning = false;
+        clearInterval(timerInterval);
+        elapsedSeconds = 0;
+
+        document.getElementById('timer-display').textContent = '0:00';
+        document.getElementById('timer-display').classList.remove('running');
+        document.getElementById('wpm-result').style.display = 'none';
+        document.getElementById('start-btn').style.display = 'block';
+        document.getElementById('start-btn').disabled = !document.getElementById('word-count-select').value
+            || document.getElementById('word-count-select').value === 'custom';
+        document.getElementById('stop-btn').style.display = 'none';
+        document.getElementById('reset-btn').style.display = 'none';
+        document.getElementById('word-count-select').disabled = false;
+        document.getElementById('custom-word-count').disabled = false;
+    }
+
+    function openWeblio() {
+        const word = document.getElementById('weblio-input').value.trim();
+        if (!word) return;
+        window.open('https://ejje.weblio.jp/content/' + encodeURIComponent(word), '_blank');
+    }
+
+    function handleWeblioKey(e) {
+        if (e.key === 'Enter') openWeblio();
+    }
+</script>
+</body>
+</html>
