@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英語学習ツール — 広島大学附属福山高校</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
+            background: #f0f4f8;
+            color: #333;
+            min-height: 100vh;
+            padding: 32px 16px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        header h1 {
+            font-size: 1.6rem;
+            color: #2d6a4f;
+            margin-bottom: 6px;
+        }
+        header p {
+            font-size: 0.9rem;
+            color: #888;
+        }
+        .section {
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+        .section h2 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #999;
+            margin-bottom: 12px;
+            padding-left: 4px;
+        }
+        .card-link {
+            display: block;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: box-shadow 0.15s, transform 0.1s;
+            border-left: 4px solid #2d6a4f;
+        }
+        .card-link:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            transform: translateY(-1px);
+        }
+        .card-link.orange { border-left-color: #e07b00; }
+        .card-link.blue   { border-left-color: #1d6fa4; }
+        .card-link .title {
+            font-size: 1.05rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .card-link .desc {
+            font-size: 0.85rem;
+            color: #777;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.78rem;
+            color: #bbb;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>英語学習ツール</h1>
+    <p>広島大学附属福山高校 英語科</p>
+</header>
+
+<!-- 速読 -->
+<div class="section">
+    <h2>Speed Reading（速読）</h2>
+
+    <a class="card-link" href="speed-reading-timer.html">
+        <div class="title">速読タイマー</div>
+        <div class="desc">語数を選んでスタート。読み終わったらWPMを自動計算。分からない単語をWeblioで調べられます。</div>
+    </a>
+
+    <a class="card-link" href="Level1_速読トレーニング.html">
+        <div class="title">Speed Reading — Level 1</div>
+        <div class="desc">Level 1 教材（タイマー・内容確認・音声読み上げ）</div>
+    </a>
+
+    <a class="card-link" href="Level2_速読トレーニング.html">
+        <div class="title">Speed Reading — Level 2</div>
+        <div class="desc">Level 2 教材（タイマー・内容確認・音声読み上げ）</div>
+    </a>
+
+    <a class="card-link" href="speed-reading-L01.html">
+        <div class="title">Speed Reading — L01: Why Zoos Are Important</div>
+        <div class="desc">400語・8問MCQ・音声読み上げ</div>
+    </a>
+</div>
+
+<!-- 入試対策 -->
+<div class="section">
+    <h2>入試対策</h2>
+
+    <a class="card-link orange" href="okayama-exam.html">
+        <div class="title">岡山大学 過去問</div>
+        <div class="desc">岡山大学英語過去問練習アプリ</div>
+    </a>
+</div>
+
+<!-- マニュアル -->
+<div class="section">
+    <h2>使い方</h2>
+
+    <a class="card-link blue" href="0613_サタスタ_使い方マニュアル.html">
+        <div class="title">サタスタ 使い方マニュアル</div>
+        <div class="desc">サタスタでの学習ツール使い方ガイド</div>
+    </a>
+</div>
+
+<footer>広島大学附属福山高校 英語科 — English Learning Tools</footer>
+
+</body>
+</html>
