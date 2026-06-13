@@ -137,6 +137,19 @@
         .btn-weblio:hover { background: #c96d00; }
         .weblio-hint { font-size: 0.8rem; color: #999; margin-top: 6px; }
 
+        /* WPM履歴 */
+        .hist-empty { text-align: center; padding: 32px 16px; color: #bbb; font-size: 0.9rem; }
+        .hist-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.83rem; }
+        .hist-row:last-child { border-bottom: none; }
+        .hist-date { color: #999; min-width: 128px; flex-shrink: 0; }
+        .hist-bar-wrap { flex: 1; background: #f1f5f9; border-radius: 4px; height: 13px; overflow: hidden; }
+        .hist-bar { height: 100%; background: linear-gradient(90deg, #2d6a4f, #52b788); border-radius: 4px; transition: width 0.4s; }
+        .hist-wpm { font-weight: bold; color: #2d6a4f; min-width: 64px; text-align: right; }
+        .hist-words { color: #bbb; min-width: 40px; text-align: right; font-size: 0.78rem; }
+        .hist-best { display: inline-block; background: #e8f5e9; color: #2d6a4f; border-radius: 4px; font-size: 0.72rem; font-weight: bold; padding: 1px 5px; margin-left: 4px; vertical-align: middle; }
+        .btn-clear { display: block; margin: 14px auto 0; background: none; border: none; color: #ccc; font-size: 0.78rem; cursor: pointer; text-decoration: underline; }
+        .btn-clear:hover { color: #e63946; }
+
         footer { margin-top: 8px; font-size: 0.8rem; color: #bbb; text-align: center; }
     </style>
 </head>
@@ -181,6 +194,13 @@
         <button class="btn-weblio" onclick="openWeblio()">Weblio →</button>
     </div>
     <p class="weblio-hint">Enterキーでも検索できます</p>
+</div>
+
+<!-- ④ WPM履歴 -->
+<div class="card">
+    <h2>④ WPM 履歴</h2>
+    <div id="history-list"></div>
+    <button class="btn-clear" onclick="clearHistory()">記録をすべて削除</button>
 </div>
 
 <footer>広島大学附属福山高校 英語科</footer>
@@ -253,6 +273,9 @@
         document.getElementById('wpm-result').style.display = 'block';
         document.getElementById('stop-btn').style.display = 'none';
         document.getElementById('reset-btn').style.display = 'block';
+
+        saveWPM(wpm, words, elapsedSeconds);
+        renderHistory();
     }
 
     function resetTimer() {
@@ -272,6 +295,49 @@
         document.getElementById('custom-word-count').disabled = false;
     }
 
+    /* ===== localStorage WPM履歴 ===== */
+    const LS_KEY = 'srt_history';
+
+    function saveWPM(wpm, words, secs) {
+        const now = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        const date = `${now.getFullYear()}/${pad(now.getMonth()+1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+        const rec = { date, wpm, words, secs };
+        const hist = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+        hist.unshift(rec);
+        if (hist.length > 50) hist.length = 50;
+        localStorage.setItem(LS_KEY, JSON.stringify(hist));
+    }
+
+    function renderHistory() {
+        const hist = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+        const el = document.getElementById('history-list');
+        if (!hist.length) {
+            el.innerHTML = '<div class="hist-empty">まだ記録がありません。<br>計測後に自動で保存されます。</div>';
+            return;
+        }
+        const maxWPM = Math.max(...hist.map(r => r.wpm));
+        const bestWPM = maxWPM;
+        let html = '';
+        hist.forEach((r, i) => {
+            const pct = Math.round(r.wpm / maxWPM * 100);
+            const bestBadge = (i === hist.findIndex(x => x.wpm === bestWPM)) ? '<span class="hist-best">Best</span>' : '';
+            html += `<div class="hist-row">
+                <span class="hist-date">${r.date}</span>
+                <div class="hist-bar-wrap"><div class="hist-bar" style="width:${pct}%"></div></div>
+                <span class="hist-wpm">${r.wpm} WPM${bestBadge}</span>
+                <span class="hist-words">${r.words}語</span>
+            </div>`;
+        });
+        el.innerHTML = html;
+    }
+
+    function clearHistory() {
+        if (!confirm('記録をすべて削除しますか？')) return;
+        localStorage.removeItem(LS_KEY);
+        renderHistory();
+    }
+
     function openWeblio() {
         const word = document.getElementById('weblio-input').value.trim();
         if (!word) return;
@@ -281,6 +347,8 @@
     function handleWeblioKey(e) {
         if (e.key === 'Enter') openWeblio();
     }
+
+    renderHistory();
 </script>
 </body>
 </html>
