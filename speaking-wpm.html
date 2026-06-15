@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speaking WPM Meter</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; background: #f8fafc; color: #1e293b; min-height: 100vh; }
+
+/* Nav */
+.nav { background: #7c3aed; color: #fff; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+.nav-back { background: none; border: none; color: #fff; font-size: 1rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; white-space: nowrap; }
+.nav-back:hover { background: rgba(255,255,255,.2); }
+.nav-title { font-size: .95rem; font-weight: 600; }
+
+/* Screens */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* HOME */
+.home-header { background: #7c3aed; padding: 28px 16px 24px; text-align: center; color: #fff; }
+.home-header-icon { font-size: 2.8rem; margin-bottom: 6px; }
+.home-header h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+.home-header p { font-size: .82rem; opacity: .8; }
+.home-cards { padding: 20px 16px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+.home-card { background: #fff; border: 2px solid #e2e8f0; border-radius: 14px; padding: 18px 16px; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: all .15s; }
+.home-card:hover { border-color: #7c3aed; box-shadow: 0 4px 14px rgba(124,58,237,.12); transform: translateY(-1px); }
+.home-card-icon { font-size: 2.2rem; flex-shrink: 0; }
+.home-card h2 { font-size: .98rem; font-weight: 600; margin-bottom: 2px; }
+.home-card p { font-size: .78rem; color: #64748b; }
+
+/* Shared layout */
+.page-wrap { padding: 16px; max-width: 480px; margin: 0 auto; }
+
+/* Mode tabs */
+.mode-tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+.mode-tab { padding: 7px 16px; border: 2px solid #e2e8f0; border-radius: 20px; font-size: .8rem; cursor: pointer; background: #fff; color: #475569; transition: all .15s; }
+.mode-tab.active { border-color: #7c3aed; background: #7c3aed; color: #fff; font-weight: 600; }
+
+/* Timer card */
+.timer-card { background: #fff; border-radius: 16px; padding: 20px 16px 16px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.07); text-align: center; }
+.timer-digits { font-size: 3.8rem; font-weight: 700; letter-spacing: -2px; font-variant-numeric: tabular-nums; color: #334155; transition: color .3s; }
+.timer-digits.running { color: #7c3aed; }
+.timer-digits.done { color: #059669; }
+.timer-sub { font-size: .73rem; color: #94a3b8; margin-top: 2px; }
+
+/* Stats row */
+.stats-row { display: flex; gap: 10px; margin-bottom: 12px; }
+.stat-card { background: #fff; border-radius: 12px; padding: 12px; flex: 1; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+.stat-num { font-size: 1.9rem; font-weight: 700; color: #7c3aed; }
+.stat-label { font-size: .7rem; color: #94a3b8; margin-top: 2px; }
+
+/* Click button */
+.click-btn { width: 100%; min-height: 110px; border: none; border-radius: 16px; background: #7c3aed; color: #fff; font-size: 1.1rem; font-weight: 600; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 14px rgba(124,58,237,.3); transition: all .1s; user-select: none; -webkit-user-select: none; margin-bottom: 10px; }
+.click-btn:active { transform: scale(.96); box-shadow: 0 2px 6px rgba(124,58,237,.2); }
+.click-btn:disabled { background: #e2e8f0; color: #94a3b8; box-shadow: none; cursor: default; }
+.click-sub { font-size: .76rem; opacity: .75; }
+
+/* Control row */
+.ctrl-row { display: flex; gap: 10px; }
+.ctrl-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: .9rem; font-weight: 600; cursor: pointer; transition: opacity .15s; }
+.ctrl-start { background: #059669; color: #fff; }
+.ctrl-stop  { background: #dc2626; color: #fff; }
+.ctrl-reset { background: #f1f5f9; color: #475569; }
+.ctrl-btn:hover { opacity: .88; }
+.ctrl-btn:disabled { opacity: .4; cursor: default; }
+
+/* Result panel */
+.result-panel { background: #f0fdf4; border: 2px solid #86efac; border-radius: 14px; padding: 20px 16px; margin-top: 14px; text-align: center; }
+.result-wpm { font-size: 3.2rem; font-weight: 700; color: #059669; }
+.result-label { font-size: .82rem; color: #166534; margin-bottom: 14px; }
+
+/* Gauge */
+.gauge-wrap { margin: 8px 0 4px; }
+.gauge-track { height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; margin-bottom: 5px; }
+.gauge-fill { height: 100%; border-radius: 5px; transition: width .6s ease; }
+.gauge-ticks { display: flex; justify-content: space-between; font-size: .62rem; color: #94a3b8; padding: 0 1px; }
+.gauge-rating { font-size: .95rem; font-weight: 600; margin-top: 6px; }
+
+/* Save form */
+.save-form { text-align: left; margin-top: 14px; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 14px; }
+.save-form-title { font-size: .85rem; font-weight: 600; margin-bottom: 10px; }
+.field-group { display: flex; flex-direction: column; gap: 8px; }
+.field-label { font-size: .75rem; color: #64748b; font-weight: 500; margin-bottom: 3px; }
+.f-input { width: 100%; padding: 8px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: .9rem; font-family: inherit; }
+.f-input:focus { outline: none; border-color: #7c3aed; }
+.save-btn { width: 100%; padding: 10px; background: #7c3aed; color: #fff; border: none; border-radius: 8px; font-size: .9rem; font-weight: 600; cursor: pointer; margin-top: 8px; }
+.save-btn:hover { background: #6d28d9; }
+
+/* Transcribe screen */
+.info-box { border-radius: 10px; padding: 11px 14px; font-size: .8rem; margin-bottom: 14px; }
+.info-blue { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+.transcript-box { background: #fff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px; min-height: 100px; font-size: .92rem; line-height: 1.65; color: #334155; margin-bottom: 12px; white-space: pre-wrap; transition: border-color .3s; }
+.transcript-box.listening { border-color: #ef4444; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.5} }
+.listening-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ef4444; animation: pulse 1.2s infinite; margin-right: 6px; }
+.mic-btn { width: 100%; padding: 14px; border: none; border-radius: 14px; font-size: .95rem; font-weight: 600; cursor: pointer; background: #7c3aed; color: #fff; margin-bottom: 10px; transition: background .15s; }
+.mic-btn.active { background: #dc2626; }
+
+/* Manual input screen */
+.input-card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+.input-card h2 { font-size: 1rem; font-weight: 600; margin-bottom: 14px; }
+.info-yellow { background: #fef3c7; border: 1px solid #fde68a; color: #92400e; }
+.big-num-input { font-size: 2.5rem; font-weight: 700; width: 100%; text-align: center; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; color: #7c3aed; font-family: inherit; }
+.big-num-input:focus { outline: none; border-color: #7c3aed; }
+
+/* History screen */
+.chart-card { background: #fff; border-radius: 14px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+.chart-card h3 { font-size: .88rem; font-weight: 600; color: #475569; margin-bottom: 12px; }
+.record-list { display: flex; flex-direction: column; gap: 8px; }
+.record-item { background: #fff; border-radius: 10px; padding: 11px 14px; box-shadow: 0 1px 4px rgba(0,0,0,.07); display: flex; align-items: center; gap: 12px; }
+.record-wpm { font-size: 1.5rem; font-weight: 700; min-width: 56px; text-align: right; }
+.record-info { flex: 1; min-width: 0; }
+.record-topic { font-size: .88rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.record-meta { font-size: .72rem; color: #94a3b8; margin-top: 2px; }
+.del-btn { background: none; border: none; color: #cbd5e1; cursor: pointer; font-size: 1rem; padding: 4px 6px; border-radius: 6px; flex-shrink: 0; }
+.del-btn:hover { color: #dc2626; background: #fee2e2; }
+.no-records { text-align: center; color: #94a3b8; padding: 40px 16px; font-size: .88rem; }
+.clear-btn { width: 100%; padding: 10px; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 8px; color: #94a3b8; font-size: .8rem; cursor: pointer; margin-top: 10px; }
+.clear-btn:hover { border-color: #dc2626; color: #dc2626; }
+
+/* Toast */
+.toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(10px); background: #1e293b; color: #fff; padding: 9px 20px; border-radius: 20px; font-size: .83rem; opacity: 0; pointer-events: none; z-index: 9999; transition: opacity .25s, transform .25s; white-space: nowrap; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 360px) {
+  .timer-digits { font-size: 3rem; }
+  .stat-num { font-size: 1.6rem; }
+  .result-wpm { font-size: 2.6rem; }
+}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<!-- ───────── HOME ───────── -->
+<div id="home" class="screen active">
+  <div class="home-header">
+    <div class="home-header-icon">🗣️</div>
+    <h1>Speaking WPM Meter</h1>
+    <p>スピーキング速度を計測・記録する</p>
+  </div>
+  <div class="home-cards">
+    <div class="home-card" onclick="showScreen('measure')">
+      <div class="home-card-icon">👂</div>
+      <div>
+        <h2>計測する（聞き手用）</h2>
+        <p>クリックカウンターで語数を数え、WPMを算出する</p>
+      </div>
+    </div>
+    <div class="home-card" onclick="showScreen('input')">
+      <div class="home-card-icon">✏️</div>
+      <div>
+        <h2>自分の記録を入力</h2>
+        <p>ペアが計測してくれた自分のWPMを記録する</p>
+      </div>
+    </div>
+    <div class="home-card" onclick="showScreen('transcribe')">
+      <div class="home-card-icon">🎤</div>
+      <div>
+        <h2>音声で自動計測</h2>
+        <p>マイクで話すと自動でWPMを算出（Chrome/Edge）</p>
+      </div>
+    </div>
+    <div class="home-card" onclick="showScreen('history')">
+      <div class="home-card-icon">📈</div>
+      <div>
+        <h2>記録・グラフを見る</h2>
+        <p>過去のWPM記録と推移グラフ</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────── MEASURE ───────── -->
+<div id="measure" class="screen">
+  <div class="nav">
+    <button class="nav-back" onclick="resetMeasure();showScreen('home')">← ホーム</button>
+    <span class="nav-title">計測モード（聞き手用）</span>
+  </div>
+  <div class="page-wrap">
+
+    <!-- Mode tabs -->
+    <div class="mode-tabs">
+      <button class="mode-tab active" id="tab-60s" onclick="setMeasureMode('60s')">⏱ 60秒（基本）</button>
+      <button class="mode-tab" id="tab-free" onclick="setMeasureMode('free')">▶ 自由タイマー</button>
+    </div>
+
+    <!-- Timer -->
+    <div class="timer-card">
+      <div class="timer-digits" id="timer-digits">1:00</div>
+      <div class="timer-sub" id="timer-sub">60秒タイマー</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-words">0</div>
+        <div class="stat-label">語数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-wpm">—</div>
+        <div class="stat-label">WPM（速報）</div>
+      </div>
+    </div>
+
+    <!-- Click button -->
+    <button class="click-btn" id="click-btn" onclick="handleClick()" disabled>
+      <span style="font-size:2.2rem">👆</span>
+      <span>タップして 1語 カウント</span>
+      <span class="click-sub" id="click-sub">まず「スタート」を押してください</span>
+    </button>
+
+    <!-- Controls -->
+    <div class="ctrl-row">
+      <button class="ctrl-btn ctrl-start" id="main-btn" onclick="handleMainBtn()">スタート</button>
+      <button class="ctrl-btn ctrl-reset" onclick="resetMeasure()">リセット</button>
+    </div>
+
+    <!-- Result -->
+    <div id="measure-result" class="result-panel" style="display:none">
+      <div style="font-size:.82rem;color:#166534;margin-bottom:4px;">計測完了！</div>
+      <div class="result-wpm" id="m-result-wpm">0</div>
+      <div class="result-label">WPM（Words Per Minute）</div>
+      <div class="gauge-wrap">
+        <div class="gauge-track"><div class="gauge-fill" id="m-gauge-fill" style="width:0"></div></div>
+        <div class="gauge-ticks"><span>〜80</span><span>100</span><span>120</span><span>150〜</span></div>
+        <div class="gauge-rating" id="m-gauge-rating"></div>
+      </div>
+      <div class="save-form">
+        <div class="save-form-title">💾 この記録を保存する</div>
+        <div class="field-group">
+          <div>
+            <div class="field-label">トピック</div>
+            <input class="f-input" id="m-topic" type="text" placeholder="例：自己紹介、環境問題">
+          </div>
+          <div>
+            <div class="field-label">日付</div>
+            <input class="f-input" id="m-date" type="date">
+          </div>
+        </div>
+        <button class="save-btn" onclick="saveFromMeasure()">記録を保存</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ───────── TRANSCRIBE ───────── -->
+<div id="transcribe" class="screen">
+  <div class="nav">
+    <button class="nav-back" onclick="stopRecognition();showScreen('home')">← ホーム</button>
+    <span class="nav-title">音声で自動計測</span>
+  </div>
+  <div class="page-wrap">
+    <div class="info-box info-blue">
+      💡 Chrome / Edge でのみ動作します。HTTPS または localhost が必要です（GitHub Pages 公開後に確認）。
+    </div>
+
+    <!-- Timer & Stats -->
+    <div class="timer-card" style="margin-bottom:12px">
+      <div class="timer-digits" id="trans-digits">0:00</div>
+      <div class="timer-sub" id="trans-sub">マイクボタンを押して開始</div>
+    </div>
+    <div class="stats-row" style="margin-bottom:12px">
+      <div class="stat-card">
+        <div class="stat-num" id="trans-words">0</div>
+        <div class="stat-label">語数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="trans-wpm">—</div>
+        <div class="stat-label">WPM</div>
+      </div>
+    </div>
+
+    <!-- Transcript -->
+    <div class="transcript-box" id="transcript-box">（ここに文字起こしが表示されます）</div>
+
+    <!-- Mic button -->
+    <button class="mic-btn" id="mic-btn" onclick="toggleRecognition()">🎤 計測開始</button>
+
+    <!-- Result -->
+    <div id="trans-result" class="result-panel" style="display:none">
+      <div style="font-size:.82rem;color:#166534;margin-bottom:4px;">計測完了！</div>
+      <div class="result-wpm" id="t-result-wpm">0</div>
+      <div class="result-label">WPM</div>
+      <div class="gauge-wrap">
+        <div class="gauge-track"><div class="gauge-fill" id="t-gauge-fill" style="width:0"></div></div>
+        <div class="gauge-ticks"><span>〜80</span><span>100</span><span>120</span><span>150〜</span></div>
+        <div class="gauge-rating" id="t-gauge-rating"></div>
+      </div>
+      <div class="save-form">
+        <div class="save-form-title">💾 この記録を保存する</div>
+        <div class="field-group">
+          <div>
+            <div class="field-label">トピック</div>
+            <input class="f-input" id="t-topic" type="text" placeholder="例：自己紹介、環境問題">
+          </div>
+          <div>
+            <div class="field-label">日付</div>
+            <input class="f-input" id="t-date" type="date">
+          </div>
+        </div>
+        <button class="save-btn" onclick="saveFromTrans()">記録を保存</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ───────── INPUT ───────── -->
+<div id="input" class="screen">
+  <div class="nav">
+    <button class="nav-back" onclick="showScreen('home')">← ホーム</button>
+    <span class="nav-title">自分の記録を入力</span>
+  </div>
+  <div class="page-wrap">
+    <div class="info-box info-yellow" style="margin-bottom:14px">
+      📋 ペアが計測してくれたあなたのWPMを記録します。カウンターとは連動していません。
+    </div>
+    <div class="input-card">
+      <h2>WPMを入力して記録する</h2>
+      <div class="field-group">
+        <div>
+          <div class="field-label">WPM（ペアが計測した語/分）</div>
+          <input class="big-num-input" id="inp-wpm" type="number" min="1" max="400"
+            placeholder="例: 95" oninput="updateInputGauge()">
+        </div>
+        <div id="inp-gauge-wrap" style="display:none">
+          <div class="gauge-track"><div class="gauge-fill" id="inp-gauge-fill" style="width:0"></div></div>
+          <div class="gauge-rating" id="inp-gauge-rating" style="text-align:center;margin-top:4px"></div>
+        </div>
+        <div>
+          <div class="field-label">トピック</div>
+          <input class="f-input" id="inp-topic" type="text" placeholder="例：自己紹介、環境問題">
+        </div>
+        <div>
+          <div class="field-label">日付</div>
+          <input class="f-input" id="inp-date" type="date">
+        </div>
+        <button class="save-btn" onclick="saveManualRecord()">💾 記録を保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────── HISTORY ───────── -->
+<div id="history" class="screen">
+  <div class="nav">
+    <button class="nav-back" onclick="showScreen('home')">← ホーム</button>
+    <span class="nav-title">記録・グラフ</span>
+  </div>
+  <div class="page-wrap">
+    <div class="chart-card">
+      <h3>📈 WPM 推移（直近12件）</h3>
+      <canvas id="wpm-canvas"></canvas>
+    </div>
+    <div id="record-list" class="record-list"></div>
+    <button class="clear-btn" onclick="clearAllRecords()">すべての記録を削除</button>
+  </div>
+</div>
+
+<script>
+/* ======================== STATE ======================== */
+let measureMode = '60s';
+let isRunning  = false;
+let isDone     = false;
+let wordCount  = 0;
+let startTime  = null;
+let timerInt   = null;
+let finalWPM   = 0;
+
+/* ======================== UTILS ======================== */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function todayStr() {
+  return new Date().toISOString().slice(0,10);
+}
+
+function fmtTime(sec) {
+  const s = Math.max(0, Math.floor(sec));
+  return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+}
+
+/* ======================== SCREEN NAV ======================== */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id === 'history')  renderHistory();
+  if (id === 'input')    document.getElementById('inp-date').value = todayStr();
+  if (id === 'measure')  document.getElementById('m-date').value = todayStr();
+  if (id === 'transcribe') document.getElementById('t-date').value = todayStr();
+}
+
+/* ======================== WPM RATING ======================== */
+function rating(wpm) {
+  if (wpm < 80)  return { label:'ゆっくり',      color:'#94a3b8', pct: wpm/80*22 };
+  if (wpm < 100) return { label:'普通',          color:'#22c55e', pct: 22+(wpm-80)/20*18 };
+  if (wpm < 120) return { label:'流暢',          color:'#06b6d4', pct: 40+(wpm-100)/20*20 };
+  if (wpm < 150) return { label:'上級',          color:'#f59e0b', pct: 60+(wpm-120)/30*20 };
+                 return { label:'ネイティブ並み 🌟', color:'#7c3aed', pct: Math.min(80+(wpm-150)/50*20,100) };
+}
+
+function renderGauge(wpm, fillId, ratingId) {
+  const r = rating(wpm);
+  const fill = document.getElementById(fillId);
+  fill.style.width = r.pct + '%';
+  fill.style.background = r.color;
+  const rat = document.getElementById(ratingId);
+  rat.textContent = `${wpm} WPM — ${r.label}`;
+  rat.style.color = r.color;
+}
+
+/* ======================== MEASURE (CLICK COUNTER) ======================== */
+function setMeasureMode(mode) {
+  if (isRunning) return;
+  measureMode = mode;
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+mode).classList.add('active');
+  resetMeasure();
+  if (mode === '60s') {
+    document.getElementById('timer-sub').textContent = '60秒タイマー';
+    document.getElementById('timer-digits').textContent = '1:00';
+  } else {
+    document.getElementById('timer-sub').textContent = '経過時間';
+    document.getElementById('timer-digits').textContent = '0:00';
+  }
+}
+
+function handleMainBtn() {
+  if (!isRunning && !isDone) { startMeasure(); return; }
+  if (isRunning && measureMode === 'free') { finishMeasure(); return; }
+  if (isDone) { resetMeasure(); startMeasure(); }
+}
+
+function startMeasure() {
+  isRunning = true; isDone = false;
+  wordCount = 0; startTime = Date.now();
+
+  document.getElementById('stat-words').textContent = '0';
+  document.getElementById('stat-wpm').textContent   = '—';
+  document.getElementById('measure-result').style.display = 'none';
+
+  const digits = document.getElementById('timer-digits');
+  digits.classList.add('running'); digits.classList.remove('done');
+
+  const btn = document.getElementById('click-btn');
+  btn.disabled = false;
+  document.getElementById('click-sub').textContent = '1語ごとにタップ';
+
+  const mainBtn = document.getElementById('main-btn');
+  if (measureMode === '60s') {
+    mainBtn.textContent = '計測中…'; mainBtn.disabled = true;
+    mainBtn.className = 'ctrl-btn ctrl-start';
+  } else {
+    mainBtn.textContent = '⏹ ストップ'; mainBtn.disabled = false;
+    mainBtn.className = 'ctrl-btn ctrl-stop';
+  }
+
+  clearInterval(timerInt);
+  timerInt = setInterval(tickMeasure, 100);
+}
+
+function tickMeasure() {
+  const elapsed = (Date.now() - startTime) / 1000;
+  if (measureMode === '60s') {
+    const remain = Math.max(0, 60 - elapsed);
+    document.getElementById('timer-digits').textContent = fmtTime(remain);
+    if (remain <= 0) { finishMeasure(); return; }
+  } else {
+    document.getElementById('timer-digits').textContent = fmtTime(elapsed);
+  }
+  if (elapsed >= 5 && wordCount > 0) {
+    document.getElementById('stat-wpm').textContent = Math.round(wordCount / elapsed * 60);
+  }
+}
+
+function handleClick() {
+  if (!isRunning) return;
+  wordCount++;
+  document.getElementById('stat-words').textContent = wordCount;
+  const btn = document.getElementById('click-btn');
+  btn.style.background = '#5b21b6';
+  setTimeout(() => { btn.style.background = '#7c3aed'; }, 90);
+}
+
+function finishMeasure() {
+  clearInterval(timerInt);
+  isRunning = false; isDone = true;
+  const elapsed = (Date.now() - startTime) / 1000;
+  finalWPM = elapsed > 0 ? Math.round(wordCount / elapsed * 60) : 0;
+
+  const digits = document.getElementById('timer-digits');
+  digits.classList.remove('running'); digits.classList.add('done');
+  document.getElementById('click-btn').disabled = true;
+  document.getElementById('click-sub').textContent = '計測完了';
+
+  const mainBtn = document.getElementById('main-btn');
+  mainBtn.textContent = 'もう一度'; mainBtn.disabled = false;
+  mainBtn.className = 'ctrl-btn ctrl-start';
+
+  document.getElementById('m-result-wpm').textContent = finalWPM;
+  document.getElementById('measure-result').style.display = 'block';
+  renderGauge(finalWPM, 'm-gauge-fill', 'm-gauge-rating');
+  document.getElementById('m-date').value = todayStr();
+}
+
+function resetMeasure() {
+  clearInterval(timerInt);
+  isRunning = false; isDone = false;
+  wordCount = 0; finalWPM = 0;
+
+  document.getElementById('stat-words').textContent = '0';
+  document.getElementById('stat-wpm').textContent   = '—';
+  document.getElementById('measure-result').style.display = 'none';
+  document.getElementById('click-btn').disabled = true;
+  document.getElementById('click-sub').textContent = 'まず「スタート」を押してください';
+
+  const digits = document.getElementById('timer-digits');
+  digits.classList.remove('running','done');
+  digits.textContent = measureMode === '60s' ? '1:00' : '0:00';
+
+  const mainBtn = document.getElementById('main-btn');
+  mainBtn.textContent = 'スタート'; mainBtn.disabled = false;
+  mainBtn.className = 'ctrl-btn ctrl-start';
+}
+
+function saveFromMeasure() {
+  const topic = document.getElementById('m-topic').value.trim() || '（未入力）';
+  const date  = document.getElementById('m-date').value || todayStr();
+  saveRecord({ wpm: finalWPM, topic, date, mode: 'counter' });
+  showToast('記録を保存しました！');
+  document.getElementById('m-topic').value = '';
+}
+
+/* ======================== SPEECH RECOGNITION ======================== */
+let recRunning   = false;
+let recognition  = null;
+let recStartTime = null;
+let recTimerInt  = null;
+let recFinal     = '';
+let recWordCount = 0;
+let transWPM     = 0;
+
+function toggleRecognition() {
+  if (recRunning) { stopRecognition(); showTransResult(); }
+  else             { startRecognition(); }
+}
+
+function startRecognition() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { alert('このブラウザは音声認識に対応していません。\nChrome または Edge をお使いください。'); return; }
+
+  recFinal = ''; recWordCount = 0; recRunning = true; recStartTime = Date.now();
+
+  document.getElementById('transcript-box').textContent = '';
+  document.getElementById('transcript-box').classList.add('listening');
+  document.getElementById('trans-result').style.display = 'none';
+  document.getElementById('trans-words').textContent = '0';
+  document.getElementById('trans-wpm').textContent   = '—';
+  document.getElementById('trans-digits').textContent = '0:00';
+  document.getElementById('trans-digits').classList.add('running');
+  document.getElementById('trans-sub').innerHTML = '<span class="listening-dot"></span>認識中… 英語で話してください';
+  document.getElementById('mic-btn').textContent = '⏹ ストップ';
+  document.getElementById('mic-btn').classList.add('active');
+
+  recognition = new SR();
+  recognition.lang = 'en-US';
+  recognition.continuous = true;
+  recognition.interimResults = true;
+
+  recognition.onresult = (e) => {
+    let interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) recFinal += t + ' ';
+      else interim += t;
+    }
+    document.getElementById('transcript-box').textContent = recFinal + interim;
+    recWordCount = recFinal.trim().split(/\s+/).filter(Boolean).length;
+    document.getElementById('trans-words').textContent = recWordCount;
+  };
+
+  recognition.onerror = (e) => {
+    if (e.error !== 'aborted') document.getElementById('trans-sub').textContent = 'エラー: ' + e.error;
+  };
+
+  recognition.onend = () => { if (recRunning) recognition.start(); };
+  recognition.start();
+
+  clearInterval(recTimerInt);
+  recTimerInt = setInterval(() => {
+    const s = (Date.now() - recStartTime) / 1000;
+    document.getElementById('trans-digits').textContent = fmtTime(s);
+    if (s >= 3 && recWordCount > 0) {
+      document.getElementById('trans-wpm').textContent = Math.round(recWordCount / s * 60);
+    }
+  }, 300);
+}
+
+function stopRecognition() {
+  if (!recRunning) return;
+  recRunning = false;
+  clearInterval(recTimerInt);
+  if (recognition) { recognition.onend = null; recognition.stop(); recognition = null; }
+  document.getElementById('transcript-box').classList.remove('listening');
+  document.getElementById('trans-digits').classList.remove('running');
+  document.getElementById('trans-sub').textContent = '計測終了';
+  document.getElementById('mic-btn').textContent = '🎤 計測開始';
+  document.getElementById('mic-btn').classList.remove('active');
+}
+
+function showTransResult() {
+  const elapsed = recStartTime ? (Date.now() - recStartTime) / 1000 : 1;
+  const wc = recFinal.trim().split(/\s+/).filter(Boolean).length;
+  transWPM = elapsed > 0 ? Math.round(wc / elapsed * 60) : 0;
+  document.getElementById('t-result-wpm').textContent = transWPM;
+  document.getElementById('trans-result').style.display = 'block';
+  renderGauge(transWPM, 't-gauge-fill', 't-gauge-rating');
+  document.getElementById('t-date').value = todayStr();
+}
+
+function saveFromTrans() {
+  const topic = document.getElementById('t-topic').value.trim() || '（未入力）';
+  const date  = document.getElementById('t-date').value || todayStr();
+  saveRecord({ wpm: transWPM, topic, date, mode: 'auto' });
+  showToast('記録を保存しました！');
+  document.getElementById('t-topic').value = '';
+}
+
+/* ======================== MANUAL INPUT ======================== */
+function updateInputGauge() {
+  const wpm = parseInt(document.getElementById('inp-wpm').value);
+  const wrap = document.getElementById('inp-gauge-wrap');
+  if (!wpm || wpm < 1) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  renderGauge(wpm, 'inp-gauge-fill', 'inp-gauge-rating');
+}
+
+function saveManualRecord() {
+  const wpm = parseInt(document.getElementById('inp-wpm').value);
+  if (!wpm || wpm < 1) { showToast('WPMを入力してください'); return; }
+  const topic = document.getElementById('inp-topic').value.trim() || '（未入力）';
+  const date  = document.getElementById('inp-date').value || todayStr();
+  saveRecord({ wpm, topic, date, mode: 'manual' });
+  showToast('記録を保存しました！');
+  document.getElementById('inp-wpm').value = '';
+  document.getElementById('inp-topic').value = '';
+  document.getElementById('inp-gauge-wrap').style.display = 'none';
+}
+
+/* ======================== STORAGE ======================== */
+const STORE_KEY = 'speaking-wpm-records';
+
+function getRecords() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch { return []; }
+}
+
+function saveRecord(rec) {
+  const list = getRecords();
+  rec.id = Date.now();
+  list.push(rec);
+  localStorage.setItem(STORE_KEY, JSON.stringify(list));
+}
+
+function deleteRecord(id) {
+  const list = getRecords().filter(r => r.id !== id);
+  localStorage.setItem(STORE_KEY, JSON.stringify(list));
+  renderHistory();
+}
+
+function clearAllRecords() {
+  if (!confirm('すべての記録を削除しますか？')) return;
+  localStorage.removeItem(STORE_KEY);
+  renderHistory();
+}
+
+/* ======================== HISTORY ======================== */
+const MODE_ICON = { counter:'👂', manual:'✏️', auto:'🎤' };
+
+function renderHistory() {
+  const all     = getRecords();
+  const reversed = all.slice().reverse();
+  renderChart(all);
+
+  const list = document.getElementById('record-list');
+  if (!reversed.length) {
+    list.innerHTML = '<div class="no-records">まだ記録がありません</div>';
+    return;
+  }
+  list.innerHTML = reversed.map(r => {
+    const ri = rating(r.wpm);
+    return `<div class="record-item">
+      <div class="record-wpm" style="color:${ri.color}">${r.wpm}</div>
+      <div class="record-info">
+        <div class="record-topic">${MODE_ICON[r.mode]||''} ${esc(r.topic)}</div>
+        <div class="record-meta">${r.date} &nbsp;·&nbsp; <span style="color:${ri.color}">${ri.label}</span></div>
+      </div>
+      <button class="del-btn" onclick="deleteRecord(${r.id})" title="削除">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function renderChart(records) {
+  const canvas = document.getElementById('wpm-canvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const W = (canvas.parentElement.clientWidth || 360) - 32;
+  const H = 160;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, W, H);
+
+  if (!records.length) {
+    ctx.fillStyle = '#94a3b8'; ctx.font = '13px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('記録がありません', W/2, H/2);
+    return;
+  }
+
+  const data   = records.slice(-12);
+  const maxWPM = Math.max(...data.map(r => r.wpm), 160);
+  const pL = 38, pR = 8, pT = 18, pB = 28;
+  const cW = W - pL - pR, cH = H - pT - pB;
+
+  // Grid lines
+  [80, 100, 120, 150].forEach(v => {
+    const y = pT + cH - (v / maxWPM * cH);
+    if (y < pT || y > pT + cH) return;
+    ctx.strokeStyle = '#f1f5f9'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pL, y); ctx.lineTo(W - pR, y); ctx.stroke();
+    ctx.fillStyle = '#cbd5e1'; ctx.font = '9px system-ui'; ctx.textAlign = 'right';
+    ctx.fillText(v, pL - 3, y + 3);
+  });
+
+  const barW = Math.max(8, Math.min(28, cW / data.length * 0.55));
+  const step  = cW / data.length;
+
+  data.forEach((r, i) => {
+    const x   = pL + i * step + step / 2;
+    const bH  = (r.wpm / maxWPM) * cH;
+    const y   = pT + cH - bH;
+    const ri  = rating(r.wpm);
+
+    ctx.fillStyle = ri.color + 'cc';
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(x - barW/2, y, barW, bH, [3, 3, 0, 0]);
+    } else {
+      ctx.rect(x - barW/2, y, barW, bH);
+    }
+    ctx.fill();
+
+    if (bH > 16) {
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 8px system-ui'; ctx.textAlign = 'center';
+      ctx.fillText(r.wpm, x, y + 11);
+    }
+
+    const lbl = r.date.slice(5);
+    ctx.fillStyle = '#94a3b8'; ctx.font = '7.5px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText(lbl, x, H - 10);
+  });
+}
+
+/* ======================== INIT ======================== */
+document.getElementById('inp-date').value = todayStr();
+document.getElementById('m-date').value   = todayStr();
+document.getElementById('t-date').value   = todayStr();
+</script>
+</body>
+</html>

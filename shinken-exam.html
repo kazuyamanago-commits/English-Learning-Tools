@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>進研模試 英語対策（高1・7月）</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--fs:1.05rem;--lh:1.9}
+body{font-family:'Georgia','Times New Roman',serif;background:#f5f6f8;color:#222;line-height:var(--lh)}
+.container{max-width:820px;margin:0 auto;padding:70px 20px 60px}
+
+/* Top bar */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:#1a3a5c;color:#fff;display:flex;align-items:center;gap:8px;padding:8px 16px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.topbar-title{flex:1;font-size:.92rem;font-weight:bold;font-family:sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fs-controls{display:flex;align-items:center;gap:4px;margin-left:auto}
+.fs-label{font-size:.7rem;color:rgba(255,255,255,.6);font-family:sans-serif;margin-right:2px}
+.fs-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:4px;cursor:pointer;font-family:sans-serif;transition:background .12s;padding:3px 7px;line-height:1}
+.fs-btn:hover{background:rgba(255,255,255,.3)}
+#fs-s{font-size:.7rem}#fs-m{font-size:.82rem}#fs-l{font-size:.95rem}
+.btn-back{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:5px;cursor:pointer;font-size:.8rem;padding:4px 11px;font-family:sans-serif;display:none}
+.btn-back:hover{background:rgba(255,255,255,.3)}
+
+/* Home */
+.home-hero{background:linear-gradient(135deg,#1a3a5c 0%,#7c3aed 100%);color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:22px}
+.home-hero h1{font-size:1.35rem;margin-bottom:4px}
+.home-hero .sub{opacity:.75;font-size:.88rem;font-family:sans-serif;margin-top:5px;line-height:1.6}
+.home-cards{display:flex;flex-direction:column;gap:13px}
+.home-card{background:#fff;border-radius:12px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:flex-start;gap:16px;transition:transform .15s,box-shadow .15s,border-color .15s;border:2px solid transparent}
+.home-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12);border-color:#7c3aed}
+.home-card.disabled{opacity:.5;cursor:default}
+.home-card.disabled:hover{transform:none;box-shadow:0 2px 8px rgba(0,0,0,.07);border-color:transparent}
+.card-icon{font-size:2rem;flex-shrink:0;width:44px;text-align:center;padding-top:2px}
+.card-body{flex:1}
+.card-num{font-size:.7rem;font-family:sans-serif;font-weight:bold;letter-spacing:2px;color:#9ca3af;margin-bottom:3px}
+.card-title{font-size:.98rem;font-weight:bold;color:#1a3a5c;margin-bottom:4px}
+.card-desc{font-size:.8rem;color:#6b7280;font-family:sans-serif;line-height:1.55}
+.tags{margin-top:7px;display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-size:.66rem;font-family:sans-serif;font-weight:bold;padding:2px 7px;border-radius:10px}
+.t-mcq{background:#dbeafe;color:#1d4ed8}
+.t-error{background:#fef9c3;color:#854d0e}
+.t-reorder{background:#fce7f3;color:#9d174d}
+.t-write{background:#faf5ff;color:#7e22ce}
+.t-trans{background:#f0fdf4;color:#15803d}
+.t-wip{background:#f1f5f9;color:#64748b}
+
+/* Screens */
+.screen{display:none}
+.screen.active{display:block}
+.sec-hero{background:#1a3a5c;color:#fff;border-radius:12px;padding:18px 26px;margin-bottom:18px}
+.sec-hero h2{font-size:1.15rem;margin-bottom:2px}
+.sec-hero .hero-sub{font-size:.8rem;opacity:.73;font-family:sans-serif;margin-top:5px;line-height:1.5}
+
+/* Year cards */
+.year-cards{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.year-card{background:#fff;border-radius:10px;padding:14px 18px;box-shadow:0 2px 8px rgba(0,0,0,.07);cursor:pointer;flex:1;min-width:110px;text-align:center;border:2px solid transparent;transition:all .15s}
+.year-card:hover{border-color:#7c3aed;box-shadow:0 4px 14px rgba(124,58,237,.15)}
+.year-card-yr{font-size:1.1rem;font-weight:bold;color:#1a3a5c;margin-bottom:2px}
+.year-card-sub{font-size:.68rem;font-family:sans-serif;color:#6b7280}
+
+/* Trend */
+.trend-section{background:#fff;border-radius:10px;padding:20px 24px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:18px}
+.trend-toggle{font-size:.9rem;font-weight:bold;color:#1a3a5c;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:sans-serif;user-select:none}
+.trend-arrow{font-size:.7rem;transition:transform .2s;display:inline-block}
+.trend-body{display:none;margin-top:14px}
+.trend-table{width:100%;border-collapse:collapse;font-size:.8rem;font-family:sans-serif;margin-bottom:12px}
+.trend-table th{background:#f8fafc;padding:7px 10px;text-align:left;border-bottom:2px solid #e5e7eb;font-weight:bold;color:#374151}
+.trend-table td{padding:7px 10px;border-bottom:1px solid #f1f5f9;color:#374151;vertical-align:top}
+.trend-note{font-size:.78rem;font-family:sans-serif;color:#374151;line-height:1.85;padding:12px 16px;background:#f8fafc;border-radius:7px;border-left:3px solid #7c3aed}
+
+/* Q section */
+.q-section{background:#fff;border-radius:10px;padding:24px 30px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:16px}
+.q-sec-title{font-size:.93rem;font-weight:bold;color:#1a3a5c;padding-bottom:9px;border-bottom:2px solid #e5e7eb;margin-bottom:18px;font-family:sans-serif}
+.q-block{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid #f1f5f9}
+.q-block:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.q-num{font-size:.72rem;font-family:sans-serif;font-weight:bold;letter-spacing:1px;color:#9ca3af;margin-bottom:4px}
+.q-text{font-size:var(--fs);font-weight:bold;margin-bottom:10px;line-height:1.7}
+.q-vqu{font-size:.72rem;font-family:sans-serif;color:#7c3aed;background:#f5f3ff;display:inline-block;padding:2px 8px;border-radius:4px;margin-bottom:10px}
+.option-label{display:flex;align-items:flex-start;gap:10px;margin:5px 0;cursor:pointer;padding:6px 10px;border-radius:6px;transition:background .1s;font-size:calc(var(--fs) - .05rem)}
+.option-label:hover{background:#f5f3ff}
+.option-label input{margin-top:3px;flex-shrink:0;cursor:pointer;accent-color:#7c3aed}
+
+/* Buttons & results */
+.btn-check{display:inline-block;padding:9px 22px;border-radius:7px;border:none;font-size:.88rem;cursor:pointer;font-family:sans-serif;font-weight:bold;background:#7c3aed;color:#fff;margin-top:10px;transition:opacity .15s}
+.btn-check:hover{opacity:.87}
+.mcq-result{display:none;margin-top:14px}
+.r-item{padding:10px 14px;border-radius:7px;margin-bottom:8px;font-size:.84rem;line-height:1.65;font-family:sans-serif}
+.r-ok{background:#f0fdf4;border-left:3px solid #16a34a}
+.r-ng{background:#fff7ed;border-left:3px solid #ea580c}
+.tag-c{display:inline-block;background:#dcfce7;color:#15803d;border-radius:4px;font-size:.68rem;font-weight:bold;padding:1px 6px;margin-right:5px}
+.tag-w{display:inline-block;background:#fee2e2;color:#b91c1c;border-radius:4px;font-size:.68rem;font-weight:bold;padding:1px 6px;margin-right:5px}
+
+/* Error finding */
+.error-passage{background:#fffbf0;border-radius:9px;padding:18px 22px;border-left:4px solid #f59e0b;font-size:calc(var(--fs) - .07rem);line-height:2.1;margin-bottom:14px;white-space:pre-wrap;font-family:sans-serif}
+.err-mark{display:inline-block;background:#f59e0b;color:#fff;border-radius:3px;font-size:.6rem;font-weight:bold;padding:1px 4px;margin:0 1px;vertical-align:super;line-height:1;font-family:sans-serif}
+.num-sel-btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+.num-sel-btn{width:42px;height:42px;border:2px solid #d1d5db;border-radius:8px;background:#fff;font-family:sans-serif;font-weight:bold;font-size:.95rem;cursor:pointer;transition:all .15s}
+.num-sel-btn.selected{border-color:#f59e0b;background:#fef3c7;color:#92400e}
+.num-sel-btn:hover:not(.selected){border-color:#7c3aed;background:#f5f3ff}
+
+/* Reorder */
+.reorder-scramble{background:#f8fafc;border-radius:9px;padding:14px 18px;border:2px dashed #c4b5fd;font-size:calc(var(--fs) - .05rem);line-height:1.9;margin-bottom:10px;color:#374151}
+
+/* Model answer */
+.btn-model{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:6px;border:2px solid #16a34a;background:#fff;color:#16a34a;font-size:.82rem;cursor:pointer;font-family:sans-serif;font-weight:bold;margin-top:10px;transition:all .15s}
+.btn-model:hover,.btn-model.open{background:#16a34a;color:#fff}
+.model-wrap{display:none;margin-top:12px;background:#f0fdf4;border-radius:9px;padding:18px 22px;border-left:4px solid #16a34a}
+.model-head{font-size:.68rem;font-family:sans-serif;font-weight:bold;color:#15803d;letter-spacing:1.5px;margin-bottom:8px;text-transform:uppercase}
+.model-body{font-size:calc(var(--fs) - .05rem);line-height:var(--lh);color:#1a3a5c}
+.model-alt{margin-top:8px;font-size:.78rem;font-family:sans-serif;color:#6b7280}
+.model-pt{margin-top:12px;background:#fff;border-radius:7px;padding:11px 15px;font-size:.78rem;font-family:sans-serif;color:#374151;line-height:1.8;border:1px solid #bbf7d0}
+.model-pt-head{font-weight:bold;color:#15803d;margin-bottom:5px}
+
+/* Q6 specific */
+.q6-context{background:#fffbeb;border-radius:9px;padding:14px 18px;border-left:4px solid #f59e0b;font-size:calc(var(--fs) - .06rem);line-height:var(--lh);margin-bottom:14px;color:#1a3a5c}
+.q6-context-label{font-size:.65rem;font-family:sans-serif;font-weight:bold;color:#b45309;letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase}
+.q6-underline{text-decoration:underline;text-decoration-color:#7c3aed;text-decoration-thickness:2px}
+.memo-area{width:100%;min-height:90px;padding:11px 14px;border:2px solid #e5e7eb;border-radius:8px;font-size:calc(var(--fs) - .05rem);line-height:1.75;font-family:'Georgia',serif;resize:vertical;margin-top:10px;transition:border-color .15s}
+.memo-area:focus{outline:none;border-color:#7c3aed}
+.word-counter{font-size:.72rem;font-family:sans-serif;color:#9ca3af;margin-top:4px;text-align:right}
+.word-counter .wc-num{font-weight:bold;color:#7c3aed}
+.target-words{font-size:.78rem;font-family:sans-serif;color:#7c3aed;margin-bottom:8px}
+.model-body2{margin-top:10px;padding-top:10px;border-top:1px solid #bbf7d0}
+.model-label2{font-size:.7rem;font-family:sans-serif;color:#15803d;font-weight:bold;margin-bottom:4px}
+
+/* Bottom nav */
+.nav-bottom{margin-top:28px;display:flex;justify-content:center;gap:12px}
+.btn-tohome{padding:10px 28px;border-radius:7px;border:none;font-size:.88rem;cursor:pointer;font-family:sans-serif;font-weight:bold;background:#1a3a5c;color:#fff;transition:opacity .15s}
+.btn-tohome:hover{opacity:.85}
+
+/* Tile reorder UI */
+.tile-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:12px;background:#f8fafc;border:2px solid #e5e7eb;border-radius:8px;margin-bottom:10px;align-content:flex-start}
+.tile-answer-area{min-height:52px;padding:12px;background:#fffbf0;border:2px dashed #c4b5fd;border-radius:8px;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;align-items:flex-start;align-content:flex-start}
+.tile{display:inline-block;padding:6px 12px;border-radius:6px;border:2px solid #7c3aed;background:#fff;color:#7c3aed;font-size:calc(var(--fs) - .08rem);cursor:pointer;user-select:none;transition:all .12s;font-family:sans-serif;font-weight:bold}
+.tile:hover{background:#7c3aed;color:#fff}
+.tile.placed{border-color:#1a3a5c;color:#1a3a5c;background:#dbeafe}
+.tile.placed:hover{background:#fee2e2;border-color:#ef4444;color:#ef4444}
+.tile.correct{background:#dcfce7;border-color:#16a34a;color:#15803d;cursor:default}
+.tile.incorrect{background:#fee2e2;border-color:#ef4444;color:#b91c1c;cursor:default}
+.reorder-frame{font-size:var(--fs);line-height:1.8;margin-bottom:10px;color:#1a3a5c;padding:10px 14px;background:#f5f3ff;border-radius:8px}
+.btn-reset{padding:8px 14px;border-radius:7px;border:2px solid #e5e7eb;background:#fff;color:#6b7280;font-family:sans-serif;font-size:.82rem;cursor:pointer;margin-left:8px}
+
+/* Passage reading area */
+.passage-wrap{background:#fff;border-radius:10px;padding:22px 28px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:16px}
+.passage-title{font-size:.82rem;font-family:sans-serif;font-weight:bold;color:#1a3a5c;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb}
+.passage-body{font-size:var(--fs);line-height:var(--lh);color:#222;border-left:3px solid #c4b5fd;padding-left:16px}
+.passage-body p{margin-bottom:.7em}
+.p-blank{display:inline;background:#f5f3ff;color:#7c3aed;font-weight:bold;border-radius:3px;padding:0 3px;font-family:sans-serif}
+.p-ul{text-decoration:underline;text-decoration-color:#7c3aed;text-decoration-thickness:2px}
+.passage-note{font-size:.74rem;font-family:sans-serif;color:#6b7280;margin-top:12px;padding-top:10px;border-top:1px dashed #e5e7eb;line-height:1.9}
+.passage-img{max-width:100%;border-radius:8px;margin:12px 0;border:1px solid #e5e7eb;display:block}
+.q-write-area{width:100%;min-height:72px;padding:10px 14px;border:2px solid #e5e7eb;border-radius:8px;font-size:calc(var(--fs) - .05rem);line-height:1.75;font-family:'Georgia',serif;resize:vertical;margin-top:8px;transition:border-color .15s}
+.q-write-area:focus{outline:none;border-color:#7c3aed}
+.img-note{font-size:.78rem;font-family:sans-serif;color:#9ca3af;font-style:italic;padding:8px 12px;background:#f8fafc;border-radius:6px;margin-top:6px;border-left:3px solid #e5e7eb}
+
+/* AI assist section */
+.ai-assist{margin-top:14px;background:#f0fdf4;border-radius:9px;padding:16px 20px;border-left:4px solid #16a34a}
+.ai-assist-label{font-size:.68rem;font-family:sans-serif;font-weight:bold;color:#15803d;letter-spacing:1.5px;margin-bottom:8px;text-transform:uppercase}
+.ai-assist-note{font-size:.8rem;font-family:sans-serif;color:#374151;line-height:1.7;margin-bottom:10px}
+.ai-prompt-text{font-size:.8rem;font-family:sans-serif;color:#1a3a5c;line-height:1.8;background:#fff;border-radius:6px;padding:10px 14px;border:1px solid #bbf7d0;white-space:pre-wrap;margin-bottom:10px}
+.btn-copy-prompt{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:6px;border:none;background:#16a34a;color:#fff;font-size:.8rem;cursor:pointer;font-family:sans-serif;font-weight:bold;transition:opacity .12s}
+.btn-copy-prompt:hover{opacity:.85}
+.btn-ai-link{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:6px;border:2px solid #16a34a;background:#fff;color:#16a34a;font-size:.8rem;cursor:pointer;font-family:sans-serif;font-weight:bold;text-decoration:none;transition:all .12s}
+.btn-ai-link:hover{background:#16a34a;color:#fff}
+.btn-ai-link.disabled{border-color:#d1d5db;color:#9ca3af;cursor:default;pointer-events:none}
+
+/* Translation view */
+.trans-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:6px;border:2px solid #7c3aed;background:#fff;color:#7c3aed;font-size:.8rem;cursor:pointer;font-family:sans-serif;font-weight:bold;margin-bottom:12px;transition:all .12s}
+.trans-btn:hover,.trans-btn.active{background:#7c3aed;color:#fff}
+.trans-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-top:4px}
+.trans-col-head{background:#f8fafc;padding:8px 14px;font-size:.7rem;font-family:sans-serif;font-weight:bold;letter-spacing:1px;color:#6b7280;border-bottom:1px solid #e5e7eb}
+.trans-col-head.en{border-right:1px solid #e5e7eb}
+.trans-row-en{padding:10px 14px;font-size:calc(var(--fs) - .1rem);line-height:1.8;color:#1a3a5c;border-bottom:1px solid #f1f5f9;border-right:1px solid #e5e7eb;background:#fff}
+.trans-row-ja{padding:10px 14px;font-size:calc(var(--fs) - .12rem);line-height:1.85;color:#374151;border-bottom:1px solid #f1f5f9;background:#fafafa;font-family:sans-serif}
+.trans-row-en:last-of-type,.trans-row-ja:last-of-type{border-bottom:none}
+@media(max-width:580px){.trans-grid{grid-template-columns:1fr}.trans-col-head.en{border-right:none}.trans-row-en{border-right:none;border-bottom:2px solid #e5e7eb;background:#f5f3ff}.trans-row-ja{border-bottom:1px solid #f1f5f9}}
+
+/* Q3 hint collapsible */
+details.hint-detail{margin-top:6px}
+details.hint-detail summary{font-size:.78rem;font-family:sans-serif;color:#7c3aed;cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#f5f3ff;user-select:none}
+details.hint-detail summary::-webkit-details-marker{display:none}
+details.hint-detail summary::before{content:"▶ ";font-size:.65rem}
+details.hint-detail[open] summary::before{content:"▼ "}
+details.hint-detail .hint-body{margin-top:6px;color:#374151;font-size:.82rem;line-height:1.75;padding-left:4px}
+
+/* Write AI assist (reading) */
+.ai-assist-read{margin-top:12px;background:#eff6ff;border-radius:9px;padding:14px 18px;border-left:4px solid #3b82f6}
+.ai-assist-read-label{font-size:.68rem;font-family:sans-serif;font-weight:bold;color:#1d4ed8;letter-spacing:1.5px;margin-bottom:8px;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="btn-back" id="btn-back" onclick="goBack()">← 戻る</button>
+  <div class="topbar-title" id="topbar-title">進研模試 英語対策（高1・7月）</div>
+  <div class="fs-controls">
+    <span class="fs-label">文字</span>
+    <button class="fs-btn" id="fs-s" onclick="setFs('s')">小</button>
+    <button class="fs-btn" id="fs-m" onclick="setFs('m')" style="background:rgba(255,255,255,.35)">中</button>
+    <button class="fs-btn" id="fs-l" onclick="setFs('l')">大</button>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ══ HOME ══ -->
+<div id="screen-home" class="screen active">
+  <div class="home-hero">
+    <h1>進研模試 英語対策</h1>
+    <div class="sub">高校1年生 / 7月実施 / 2020〜2025年度<br>大問3（文法・語法），大問4 （長文読解ー物語文），大問5（長文読解ー説明文），大問6（英作文）に挑戦しよう</div>
+  </div>
+  <div class="home-cards">
+    <div class="home-card" onclick="goSection('q3')">
+      <div class="card-icon">🔤</div>
+      <div class="card-body">
+        <div class="card-num">大問 3</div>
+        <div class="card-title">文法・語法</div>
+        <div class="card-desc">空所補充×7・誤り発見・並べ替え。6年分の問題と解説。傾向と対策付き。</div>
+        <div class="tags">
+          <span class="tag t-mcq">空所補充 × 7</span>
+          <span class="tag t-error">誤り発見</span>
+          <span class="tag t-reorder">並べ替え</span>
+        </div>
+      </div>
+    </div>
+    <div class="home-card" onclick="goSection('q4')">
+      <div class="card-icon">📖</div>
+      <div class="card-body">
+        <div class="card-num">大問 4</div>
+        <div class="card-title">長文読解（物語文）</div>
+        <div class="card-desc">物語文の読解。空所補充・英文記述・日本語説明。2020〜2025年度。</div>
+        <div class="tags"><span class="tag t-mcq">選択問題</span><span class="tag t-write">記述問題</span></div>
+      </div>
+    </div>
+    <div class="home-card" onclick="goSection('q5')">
+      <div class="card-icon">📚</div>
+      <div class="card-body">
+        <div class="card-num">大問 5</div>
+        <div class="card-title">長文読解（説明文）</div>
+        <div class="card-desc">説明文の読解。グラフ・図版問題含む。2020〜2025年度。</div>
+        <div class="tags"><span class="tag t-mcq">選択問題</span><span class="tag t-write">記述問題</span></div>
+      </div>
+    </div>
+    <div class="home-card" onclick="goSection('q6')">
+      <div class="card-icon">✍️</div>
+      <div class="card-body">
+        <div class="card-num">大問 6</div>
+        <div class="card-title">英作文</div>
+        <div class="card-desc">和文英訳（ア・イ）と自由英作文。6年分の模範解答・文法ポイント付き。</div>
+        <div class="tags">
+          <span class="tag t-trans">和文英訳 × 2</span>
+          <span class="tag t-write">英作文 × 1</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Q3 HOME ══ -->
+<div id="screen-q3" class="screen">
+  <div class="sec-hero">
+    <h2>大問 3　文法・語法</h2>
+    <div class="hero-sub">年度を選んで問題に挑戦しよう</div>
+  </div>
+  <div class="trend-section">
+    <div class="trend-toggle" onclick="toggleTrend()">
+      📊 傾向と対策　<span class="trend-arrow" id="trend-arrow">▼</span>
+    </div>
+    <div class="trend-body" id="trend-body">
+      <table class="trend-table">
+        <tr><th>文法事項</th><th>出題年度</th><th>VQU</th></tr>
+        <tr><td><strong>群動詞（句動詞）</strong></td><td>毎年 1〜2問（最多）</td><td>群動詞コラム（p.578-583）</td></tr>
+        <tr><td>受動態</td><td>2020・2022・2024・2025</td><td>第6章</td></tr>
+        <tr><td>不定詞</td><td>2021・2024・2025</td><td>第7章</td></tr>
+        <tr><td>動名詞（-ing形）</td><td>2022・2023・2024・2025</td><td>第9章</td></tr>
+        <tr><td>時制（過去進行形・完了形）</td><td>2021・2023・2024・2025</td><td>第2・4章</td></tr>
+        <tr><td>接続詞 vs 前置詞（while / during）</td><td>2020・2024</td><td>第17・18章</td></tr>
+        <tr><td>紛らわしい語法（say/tell, discuss, visit等）</td><td>毎年</td><td>第2章発展編pp.57-60 動詞の語法 pp.64-71 </td></tr>
+      </table>
+      <div class="trend-note">
+        <strong>群動詞等，動詞のフレーズは毎年よく出る。</strong> care for, look after, come across, kill time, try on, named after など。VQU群動詞コラム（p.578-583）を繰り返し確認するのが最善策。<br><br>
+        <strong>受動態の落とし穴。</strong> arrive は自動詞なので × was arrived（受け身にできない）。熟語の受動態はちょっと特殊な形。 フレーズのあとにbyがくる（be taken care of by）。<br><br>
+        <strong>動名詞 vs 不定詞。</strong> look forward to / enjoy / need のあとにくるのは -ing のみ。forget -ing（過去経験）と forget to do（未来の予定）を区別する。<br><br>
+        <strong>接続詞 vs 前置詞。</strong> while / when（接続詞） の後ろは S+V（節）、during / in（前置詞） の後ろは名詞。
+      </div>
+    </div>
+  </div>
+  <div class="year-cards">
+    <div class="year-card" onclick="openQ3(2020)"><div class="year-card-yr">2020</div><div class="year-card-sub">A×7・誤り発見・並べ替え×2</div></div>
+    <div class="year-card" onclick="openQ3(2021)"><div class="year-card-yr">2021</div><div class="year-card-sub">A×7・誤り発見・並べ替え×2</div></div>
+    <div class="year-card" onclick="openQ3(2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">A×7・並べ替え×2</div></div>
+    <div class="year-card" onclick="openQ3(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">A×7・並べ替え×2</div></div>
+    <div class="year-card" onclick="openQ3(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">A×7・並べ替え×2</div></div>
+    <div class="year-card" onclick="openQ3(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">A×7・並べ替え×2</div></div>
+  </div>
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div>
+
+<!-- ══ Q3 YEAR (dynamic) ══ -->
+<div id="screen-q3y" class="screen">
+  <div class="sec-hero"><h2 id="q3y-title"></h2><div class="hero-sub" id="q3y-sub"></div></div>
+  <div id="q3y-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-tohome" onclick="goSection('q3')">← 年度一覧</button>
+    <button class="btn-tohome" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+<!-- ══ Q4 HOME ══ -->
+<div id="screen-q4" class="screen">
+  <div class="sec-hero">
+    <h2>大問 4　長文読解（物語文）</h2>
+    <div class="hero-sub">年度を選んで読解問題に挑戦しよう</div>
+  </div>
+  <div class="year-cards">
+    <div class="year-card" onclick="openQ45(4,2020)"><div class="year-card-yr">2020</div><div class="year-card-sub">Lucas と生徒会選挙</div></div>
+    <div class="year-card" onclick="openQ45(4,2021)"><div class="year-card-yr">2021</div><div class="year-card-sub">Sara とコミックストリップ</div></div>
+    <div class="year-card" onclick="openQ45(4,2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">Emma と Sophie</div></div>
+    <div class="year-card" onclick="openQ45(4,2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">Clare と幸運の石</div></div>
+    <div class="year-card" onclick="openQ45(4,2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">Simon とイタリア旅行</div></div>
+    <div class="year-card" onclick="openQ45(4,2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">Margie と絵画の約束</div></div>
+  </div>
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div>
+
+<!-- ══ Q4 YEAR (dynamic) ══ -->
+<div id="screen-q4y" class="screen">
+  <div class="sec-hero"><h2 id="q4y-title"></h2><div class="hero-sub" id="q4y-sub"></div></div>
+  <div id="q4y-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-tohome" onclick="goSection('q4')">← 年度一覧</button>
+    <button class="btn-tohome" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+<!-- ══ Q5 HOME ══ -->
+<div id="screen-q5" class="screen">
+  <div class="sec-hero">
+    <h2>大問 5　長文読解（説明文）</h2>
+    <div class="hero-sub">年度を選んで読解問題に挑戦しよう</div>
+  </div>
+  <div class="year-cards">
+    <div class="year-card" onclick="openQ45(5,2020)"><div class="year-card-yr">2020</div><div class="year-card-sub">サーネームの歴史</div></div>
+    <div class="year-card" onclick="openQ45(5,2021)"><div class="year-card-yr">2021</div><div class="year-card-sub">気候変動教育</div></div>
+    <div class="year-card" onclick="openQ45(5,2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">座りすぎと健康</div></div>
+    <div class="year-card" onclick="openQ45(5,2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">ボランティアと健康</div></div>
+    <div class="year-card" onclick="openQ45(5,2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">Creative Thinking</div></div>
+    <div class="year-card" onclick="openQ45(5,2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">バイリンガルと脳</div></div>
+  </div>
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div>
+
+<!-- ══ Q5 YEAR (dynamic) ══ -->
+<div id="screen-q5y" class="screen">
+  <div class="sec-hero"><h2 id="q5y-title"></h2><div class="hero-sub" id="q5y-sub"></div></div>
+  <div id="q5y-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-tohome" onclick="goSection('q5')">← 年度一覧</button>
+    <button class="btn-tohome" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+<!-- ══ Q6 HOME ══ -->
+<div id="screen-q6" class="screen">
+  <div class="sec-hero">
+    <h2>大問 6　英作文</h2>
+    <div class="hero-sub">和文英訳（ア・イ）と自由英作文。年度を選んで練習しよう。</div>
+  </div>
+  <div class="year-cards">
+    <div class="year-card" onclick="openQ6(2020)"><div class="year-card-yr">2020</div><div class="year-card-sub">英訳5点×2 / B 30語</div></div>
+    <div class="year-card" onclick="openQ6(2021)"><div class="year-card-yr">2021</div><div class="year-card-sub">英訳5点×2 / B 30語</div></div>
+    <div class="year-card" onclick="openQ6(2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">英訳3点×2 / B 20語</div></div>
+    <div class="year-card" onclick="openQ6(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">英訳3点×2 / B 20語</div></div>
+    <div class="year-card" onclick="openQ6(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">英訳3点×2 / B 20語</div></div>
+    <div class="year-card" onclick="openQ6(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">英訳3点×2 / B 20〜25語</div></div>
+  </div>
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div>
+
+<!-- ══ Q6 YEAR (dynamic) ══ -->
+<div id="screen-q6y" class="screen">
+  <div class="sec-hero"><h2 id="q6y-title"></h2><div class="hero-sub" id="q6y-sub"></div></div>
+  <div id="q6y-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-tohome" onclick="goSection('q6')">← 年度一覧</button>
+    <button class="btn-tohome" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ═══════════════════════════════════════════
+// Q3 DATA
+// ═══════════════════════════════════════════
+const Q3 = {
+  2020:{
+    A:[
+      {q:"Many nurses will be needed to (　　) for the elderly in our community.",opts:["apply","care","look","worry"],ans:1,exp:"care for ~ = 「~の世話をする」。look は look for（探す）、apply は apply for（応募する）、worry は worry about（心配する）—前置詞が for でも意味が合わない。",vqu:"▶ VQU 群動詞コラム（p.578-583）"},
+      {q:"Study science harder, (　　) you'll pass the exam.",opts:["and","but","if","or"],ans:0,exp:"「命令文 + and + 肯定的結果」＝「~しなさい、そうすれば~」。合格という肯定的結果なので and。「命令文 + or」は否定的結果（さもなければ~）。",vqu:"▶ 命令文 + and「~しなさい、そうすれば~」/ + or「さもなければ~」"},
+      {q:'"Which of these two bags do you like better, the yellow one or the red one?" "I like (　　) of them."',opts:["all","both","every","some"],ans:1,exp:"2つに対して「両方」は both。all は3つ以上。every は単数名詞を修飾（every one of them とは言えても every of them は不可）。",vqu:"▶ 数量詞: both（2つとも）/ all（3つ以上）/ every（各々の・単数扱い）"},
+      {q:"I couldn't go out with my friends on Saturday because I (　　) finish my homework on that day.",opts:["had to","might","must","should"],ans:0,exp:"couldn't（過去形）に合わせて過去の文脈。must の過去形は had to。might は可能性（かもしれない）、must・should は現在・未来のみ。",vqu:"▶ must の過去形 = had to。might・should には過去を表す過去形はない"},
+      {q:"Many traffic accidents (　　) the rain.",opts:["caused","resulted in","were caused by","were resulted by"],ans:2,exp:"事故は雨によって「引き起こされた」→ 受動態。cause は他動詞 → be caused by が正しい。result は自動詞（result in / from）なので be resulted は不可。",vqu:"▶ VQU 第6章（受動態）"},
+      {q:'"Don\'t you think summer is almost here?" "Yeah. It is (　　) hotter these days."',opts:["coming","getting","making","taking"],ans:1,exp:"get + 形容詞 = 「~になる（変化）」。getting hotter = 「だんだん暑くなっている」。make は他動詞（目的語が必要）なので不可。",vqu:"▶ VQU 第2章（SVC）: 変化を表す動詞 get + 形容詞「～になる」"},
+      {q:"What a wonderful dress! Can I try it (　　)?",opts:["of","on","to","with"],ans:1,exp:"try on ~ = 「試着する」。代名詞が目的語の場合は try it on の語順（分離必須）。",vqu:"▶ VQU 群動詞コラム（p.578-583）"}
+    ],
+    B_type:"error",
+    B_full:`Dear Tom,\n\nThank you for your letter and gift. We hope you are fine. We also want to thank you for staying with us last winter.\n\nI'm sorry we couldn't [1]speak English well. Thanks to you, we managed to [2]make progress with our English.\n\nI'm including in this letter the photos taken [3]while our trip together to the amusement park. We [4]had a good time!\n\nWe hope to visit America someday. I want to go to New York to watch baseball! Please [5]say me how far New York is from your home. I am looking forward [6]to see you again soon.\n\n[7]Again, thank you for your letter.\n\n[8]Lastly, give our regards to your family.\n\nSincerely,`,
+    B_ans:[3,5,6],
+    B_exp:{3:"while は接続詞（後ろに S+V が必要）。名詞の前には前置詞 during を使う。 × while our trip → ○ during our trip",5:"say は直接人を目的語にとれない（say to me ならOK）。「伝える」で人を直接目的語にするのは tell。 × say me → ○ tell me",6:"look forward to の to は前置詞 → 後ろは動名詞（-ing形）。 × to see → ○ to seeing"},
+    C:[
+      {prompt:"She ( the most / become / expected / famous / of / one / is / to ) singers in Asia.",answer:"She <strong>is expected to become one of the most famous</strong> singers in Asia.",exp:"be expected to do「~すると期待されている」+ one of the most + 形容詞 + 複数名詞「最も~なものの一つ」。",vqu:"▶ VQU 第7章（不定詞）",ansTiles:["is","expected","to","become","one","of","the most","famous"]},
+      {prompt:"I'd like to know ( to / the name / were / of / you / the song / listening ) yesterday.",answer:"I'd like to know <strong>the name of the song you were listening to</strong> yesterday.",exp:"the song (that) you were listening to yesterday = 目的格関係代名詞省略。listen to ~ の to を語尾に置くことを忘れずに。",vqu:"▶ 関係詞: 前置詞を語尾に残す（the song you were listening to）",ansTiles:["the name","of","the song","you","were","listening","to"]}
+    ]
+  },
+  2021:{
+    A:[
+      {q:"Your idea is quite different from (　　).",opts:["I","me","mine","my"],ans:2,exp:"different from ~ の後は名詞相当語句。mine = my idea。前置詞（from）の後に主格 I は使えない。",vqu:"▶ 所有代名詞: mine = my idea（前置詞の後は名詞相当語句・× I は不可）"},
+      {q:"When you are depressed, take a (　　) at this picture.",opts:["call","look","text","watch"],ans:1,exp:"take a look at ~ = 「~をちょっと見る」。take a call は「電話に出る」で文脈に合わない。watch は名詞では「腕時計」。",vqu:"▶ VQU 群動詞コラム（p.578-583）"},
+      {q:"Tim (　　) in the library when I saw him an hour ago.",opts:["didn't study","has studied","hasn't studied","was studying"],ans:3,exp:"when I saw him（過去）の時点で進行していた動作 → 過去進行形 was studying。",vqu:"▶ VQU 第2章（時制）: 過去進行形 was/were -ing「（過去のある時点で）～していた」"},
+      {q:"John remained (　　) the whole time.",opts:["be silent","silent","silently","to silent"],ans:1,exp:"remain は連結動詞（SVC）。補語には形容詞が来る（× 副詞 silently は不可）。remain silent = 「ずっと黙っていた」。",vqu:"▶ VQU 第2章（SVC）: 状態を表す動詞 remain + 形容詞"},
+      {q:"Beth always comes on time. I think we should wait until she (　　).",opts:["came","comes","will come","would come"],ans:1,exp:"until は時を表す接続詞 → 副詞節内では未来のことでも現在形を使う。",vqu:"▶ VQU 第4章: 時を表す副詞節（until/when/before）では未来でも現在形"},
+      {q:"He is still working on the planning but will finish it (　　) a week or two.",opts:["about","from","in","on"],ans:2,exp:"in + 期間 = 「~後に / ~以内に」。in a week or two = 「1〜2週間後に」。",vqu:"▶ 前置詞 in + 期間:「～後に・～以内に」"},
+      {q:"I am surprised (　　) that James passed the exam.",opts:["and hear","being heard","hearing","to hear"],ans:3,exp:"感情形容詞（surprised, glad, happy 等）の後に原因・理由を示すときは to 不定詞。surprised to hear that ~ = 「~と聞いて驚いた」。",vqu:"▶ VQU 第7章（不定詞）"}
+    ],
+    B_type:"error",
+    B_full:`Dear Mr. and Mrs. Spencer,\n\nI hope you are well. I have just arrived safely home in Japan. School will start tomorrow, [1]so I am looking forward to seeing my friends again.\n\nI had a great time [2]during my stay at your home in Canada. I enjoyed [3]to speak English with you and life in Canada. Thank you very much for your hospitality. And thank you for taking me [4]to see Niagara Falls. It was a wonderful experience that I will never forget.\n\nI believe you said you might be coming here [5]in the fall. Please let me [6]knowing when you decide to [7]visit to Japan. I will happily show you around my hometown and introduce you to [8]some of my friends.\n\nBest regards,`,
+    B_ans:[3,6,7],
+    B_exp:{3:"enjoy の後ろは動名詞（-ing形）。 × to speak → ○ speaking",6:"let + O + 動詞原形（使役動詞）。let me know が正しい形。 × knowing → ○ know",7:"visit は他動詞。前置詞 to は不要。 × visit to Japan → ○ visit Japan"},
+    C:[
+      {prompt:"We should ( start / should / the project / we / when / discuss ) for our new business.",answer:"We should <strong>discuss when we should start the project</strong> for our new business.",exp:"discuss の後ろに間接疑問文（when we should start the project）が目的語として続く。discuss は他動詞で直接続ける（前置詞不要）。",vqu:"▶ VQU 第2章（他動詞）: discuss は他動詞で前置詞不要。間接疑問 when SV が目的語",ansTiles:["discuss","when","we","should","start","the project"]},
+      {prompt:"We ( sing / our students / in / expect / a loud voice / to ) in the concert hall.",answer:"We <strong>expect our students to sing in a loud voice</strong> in the concert hall.",exp:"expect + O + to do = 「Oが~することを期待する」。",vqu:"▶ VQU 第7章（不定詞）",ansTiles:["expect","our students","to","sing","in","a loud voice"]}
+    ]
+  },
+  2022:{
+    A:[
+      {q:"How often are the flowers (　　) in the summer?",opts:["to water","water","watered","watering"],ans:2,exp:"花は「水をやられる」もの → 受動態 are watered。",vqu:"▶ VQU 第6章（受動態）"},
+      {q:"Misa (　　) the station just after the train departed.",opts:["arrived","arrived at","was arrived","was arrived at"],ans:1,exp:"arrive は自動詞。「~に到着する」= arrive at + 場所。受動態は作れない（× was arrived）。",vqu:"▶ VQU 第2章（自動詞）: arrive は自動詞 → arrive at + 場所（× was arrived は不可）"},
+      {q:"My watch often stops these days, so it needs (　　) soon.",opts:["being repaired","repaired","repairing","to repair"],ans:2,exp:"need + -ing = 「~される必要がある」（受動的意味を能動形で表す）。needs repairing = needs to be repaired。",vqu:"▶ VQU 第9章（動名詞）"},
+      {q:'"I think these three models are good." "I like this computer because it is (　　) useful of the three."',opts:["the best","the better","the more","the most"],ans:3,exp:"3つを比べているため最上級。useful は2音節以上 → the most useful（× the usefullest は不可）。",vqu:"▶ 比較: 3つ以上は最上級。2音節以上は the most + 形容詞"},
+      {q:'"How do you (　　) time while you are waiting for someone?" "I often check my e-mail and read the news on my smartphone."',opts:["break","keep","kill","make"],ans:2,exp:"kill time = 「時間をつぶす、暇をつぶす」。break time は名詞（休憩時間）、keep time は「時間を守る」、make time for は「~のための時間を作る」。",vqu:"▶ VQU 群動詞コラム（p.578-583）"},
+      {q:"It is not wise to pay (　　) attention to your own health.",opts:["a few","a little","few","little"],ans:3,exp:"attention は不可算名詞。「ほとんど~ない」の意で不可算名詞に使うのは little（否定的少量）。a little は「少しある」（肯定的）。few / a few は可算名詞に使う。",vqu:"▶ 数量詞: little（否定的・少）/ a little（肯定的・少し）+ 不可算名詞"},
+      {q:"I came (　　) this nice T-shirt at a shop I stopped by the other day.",opts:["across","along","in","up"],ans:0,exp:"come across ~ = 「~に偶然出会う / 偶然見つける」。",vqu:"▶ VQU 群動詞コラム（p.578-583）"}
+    ],
+    B_type:"reorder",
+    B:[
+      {prompt:"I'm sure this solution ( anything else / this problem / than / makes / easier ).",answer:"I'm sure this solution <strong>makes this problem easier than anything else</strong>.",exp:"make + O + 形容詞（比較級）= 「Oを~にする」。easier than anything else = 「他の何よりも簡単な」。",vqu:"▶ VQU 第2章（SVOC）: make + O + 形容詞（比較級）=「Oを～にする」",ansTiles:["makes","this problem","easier","than","anything else"]},
+      {prompt:"How ( of / his wallet / to / careless / leave / him ) on the train!",answer:"How <strong>careless of him to leave his wallet</strong> on the train!",exp:"How + 形容詞 + of + O + to do! = 「Oが~するとはなんと…なことか」。It is careless of him to ~ の感嘆文形。",vqu:"▶ VQU 第7章（不定詞）: How + 形容詞 + of O + to do!（It is 形容詞 of O to do の感嘆文形）",ansTiles:["careless","of","him","to","leave","his wallet"]}
+    ]
+  },
+  2023:{
+    A:[
+      {q:"We all are tired of rain! It (　　) for three days now.",opts:["has been raining","is raining","rained","will be raining"],ans:0,exp:"for three days now = 「今まで3日間ずっと」→ 過去から現在まで継続する動作 → 現在完了進行形 has been raining。",vqu:"▶ VQU 第4章（完了形）"},
+      {q:'"Must I come here again next week?" "No, you (　　). Of course, you can if you want."',opts:["don't have to","mustn't","shouldn't","won't"],ans:0,exp:"後ろに「したければできる」とあるため禁止（mustn't）ではなく不必要（don't have to）が正解。",vqu:"▶ 助動詞: mustn't（禁止・してはいけない）/ don't have to（不要・しなくてよい）"},
+      {q:"Jack (　　) on the sofa when I entered the living room.",opts:["was lain","was laying","was lied","was lying"],ans:3,exp:"lie（自動詞）「横になる」の過去進行形 was lying。三形変化: lie-lay-lain。lay は他動詞「置く」の過去形、lied は「嘘をついた」と混同しないこと。",vqu:"▶ VQU 第2章（自動詞）: lie（横になる）の過去進行形。三変化 lie-lay-lain。× was lied は誤り"},
+      {q:"The number of children reading books (　　) these days.",opts:["are decreasing","are fewer","is decreasing","is fewer"],ans:2,exp:"「The number of ~」は「~の数」で主語として単数扱い → 動詞は is。decrease は動詞 → is decreasing が正しい。",vqu:"▶ 主語と動詞の一致: The number of ～は単数扱い（is）/ A number of ～は複数扱い（are）"},
+      {q:"We think that the narrow road was (　　) for the accident.",opts:["agreeable","invisible","responsible","unbelievable"],ans:2,exp:"be responsible for ~ = 「~の原因である / ~に責任がある」。「狭い道路が事故の原因だった」。",vqu:"▶ 熟語: be responsible for ～「～の原因である / ～に責任がある」"},
+      {q:"When the afternoon meeting was finally (　　), Michael hurried to the mall to buy party goods.",opts:["away","down","off","over"],ans:3,exp:"be over = 「終わる」。the meeting was over = 「会議が終わった」。",vqu:"▶ VQU 群動詞コラム（p.578-583）: be over「終わる・終わっている」"},
+      {q:"I am looking forward (　　) you in San Francisco this summer.",opts:["see","seeing","to see","to seeing"],ans:3,exp:"look forward to の to は前置詞 → 後ろは動名詞（-ing形）。× to see は誤り（to を不定詞と間違えやすい）。",vqu:"▶ VQU 第9章（動名詞）"}
+    ],
+    B_type:"reorder",
+    B:[
+      {prompt:"I couldn't get up early this morning. I ( to / to / me / my mother / drive / asked ) the station.",answer:"I <strong>asked my mother to drive me to</strong> the station.",exp:"ask + O + to do = 「Oに~するよう頼む」。drive me to the station = 「私を駅まで車で送る」。",vqu:"▶ VQU 第7章（不定詞）",ansTiles:["asked","my mother","to","drive","me","to"]},
+      {prompt:"I saw that movie last weekend, but it ( as / was / interesting / not / say / as / people ).",answer:"it <strong>was not as interesting as people say</strong>.",exp:"not as ~ as ... = 「...ほど~ではない」。as interesting as people say = 「人々が言うほど面白い」。",vqu:"▶ 比較: not as ～ as ...「...ほど～でない」（原級比較の否定）",ansTiles:["was","not","as","interesting","as","people","say"]}
+    ]
+  },
+  2024:{
+    A:[
+      {q:"I learned break dancing (　　) I was in New York.",opts:["among","during","if","while"],ans:3,exp:"後ろに「I was in New York」（節: S+V）が続くため接続詞 while が正しい。during は前置詞で後ろに名詞が続く（during my stay in New York）。",vqu:"▶ 接続詞 vs 前置詞: while / when + S+V（節）/ during / in + 名詞"},
+      {q:"Emma named her cat (　　) her favorite musician.",opts:["after","by","on","over"],ans:0,exp:"name A after B = 「AをBにちなんで名付ける」。",vqu:"▶ VQU 群動詞コラム（p.578-583）"},
+      {q:"As a little child, I was (　　) my grandparents.",opts:["taken by care of","taken care by","taken care of","taken care of by"],ans:3,exp:"take care of ~ → be taken care of by ~（受動態）。of は take care of のセットで必要。語順: taken care of by + 行為者。",vqu:"▶ VQU 第6章（受動態）"},
+      {q:"The rugby game was really (　　). I enjoyed watching it very much.",opts:["bored","boring","excited","exciting"],ans:3,exp:"物・事が主語のときは -ing 形（感動させる側）。人が主語のときは -ed 形（感動している側）。ゲーム → exciting（感動させる）。",vqu:"▶ VQU 第9章（分詞形容詞）: 物・事が主語 → -ing（exciting）/ 人が主語 → -ed（excited）"},
+      {q:"I hear that prices are going to (　　) again.",opts:["arise","raise","rise","rising"],ans:2,exp:"rise（自動詞）= 「（値段が）上がる」。raise（他動詞）= 「~を上げる」（目的語が必要）。prices は主語なので自動詞 rise。arise は「（問題が）生じる」で意味が合わない。",vqu:"▶ VQU 第2章（自動詞・他動詞）: rise（自・上がる）↔ raise（他・上げる）"},
+      {q:"I happened to spend 30 minutes with James yesterday, and I found that he is easy (　　).",opts:["talking","talking to","to talk","to talk to"],ans:3,exp:"tough構文: he is easy to talk to = talking to him is easy。最後の前置詞 to を忘れないこと（× to talk では「彼に話す」の to が脱落）。",vqu:"▶ VQU 第7章（不定詞）"},
+      {q:"The sale at the shop (　　) just when our parents return from their trip.",opts:["has been started","has started","was started","will start"],ans:3,exp:"when our parents return は時を表す副詞節（現在形で未来を表す）。主節は通常の未来形 will start。has started では「すでに始まってしまった」という意味になる。",vqu:"▶ 時制: 時・条件の副詞節（when/if/until）では未来でも現在形。主節のみ will を使う"}
+    ],
+    B_type:"reorder",
+    B:[
+      {prompt:"( are / I bought / than / lighter / the shoes / yesterday ) the ones I have been wearing for a long time.",answer:"<strong>The shoes I bought yesterday are lighter than</strong> the ones I have been wearing for a long time.",exp:"The shoes (that) I bought yesterday が主語の名詞句（関係代名詞省略）。lighter than ~ で比較。",vqu:"▶ 関係詞: The shoes (that) I bought yesterday（目的格関係代名詞省略）",ansTiles:["the shoes","I bought","yesterday","are","lighter","than"]},
+      {prompt:"( different / is / many / things / trying ) important when you're young.",answer:"<strong>Trying many different things is</strong> important when you're young.",exp:"動名詞句 Trying many different things が主語。動名詞が主語のとき動詞は単数（is）。",vqu:"▶ VQU 第9章（動名詞）: 動名詞句が主語 → 動詞は単数（is）",ansTiles:["trying","many","different","things","is"]}
+    ]
+  },
+  2025:{
+    A:[
+      {q:"Please be (　　) to call me when you arrive at the station.",opts:["fine","glad","necessary","ready"],ans:3,exp:"be ready to do = 「~する準備ができている」。文脈は「電話できる状態でいてください」= be ready to call。",vqu:"▶ VQU 第7章（不定詞）: be ready to do「～する準備ができている」"},
+      {q:"When I met Tim in class this morning, he (　　) a book.",opts:["has been reading","has read","is reading","was reading"],ans:3,exp:"when I met Tim（過去形）の時点で進行していた動作 → 過去進行形 was reading。",vqu:"▶ VQU 第2章（時制）: 過去進行形 was/were -ing「（過去のある時点で）～していた」"},
+      {q:"Thanks to the medicine, I feel (　　) better now.",opts:["much","such","very","well"],ans:0,exp:"比較級（better）を強調するのは much（× very は原級を強調）。much better = 「ずっとよくなった」。",vqu:"▶ 比較: 比較級を強調するのは much（× very は原級のみ強調可能）"},
+      {q:"I will never forget (　　) my favorite writer last year.",opts:["have met","meeting","met","to meet"],ans:1,exp:"forget + -ing = 「（過去に）~したことを忘れる」。forget + to do = 「（これから）~することを忘れる」。昨年会った経験を忘れない → forget meeting。",vqu:"▶ VQU 第9章（動名詞）"},
+      {q:"I always ask my uncle to look (　　) my cat when I travel.",opts:["after","at","for","like"],ans:0,exp:"look after ~ = 「~の世話をする」。look at（見る）・look for（探す）・look like（~に似ている）との区別。",vqu:"▶ VQU 群動詞コラム（p.578-583）"},
+      {q:"She (　　) as captain of the team by the other members.",opts:["chose","has chosen","is choosing","was chosen"],ans:3,exp:"「他のメンバーによって選ばれた」→ 受動態 was chosen。as captain = 「キャプテンとして」。",vqu:"▶ VQU 第6章（受動態）"},
+      {q:"I want to (　　) the matter with you later.",opts:["discuss","discuss about","discuss on","discuss over"],ans:0,exp:"discuss は他動詞で後ろに直接目的語をとる（前置詞不要）。× discuss about は日本語の「~について議論する」につられる典型的な誤り。",vqu:"▶ VQU 第2章（他動詞）: discuss は他動詞 → × discuss about は誤り"}
+    ],
+    B_type:"reorder",
+    B:[
+      {prompt:"It's almost ten o'clock. We have ( he / idea / no / show up / time / what / will ).",answer:"We have <strong>no idea what time he will show up</strong>.",exp:"have no idea = 「全く分からない」+ 間接疑問文 what time he will show up（疑問詞 + S + V の語順）。",vqu:"▶ 間接疑問: have no idea + 疑問詞 + S + V（疑問詞節の語順に注意）",ansTiles:["no","idea","what","time","he","will","show up"]},
+      {prompt:"Imagine your dream clearly. It ( best / doing / important / is / to keep / your ) to reach it.",answer:"It <strong>is important to keep doing your best</strong> to reach it.",exp:"It is important to do ~ の形式主語構文。keep doing ~ = 「~し続ける」。",vqu:"▶ VQU 第7章（不定詞）: It is 形容詞 to do 形式主語構文。keep doing = し続ける",ansTiles:["is","important","to keep","doing","your","best"]}
+    ]
+  }
+};
+
+// ═══════════════════════════════════════════
+// Q4 DATA（物語文）
+// ═══════════════════════════════════════════
+const Q4 = {
+  2020:{
+    title:"Lucas と生徒会選挙", pts:"20点",
+    passage:`Lucas arrived at school Monday morning to see the hallways covered with colorful posters. It was the season for the election of the student council. Samantha, the school queen bee, had announced she was running for student council president.
+
+"It's the same thing every year. If Samantha's elected again, she's only going to do things that help her friends," said Monica, Lucas's best friend. It was lunchtime and Lucas and his friends were sitting in the cafeteria.
+
+"Yeah, last year, she used a lot of school activity money for school dances," said Lucas. "As you guys all know, （ア）. I'd rather be home on a Friday night staring at the ceiling in my room."
+
+His friends burst out laughing.
+
+Most people didn't know the （イ） side of Lucas. He usually sat in the back of the classroom and only spoke when called upon by a teacher.
+
+"You know, Lucas, you're the smartest person I know and a great listener. I think you would be a great student council president," said Monica.
+
+"Huh?" said Lucas.
+
+"I would vote for you! I want you to be our new president!" added Monica.
+
+Soon his friends joined in, saying, "Lucas! Lucas! Lucas!"
+
+Lucas turned as red as an apple. He didn't like all the attention on him. But he wanted to see a change in his school. "OK, （ウ）I'll do it," he said.
+
+Three days later, Lucas stood in the doorway of the cafeteria. His hands were cold and his throat felt tight. Monica asked Lucas to speak to their classmates to find out what changes they would like to see in their school. The idea made sense, but Lucas was totally scared.
+
+Monica waved her hand for Lucas to follow her, as she approached a group of students.
+
+"Hey, how are you doing?" said Monica to the group. "I know you guys are members of the drama club. I want to introduce you to my best friend, Lucas Davidson. He's the best guy I know and he happens to be running for student council president."
+
+Lucas smiled nervously. "Hi. Do you mind if I take a seat? I'd love to hear more about your activities with the drama club and what I can do to make our school a better place."
+
+The students spoke for a few minutes. Lucas listened carefully and took notes on his cellphone. For the next couple of weeks, Lucas and Monica spent lunchtime talking to as many students as possible.
+
+On the day he was going to give his campaign speech, Lucas looked out at his classmates' faces from the stage. For a second, he regretted deciding to run. But then he gripped his cellphone in his pocket and remembered his classmates' hopes and wishes for a better school. This gave him courage. "Hi, friends," began Lucas. "Most of you have only recently gotten to know me. I'd like to be your next student council president, so I can make our school a better place for all."
+
+When the results came in, Lucas had lost the election to Samantha by only a few votes.
+
+Walking home from school later that day with Monica, he stopped and looked her in the eye. "Hey, I need to thank you for getting me out of my shell. It wasn't that bad running for student council president."
+
+"No problem," said Monica, smiling.
+
+Lucas said, "I want to go to student council meetings and will try to negotiate with them. Even though I lost the election, I will not give up yet! I have some good ideas I want to propose at the meeting."`,
+    note:"",
+    questions:[
+      {num:1,type:"mcq",q:"本文中の空所（ア）に入れるものとして最も適当なものを選べ。",opts:["I hate dancing.","I have a class.","I like the school activity.","I want money."],ans:0,exp:"Lucasはダンスに学校活動費が使われることを批判し「金曜の夜は家で天井を眺めていたい」と発言。→ I hate dancing."},
+      {num:2,type:"mcq",q:"本文中の空所（イ）に入れるものとして最も適当なものを選べ。",opts:["boring","funny","honest","serious"],ans:3,exp:"Lucasは教室の後ろに座り、指名された時だけ発言する内向的な人物。友人も知らなかった「serious（真面目）な」一面。"},
+      {num:3,type:"write",q:"下線部（ウ）について、具体的な内容を日本語で説明せよ。",model:"生徒会長選挙に立候補すること。"},
+      {num:4,type:"write",q:"次のQuestionに対するAnswerとなるように、空所に当てはまる10語程度の英語を補え。\nQuestion: Why was Lucas able to start his campaign speech after having a moment of regret?\nAnswer: He was able to do so because (　　　　).",model:"he gripped his cellphone and remembered his classmates' hopes and wishes for a better school"},
+      {num:5,type:"mcq",q:"次の文の空所に当てはまらないものを選べ。\nWhen Lucas and Monica were walking home, he thanked her because (　　).",opts:["she had encouraged him to try something new","she had given him a chance to be positive","she had helped him talk to other students","she had promised he would win the election next time"],ans:3,exp:"MonicaがLucasに「次は勝てる」と約束した事実は本文にない。1〜3は本文から確認できる内容。"},
+      {num:6,type:"write",q:"選挙後のLucasの今後の行動について、空所に当てはまる英語を補え。\nIn the future, he will participate in student council meetings to (　　).",model:"negotiate with them and propose his good ideas for a better school"}
+    ],
+    trans:["月曜日の朝、学校に来たルーカスは廊下がカラフルなポスターで埋め尽くされているのを目にした。生徒会選挙の季節だった。学校の人気者サマンサが生徒会長に立候補すると発表していた。","「毎年同じことだよ。サマンサがまた当選したら、友達の都合のいいことしかしない」と、ルーカスの親友モニカが言った。昼休みで、ルーカスと友人たちはカフェテリアに座っていた。","「そうだよ、去年は学校活動費をダンスにたくさん使ったし」とルーカスは言った。「みんなも知ってる通り、（ア）。金曜の夜は家で天井でも見ていたい」","友人たちはどっと笑い出した。","ルーカスの（イ）な一面を知っている人はほとんどいなかった。彼はいつも教室の後ろに座り、先生に指名されたときだけ発言した。","「ねえルーカス、あなたは私の知る中で一番頭がよくて、話を聞く力もある。きっと素晴らしい生徒会長になれると思う」とモニカが言った。","「え？」とルーカスは言った。","「私はあなたに投票する！あなたに新しい会長になってほしい！」とモニカは続けた。","すぐに友人たちも加わり、「ルーカス！ルーカス！ルーカス！」と声を揃えた。","ルーカスはリンゴのように真っ赤になった。注目されるのは得意ではなかった。しかし学校を変えたかった。「わかった、（ウ）やってみる」と彼は言った。","3日後、ルーカスはカフェテリアの入口に立っていた。手は冷たく、喉は締め付けられるようだった。モニカは、学校に何を変えてほしいかをクラスメートに聞いてくるよう彼に頼んでいた。理にかなった考えだったが、ルーカスは完全に怯えていた。","モニカはある生徒グループに近づきながら、ルーカスについてくるよう手で合図した。","「やあ、元気？あなたたち演劇部員だよね。私の親友ルーカス・デイヴィッドソンを紹介したい。私が知る中で最高の人物で、生徒会長に立候補しているんだ」とモニカはグループに声をかけた。","ルーカスは緊張しながらも笑顔を見せた。「こんにちは。座ってもいいですか？演劇部の活動のことや、学校をより良くするために何ができるか聞かせてください」","生徒たちは数分間話し、ルーカスは注意深く聞きながらスマートフォンにメモを取った。その後数週間、ルーカスとモニカは昼休みをできるだけ多くの生徒との対話に費やした。","選挙演説の当日、ルーカスはステージからクラスメートの顔を見渡した。一瞬、立候補を後悔した。しかしポケットのスマートフォンをぎゅっと握り、クラスメートのより良い学校への願いを思い出した。これが彼に勇気を与えた。「みなさん」とルーカスは始めた。「最近ようやく私を知ってくれた人が多いと思います。学校をみんなにとってより良い場所にするために、次の生徒会長になりたいです」","開票結果が出ると、ルーカスはわずかな票差でサマンサに敗れていた。","その日の放課後、モニカと一緒に帰る途中でルーカスは立ち止まり、彼女の目を見た。「ねえ、殻を破るきっかけを作ってくれてありがとう。生徒会長選挙に出るのも、そんなに悪くなかったよ」","「どういたしまして」とモニカは笑顔で言った。","「生徒会の会議に出席して、交渉してみたいと思う。選挙には負けたけど、まだ諦めない！会議で提案したいアイデアがいくつかあるから」とルーカスは言った。"]
+  },
+  2021:{
+    title:"Sara とコミックストリップ", pts:"21点",
+    passage:`Sara was annoyed when her mom told her the news. Her grandfather was moving from Japan to live with her family. Their two-bedroom apartment was already crowded with her mom, dad and her.
+
+While her mom was from Japan, Sara （ア）. She knew only a few Japanese words. Her mom told her about Sara's Grandpa. He studied English in college, but Sara and Grandpa had never spoken in English. When she went to Japan every summer, the most they said to each other was "Ohayo" in Japanese. Grandpa didn't talk much.
+
+A month has passed since Grandpa moved in. With the new family member in her home, Sara spent more time alone in her room working on her favorite hobby — drawing comic strips. She hardly showed these drawings to anyone. Her parents thought （イ）. They hoped she would spend more time on her schoolwork.
+
+Sara had been working for months on a 16-page comic book about a teenage girl with magic powers. She hoped to enter it in a comic book contest the next month, but was struggling with how to draw the hero with invisible magic powers.
+
+One afternoon, she got so frustrated that she crushed almost all the pages she drew and threw them in the wastebasket. She didn't know why, but her eyes were full of tears.
+
+She grabbed her jacket and went into the living room. Grandpa was reading a book on the sofa. She said, "Please tell my mom that I went for a walk."
+
+Grandpa said, "Itterasshai" to her, but she walked out of the room.
+
+When she came home, Sara was still upset, but more disappointed. There wouldn't be a comic book that she could hand in for the contest.
+
+Then she saw her desk. Her drawings were put back on the desk. They were laid flat and attached with small sticky notes all over the pages.
+
+Sara （ウ－①）. Who had gone through her wastebasket? This was her room. No one came in without telling her.
+
+The handwriting on the sticky notes was really easy to read. She quickly realized they were from Grandpa.
+
+"Sara, you have a gift for art," the first note said. The second note was longer. "When I was your age, I also wanted to be a comic artist."
+
+The other notes gave Sara advice on improving her comic strips.
+
+Sara felt a smile coming to her face. "Finally, someone understands my passion. I never imagined Grandpa would （エ）do that!"
+
+She started writing a card to Grandpa.
+
+"Dear Grandpa, Thank you so much for your kind comments. I want to finish my comic book so I can enter it in the contest next month. Please be my advisor! Love, Sara."
+
+Grandpa was watching TV with her parents in the living room but looked at Sara as she walked up to him.
+
+Sara （ウ－②）, so she handed him the card without a word. She wondered if Grandpa would accept it. When he read the card, he smiled but did not say anything, either.
+
+Sara quickly went into her room. Her parents were wondering what just happened.
+
+（オ）She went straight back to the desk and started working on her comic book. She only had a month. She couldn't wait to show Grandpa her next draft for more advice.`,
+    note:"had never spoken / had been working＝過去完了（進行形）。過去のある時点までの動作・継続を表す。",
+    questions:[
+      {num:1,type:"mcq",q:"本文中の空所（ア）に入れるものとして最も適当なものを選べ。",opts:["resembled her father more than her mother","was born and raised in the United States","was studying Japanese for a long time","went to high school in Japan"],ans:1,exp:"「知っている日本語は数語のみ」「英語で祖父と話したことがない」等から、アメリカで生まれ育ったと分かる。"},
+      {num:2,type:"mcq",q:"本文中の空所（イ）に入れるものとして最も適当なものを選べ。",opts:["it was a waste of time","it was not the best way to be a cartoonist","she had a great talent for drawing","she should practice drawing much more"],ans:0,exp:"両親は学校の勉強に時間を使ってほしいと思っていた → コミック制作を「時間の無駄」と考えていた。"},
+      {num:3,type:"write",q:"次のQuestionに対するAnswerとなるように、空所に当てはまる適当な英語を補え。\nQuestion: Why did Sara feel so frustrated that she crushed and threw away her drawings?\nAnswer: She felt so because she (　　　　).",model:"couldn't figure out how to draw the hero with invisible magic powers"},
+      {num:4,type:"mcq",q:"本文中の空所（ウ－①）・（ウ－②）に入れる語句の組み合わせとして最も適当なものを選べ。",opts:["①: felt like her blood was boiling　②: felt shy","①: felt like her blood was boiling　②: was in a good mood","①: felt like jumping for joy　②: felt shy","①: felt like jumping for joy　②: was in a good mood"],ans:0,exp:"（ウ①）: 自分の部屋を勝手に漁られた → 怒り「血が沸騰するような感じ」。（ウ②）: カードを渡す際に何も言えなかった → 恥ずかしさ「shy」。"},
+      {num:5,type:"write",q:"下線部（エ）が表す具体的な内容を日本語で説明せよ。",model:"ゴミ箱に捨てたコミックのページを拾って机に戻し、付箋に励ましのコメントと絵のアドバイスを書いてくれたこと。"},
+      {num:6,type:"mcq",q:"Saraが下線部（オ）のような行動をとった理由として最も適当なものを選べ。",opts:["Sara felt she could follow her dream again with the help of her grandfather.","Sara hoped her grandfather could persuade her parents to support her.","Sara realized she couldn't rely on anybody else for drawing her comic book.","Sara was confident that she could come up with many ideas on her own."],ans:0,exp:"祖父の励ましと具体的なアドバイスにより、夢を追い続ける気持ちが戻ってきた。"}
+    ],
+    trans:["お母さんがその知らせを告げると、サラはイライラした。祖父が日本からやってきて一緒に暮らすことになったのだ。2ベッドルームのアパートにはすでにお母さん、お父さん、そして彼女の3人で手狭だった。","お母さんは日本出身だったが、サラは（ア）。知っている日本語は数語しかなかった。お母さんからサラのおじいちゃんについて話を聞いていた。おじいちゃんは大学で英語を学んでいたが、サラとは英語で話したことがなかった。毎夏日本に行っていたが、お互いに言えるのはせいぜい日本語の「おはよう」くらいだった。おじいちゃんはあまり話さない人だった。","おじいちゃんが来て1ヶ月が経った。新しい家族が増えたことで、サラは自分の部屋で一人の時間を増やし、好きな趣味であるコミックストリップ制作に取り組んだ。描いた絵はほとんど誰にも見せなかった。両親は（イ）と思っていた。サラにはもっと勉強に時間を使ってほしかったのだ。","サラは何ヶ月もかけて、魔法の力を持つ女子高生についての16ページのコミックブックを制作していた。来月のコミックコンテストに応募したいと思っていたが、主人公の見えない魔法の力をどう描くかで悩んでいた。","ある午後、あまりにも行き詰まったサラは、描いたページをほぼすべてくしゃくしゃに丸めてゴミ箱に投げ込んでしまった。なぜかわからないが、目に涙がいっぱいあふれてきた。","ジャケットをつかんで居間に出ると、おじいちゃんがソファで本を読んでいた。「散歩に行くってお母さんに伝えておいて」と彼女は言った。","おじいちゃんは「いってらっしゃい」と言ったが、サラは部屋を出て行った。","帰宅したサラはまだ気持ちが乱れていたが、さらに落ち込んでいた。コンテストに提出できるコミックブックはもう残っていなかった。","そのとき、机が目に入った。描いた絵が机の上に戻されていた。ページはきれいに広げられ、あちこちに小さな付箋が貼られていた。","サラは（ウ－①）。誰がゴミ箱をあさったのだろう？ここは自分の部屋なのに。断りなしに誰も入ってこないはずだ。","付箋の文字はとても読みやすかった。すぐにそれがおじいちゃんからだとわかった。","「サラ、あなたには芸術の才能がある」と最初の付箋に書いてあった。2枚目はもっと長かった。「あなたくらいの歳の頃、私もコミックアーティストになりたかった」","他の付箋にはコミックストリップを改善するためのアドバイスが書かれていた。","サラの顔に笑顔が戻ってきた。「ついに誰かが私の情熱を理解してくれた。おじいちゃんが（エ）なんてことをしてくれるなんて思いもしなかった！」","彼女はおじいちゃんへのカードを書き始めた。","「おじいちゃんへ。優しいコメントをありがとう。来月のコンテストに応募できるようコミックブックを完成させたいです。私のアドバイザーになってください！　サラより」","おじいちゃんは居間でご両親と一緒にテレビを見ていたが、サラが近づくと彼女を見た。","サラは（ウ－②）ので、何も言わずにカードを手渡した。おじいちゃんが受け取ってくれるかどうか不安だった。カードを読んだおじいちゃんは笑顔を見せたが、やはり何も言わなかった。","サラはすぐに自分の部屋に戻った。ご両親は何が起きたのかと首をかしげた。","（オ）彼女はまっすぐ机に向かい、コミックブックの続きを始めた。残り1ヶ月しかない。次の下書きをおじいちゃんに見せてアドバイスをもらうのが待ち遠しかった。"]
+  },
+  2022:{
+    title:"Emma と Sophie", pts:"19点",
+    passage:`Emma met Sophie on the first day of high school. They sat next to each other at the orientation session and became best friends. Emma was a bookworm and always read several books at the same time. Sophie was an artist and loved drawing. They were very much alike. They were both the "（ア）type" and would rather share close conversations with a friend than have fun in a large group. They spent countless hours during lunch and after school talking about books and art.
+
+Then something happened toward the end of their senior year. One evening while they were on the phone, Sophie made some comments about the universities Emma was going to apply to. Emma was offended by Sophie's comments and she shot back with unkind words.
+
+Perhaps it was the stress and pressure of the university admission process many senior students were going through. But when Emma saw Sophie at school the next day, she knew something had changed. It was awkward to talk to Sophie because she knew that they would be going to different universities. Emma started spending lunchtime alone reading books. Sophie seemed to be absorbed in her sketches. They spoke less and less, and by the time of their graduation, they had not spoken to each other for weeks. They went their separate ways.
+
+About three years later, Emma was a university student searching for a job. She had just spent a day at a job fair, and there she had visited a number of booths set up by recruiting companies. Emma and her friend Jeff had just sat down at a cafeteria in the convention center when she noticed Sophie at a distant table.
+
+"You're not going to believe （イ）this," Emma said to Jeff in a soft voice. "I just noticed someone who I haven't seen since high school."
+
+"Why don't you go say hi?" Jeff said.
+
+"No, I'd better not," Emma said. "Sophie and I had some trouble in our friendship. And I'm too tired now."
+
+"Well, if you say so, （ウ）," Jeff said.
+
+Emma felt a slight feeling of regret but tried to forget it.
+
+A month later, Emma visited another job fair. As she walked into the convention hall, Sophie was walking in through the same door. When their eyes met, Sophie voiced her surprise.
+
+"Oh, my gosh, Emma!" Sophie said excitedly.
+
+"Sophie, what a surprise! Long time no see!" Emma felt somewhat awkward because she knew that she had had a chance to talk with Sophie a month before. But she hid her feeling of guilt and said, "How have you been?"
+
+That simple question seemed to restore everything. Emma and Sophie were again on the same wavelength. Even though they spent less than ten minutes together before wishing each other good luck and going to different booths, they felt a special connection just as they had on their first day of high school.
+
+Later that day, Emma kept thinking about Sophie. "Perhaps we should get together and catch up," Emma said to herself. "Running into her twice wasn't an accident. （エ）"`,
+    note:"offend＝〜を怒らせる　admission＝入学許可　awkward＝気まずい　had done＝過去完了",
+    questions:[
+      {num:1,type:"mcq",q:"本文中の空所（ア）に入れるものとして最も適当なものを選べ。",opts:["funny","positive","quiet","rude"],ans:2,exp:"2人は大グループより1対1の会話を好む内向的な性格 → quiet（静かな・内向的な）タイプ。"},
+      {num:2,type:"write",q:"下線部（イ）が表す内容を、25字程度の日本語で具体的に説明せよ。（句読点も字数に含む）",model:"求人フェア会場の遠くのテーブルに、高校以来会っていないSophieを見かけたこと。（30字）"},
+      {num:3,type:"mcq",q:"本文中の空所（ウ）に入れるものとして最も適当なものを選べ。",opts:["change your mind","I'll help you","it's up to you","mind your own business"],ans:2,exp:"「あなたがそう言うなら」に続く言葉 → it's up to you「あなた次第だよ」。Jeffはそれ以上強く勧めない。"},
+      {num:4,type:"write",q:"2度目のjob fairでSophieに話しかけられた時、なぜEmmaは後ろめたい気持ちになったのか、日本語で説明せよ。",model:"1度目のjob fairでSophieを見かけていたのに話しかけなかったことを、Sophieに隠していたから。"},
+      {num:5,type:"mcq",q:"本文中の空所（エ）に入れるものとして最も適当なものを選べ。",opts:["Everything happens for a reason.","Seeing is believing.","Tomorrow is another day.","Too much is as bad as too little."],ans:0,exp:"偶然2度も会ったことに意味を見出している → Everything happens for a reason.「すべてのことには理由がある」"}
+    ],
+    trans:["エマとソフィーは高校の初日に出会った。オリエンテーションで隣り合わせに座り、親友になった。エマは本の虫で、いつも何冊もの本を同時に読んでいた。ソフィーはアーティストで、絵を描くことが大好きだった。2人はとてもよく似ていた。どちらも「（ア）タイプ」で、大勢でわいわいするより友人と二人でじっくり話すほうを好んだ。昼休みや放課後、本と芸術について話し合いながら数えきれないほどの時間を過ごした。","ところが、2人は高校最終学年の終わりごろに関係が壊れてしまった。ある夜、電話で話していたとき、ソフィーがエマの受験する大学についていくつかコメントをした。エマはその言葉に傷ついて、冷たい言葉を言い返してしまった。","受験という重圧とストレスのせいだったのかもしれない。しかし翌日学校でソフィーの顔を見たとき、エマは何かが変わってしまったとわかった。異なる大学に進学することがわかっていたため、ソフィーと話すのが気まずかった。エマは昼休みを一人で本を読んで過ごすようになった。ソフィーもスケッチに没頭しているようだった。2人は次第に口を利かなくなり、卒業の頃には何週間も話していなかった。それぞれの道を歩み始めた。","約3年後、エマは就職活動中の大学生になっていた。就職フェアで1日を過ごし、採用企業のいくつかのブースを回ってきたところだった。友人のジェフと一緒にコンベンションセンターのカフェテリアに座ったとき、遠くのテーブルにソフィーを見かけた。","「信じられないかもしれないけど（イ）」とエマはジェフに小声で言った。「高校以来会っていない人を見かけたの」","「挨拶しに行けばいいじゃないか」とジェフが言った。","「行かないほうがよさそう」とエマは言った。「ソフィーとは仲がこじれていたし、今日はもう疲れてしまって」","「そうか、（ウ）」とジェフは言った。","エマは少し後悔したが、気にしないようにした。","1ヶ月後、エマは別の就職フェアを訪れた。会場に入ろうとすると、同じドアからソフィーが入ってきた。目が合った瞬間、ソフィーが声を上げた。","「まあ、エマ！」とソフィーは興奮した様子で言った。","「ソフィー、驚いた！久しぶり！」エマは1ヶ月前にソフィーを見かけながら話しかけなかったことを思い出して、少し気まずかった。しかし後ろめたさを隠して「元気にしてた？」と言った。","そのシンプルな一言がすべてを元に戻したようだった。エマとソフィーは再び同じ波長で結びついた。互いに健闘を祈り合い、それぞれのブースへと向かうまで10分にも満たない時間だったが、高校初日のときと同じ特別なつながりを感じた。","その日の夜、エマはずっとソフィーのことを考えていた。「また会ってゆっくり話せたらいいな」と心の中でつぶやいた。「2度も偶然に出会ったのは偶然じゃない。（エ）」"]
+  },
+  2023:{
+    title:"Clare と幸運の石", pts:"不明",
+    passage:`Miss Abbott said that we have to learn a speech for the competition on Friday. She wants to choose the best speaker from our class to represent us in the Grade Four Interclass Competition.
+
+Clare Brown's grandmother nodded her head. Her granddaughter did not usually do very well in school but she spoke clearly and her voice was pleasant and what is more, she liked explaining things. This was a rare opportunity for Clare to excel in something.
+
+"Oh, that sounds interesting. What are you going to talk about?"
+
+"Traffic. Honestly, Nanny, it's taking longer and longer to get to school in the morning because the roads are getting busier every day. I've been thinking about it and I've got some good ideas about how to solve the problem, so I think I can make a good speech."
+
+Old Mrs. Brown smiled. "That sounds like a good idea! So now all you have to do is plan your speech and practice speaking."
+
+Clare practiced every evening after school until she could speak without notes. It was important for Clare to do well at this to show her classmates that she had a talent for something.
+
+Friday morning arrived. Clare sat at the table with her parents but could not eat any breakfast. Her face was pale, so her mother asked her.
+
+"What's the matter, Clare? Are you sick?"
+
+She shook her head. "Maybe, but I'm afraid I won't be able to make my speech. I can't remember a word of it and I'll look so silly if I stand on the stage and say nothing." A tear rolled down her cheek.
+
+Clare's grandmother had been sitting quietly by the fire and listening to their conversation. She silently got up and left the room but returned holding something and showed it to Clare.
+
+"It's a special lucky stone. I found it when I was a little girl like you. Just keep your fingers on this stone when you are speaking, and it will bring you luck. You will speak beautifully, so forget your fears and go to school."
+
+Clare looked at the smooth black stone. Her parents looked at one another.
+
+That afternoon she was the tenth person to go on stage. She held the stone as she spoke. At the end, the class clapped so hard that she was not very surprised to learn that she had won the class competition and would be the speaker for her class in the Grade Four Interclass Competition. She held the lucky stone tight in her pocket as a thank you.
+
+She ran home that afternoon. She was so excited and had to tell Nanny that （ア）.
+
+Mom was at work, but Nanny was sitting in her usual seat and looking into the fire when Clare arrived home.
+
+"Nanny! I won. The stone!"
+
+The old woman clapped her hands. "Well done. I knew you could do it!"
+
+"It was the stone! It did it for me!"
+
+Nanny laughed, got out of her chair and began to shuffle out of the room. She returned minutes later holding a metal container.
+
+"Sit down, Clare, and open this."
+
+She did as she was told and felt inside the container.
+
+"Do you feel all those smooth stones? I collected those seventy years ago from a beach."
+
+Clare looked （イ）. "But they're special ......... magic stones?"
+
+"No, my dear! These old rocks are not magical. They work like magic because you believe they help you. It was you. You won the prize on your own! The stone only made you feel confident, so you could forget your nerves. What you must learn is that if you （ウ）, you can do anything."`,
+    note:"what is more＝さらに　excel＝秀でる　Nanny＝おばあちゃん　had been sitting / had won＝過去完了（進行形）　shuffle＝よろよろ歩く",
+    questions:[
+      {num:1,type:"write",q:"Clareのスピーチの内容について、次のようにまとめたい。空所①〜③に当てはまる内容を、①は5字程度、②・③はそれぞれ10字程度の日本語で補え。\n「毎日（①）して（②）ので、（③）ことに関する提案を発表するスピーチ。」",model:"①: 登校している（5字）　②: 道路が混雑している（10字）　③: 交通渋滞を解消する（10字）"},
+      {num:2,type:"write",q:"次のQuestionに対するAnswerとなるように、空所に当てはまる10語程度の英語を補え。\nQuestion: Why did Clare practice hard enough to speak without notes?\nAnswer: She wanted to (　　　　).",model:"show her classmates that she had a talent for something"},
+      {num:3,type:"mcq",q:"（ア）に入れるものとして最も適当なものを選べ。",opts:["Clare used her magic on the stone","the magic stone itself gave a good speech","the stone surprised people during the speech","the stone was magical just as she had said"],ans:3,exp:"Clareは石のおかげで勝てたと信じている → 「言った通り石は魔法だった」と伝えようとしている。"},
+      {num:4,type:"mcq",q:"（イ）に入れるものとして最も適当なものを選べ。",opts:["excited","happy","puzzled","scared"],ans:2,exp:"1つの特別な石だと思っていたのにたくさんの石が入っていた → puzzled（困惑した）。"},
+      {num:5,type:"mcq",q:"（ウ）に入れるものとして最も適当なものを選べ。",opts:["believe in yourself","doubt your confidence","find someone who helps you","get yourself another stone"],ans:0,exp:"おばあちゃんのメッセージ: 石の力ではなく、自分の力で勝った → believe in yourself「自分を信じる」"}
+    ],
+    trans:["アボット先生が、金曜日の大会に向けてスピーチを覚えるよう言った。クラスから最も優れた話し手を選んで4年生学級対抗大会の代表にするとのことだ。","クレア・ブラウンのおばあちゃんは頷いた。孫娘は学校の成績はあまりよくなかったが、はっきりした声で話し、声質も心地よく、さらに物事を説明することが好きだった。クレアが何かで輝ける数少ない機会だと思った。","「おもしろそうね。何について話すつもりなの？」","「交通問題よ。正直言って、ナニー、毎日道路が混んでくるから学校に着くまでどんどん長くかかるようになってるのよ。ずっと考えていて解決策についていくつかアイデアがあるから、いいスピーチができると思う」","年老いたブラウン夫人は微笑んだ。「いいアイデアね！あとはスピーチを計画して練習するだけね」","クレアは毎晩放課後に、メモなしで話せるようになるまで練習した。クラスメートに自分にも得意なことがあると示すために、ここで結果を出すことがクレアには重要だった。","金曜日の朝が来た。クレアは両親と食卓についたが、朝食を一口も食べられなかった。顔が青ざめていたため、お母さんが声をかけた。","「どうしたの、クレア？体が悪い？」","彼女は首を振った。「悪いかもしれないけど、スピーチができないんじゃないかと心配で。一言も思い出せないし、舞台に立って何も言えなかったらみっともなくて」涙が一筋頬を流れた。","おばあちゃんは暖炉のそばで静かに座って会話を聞いていた。無言で立ち上がり部屋を出て行ったが、何かを持って戻ってきてクレアに見せた。","「これは特別な幸運の石よ。私が小さい頃、あなたくらいの歳のときに見つけたの。スピーチ中、この石に指を触れていれば、幸運が訪れる。きれいに話せるから、恐れを忘れて学校に行きなさい」","クレアはすべすべした黒い石を見つめた。両親は顔を見合わせた。","その午後、彼女は10番目に舞台に上がった。話している間、石を握り続けた。スピーチが終わるとクラスが大きな拍手を送り、クレアはさほど驚くことなく、クラス代表として4年生学級対抗大会に出ることになったと聞かされた。お礼の気持ちを込めて、幸運の石をポケットにしっかり握りしめた。","その日の午後、クレアは走って家に帰った。大興奮で、（ア）をナニーに伝えなければならなかった。","お母さんは仕事で不在だったが、ナニーはいつもの場所に座って暖炉を見つめていた。","「ナニー！勝ったよ。石のおかげで！」","老婦人は手を叩いた。「よくやったね。あなたならできると思ってたよ！」","「石がやってくれたの！石がしてくれたんだよ！」","ナニーは笑い、椅子から立ち上がると部屋をよろよろと出て行った。数分後、金属の缶を持って戻ってきた。","「座って、クレア、これを開けてみて」","言われた通りにして、缶の中に手を入れた。","「つるつるした石がたくさん入っているでしょう？海岸から70年前に集めたものよ」","クレアは（イ）ような顔をした。「でも……特別な……魔法の石じゃないの？」","「違うよ、クレア！この古い石には魔法なんてない。あなたが助けてもらえると信じているから、魔法のように働くのよ。あなた自身の力で賞を取ったの！石はただ自信を持たせてくれて、緊張を忘れさせてくれただけよ。学ばなければならないのは、もし（ウ）なら、何でもできるということよ」"]
+  },
+  2024:{
+    title:"Simon とイタリア旅行", pts:"不明",
+    passage:`It was a family trip Simon had looked forward to for six months. He and his parents were going abroad for the first time. Simon was a little uncomfortable about going on a vacation with his parents at 18 years old, but the excitement of traveling around Italy for ten days was stronger than any doubt he had.
+
+Just after they landed at the airport in Italy, however, Simon started to become more uncomfortable about the situation — the fact that he was traveling with his parents, and they looked like total amateurs at foreign traveling.
+
+"Wow, these euro bills are so colorful! Very different from our U.S. dollar bills!" Simon's parents took time to look at each bill and coin they received at the currency exchange counter at the airport.
+
+"Mom, Dad, let's go. There's a line （ア）." Simon had to remind them of other customers waiting for their turn.
+
+In fact, the airport experience wasn't so bad because most people spoke English. Once they rented a car and got on the road, their troubles started showing. The plan was to drive to their hotel in Pompeii and tour the famous ruins the next day. The drive was supposed to take less than three hours from Rome.
+
+"I can't use the navigation system on this car. It's all Italian! How can I enter the address?" Simon's mother was going crazy in the passenger seat as they entered the highway.
+
+"Mom, I'm going to use the navigation on my smartphone, OK?" said Simon from the back seat.
+
+"Simon, the overseas phone charge is expensive. Be careful!" shot back his father.
+
+"But we need this, don't we? I'll pay for it," said Simon （イ）without looking up from the phone.
+
+The first stop at a gasoline station turned out to be another challenge. It was a self-service station, but Simon's parents didn't know how to pay for the gasoline. And, they started arguing!
+
+"Mom, Dad, let's ask for help," said Simon.
+
+"But we don't speak Italian! And they probably don't speak English!" His father was almost in a panic.
+
+"This shouldn't be so difficult, Dad. I can use the translator on the phone if necessary."
+
+Simon saw a driver who had just pulled into the gasoline station and called out, "Mi scusi! Parla inglese?" (Excuse me! Do you speak English?)
+
+The driver did not speak English, but Simon somehow made himself understood with hand gestures and （ウ）got the help they needed.
+
+As they pulled up to the hotel for the first night, Simon's father said, "Simon, you actually taught us （エ）something important today. 'Think carefully and find a way to solve the problem. Don't be afraid and ask for help.'"
+
+"We're so proud of you. You showed us that we can communicate with local people even without language. Your actions today were heart-to-heart," added his mother.
+
+"Well, in that case, do we want to join the Italian tour of Pompeii tomorrow?" said Simon with a wide smile.
+
+"No, we'll stay with the English tour," said his father, and they all laughed.
+
+Simon realized that he was no longer uncomfortable about traveling with his parents. （オ）This was going to be a family trip he would cherish for the rest of his life.`,
+    note:"had looked forward to ～＝～を楽しみに待っていた（過去完了）　amateur＝素人　ruin＝遺跡",
+    questions:[
+      {num:1,type:"write",q:"次のQuestionに対するAnswerとして適当な内容を英語で答えよ。\nQuestion: Why did Simon travel with his parents even though he was uncomfortable about it?\nAnswer: (　　　　)",model:"Because the excitement of traveling around Italy for ten days was stronger than any doubt he had."},
+      {num:2,type:"mcq",q:"（ア）に入れるものとして最も適当なものを選べ。",opts:["ahead of us","behind us","between you","over you"],ans:0,exp:"「自分たちの後ろに列ができている」→ 他の客が待っている。ahead of us「私たちの後ろに（前方の列）」は不自然。正確には「behind us」か「ahead of them（待っている人たちから見て）」だが選択肢では ahead of us = 1。"},
+      {num:3,type:"mcq",q:"（イ）の時のSimonの気持ちを表しているものとして最も適当なものを選べ。",opts:["Dad is very thoughtful of us.","Something is wrong with my smartphone.","We don't have time to enter the highway.","We have no other choice."],ans:3,exp:"ナビが必要な状況でスマホを使うしかない → We have no other choice.「他に選択肢はない」"},
+      {num:4,type:"img-note",q:"（ウ）で述べられている状況として最も適当なものを、次の図版1〜4のうちから一つ選べ。",imgNote:"※この問題は実際の模試の図版（4場面のイラスト）を参照してください。",model:"正解: ガソリンスタンドでSimonがイタリア人ドライバーに手振りで話しかけ、父親も横にいる場面のイラスト。"},
+      {num:5,type:"write",q:"下線部（エ）が表す具体的な内容を日本語で説明せよ。",model:"問題をよく考えて解決策を見つけること、そして恐れずに（人に）助けを求めること。"},
+      {num:6,type:"mcq",q:"（オ）のように述べられている理由として最も適当なものを選べ。",opts:["Simon found he enjoyed traveling with his parents after solving some problems.","Simon found traveling around Italy was very expensive.","Simon's father disagreed with him and went on a more convenient tour.","Simon's parents were now able communicate using Italian, just like Simon."],ans:0,exp:"問題を一緒に乗り越えたことで、両親との旅行を楽しいと感じるようになったから。"}
+    ],
+    trans:["シモンが6ヶ月前から楽しみにしていた家族旅行だった。彼と両親は初めて海外に出かけることになっていた。18歳にして両親と一緒に旅行するのは少し気が引けたが、10日間のイタリア周遊旅行への期待はどんな迷いよりも大きかった。","しかしイタリアの空港に着いた途端、シモンはこの状況がますます居心地悪くなってきた。両親と一緒という事実と、2人が外国旅行のまったくの素人に見えるという事実が重なったからだ。","「わあ、ユーロ紙幣はカラフルだね！アメリカのドル紙幣と全然違う！」両親は空港の外貨両替カウンターで受け取ったお札やコインを一枚一枚眺めていた。","「お母さん、お父さん、行こう。（ア）が待ってるよ」シモンは後ろに列ができていることを2人に促さなければならなかった。","実のところ、空港での体験はさほど悪くはなかった。英語を話す人が多かったからだ。しかし車を借りて道路に出ると、問題が次々と顔を出した。計画ではポンペイのホテルまで車で行き、翌日に有名な遺跡を観光するつもりだった。ローマからの道のりは3時間以内のはずだった。","「このカーナビが使えない。全部イタリア語だもの！住所をどうやって入力するの？」高速道路に入ったとき、助手席のシモンの母親は半狂乱だった。","「お母さん、スマホのナビを使うから大丈夫？」後部座席からシモンが言った。","「シモン、海外通話料は高いんだぞ。気をつけなさい！」と父親が言い返した。","「でも必要だよね？お金は出すから」と、スマホから目を離さないままシモン（イ）は言った。","最初に立ち寄ったガソリンスタンドが次なる難関となった。セルフサービスのスタンドだったが、両親はガソリン代の払い方がわからなかった。2人は口論し始めた！","「お母さん、お父さん、誰かに聞こうよ」とシモンは言った。","「でもイタリア語は話せないし、向こうも英語が話せないかもしれない！」父親がほとんどパニック状態で言った。","「そんなに難しくないよ。必要ならスマホの翻訳を使えるから」","シモンはちょうどガソリンスタンドに入ってきた車のドライバーを見つけ、「Mi scusi! Parla inglese?（すみません！英語は話せますか？）」と声をかけた。","そのドライバーは英語を話さなかったが、シモンは何とかジェスチャーで意思を伝え、（ウ）必要な助けを得ることができた。","最初の夜のホテルに到着したとき、父親が言った。「シモン、君は今日、（エ）重要なことを教えてくれたよ。『よく考えて問題を解決する方法を探し、恐れずに助けを求めること』だ」","「とても誇らしいわ。言葉がなくても現地の人と意思疎通できると示してくれたわね。今日の行動は心と心が通じ合っていたわ」と母親も付け加えた。","「それなら、明日のポンペイ観光はイタリア語のツアーに参加しませんか？」とシモンはにっこり笑いながら言った。","「いや、英語のツアーにしよう」と父親は言い、3人は笑い出した。","シモンは両親と旅をすることに、もはや居心地の悪さを感じていなかった。（オ）これは、一生大切にする家族旅行になるに違いなかった。"]
+  },
+  2025:{
+    title:"Margie と絵画の約束", pts:"不明",
+    passage:`The country home was full of memories, but it now looked quite empty. Margie didn't need the large house because her husband had died, and her daughters lived in the city. The only valuable items left in the house were ten paintings.
+
+"Pick any one you like. Or even two or three. This is my wedding gift for you!" Margie said to her niece Lisa and her husband Ray as she showed them around the paintings. They stopped by Margie's during their honeymoon.
+
+"Really, Aunt Margie? These are such beautiful paintings!" said Lisa in delight.
+
+"My husband collected these paintings, but it's time to let go of them," said Margie in a cheerful mood. "I'm going to donate them to the local museum, but if any of them can find a new owner who'd appreciate them, I'd prefer that."
+
+"How about your daughters? I think they also want the paintings," said Lisa.
+
+"I already gave plenty to Sasha and Anita," said Margie. "They don't have room for any more paintings."
+
+Lisa and Ray chose a painting of a woman. They could not take it with them, but promised to pick it up when they got back from their honeymoon.
+
+---
+
+"Lisa and Ray stopped by the other day, and I'm going to give this one as my wedding gift to them."
+
+As soon as Margie pointed to the painting of a woman, Sasha and Anita looked at each other. They were visiting their mother for the weekend to help her move boxes.
+
+"No, Mom, you can't give that painting away," said Sasha. "You must keep that one for yourself."
+
+"Yeah, that's a special painting. It was Dad's favorite," said Anita. "The artist painted it specially for him."
+
+"But I thought you guys didn't want it." Margie was （ア）. "I already promised Lisa and Ray. It's not fair for you to say something like that now."
+
+Sasha and Anita were firm. The painting must stay in the family, even though they could not take it themselves.
+
+Finally, Margie gave in to her daughters. "All right. I'll call Lisa tomorrow and apologize."
+
+---
+
+"Ray and I continued talking about the painting for the rest of our honeymoon. We were looking forward to hanging it in our home and appreciating its beauty. But I understand Sasha and Anita's feelings. It's OK, Aunt Margie." Lisa tried her best to （イ）, but her voice did not sound as happy as it usually was.
+
+Margie offered another painting to make up for it, but Lisa turned down the offer. "Perhaps it's better that you keep all the paintings for Sasha and Anita," said Lisa.
+
+Margie did not know how to feel after the phone call. She did not mean to hurt anyone, but obviously （ウ）. She disappointed Lisa and Ray, while she tried to please Sasha and Anita. It just didn't seem right.
+
+She looked at the painting of a woman and thought about it for a while. Yes, it was her husband's favorite. But her daughters didn't even want it for themselves.
+
+It became clear to Margie. The most important thing to her was to be a person who keeps her promise. This was more important than who would end up owning the painting.
+
+"（エ）I must talk to Sasha and Anita again to make this right for Lisa and Ray," said Margie.`,
+    note:"had died＝亡くなった（過去完了）",
+    questions:[
+      {num:1,type:"write",q:"次のQuestionに対するAnswerとなるように、空所に当てはまる適当な英語を補え。\nQuestion: Why did Lisa ask about Sasha and Anita on her first visit to Margie's house?\nAnswer: She wanted to know (　　　　).",model:"if Margie's daughters also wanted some of the paintings / whether Sasha and Anita had already received paintings"},
+      {num:2,type:"mcq",q:"（ア）に入れるものとして最も適当なものを選べ。",opts:["bored","confused","excited","satisfied"],ans:1,exp:"LisaとRayに絵を約束した後で、娘たちが反対してきた → confused（困惑した）。"},
+      {num:3,type:"mcq",q:"（イ）に入れるものとして最も適当なものを選べ。",opts:["express her excitement","hide her disappointment","understand Ray's feelings","make her plan go ahead"],ans:1,exp:"声が普段より幸せそうに聞こえなかった → hide her disappointment「失望を隠そうとした」。"},
+      {num:4,type:"mcq",q:"（ウ）に入れるものとして最も適当なものを選べ。",opts:["it didn't go well","it went well","she got it","she didn't get it"],ans:0,exp:"LisaとRayを傷つけ、SashaとAnitaを喜ばせようとしたが両方うまくいかなかった → it didn't go well"},
+      {num:5,type:"write",q:"下線部（エ）について、MargieがこのようにLisaとRayのために決断した理由を日本語で説明せよ。",model:"自分にとって最も大切なことは約束を守ることだと気づき、LisaとRayへの約束を果たしたいと思ったから。"}
+    ],
+    trans:["田舎の家は思い出でいっぱいだったが、今はがらんとして見えた。夫が亡くなり、娘たちは都市に住んでいるため、マージーには大きな家は必要なかった。家に残った貴重な品は10枚の絵画だけだった。","「好きなものを選んで。2枚でも3枚でも。結婚祝いよ！」マージーは姪のリサとその夫レイを絵画の前に案内しながら言った。2人はハネムーンの途中でマージーの家に立ち寄っていた。","「本当ですか、マージーおばさん？本当に素敵な絵ばかり！」とリサは喜んで言った。","「夫がこれらの絵を集めたのだけど、もう手放す時期だと思ってね」とマージーは晴れやかな様子で言った。「地元の美術館に寄贈しようと思っているけど、気に入って大切にしてくれる新しい持ち主が見つかるなら、そのほうが嬉しいわ」","「娘さんたちはどうですか？絵を欲しがっているんじゃないかと思って」とリサが言った。","「サシャとアニタにはもうたくさん渡してあるの」とマージーは言った。「これ以上絵を飾るスペースがないから」","リサとレイは女性の肖像画を選んだ。持ち帰ることはできなかったが、ハネムーンから戻ったときに取りに来ると約束した。","「リサとレイが先日立ち寄って、あの絵を結婚祝いにあげるつもりなの」","マージーが女性の肖像画を指差した途端、サシャとアニタは顔を見合わせた。2人は引っ越しの荷物を手伝うために週末に母のもとを訪れていた。","「ダメよ、お母さん、その絵を渡しては」とサシャが言った。「それは自分のために持っておかないと」","「そうよ、あれは特別な絵なの。お父さんのお気に入りだったんだから」とアニタが言った。「画家が特別にお父さんのために描いたのよ」","「あなたたちは欲しくないと思っていたわ」マージーは（ア）。「もうリサとレイに約束してしまったのよ。今さらそんなことを言うのは不公平だわ」","サシャとアニタは引かなかった。自分たちが持って行けなくても、絵は家族のもとに残さなければならないと言い張った。","ついにマージーは娘たちに折れた。「わかったわ。明日リサに電話して謝ります」","「レイと私は、ハネムーンの残りの時間もずっとあの絵の話をしていました。家に飾って毎日眺めるのを楽しみにしていたんです。でもサシャとアニタの気持ちもわかります。大丈夫ですよ、マージーおばさん」リサは精一杯（イ）しようとしたが、声はいつものように明るくは聞こえなかった。","マージーは別の絵画を代わりに贈ろうとしたが、リサは断った。「絵はすべてサシャとアニタのために取っておいたほうがいいと思います」とリサは言った。","電話を切った後、マージーはどう感じていいかわからなかった。誰かを傷つけるつもりはなかったのに、明らかに（ウ）。リサとレイを傷つけてしまったし、サシャとアニタを喜ばせようとしたのにそちらもうまくいかなかった。どう考えても間違っている気がした。","マージーは女性の肖像画を見つめ、しばらく考えた。確かに夫のお気に入りだった。しかし娘たちは自分たちで持ちたいわけでもなかったのだ。","マージーには明らかになってきた。自分にとって最も大切なことは、約束を守る人間でいることだ。それは誰が絵を所有することになるかよりも重要なことだった。","「（エ）リサとレイのために、サシャとアニタともう一度話し合わなければ」とマージーは言った。"]
+  }
+};
+
+// ═══════════════════════════════════════════
+// Q5 DATA（説明文）
+// ═══════════════════════════════════════════
+const Q5 = {
+  2020:{
+    title:"サーネームの歴史", pts:"22点",
+    passage:`There isn't a person without a name. After all, it is the main way of identifying or speaking to a person. Though given names have been common from the beginning of time, surnames have not. In fact, some people do not have surnames even in the present day. For example, the people of Tibet, Myanmar, Java, and East Africa usually do not use a surname or family name.
+
+According to an old story, the Chinese were the first people to use a surname. It was Emperor Fu Xi in 2852 B.C. who began the use of surnames in order to count the number of people in his country. However, other countries did not use surnames until much later. For example, Great Britain began using surnames only in the 13th and 14th centuries.
+
+Although the need for a surname became important at different times in different places, the reason for the surname across cultures is very similar. Before modern times, people lived in small villages or neighborhoods where everyone knew each other. There was no need to have a （ア）. However, when the population increased, people needed to be able to tell the difference between individuals with the same （イ）. A surname would show who a person's parents were or what family they belonged to. For example, Jones is the common short form for John's son. The -s at the end of a surname like Jacobs or Andrews would also indicate that the person was someone's son. Place surnames were also common. A person who lived near a lake might have the surname Loch.
+
+Sometimes, surnames were based on a person's looks. A person with the surname Reid would have red hair. Other such surnames are Young, Strong, or Little. Finally, a surname might be based on the work a person does. A person with the last name Miller would have worked at a mill. The surname Smith would have come from a person who worked with metals.
+
+In Western cultures, the surname usually comes after the given name. （ウ）, many people in the West refer to the surname as the last name. However, in some Asian cultures, the surname is placed before the given name. This may be because the family carries more importance than the individual in those countries. The importance of the surname and whether women change it or not after marriage differs around the world. Many women in Western countries will usually take their husbands' surnames after marriage. This is because when a woman marries, she is then considered a member of her husband's family. These days, women say that love or family unity in addition to tradition are the reasons for changing their last name. On the other hand, there are some countries where the idea of a woman taking the last name of her husband is a foreign idea. Greece, for example, made a law in 1983 requiring women to keep their own last name for reasons of gender equality. Though not a law, it is usual in some countries to keep using one's surname. These countries include Malaysia, Spain, Chile, and Korea.`,
+    note:"",
+    questions:[
+      {num:1,type:"mcq",q:"次のQuestionに対する答えとして最も適当なものを選べ。\nQuestion: Why did the Chinese emperor start the use of surnames?",opts:["He wanted to know how many people lived in his country.","He wanted to make himself special.","People living in his country looked very similar.","Surnames were useful when he talked to people."],ans:0,exp:"本文: 「in order to count the number of people in his country」→ 国の人口を把握するため。"},
+      {num:2,type:"mcq",q:"本文中の空所（ア）・（イ）に入れる語（句）の組み合わせとして最も適当なものを選べ。",opts:["ア: given name　イ: given name","ア: given name　イ: surname","ア: surname　イ: given name","ア: surname　イ: surname"],ans:2,exp:"（ア）: 小さな村では全員顔見知りなので「苗字（surname）」は不要。（イ）: 人口増加で同じ「名前（given name）」の人を区別する必要が生じた。"},
+      {num:3,type:"img-mcq",q:"次のイラストに描かれている人物のうち、(1) Lochと(2) Smithの姓の起源として本文と一致するものを、次の1〜4のうちからそれぞれ選べ。",img:"2020問い3 イラスト.png",opts:["1（湖のそばの家の人物）","2（商店の人物）","3（馬に乗った人物）","4（鍛冶職人）"],ans:[0,3],exp:"Loch: 湖のそばに住む人 → 1（水辺の家）。Smith: 金属加工をする人 → 4（鍛冶職人）。",ansDisplay:"(1) Loch = 1　(2) Smith = 4"},
+      {num:4,type:"mcq",q:"本文中の空所（ウ）に入れるものとして最も適当なものを選べ。",opts:["Finally","For this reason","On the other hand","Surprisingly"],ans:1,exp:"西洋では苗字が名前の後に来る → その理由で「last name」と呼ぶ。For this reason「このような理由で」。"},
+      {num:5,type:"write",q:"西洋諸国の女性の多くが結婚後、夫の姓を使う理由として述べられていることを、日本語で二つ答えよ。（解答の順序は問わない）",model:"①結婚すると夫の家族の一員とみなされるから。\n②愛情や家族の絆（伝統に加えて）のため。"},
+      {num:6,type:"mcq",q:"女性の名前の変化を表した表の(A)・(B)・(C)に当てはまる国・地域の組み合わせとして最も適当なものを選べ。\n表: (A) Before=★ After=★ / (B) Before=★● After=★▲ / (C) Before=★● After=★●",opts:["(A)Malaysia　(B)Korea　(C)Chile","(A)Malaysia　(B)Western countries　(C)Java","(A)Myanmar　(B)Korea　(C)Java","(A)Myanmar　(B)Western countries　(C)Chile"],ans:3,exp:"(A): 姓を使わない国（苗字なし）→ Myanmar。(B): 結婚後に夫の姓に変える → Western countries。(C): 結婚後も自分の姓を維持 → Chile（スペイン、韓国、マレーシアと同様）。"}
+    ],
+    trans:["名前のない人間は存在しない。名前は人を識別したり呼びかけたりする主な手段だからだ。下の名前（given name）は古来から一般的だったが、苗字（surname）はそうではなかった。実際、現代でも苗字を持たない人々がいる。たとえば、チベット・ミャンマー・ジャワ・東アフリカの人々は苗字や家族名を使わないことが多い。","古い言い伝えによると、中国人が最初に苗字を使い始めた民族とされている。紀元前2852年の伏羲帝が、国の人口を把握するために苗字の使用を始めたとされている。しかし他の国々が苗字を使い始めたのはずっと後のことだった。たとえば、イギリスで苗字が使われ始めたのは13〜14世紀のことだ。","苗字の必要性が各地で生まれた時期はそれぞれ異なるが、文化を超えて苗字が生まれた理由はとてもよく似ている。近代以前、人々は小さな村や地域コミュニティで暮らしており、全員がお互いを知っていた。そのため（ア）は必要なかった。しかし人口が増えると、同じ（イ）を持つ人を区別する必要が生じた。苗字は、その人の親が誰であるか、どの家族に属するかを示すものだった。たとえばJonesはJohn's son（ジョンの息子）の短縮形だ。JacobsやAndrewsのように苗字の末尾に-sがついていれば、その人が誰かの息子であることを示していた。場所に由来する苗字も一般的だった。湖の近くに住んでいた人はLochという苗字を持つかもしれない。","苗字は人の外見に基づくこともあった。Reidという苗字の人は赤毛だったとされる。同様の苗字としてYoung・Strong・Littleなどがある。また、職業に基づく苗字もあった。Millerという苗字の人は製粉所で働いていたことになる。Smithは金属を扱う仕事をしていた人に由来する。","西洋文化では苗字は通常、下の名前の後に来る。（ウ）、西洋の多くの人は苗字を「ラストネーム」と呼ぶ。しかしアジアのいくつかの文化では、苗字が下の名前の前に置かれる。これはそれらの国では個人より家族が重視されているからかもしれない。苗字の重要性や、結婚後に女性が苗字を変えるかどうかは世界によってさまざまだ。西洋諸国の多くの女性は結婚後に夫の苗字を使うのが一般的だ。これは女性が結婚すると夫の家族の一員と見なされるためだ。現在では、伝統に加えて愛情や家族の絆がラストネームを変える理由だと女性たちは言う。一方、妻が夫の苗字を使うという考え方が馴染みのない国もある。たとえばギリシャは1983年にジェンダー平等を理由として女性が自分の苗字を維持することを法律で義務づけた。法律ではないが、自分の苗字を使い続けることが慣習になっている国もある。そのような国にはマレーシア・スペイン・チリ・韓国が含まれる。"]
+  },
+  2021:{
+    title:"気候変動教育", pts:"21点",
+    passage:`Climate change is among the most important problems today, and students around the world are asking their schools to do a better job of environmental education. In 2016, many countries signed the Paris Agreement on climate change and it includes a section on creating environmental education programs.
+
+For a variety of reasons, climate change education differs greatly all over the world. In 2019, Italy became the first country to pass a national law requiring climate change education for all students at every grade level. The program will include 33 hours of classroom time on sustainability and climate change. （ア）, teachers will receive training on these topics, and environmental lessons will be included in all subjects from math to geography and physics.
+
+Even in Italy, climate change education can be challenging although there is popular support for the law. Unlike traditional subjects, climate change problems can be political. Some critics say that the lessons need to include different opinions. For example, some people believe global warming is the result of natural causes. They want students to be taught that climate change （イ）.
+
+In the United States, many students and their parents support climate change education. But teachers are not eager to cover the topic. According to a recent poll of about 500 American teachers, 55% said they did not talk about climate change in their classrooms. When they were asked why, more than half said that the problem was unrelated to the subject they taught. Some felt that they lacked the knowledge to teach these lessons. Even fewer teachers think that there is no climate change.
+
+The situation and attitudes of teachers in Australia is similar. Schools and teachers at the local level can decide if they want to teach the subject or not. When teachers do choose to cover environmental problems, they often ask for support and classroom materials from outside non-profit organizations and environmental groups.
+
+Environmental education alone will not solve the climate crisis. But it is important to give students （ウ）. Most young people have already heard about climate change through the news and popular culture. Many students have lived through the effects of climate change such as flooding, wildfires and droughts. Without formal education, students may believe unscientific information or feel hopeless about the future. Education can be the first step for our future.`,
+    note:"the Paris Agreement＝パリ協定　sustainability＝持続可能性　critic＝批評家　poll＝世論調査　non-profit organization＝非営利団体　crisis＝危機　drought＝干ばつ",
+    questions:[
+      {num:1,type:"write",q:"次のQuestionに対するAnswerとなるように、空所に当てはまる適当な英語を補え。\nQuestion: What kind of national law did Italy pass in 2019?\nAnswer: It is one which (　　　　).",model:"requires climate change education for all students at every grade level"},
+      {num:2,type:"mcq",q:"本文中の空所（ア）に入れるものとして最も適当なものを選べ。",opts:["However","In addition","In short","Instead"],ans:1,exp:"33時間の授業に加えて、さらに教師訓練や環境授業も行う → In addition「さらに・加えて」"},
+      {num:3,type:"mcq",q:"本文中の空所（イ）に入れるものとして最も適当なものを選べ。",opts:["is going to get better as time goes by","is not brought about by human activities","is not linked to natural disasters","is the biggest problem of the century"],ans:1,exp:"自然が原因だと主張する人たちが教えてほしいと思っていること → 「人間活動によるものではない」という内容。"},
+      {num:4,type:"img-mcq",q:"グラフ中の(A)〜(C)に当てはまる項目の組み合わせとして最も適当なものを選べ。\n① I don't believe in climate change\n② I don't know enough about it\n③ It's not related to the subject(s) I teach",img:"2021 グラフ.png",opts:["(A)②　(B)①　(C)③","(A)②　(B)③　(C)①","(A)③　(B)①　(C)②","(A)③　(B)②　(C)①"],ans:3,exp:"(A) 65%: 本文「half said it was unrelated to the subject」→ ③。(B) 17%: 「some felt they lacked knowledge」→ ②。(C) 8%: 「fewer teachers think there is no climate change」→ ①。"},
+      {num:5,type:"mcq",q:"本文中の空所（ウ）に入れるものとして最も適当なものを選べ。",opts:["information on how to have different opinions","opinions on what kind of news they want to watch","the ability to spread climate change","the knowledge to understand the problem better"],ans:3,exp:"正式な教育なしでは非科学的情報を信じたり絶望したりする → 問題をより深く理解するための知識が必要。"},
+      {num:6,type:"write",q:"筆者は、学校で環境教育を行わない場合、生徒にどのような影響を与える可能性があると考えているか。日本語で説明せよ。",model:"非科学的な情報を信じてしまったり、将来に対して絶望感を持ったりする可能性がある。"}
+    ],
+    trans:["気候変動は今日最も重要な問題の一つであり、世界中の生徒が学校に環境教育の充実を求めている。2016年には多くの国が気候変動に関するパリ協定に署名し、その中に環境教育プログラムの創設に関する条項が含まれている。","様々な理由から、気候変動教育は世界各地で大きく異なる。2019年、イタリアはすべての学年のすべての生徒を対象に気候変動教育を義務付ける国内法を初めて制定した。このプログラムでは、持続可能性と気候変動に関する33時間の授業が含まれる。（ア）、教師も関連研修を受け、数学から地理・物理まですべての教科に環境学習が組み込まれる予定だ。","法律への支持は広いものの、イタリアでも気候変動教育には課題がある。従来の教科とは異なり、気候変動問題は政治的になりうる。批判的な意見もあり、授業には複数の観点が含まれる必要があると主張する人もいる。たとえば、地球温暖化は自然現象が原因だと考える人もいる。そういった人々は、気候変動（イ）という内容を生徒に教えてほしいと求めている。","アメリカでは多くの生徒や保護者が気候変動教育を支持しているが、教師たちは積極的に取り上げようとしない。約500人のアメリカ人教師を対象にした最近の調査によると、55%が授業で気候変動を扱わないと答えた。その理由を聞くと、半数以上が自分の担当教科と無関係だからと答えた。知識が不足していると感じている教師もいた。気候変動は存在しないと考える教師はさらに少数だった。","オーストラリアの教師の状況と意識も似ている。地域レベルの学校と教師が気候変動を扱うかどうかを独自に決められる。環境問題を取り上げる際、教師たちは外部の非営利団体や環境団体からのサポートや教材を求めることが多い。","環境教育だけで気候危機を解決できるわけではない。しかし生徒に（ウ）を与えることは重要だ。若者のほとんどはすでにニュースやポップカルチャーを通じて気候変動について耳にしている。洪水・山火事・干ばつなど気候変動の影響を実際に体験してきた生徒も多い。正式な教育なしでは、生徒が非科学的な情報を信じたり、将来に絶望感を覚えたりするかもしれない。教育は私たちの未来への第一歩となりうる。"]
+  },
+  2022:{
+    title:"座りすぎと健康", pts:"25点",
+    passage:`How many hours a day do you spend sitting down? You sit while you are in your classroom, ride trains and buses, study at home, play video games, scroll social media and eat meals. In 2019, researchers in the United States found that teenagers in the country spent about eight hours a day sitting down.
+
+If this sounds familiar to you, please read on: Sitting for long periods of time can be bad for your health. Research has linked too much sitting with weight gain, back pain, anxiety, heart disease and cancer. An analysis of 13 studies of sitting time and activity levels found that those who sat for over eight hours a day with no physical activity and those who smoked regularly had similar levels of risks of dying earlier than others.
+
+（ア）, you don't need to feel hopeless if you cannot reduce your sitting time due to the demands of studying. The analysis of data from over 1 million people found that the effects of too much sitting can be changed by doing moderately hard physical activities for 60 to 75 minutes a day.
+
+The Australian government published physical activity guidelines for children and young people (5 to 17 years) in 2019. According to the guidelines, children and young people should do moderate to hard physical activities to increase their heart rate for at least 60 minutes each day. Examples of hard physical activities include basketball, soccer, swimming, jumping rope and running, while examples of moderate physical activities include bike riding, scootering and skateboarding. The 60 minutes of activity doesn't have to be done all at once. It can be divided into several shorter periods throughout the day.
+
+The Australian government also advises that activities that strengthen muscles and bones, such as push-ups, sit-ups, lifting weights and yoga, should be included in the recommended 60 minutes of physical activity at least three times a week. In addition, a variety of light physical activities, such as walking and helping around the house, should be done each day.
+
+This is not （イ）, clearly. Research by the Australian government found that only 2 percent of teenagers aged 13 to 17 met the guidelines. And the Covid-19 pandemic has created more barriers to being active, especially for younger people. While almost three in four adults stayed active in 2020, only one in six children exercised outside of school.
+
+So, you're not alone if you spend too much time sitting down without enough physical activities. But you should start with small things to avoid the health risks connected with sitting for extended periods of time. （ウ） （エ） （オ） Some activity is better than none.`,
+    note:"anxiety＝不安　moderately＝適度に　Covid-19 pandemic＝新型コロナウイルス感染症の感染爆発　barrier＝障壁",
+    questions:[
+      {num:1,type:"write",q:"本文中の13件の研究分析の結果から報告されたことを、次のようにまとめたい。空所①・②に当てはまる適当な日本語を補え。\n「（①）人は、（②）人と同程度、そうでない人よりも早く死亡するリスクが確認された。」",model:"①: 身体活動なしに1日8時間以上座っている\n②: 定期的に喫煙をしている"},
+      {num:2,type:"mcq",q:"本文中の空所（ア）に入れるものとして最も適当なものを選べ。",opts:["First of all","For example","However","Therefore"],ans:2,exp:"前の段落でリスクを説明した後、「絶望する必要はない」と転換 → However「しかし」。"},
+      {num:3,type:"mcq",q:"本文中の空所（イ）に入れるものとして最も適当なものを選べ。",opts:["a difficult analysis","a difficult task","an easy analysis","an easy task"],ans:3,exp:"「ガイドラインを満たす10代は2%のみ」→ 「これは簡単なことではない」が自然。not an easy task「簡単なことではない」"},
+      {num:4,type:"mcq",q:"本文中の空所（ウ）・（エ）・（オ）に入れるものについて、どれにも当てはまらないものを選べ。（入れる順序は考慮しなくてよい）",opts:["Have a break after hard exercise.","Play basketball even for ten minutes.","Stand up between classes and walk around.","Take stairs instead of elevators."],ans:0,exp:"本文の趣旨は「短時間でも身体を動かすこと」→ 2・3・4はいずれも短時間の活動例として適切。1「激しい運動の後に休憩を取る」は本文で言及なし。"},
+      {num:5,type:"img-note",q:"本文で述べられている内容を正しく表している図表として最も適当なものを、次の1〜4のうちから選べ。\n※図版（1: Were you active in 2020? ADULTS/CHILDREN 円グラフ / 2: LEADING CAUSES OF DEATH 折れ線グラフ / 3: 運動別ケガ件数 / 4: 推奨活動一覧 表）",imgNote:"※図版は実際の模試を参照してください。",model:"正解: 1　本文「almost three in four adults stayed active, only one in six children exercised」→ 大人約75%・子ども約17%の活動率を示す円グラフが正解。"},
+      {num:6,type:"write",q:"次の会話文のKenの発言の空所に当てはまる内容を20語程度の英語で書け。（2文以上可）\nLisa: I hear it's important to exercise 60 minutes a day. But it's too long for me. I'm busy and can't exercise for 60 minutes all at once.\nKen: I know it's hard to do it all at once. But I found a good solution for you in this article. According to this article, (　　).",model:"you can divide the 60 minutes into several shorter periods throughout the day. Even ten minutes of activity, like playing basketball or taking the stairs, counts and helps you stay healthy."}
+    ],
+    trans:["あなたは1日に何時間座って過ごしているだろうか？教室での授業、電車やバスの移動、家での勉強、ゲーム、SNSのスクロール、食事と、座っている時間は意外と多い。2019年のアメリカの研究者の調査によれば、同国の10代の若者は1日約8時間を座って過ごしていた。","これが自分のことのように感じたなら、読み続けてほしい。長時間座り続けることは健康に悪影響を与えかねない。研究によれば、座りすぎは体重増加・腰痛・不安・心臓病・がんと関連しているとされている。座っている時間と活動量に関する13件の研究の分析では、身体活動なしに1日8時間以上座っている人は、定期的に喫煙する人と同程度の早死リスクがあることが示された。","（ア）、勉強の都合上座る時間を減らせないからといって絶望する必要はない。100万人以上のデータを分析した結果、座りすぎの悪影響は1日60〜75分の適度な強度の運動によって改善できることが示された。","オーストラリア政府は2019年に子ども・若者（5〜17歳）向けの身体活動ガイドラインを公表した。このガイドラインによると、子ども・若者は毎日少なくとも60分間、心拍数を上げる程度から激しい運動を行うべきとされている。激しい運動の例としては、バスケットボール・サッカー・水泳・縄跳び・ランニングが挙げられる。一方、適度な運動の例としては、自転車・スクーター・スケートボードがある。60分の運動は一度にまとめて行わなくてもよく、1日の中でいくつかの短い時間に分けることができる。","オーストラリア政府はさらに、腕立て伏せ・腹筋・ウエイトトレーニング・ヨガなど筋肉や骨を強化する運動を、週に少なくとも3回、推奨の60分の中に含めるよう指導している。また、歩行や家事などの軽い運動も毎日行うとよいとしている。","これが（イ）のは明らかだ。オーストラリア政府の調査では、13〜17歳の10代でガイドラインを達成しているのはわずか2%だとわかった。また、新型コロナウイルスの感染拡大は特に若者の運動に多くの障壁を生み出した。2020年に活動的であり続けた成人は約4人に3人だったのに対し、学校以外で運動した子どもは6人に1人しかいなかった。","つまり、十分な運動をせず長時間座って過ごすのはあなただけではない。しかし、長時間座ることによる健康リスクを避けるために、小さなことから始めるべきだ。（ウ）（エ）（オ）少しでも動くことは、まったく動かないよりずっといい。"]
+  },
+  2023:{
+    title:"ボランティアと健康", pts:"不明",
+    passage:`For weeks after Leslie lost the job she loved, she felt terrible. Then, one day after another disappointing job interview, she passed a homeless shelter and immediately decided to volunteer there. Just making the decision made her feel good, and since then, her mood has improved a lot.
+
+"I started volunteering because I wanted to make a difference in people's lives," she said, "but since I've started working here, I feel much better. I think volunteering is helping me more than it's helping them."
+
+Leslie's situation isn't so （ア）. People often feel good when they give their time, money, or things to a good cause. What is more surprising, though, is that there is a lot of scientific research that proves giving really is good for our mental and physical health.
+
+When researchers at the University of Oregon studied the brains of 19 women, they discovered （イ）something interesting. The pleasure areas in the women's brains lit up, or became more active, when these women chose to donate some money to charity. When we give, our brain chemistry actually changes. Our brains release chemicals that make us feel happier.
+
+Giving doesn't just make us happier. It also reduces our stress. Researchers at Yale University and UCLA figured this out by studying the lives of 77 adults. According to the research, the adults kept track of two things: how many times each day they felt stressed out and how often they did kind things for others. The people who were （ウ－①） were （ウ－②） by stress.
+
+Being generous doesn't just affect how we feel. Researchers at the University of California and the University of British Columbia have learned that it can also lower people's blood pressure. The researchers gave some money to 73 adults with high blood pressure. They told half the adults to spend the money on themselves and the other half to spend the money on other people. After six weeks, the people who had spent the money on other people had lower blood pressure than the people who had spent the money on themselves. Researchers at the University of Michigan studied 423 elderly couples for five years. They discovered that the elderly people who helped others were more than 50 percent more likely to live longer than those who didn't.
+
+Overall, the research showed that it （エ） how or what you give. Whether you donate millions of dollars to medical research or spend an hour a week talking to a lonely person, you can get the same health benefits.
+
+Now, Leslie is still looking for a new job, but volunteering has given her a whole new perspective on life.
+
+"The experience has taught me so much," she said. "I'm starting to realize that it really is better to give than to receive."`,
+    note:"homeless shelter＝ホームレス施設　what is more surprising＝さらに驚くべきこと　chemistry＝化学反応　generous＝気前がよい　perspective＝展望",
+    questions:[
+      {num:1,type:"mcq",q:"（ア）に入れるものとして最も適当なものを選べ。",opts:["important","unimportant","unusual","usual"],ans:2,exp:"Leslieの「ボランティアで自分も助けられた」体験は珍しくない → 「not so unusual（そんなに珍しいことではない）」。"},
+      {num:2,type:"write",q:"下線部（イ）について、脳内で起こっていることを、次のようにまとめたい。空所①・②に当てはまる内容を、①は10〜15字程度、②は20字程度の日本語で補え。\n「被験者が（①）ことを選択したとき、脳が（②）ことで快楽領域が明るくなり、より活発になった。」",model:"①: 慈善団体にお金を寄付する（13字）\n②: 幸福感を高める化学物質を放出する（17字）"},
+      {num:3,type:"mcq",q:"（ウ－①）、（ウ－②）に入れるものの組み合わせとして最も適当なものを選べ。",opts:["①: kind to others more often　②: less affected","①: kind to others more often　②: more affected","①: more affected　②: kind to others less often","①: more affected　②: kind to others more often"],ans:0,exp:"他者に親切にする頻度が高い人ほど、ストレスの影響を受けにくい → ①kind to others more often ②less affected"},
+      {num:4,type:"mcq",q:"（エ）に入れるものとして最も適当なものを選べ。",opts:["doesn't matter","is important","isn't your business","seems impossible"],ans:0,exp:"「何をどのくらい与えるかは関係ない」＝どんな形の善意でも同じ健康効果が得られる → doesn't matter「重要でない」。"},
+      {num:5,type:"write",q:"次の会話のKenの発言の空所に当てはまる内容を、本文中の二つの具体的な利点に言及しながら15〜20語程度の英語で書け。（2文以上可）\nLisa: Does helping others have good effects not only on your mental health but also on your physical health?\nKen: Yes. According to an article I read, (　　) than people who don't!",model:"people who help others can lower their blood pressure and are more than 50 percent more likely to live longer"}
+    ],
+    trans:["レスリーは大好きだった仕事を失ってから数週間、気分がひどかった。そんなある日、失望した就職面接の後でホームレスシェルターの前を通りかかり、すぐにそこでボランティアをしようと決めた。その決断をするだけで気持ちが楽になり、それ以来ずっと気分が改善してきた。","「誰かの役に立ちたいと思ってボランティアを始めました」と彼女は言った。「でもここで働き始めてから、ずっと気分がいいんです。ボランティアは相手より自分を助けてくれていると思います」","レスリーの状況は（ア）ではない。人々が自分の時間やお金、物を善い目的のために提供するとき、気持ちが良くなることが多い。さらに驚くべきことは、与えることが実際に私たちの精神的・肉体的健康に良いことを示した科学的研究が多数あるということだ。","オレゴン大学の研究者が19人の女性の脳を研究したところ、（イ）興味深いことを発見した。これらの女性が慈善団体に寄付をすることを選んだとき、脳の快楽領域が明るくなり、より活発になった。私たちが与えると、脳内化学物質が実際に変化する。脳は私たちをより幸せな気分にする物質を放出するのだ。","与えることは私たちを幸せにするだけではない。ストレスも軽減する。イェール大学とUCLAの研究者が77人の成人の生活を研究してこの事実を明らかにした。研究によれば、成人たちは2つのことを記録した。毎日どのくらい強いストレスを感じるかと、どのくらいの頻度で他者に親切にするかだ。（ウ－①）人は（ウ－②）人だとわかった。","気前よくすることは感情だけに影響するのではない。カリフォルニア大学とブリティッシュコロンビア大学の研究者は、血圧も下げうることを明らかにした。研究者は高血圧の73人の成人にお金を渡した。半分の成人にはそのお金を自分のために使うよう、もう半分には他の人のために使うよう伝えた。6週間後、他の人のためにお金を使った人々は、自分のために使った人々に比べて血圧が低かった。ミシガン大学の研究者は423組の高齢カップルを5年間研究した。他者を助けた高齢者はそうでない人より、長生きする可能性が50%以上高いことがわかった。","全体として研究は、（エ）どのように何を与えるかは重要ではないことを示した。医学研究に何百万ドルも寄付しても、孤独な人と週1時間話し相手になるだけでも、同じ健康上の恩恵を得られる。","現在、レスリーはまだ新しい仕事を探しているが、ボランティアが人生への新たな視点を与えてくれた。","「この経験から多くのことを学びました」と彼女は言った。「もらうよりも与えるほうが本当に幸せなのだと実感し始めています」"]
+  },
+  2024:{
+    title:"Creative Thinking", pts:"不明",
+    passage:`Steve Jobs created the iPod.
+Lady Gaga writes hit songs.
+Mom made a delicious dinner with the food she found in the refrigerator.
+Uncle Fred fixed our broken car with a can opener.
+
+These creative people all did important things. Some people were famous and they changed history; others were not well known and they only helped one family for a day.
+
+None of the people on the list finished college. Many of the world's most creative thinkers learned their creative skills outside of school.
+
+Creative thinking is a very important skill. It helps us make new things. It also helps us solve everyday problems that don't have one easy answer. Yet traditional schools often don't encourage creative thinking. Many teachers don't know how to teach it or measure it.
+
+Schools like to show that students are learning. So they usually focus on teaching logical thinking and facts because they can easily measure them.
+
+（ア）, creative thinking creates original answers — new answers that others don't usually think of. 2 + 2 = 4 if you are counting houses or apples. But if a student is counting 2 hungry foxes + 2 fat chickens, then 2 + 2 = 2 happy foxes.
+
+Most people think creative thinking is difficult to understand. They think it is hard to teach. They think they can't measure or score it. But it is not so difficult. Creative thinking is putting different ideas together in new ways.
+
+（イ）Some skilled teachers teach creative thinking all the time, in addition to teaching facts. They might teach students to measure the size of a room and also describe the size of a room ("It's the size of a racquetball court"; Or "It's big enough for a salsa band to practice"). They might teach facts about history and also discuss possible meanings of a painting from that time ("The red colors seem angry, and that is how people felt when the revolution happened").
+
+Measuring creative thinking is not easy, but it is possible. There is no one right or wrong answer to a creative thinking question. How can a teacher (or a computer!) know if "2 + 2 = 2" is a creative answer about foxes and chickens, or if it is simply a wrong answer? Teachers need to see students' reasons for their answers in order to measure creative thinking. The student with the creative answer to 2 + 2 is putting math together with her knowledge from English class. She just read a novel about farming and learned about foxes and chickens. Another student might say "2 + 2 = 2 because I like the number two!" That is （ウ）.
+
+Can schools teach creative thinking? Absolutely! And they must! Teaching logical thinking and facts is still important. We need math skills to make sure we don't spend more money than we have, for example. But many other questions in life do not have clear right and wrong answers. For example, how do you give a family healthy food with only a small amount of money? Our schools need to prepare students for those tasks as well. Teaching creative thinking to our students helps them solve more problems, and that helps the rest of us.`,
+    note:"racquetball＝ラケットボール（壁打ちテニス）　salsa＝サルサ（ラテンアメリカ系の音楽）",
+    questions:[
+      {num:1,type:"mcq",q:"（ア）に入れるものとして最も適当なものを選べ。",opts:["As a result","By the way","For example","On the other hand"],ans:3,exp:"前段落「学校は論理的思考を重視」⇔ 本段落「創造的思考は独自の答えを生む」→ 対比 On the other hand「一方で」。"},
+      {num:2,type:"write",q:"下線部（イ）について、本文で述べられていることを二つ、次のようにまとめたい。空所①〜③に当てはまる適当な日本語を補え。\n・（①）の測り方を教える際に、できることを言葉で表現する。〔例〕「サルサバンドが練習するのに十分な大きさだ」\n・歴史の事象を教える際に、当時の絵画から読みとれることを話し合う。〔例〕「当時の絵画の（②）のようであり、それは（③）である」",model:"①: 部屋のサイズ（面積・大きさ）\n②: 赤い色は怒っているよう\n③: 当時革命が起きたときに人々がどのように感じていたかを示している"},
+      {num:3,type:"mcq",q:"（ウ）に入れるものとして最も適当なものを選べ。",opts:["also a creative answer","an important reason","another possible answer","not creative thinking"],ans:3,exp:"「2が好きだから2+2=2」は理由がなく独自の視点も使っていない → not creative thinking「創造的思考ではない」。"},
+      {num:4,type:"mcq",q:"本文の内容と一致するものとして最も適当なものを選べ。",opts:["Creative thinking questions may have many possible answers.","Creative thinking skills help us learn math better, so they are necessary.","It is too difficult for us to understand creative thinking.","Schools don't teach creative thinking skills because they are taught outside of school."],ans:0,exp:"創造的思考の問題には唯一の正解がない → 「多くの可能性のある答えがある」が内容に一致。"},
+      {num:5,type:"write",q:"次の会話のKenの発言の空所①・②に当てはまる内容を、本文の内容に言及して英語で補え。（各2文以上可）\nKen: Being creative doesn't mean being 100% original.\nLisa: What do you mean?\nKen: This passage says that to think creatively is to （①）. But it is still important to （②）. Creative thinking is not everything, but it will help us solve a lot of problems in life.",model:"①: put different ideas together in new ways. For example, one student combined math with her knowledge from English class to get a creative answer.\n②: learn logical thinking and facts. For instance, math skills are necessary to manage money in our daily lives."}
+    ],
+    trans:["スティーブ・ジョブズはiPodを生み出した。レディー・ガガはヒット曲を作る。お母さんは冷蔵庫にある食材で美味しい夕食を作った。フレッド叔父さんは缶切りを使って壊れた車を直した。","これらの創造的な人々はみな重要なことをした。歴史を変えた有名な人もいれば、ある日ある家族だけを助けた無名の人もいる。","リストの人々は誰も大学を卒業していない。世界で最も創造的な思想家の多くは、学校以外の場所で創造的なスキルを磨いた。","創造的思考はとても重要なスキルだ。新しいものを生み出すのに役立つ。また、簡単な答えがない日常の問題を解決するのにも役立つ。しかし従来型の学校では創造的思考を促すことが少ない。教え方や評価方法を知らない教師も多い。","学校は生徒が学んでいることを示したがる。そのため、測りやすい論理的思考や事実を教えることに重点を置く傾向がある。","（ア）、創造的思考は独自の答え、つまり他の人が通常思いつかない新しい答えを生み出す。家や林檎を数えるなら2＋2＝4だ。しかし生徒が2匹の空腹なキツネと2羽の太った鶏を数えているなら、2＋2＝2匹の満腹なキツネになる。","多くの人は創造的思考は難しいと思っている。教えるのも難しいと思っている。測ったり採点したりできないと思っている。しかしそれほど難しくはない。創造的思考とは、異なるアイデアを新しい方法で結びつけることだ。","（イ）有能な教師の中には、事実を教えながら常に創造的思考も教えている人がいる。例えば、部屋のサイズを計測させながら言葉で表現させる（「ラケットボールのコートくらいの大きさだ」「サルサバンドが練習できるくらい広い」など）かもしれない。歴史の事実を教えながら、その時代の絵画の意味を話し合う（「赤い色は怒っているように見え、革命が起きたときの人々の気持ちがそう感じさせる」など）かもしれない。","創造的思考の測定は簡単ではないが、不可能ではない。創造的思考の問題に唯一の正解や誤りはない。「2＋2＝2」がキツネと鶏に関する創造的な答えなのか、単なる誤りなのかを教師（またはコンピューター！）はどうやって判断するのか？教師は創造的思考を評価するために生徒の答えの理由を確認する必要がある。「2＋2」への創造的な答えを出した生徒は数学と英語の授業の知識を結びつけた。農業に関する小説を読んでキツネとニワトリについて学んでいたのだ。別の生徒が「2が好きだから2＋2＝2」と言ったとしたら、それは（ウ）。","学校は創造的思考を教えられるだろうか？もちろん！そして教えなければならない！論理的思考と事実を教えることはやはり重要だ。例えば、お金を使いすぎないようにするためには数学的スキルが必要だ。しかし人生の多くの問題には明確な正解や誤りがない。例えば、少ないお金で家族に栄養ある食事を提供するにはどうすればよいか？学校は生徒をそのような課題にも対応できるよう準備する必要がある。生徒に創造的思考を教えることで、より多くの問題を解決できるようになり、それが社会全体の助けになる。"]
+  },
+  2025:{
+    title:"バイリンガルと脳", pts:"不明",
+    passage:`These days, most of us have two selves: the person we are in the real world and the person we are in online communities. One thing is true, though, for almost everyone — we want to be better, more successful versions of ourselves. Many of us want to improve our memory, learn to think better, earn more money, make more friends, and be more creative. It may sound almost impossible to achieve these things, but studies suggest there is a surprisingly simple way to realize all of them: （ア）.
+
+Knowing two languages was not always considered （イ－①）. In fact, in some parts of the world, it was considered （イ－②） for children to be bilingual. Families with parents from two different cultures were sometimes told not to let their children speak both languages. Based on research by some experts at the time, bilingual children might experience problems. One professor argued that the brains of bilingual boys and girls might develop half as much as the brains of monolingual children. Some studies suggested that children who were raised in bilingual families might grow up to be less intelligent. More recent studies have suggested that these early theories were not just incorrect but completely backward: Speaking two languages is actually useful.
+
+Studies suggest that being bilingual can increase people's ability to act effectively by improving "（ウ）executive function" in the brain. This is the name for a set of mental skills that help us remember new things, think in various ways, and control our behavior. Executive function helps us set goals, make plans, and complete tasks. People who are bilingual may do well at work and in school because they have good working memory, can think about information in different ways, and can stay focused on a task.
+
+For obvious reasons, many people who speak two languages fluently also know two cultures well. For example, someone from a Japanese-Italian family who grows up bilingual not only speaks both languages, but probably has a deep understanding of both cultures as well. And research shows that being bicultural, or being a member of two different cultures, has （エ）similar benefits to being bilingual. Those who are bicultural may know more people and have greater opportunities to make friends. They may also be more open to other cultures and ideas, and they might find it easier to see things from different points of view.
+
+How does this help people who are neither bilingual nor bicultural? Interestingly, studies suggest that being fully bilingual is unnecessary. Just the process of learning a new language is useful because it increases executive function. Visiting or moving to a new country or to a more multicultural community inside your own country are excellent ways to experience new cultures. In fact, simply trying to be more open to other cultures and ideas seems helpful. In time, future research may even show that learning about and experiencing new cultures by spending time in virtual communities is equally useful.`,
+    note:"",
+    questions:[
+      {num:1,type:"mcq",q:"（ア）に入れるものとして最も適当なものを選べ。",opts:["become fluent in two languages","find a way to learn through two languages","learn two languages online, not in the real world","study the history of two languages first"],ans:0,exp:"本文全体が「2言語を話せること（bilingual）の利点」についての文章 → become fluent in two languages「2つの言語に堪能になること」。"},
+      {num:2,type:"mcq",q:"（イ－①）、（イ－②）に入れるものの組み合わせとして最も適当なものを選べ。",opts:["①: useful　―　②: harmful","①: useful　―　②: helpful","①: useless　―　②: harmful","①: useless　―　②: helpful"],ans:0,exp:"昔はバイリンガルは「有益だとは考えられていなかった（not useful）」、むしろ「有害（harmful）」とされていた。"},
+      {num:3,type:"mcq",q:"下線部（ウ）について、具体例として適当でないものを選べ。",opts:["John changed his plans when an unexpected problem came up.","Kate remembered how to use the scientific equipment and complete her work.","Lucas wanted to play games but decided to finish his homework first.","Sophia bought a new bag as soon as she got some money."],ans:3,exp:"executive functionは「自制心・計画・記憶・柔軟思考」。Sophiaはお金が入るとすぐ衝動買い → 自制心がない → executive functionの例ではない。"},
+      {num:4,type:"write",q:"下線部（エ）について、本文で述べられていることを二つ、次のようにまとめたい。空所①・②に当てはまる適当な日本語を補え。\n・（①）\n・ほかの文化や考えを受け容れやすくなり、（②）",model:"①: より多くの人と知り合い、友人を作る機会が増える\n②: 異なる視点から物事を見やすくなる"},
+      {num:5,type:"write",q:"次の会話のJimの発言の空所①・②に当てはまる内容を、本文の具体的内容に言及しながら英語で補え。（各2文以上可）\nAsami: But what about people who are not bilingual or bicultural like me?\nJim: Oh, you （①）.\nAsami: Really?\nJim: The key is to experience a different language and culture. If you learn a new language, executive function in your brain becomes stronger. How about culture?\nJim: Even in your own country, if （②）, you can have an experience similar to being bicultural.",model:"①: don't need to be fully bilingual to get these benefits. Just the process of learning a new language is useful because it improves executive function in your brain.\n②: you move to a more multicultural community, or try to be open to different cultures and ideas"}
+    ],
+    trans:["最近、私たちのほとんどは2つの自己を持っている。現実の世界の自分と、オンラインコミュニティの自分だ。しかしほぼ全員に共通することが一つある。より良い、より成功した自分になりたいということだ。記憶力を高め、より良い思考力を身に付け、もっとお金を稼ぎ、友達を増やし、もっとクリエイティブになりたい。これらすべてを実現するのはほぼ不可能に思えるかもしれないが、研究によればそれを実現する驚くほどシンプルな方法があるという。それが（ア）だ。","2言語を知ることは、かつて（イ－①）とは見なされていなかった。実際、世界の一部の地域では、子どもがバイリンガルになることは（イ－②）とさえ考えられていた。異文化の両親を持つ家族は、子どもに2言語で話させないよう言われることもあった。当時の一部の専門家の研究に基づいて、バイリンガルの子どもは問題を抱えるかもしれないとされていた。ある教授は、バイリンガルの子どもの脳の発達が一言語の子どもの半分程度にしかならないかもしれないと主張した。バイリンガル家庭で育った子どもは知能が低くなる可能性があると示唆する研究もあった。しかしより最近の研究では、こうした初期の理論は単に間違っているだけでなく、完全に逆だったことが示されている。2言語を話すことは実際には有益なのだ。","研究によれば、バイリンガルであることは脳内の「（ウ）エグゼクティブ機能」を強化することで、物事を効果的に行う能力を高める可能性がある。これは、新しいことを記憶し、様々な方法で考え、行動をコントロールするための一連の精神的スキルの名称だ。エグゼクティブ機能は目標を設定し、計画を立て、課題を完了するのに役立つ。バイリンガルの人は、ワーキングメモリが優れ、情報を異なる方法で考えられ、課題に集中し続けられるため、仕事や学校で能力を発揮しやすいかもしれない。","当然のことながら、2言語を流暢に話す多くの人は2つの文化をよく知っている。たとえば、日伊両親のもとでバイリンガルとして育った人は、2言語を話すだけでなく、両方の文化についても深い理解を持っている可能性が高い。そして研究は、バイカルチュラル（2つの文化の一員であること）であることが、バイリンガルであることと（エ）似たような恩恵をもたらすことを示している。バイカルチュラルな人はより多くの人と知り合い、友人を作る機会が多いかもしれない。また、他の文化や考えに対してより開放的で、異なる視点から物事を見やすいかもしれない。","これは、バイリンガルでもバイカルチュラルでもない人にとってどんな意味があるのか？興味深いことに、研究は完全にバイリンガルである必要はないことを示している。新しい言語を学ぶプロセスそのものが、エグゼクティブ機能を高めるため有益だ。新しい国や自国内の多文化コミュニティへの移住は、新しい文化を体験する優れた方法だ。実は、他の文化や考えにより開放的になろうと心がけるだけでも役立つようだ。将来の研究では、バーチャルコミュニティで時間を過ごすことで新しい文化について学び体験することも同様に有益であることが示されるかもしれない。"]
+  }
+};
+
+// ═══════════════════════════════════════════
+// Q6 DATA
+// ═══════════════════════════════════════════
+const Q6 = {
+  2020:{
+    ptsA:"各5点×2", ptsB:"10点・30語程度",
+    context:"中学生のときに旅行記に刺激されて列車での旅行に興味を持つようになった。",
+    A:[
+      {label:"（ア）",ul:"高校生になってから、週末には列車での一人旅によく出かけている。",model:"Since I became a high school student, I have often gone on solo trips by train on weekends.",alt:"Since entering high school, I have often taken solo train trips on weekends.",pt:"「高校生になってから」= Since I became a high school student\n「よく出かけている」= have often gone（現在完了：過去から現在の継続習慣）\n「一人旅」= solo trip　「列車での」= by train"},
+      {label:"（イ）",ul:"未知の場所を訪ねたり、見ず知らずの人に会ったりすると、わくわくする。",model:"I get excited when I visit unknown places or meet people I have never seen before.",alt:"Visiting unknown places and meeting strangers make me excited.",pt:"「~したりすると」= when I do A or do B（接続詞 when で条件・場面を表す）\n「見ず知らずの人」= strangers / people I have never met\n「わくわくする」= get excited / feel excited"}
+    ],
+    Bsit:"あなたは留学生のIsabelから次の相談を受けた。妹が毎晩深夜まで勉強しているが成績が上がっていない。Isabelの妹はどうすればよいか、理由とともに30語程度の英語で書け。",
+    Bmodel:"She should change her study habits. Instead of studying late at night, she should take short breaks and go to bed earlier. Getting enough sleep will help her remember what she has studied.",
+    Bpt:"問題点（深夜勉強）の指摘 → 具体的な提案（休憩・睡眠）→ 理由（記憶定着）の3ステップ構成\nInstead of -ing = 「~する代わりに」\nhelp + O + do = 「Oが~するのを助ける」",
+    Bwords:30
+  },
+  2021:{
+    ptsA:"各5点×2", ptsB:"10点・30語程度",
+    context:"子どもに本の楽しさに気づかせる秘訣として語られた内容。",
+    A:[
+      {label:"（ア）",ul:"つまらないなら読むのをやめればよい。",model:"If you find a book boring, you can stop reading it.",alt:"If it is boring, you should stop reading.",pt:"「つまらないなら」= If you find it boring / If it is boring（if + 現在形）\n「読むのをやめる」= stop reading（stop + -ing: 動作をやめる）\n「ればよい」= you can / you should（軽いアドバイス）"},
+      {label:"（イ）",ul:"子どものときに、だれもそんなことを言ってくれなかった。",model:"Nobody told them such a thing when they were children.",alt:"No one had ever said such a thing to them when they were kids.",pt:"「だれも~なかった」= Nobody / No one + 動詞（nobody は肯定形の動詞と使う）\n「そんなことを言う」= say such a thing / tell them that\n「子どものときに」= when they were children / as children"}
+    ],
+    Bsit:"カナダからの留学生に、茶道部（活動日:土曜のみ・地域イベント参加）とバスケットボール部（活動日:月〜金・部員100名・季節大会参加）のどちらを勧めるか。理由とともに30語程度で書け。",
+    Bmodel:"I recommend the tea ceremony club. It only meets on Saturdays, so you will have free time on weekdays to study. You can also join local events and experience Japanese culture directly.",
+    Bmodel2:"I recommend the basketball club. It has 100 members, so you can make many new friends. You can also participate in tournaments every season, which will make your school life very exciting.",
+    Bpt:"ポスターの情報を根拠として使うことがポイント\n茶道部: 活動日が少ない（平日が空く）・地域イベントで日本文化体験\nバスケ部: 大人数で友人ができやすい・大会参加で充実した学校生活",
+    Bwords:30
+  },
+  2022:{
+    ptsA:"各3点×2", ptsB:"15点・20語程度",
+    context:"医療は少しずつ進歩しているが、21世紀になってもなお多くの課題が残っている。",
+    A:[
+      {label:"（ア）",ul:"20年以上たったが、多くの人が様々な病気に苦しんでいる。",model:"Although more than twenty years have passed, many people are still suffering from various diseases.",alt:"More than 20 years have passed, but many people are still suffering from various illnesses.",pt:"「20年以上たったが」= Although more than twenty years have passed\n「苦しんでいる」= are suffering from ~（進行形で現在も継続中を強調）\n「様々な病気」= various diseases / many kinds of illnesses"},
+      {label:"（イ）",ul:"私たちには、彼らのために何ができるかを真剣に考えることが必要である。",model:"It is necessary for us to think seriously about what we can do for them.",alt:"We need to think seriously about what we can do for them.",pt:"「~することが必要」= It is necessary for us to do / We need to do\n「何ができるかを」= what we can do（間接疑問文: 疑問詞 + S + V の語順）\n「真剣に考える」= think seriously about"}
+    ],
+    Bsit:"あなたは公園で小学生を仲間外れにしている中学生5人に出会った。「Hey!」に続けて、状況の問題点と中学生がどうすべきかの提案を含めて20語程度で英語で声をかけよ。",
+    Bmodel:"It is wrong to leave someone out. Everyone should be treated equally. Please let that child join your game and play together.",
+    Bpt:"問題点の指摘（仲間外れはいけない）+ 提案（一緒に遊ぶ）の2文構成\nleave ~ out = 「~を仲間外れにする」/ include = 「~を含める」\n中学生に呼びかける形なので命令文や Please ~ が自然",
+    Bwords:20
+  },
+  2023:{
+    ptsA:"各3点×2", ptsB:"9点・20語程度",
+    context:"スマートフォンの過剰使用によるネット依存の問題について。",
+    A:[
+      {label:"（ア）",ul:"スマートフォンでニュースを読む人がたくさんいる。",model:"Many people read the news on their smartphones.",alt:"There are many people who read the news on their smartphones.",pt:"「スマートフォンで」= on their smartphones（スマートフォン上の情報は on を使う）\n「~する人がたくさんいる」= Many people / There are many people who"},
+      {label:"（イ）",ul:"スマートフォンの画面を一日何時間見ているかを記録することも重要だ。",model:"It is also important to keep a record of how many hours a day you look at your smartphone screen.",alt:"Recording how many hours you spend looking at your smartphone screen each day is also important.",pt:"「記録すること」= to keep a record of / recording（形式主語 or 動名詞主語）\n「一日何時間見ているかを」= how many hours a day you look at（間接疑問文）"}
+    ],
+    Bsit:"1人で勉強するとき、音楽ありと音楽なしのどちらがよいか。あなたの考えとその理由を20語程度で書け。",
+    Bmodel:"I prefer studying with music. Music helps me relax and focus better. Without it, I feel nervous and cannot concentrate on my studies.",
+    Bmodel2:"I prefer studying without music. Music distracts me and makes it hard to concentrate. In a quiet place, I can focus much better on what I am studying.",
+    Bpt:"prefer -ing = 「~するほうが好きだ」で好みを明示\n「集中できる・できない」が理由の軸になりやすい\nhelp + O + do / make it hard to do などを使うと表現力が上がる",
+    Bwords:20
+  },
+  2024:{
+    ptsA:"各3点×2", ptsB:"9点・20語程度",
+    context:"中学生のときにテレビで日本料理のすばらしさを知り、料理人を目指している。",
+    A:[
+      {label:"（ア）",ul:"私の将来の夢は、料理人（cook）になって自分の料理で人々を幸せにすることです。",model:"My dream for the future is to become a cook and make people happy with my cooking.",alt:"My future dream is to be a cook and make people happy through my dishes.",pt:"「将来の夢は~することです」= My dream for the future is to do\n「料理人になって〜する」= to become a cook and make ~（and で2つの不定詞を並列）\n「自分の料理で」= with my cooking / through my dishes"},
+      {label:"（イ）",ul:"多くの仕事がなくなると言われています。",model:"It is said that many jobs will disappear.",alt:"Many jobs are said to disappear in the future.",pt:"「~と言われています」= It is said that ~ / ~ is said to do（受動態の慣用表現）\n「仕事がなくなる」= jobs will disappear / jobs will be lost（disappear は自動詞）"}
+    ],
+    Bsit:"ホームステイ中の週末、ホストマザーから「地元の有名博物館を訪れる」か「近所の人を招いてホームパーティーをする」かを尋ねられた。あなたの考えとその理由を20語程度で書け。",
+    Bmodel:"I'd like to visit the museum. I'm very interested in learning about the local history and culture. I think it will be a wonderful experience for me.",
+    Bmodel2:"I'd like to have a party at home. Meeting your neighbors will help me feel more comfortable here. I look forward to getting to know everyone.",
+    Bpt:"I'd like to ~ で希望を丁寧に表現\n理由は「自分にとってのメリット」を具体的に\nホームステイ中という状況を理由に活かすと説得力が増す",
+    Bwords:20
+  },
+  2025:{
+    ptsA:"各3点×2", ptsB:"9点・20〜25語",
+    context:"テレビのニュースで小学校の閉校と校舎の活用について報じられている。",
+    A:[
+      {label:"（ア）",ul:"テレビのニュースによると、毎年、いくつもの小学校が閉校している。",model:"According to the TV news, several elementary schools close every year.",alt:"According to a TV news report, a number of elementary schools are closing every year.",pt:"「~によると」= According to ~（文頭に置く）\n「いくつもの」= several / a number of\n「閉校している」= close（現在形で習慣）または are closing（進行中の傾向）"},
+      {label:"（イ）",ul:"ある地域では、校舎がホテルとして活用されている。",model:"In one area, a school building is being used as a hotel.",alt:"In some areas, school buildings are used as hotels.",pt:"「ある地域では」= In one area / In some areas\n「~として活用されている」= is being used as ~ / is used as ~（受動態）\n「校舎」= a school building / school buildings"}
+    ],
+    Bsit:"読書をする際に、紙の本とタブレットのどちらがよいか。選んだ方法の具体的な利点を2つ挙げながら、20〜25語程度で書け。（答案用紙でどちらかを○で囲む設問）",
+    Bmodel:"【本を選ぶ場合】 I choose Book. First, reading a physical book is easy on the eyes and does not cause fatigue. Second, there are no battery or notification issues, so I can focus completely.",
+    Bmodel2:"【タブレットを選ぶ場合】 I choose Tablet. First, I can carry many books in one device, which is very convenient. Second, I can adjust the font size easily, making reading more comfortable.",
+    Bpt:"First, ... Second, ... で利点を2つ明確に提示する構成が求められている\n「本」の利点: 目に優しい・電池/通知の心配なし・集中できる\n「タブレット」の利点: 多くの本を1台に収納・文字サイズ変更・軽い",
+    Bwords:25, BwordsMin:20
+  }
+};
+
+// ═══════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════
+const SCHOOL_AI_URL = 'https://school-ai-app.mingaku.net/redirect?mode=coTT1jed3QKgvZfiFKff&common=false&showheader=true&showfooter=false&ref=schools/PR3Wc2GdpN8GA9edVgHJ/prompts/coTT1jed3QKgvZfiFKff';
+const READING_AI_URL = 'https://school-ai-app.mingaku.net/redirect?mode=7rqK39wAUzjqA6tciSQ1&common=false&showheader=true&showfooter=false&ref=schools/PR3Wc2GdpN8GA9edVgHJ/prompts/7rqK39wAUzjqA6tciSQ1';
+const NOTEBOOKLM_URL = 'https://notebooklm.google.com';
+
+// ═══════════════════════════════════════════
+// TILE REORDER
+// ═══════════════════════════════════════════
+const roState = {};
+
+function placeTile(rid, tileId) {
+  const s = roState[rid];
+  if (!s || s.checked) return;
+  const pidx = s.pool.findIndex(t => t.id === tileId);
+  if (pidx >= 0) {
+    const tile = s.pool.splice(pidx, 1)[0];
+    s.placed.push(tile);
+  } else {
+    const idx = s.placed.findIndex(t => t.id === tileId);
+    if (idx >= 0) {
+      const tile = s.placed.splice(idx, 1)[0];
+      s.pool.push(tile);
+    }
+  }
+  renderTiles(rid);
+}
+
+function renderTiles(rid) {
+  const s = roState[rid];
+  const poolEl = document.getElementById(`pool-${rid}`);
+  poolEl.innerHTML = s.pool.map(t =>
+    `<span class="tile" onclick="placeTile('${rid}',${t.id})">${t.text}</span>`
+  ).join('') || '<span style="font-size:.75rem;font-family:sans-serif;color:#9ca3af">（全て配置済み）</span>';
+  const ansEl = document.getElementById(`ans-${rid}`);
+  ansEl.innerHTML = s.placed.length === 0
+    ? '<span style="color:#c4b5fd;font-family:sans-serif;font-size:.8rem">ここに語句が並びます（上からクリック）</span>'
+    : s.placed.map(t =>
+        `<span class="tile placed" onclick="placeTile('${rid}',${t.id})">${t.text}</span>`
+      ).join('');
+}
+
+function checkReorder(rid) {
+  const s = roState[rid];
+  if (!s) return;
+  if (s.placed.length !== s.ansTiles.length) {
+    const res = document.getElementById(`ro-res-${rid}`);
+    res.innerHTML = `<div class="r-item r-ng">まだ全ての語句が並んでいません（${s.placed.length}/${s.ansTiles.length}語配置済み）</div>`;
+    res.style.display = 'block';
+    return;
+  }
+  s.checked = true;
+  const ansEl = document.getElementById(`ans-${rid}`);
+  ansEl.innerHTML = s.placed.map((t, i) => {
+    const ok = t.text.toLowerCase() === s.ansTiles[i].toLowerCase();
+    return `<span class="tile ${ok?'correct':'incorrect'}">${t.text}</span>`;
+  }).join('');
+  const allOk = s.placed.every((t,i) => t.text.toLowerCase() === s.ansTiles[i].toLowerCase());
+  const res = document.getElementById(`ro-res-${rid}`);
+  res.innerHTML = allOk
+    ? `<div class="r-item r-ok"><span class="tag-c">✓ 正解</span>正しく並べられました！</div>`
+    : `<div class="r-item r-ng"><span class="tag-w">✗ 不正解</span>正しい順番: <strong>${s.ansTiles.join(' ')}</strong></div>`;
+  res.style.display = 'block';
+}
+
+function resetReorder(rid) {
+  const s = roState[rid];
+  if (!s) return;
+  s.pool = [...s.pool, ...s.placed];
+  s.placed = [];
+  s.checked = false;
+  for(let i=s.pool.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [s.pool[i],s.pool[j]]=[s.pool[j],s.pool[i]];
+  }
+  renderTiles(rid);
+  const res = document.getElementById(`ro-res-${rid}`);
+  if (res) { res.style.display = 'none'; res.innerHTML = ''; }
+}
+
+// ═══════════════════════════════════════════
+// AI PROMPT COPY
+// ═══════════════════════════════════════════
+function copyAIPrompt(year, event) {
+  const textarea = document.getElementById(`ta-${year}`);
+  const studentText = textarea ? textarea.value.trim() : '';
+  const d = Q6[year];
+  const prompt = `「${d.Bsit}」という課題で英作文を書いています。文法・語法の点からライティングのエラーをチェックしてください。また，文章としての改善の視点をください。単にリライトされた英文を出すだけではなくて，私のライティングの学びになるようにアドバイスをしてください。\n\n【私の英作文】\n${studentText || '（ここに書いた英文を貼り付けてください）'}`;
+  navigator.clipboard.writeText(prompt).then(() => {
+    const btn = event.currentTarget;
+    const orig = btn.textContent;
+    btn.textContent = '✓ コピーしました';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  });
+}
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+let prevScreen = 'home';
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.getElementById('btn-back').style.display = id === 'home' ? 'none' : 'inline-block';
+  const titles = {home:'進研模試 英語対策（高1・7月）',q3:'大問3 文法・語法',q3y:'大問3 文法・語法',q4:'大問4 長文読解（物語文）',q4y:'大問4 長文読解（物語文）',q5:'大問5 長文読解（説明文）',q5y:'大問5 長文読解（説明文）',q6:'大問6 英作文',q6y:'大問6 英作文'};
+  document.getElementById('topbar-title').textContent = titles[id] || '進研模試 英語対策';
+  window.scrollTo(0,0);
+}
+function goBack() { showScreen(prevScreen); }
+function goHome() { prevScreen = 'home'; showScreen('home'); }
+function goSection(id) { prevScreen = 'home'; showScreen(id); }
+
+// ═══════════════════════════════════════════
+// MODEL TOGGLE
+// ═══════════════════════════════════════════
+function toggleModel(id) {
+  const w = document.getElementById('mw-'+id);
+  const b = document.getElementById('mb-'+id);
+  const open = w.style.display === 'block';
+  w.style.display = open ? 'none' : 'block';
+  b.textContent = open ? '✅ 模範解答を見る' : '✅ 模範解答を閉じる';
+  b.classList.toggle('open', !open);
+}
+
+// ═══════════════════════════════════════════
+// TREND TOGGLE
+// ═══════════════════════════════════════════
+function toggleTrend() {
+  const b = document.getElementById('trend-body');
+  const a = document.getElementById('trend-arrow');
+  const open = b.style.display === 'block';
+  b.style.display = open ? 'none' : 'block';
+  a.style.transform = open ? '' : 'rotate(180deg)';
+}
+
+// ═══════════════════════════════════════════
+// Q3 RENDER
+// ═══════════════════════════════════════════
+function openQ3(year) {
+  prevScreen = 'q3';
+  const d = Q3[year];
+  let h = '';
+
+  // A問題
+  h += `<div class="q-section"><div class="q-sec-title">A　空所補充（各2点×7）</div>`;
+  d.A.forEach((q,i) => {
+    h += `<div class="q-block">
+      <div class="q-num">問 ${i+1}</div>
+      <div class="q-text">${q.q}</div>
+      ${q.opts.map((o,j)=>`<label class="option-label"><input type="radio" name="q3a-${year}-${i}" value="${j}"> ${j+1}　${o}</label>`).join('')}
+      ${q.vqu ? `<details class="hint-detail"><summary>ヒント（VQU）</summary><div class="hint-body">${q.vqu}</div></details>` : ''}
+    </div>`;
+  });
+  h += `<button class="btn-check" onclick="checkQ3A(${year})">答え合わせ</button>
+        <div class="mcq-result" id="q3a-res-${year}"></div></div>`;
+
+  // B問題
+  if (d.B_type === 'error') {
+    h += buildErrorSection(year, d);
+    h += buildReorderSection(year, d.C, 'C', '並べ替え');
+  } else {
+    h += buildReorderSection(year, d.B, 'B', '並べ替え');
+  }
+
+  document.getElementById('q3y-title').textContent = `大問 3　文法・語法（${year}年度）`;
+  document.getElementById('q3y-sub').textContent = d.B_type === 'error' ? 'A 空所補充 / B 誤り発見 / C 並べ替え' : 'A 空所補充 / B 並べ替え';
+  document.getElementById('q3y-body').innerHTML = h;
+  showScreen('q3y');
+}
+
+function buildErrorSection(year, d) {
+  const passage = d.B_full
+    .replace(/\[(\d+)\]/g, (_,n) => `<span class="err-mark">${n}</span>`)
+    .replace(/\n/g, '<br>');
+  let btns = '';
+  for (let i=1;i<=8;i++) btns += `<button class="num-sel-btn" id="eb-${year}-${i}" onclick="toggleErr(${year},${i})">${i}</button>`;
+  return `<div class="q-section">
+    <div class="q-sec-title">B　誤り発見（3箇所を選択）</div>
+    <div style="font-size:.82rem;font-family:sans-serif;color:#374151;margin-bottom:12px;line-height:1.7">番号①〜⑧の中から、誤りのある箇所を3つ選んでください。</div>
+    <div class="error-passage">${passage}</div>
+    <div style="font-size:.82rem;font-family:sans-serif;color:#374151;margin-bottom:6px">誤りだと思う番号を選ぶ（3つまで）:</div>
+    <div class="num-sel-btns">${btns}</div>
+    <button class="btn-check" onclick="checkErr(${year})">答え合わせ</button>
+    <div class="mcq-result" id="err-res-${year}"></div></div>`;
+}
+
+function buildReorderSection(year, items, sec, title) {
+  let h = `<div class="q-section"><div class="q-sec-title">${sec}　${title}</div>`;
+  items.forEach((item, qi) => {
+    const rid = `ro-${year}-${sec}-${qi}`;
+    const m = item.prompt.match(/^(.*?)\s*\(([^)]+)\)\s*(.*)$/);
+    const pre = m ? m[1].trim() : item.prompt;
+    const suf = m ? m[3].trim() : '';
+    const poolTiles = [...item.ansTiles].map((t,i) => ({id:i, text:t}));
+    for(let i=poolTiles.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [poolTiles[i],poolTiles[j]]=[poolTiles[j],poolTiles[i]];
+    }
+    roState[rid] = {pool: poolTiles, placed: [], ansTiles: item.ansTiles, checked: false};
+    h += `<div class="q-block">
+      <div class="q-num">問 ${qi+1}</div>
+      <div class="reorder-frame">${pre ? pre+' ' : ''}<span style="color:#9ca3af;font-style:italic">（　語句を並べよう　）</span>${suf ? ' '+suf : ''}</div>
+      <div style="font-size:.75rem;font-family:sans-serif;color:#6b7280;margin-bottom:5px">↓ 語句をクリックして並べる（配置後クリックで戻す）</div>
+      <div class="tile-answer-area" id="ans-${rid}"><span style="color:#c4b5fd;font-family:sans-serif;font-size:.8rem">ここに語句が並びます（上からクリック）</span></div>
+      <div class="tile-pool" id="pool-${rid}">${poolTiles.map(t=>`<span class="tile" onclick="placeTile('${rid}',${t.id})">${t.text}</span>`).join('')}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+        <button class="btn-check" onclick="checkReorder('${rid}')">答え合わせ</button>
+        <button class="btn-reset" onclick="resetReorder('${rid}')">リセット</button>
+      </div>
+      <div class="mcq-result" id="ro-res-${rid}"></div>
+      <button class="btn-model" id="mb-${rid}" onclick="toggleModel('${rid}')">✅ 正解・解説を見る</button>
+      <div class="model-wrap" id="mw-${rid}">
+        <div class="model-head">正解</div>
+        <div class="model-body">${item.answer}</div>
+        <div class="model-pt"><div class="model-pt-head">解説</div>${item.exp}${item.vqu ? `<div style="margin-top:8px"><span class="q-vqu">${item.vqu}</span></div>` : ''}</div>
+      </div></div>`;
+  });
+  h += `</div>`;
+  return h;
+}
+
+const errSel = {};
+function toggleErr(year, n) {
+  if (!errSel[year]) errSel[year] = new Set();
+  const s = errSel[year];
+  const btn = document.getElementById(`eb-${year}-${n}`);
+  if (s.has(n)) { s.delete(n); btn.classList.remove('selected'); }
+  else { if (s.size >= 3) return; s.add(n); btn.classList.add('selected'); }
+}
+
+function checkErr(year) {
+  const d = Q3[year];
+  const sel = errSel[year] ? [...errSel[year]].sort((a,b)=>a-b) : [];
+  const ans = d.B_ans;
+  let h = `<div style="font-size:.88rem;font-family:sans-serif;margin-bottom:10px;font-weight:bold;color:#1a3a5c">正解: ${ans.join(' ・ ')}</div>`;
+  ans.forEach(n => {
+    const ok = sel.includes(n);
+    h += `<div class="r-item ${ok?'r-ok':'r-ng'}"><span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 未選択'}</span><strong>番号 ${n}</strong><details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${d.B_exp[n]}</div></details></div>`;
+  });
+  sel.forEach(n => { if (!ans.includes(n)) h += `<div class="r-item r-ng"><span class="tag-w">✗ 誤選択</span><strong>番号 ${n}</strong> — 正解ではありません</div>`; });
+  const res = document.getElementById(`err-res-${year}`);
+  res.innerHTML = h; res.style.display = 'block';
+}
+
+function checkQ3A(year) {
+  const d = Q3[year];
+  let correct = 0, h = '';
+  d.A.forEach((q,i) => {
+    const sel = document.querySelector(`input[name="q3a-${year}-${i}"]:checked`);
+    const sv = sel ? parseInt(sel.value) : -1;
+    const ok = sv === q.ans;
+    if (ok) correct++;
+    h += `<div class="r-item ${ok?'r-ok':'r-ng'}">
+      <span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span>
+      <strong>問 ${i+1}</strong>　正解: <strong>${q.ans+1} ${q.opts[q.ans]}</strong>　あなた: ${sv>=0?(sv+1)+' '+q.opts[sv]:'未回答'}
+      <details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${q.exp}${q.vqu?' <span style="color:#7c3aed;font-size:.72rem">'+q.vqu+'</span>':''}</div></details>
+    </div>`;
+  });
+  const res = document.getElementById(`q3a-res-${year}`);
+  res.innerHTML = `<div style="font-size:.9rem;font-family:sans-serif;margin-bottom:10px;font-weight:bold;color:#1a3a5c">${correct} / 7 正解</div>${h}`;
+  res.style.display = 'block';
+}
+
+// ═══════════════════════════════════════════
+// Q4/Q5 RENDER
+// ═══════════════════════════════════════════
+function openQ45(qnum, year) {
+  const suf = qnum === 4 ? '4' : '5';
+  prevScreen = 'q' + suf;
+  const d = (qnum === 4 ? Q4 : Q5)[year];
+  if (!d) return;
+
+  // Build passage paragraphs
+  const paras = d.passage.split('\n').filter(l => l.trim());
+  const highlight = s => s
+    .replace(/（[アイウエオ]）/g, m => `<span class="p-blank">${m}</span>`)
+    .replace(/＿＿/g, '<span class="p-blank">＿＿</span>');
+  const passageHtml = paras.map(l => `<p>${highlight(l)}</p>`).join('');
+
+  // Build translation grid if trans data exists
+  let transHtml = '';
+  if (d.trans && d.trans.length) {
+    const rows = paras.map((enP, i) => {
+      const jaP = d.trans[i] || '';
+      return `<div class="trans-row-en">${highlight(enP)}</div><div class="trans-row-ja">${jaP}</div>`;
+    }).join('');
+    transHtml = `<div class="trans-grid" id="tg-${suf}-${year}" style="display:none">
+      <div class="trans-col-head en">英語（本文）</div><div class="trans-col-head">日本語（対訳）</div>
+      ${rows}
+    </div>`;
+  }
+
+  let h = `<div class="passage-wrap">
+    <div class="passage-title" style="display:flex;align-items:center;justify-content:space-between">
+      <span>▶ 本文</span>
+      ${d.trans ? `<button class="trans-btn" id="tb-${suf}-${year}" onclick="toggleTrans('${suf}','${year}')">対訳を見る</button>` : ''}
+    </div>
+    <div class="passage-body" id="pb-${suf}-${year}">${passageHtml}</div>
+    ${transHtml}
+    ${d.note ? `<div class="passage-note">${d.note}</div>` : ''}
+  </div>`;
+
+  // Build question blocks
+  h += `<div class="q-section"><div class="q-sec-title">問題（${d.pts}）</div>`;
+  d.questions.forEach(q => {
+    const rid = `q${suf}-${year}-${q.num}`;
+    h += `<div class="q-block">
+      <div class="q-num">問 ${q.num}</div>
+      <div class="q-text">${q.q ? q.q.replace(/\n/g,'<br>') : ''}</div>`;
+
+    if (q.type === 'mcq') {
+      h += `<div>`;
+      q.opts.forEach((o, i) => {
+        h += `<label class="option-label"><input type="radio" name="${rid}" value="${i}"> <span>（${i+1}）${o}</span></label>`;
+      });
+      h += `</div>
+      <button class="btn-check" onclick="checkQ45MCQ('${rid}',${q.ans},'${rid}-res','${rid}-exp')">答え合わせ</button>
+      <div class="mcq-result" id="${rid}-res"></div>
+      <div class="model-wrap" id="${rid}-exp" style="display:none">
+        <div class="model-pt"><div class="model-pt-head">解説</div>${q.exp || ''}</div>
+      </div>`;
+
+    } else if (q.type === 'img-mcq') {
+      h += `<img class="passage-img" src="${q.img}" alt="図">`;
+      if (Array.isArray(q.ans)) {
+        // Dual-answer: show options but check against ansDisplay
+        h += `<div>`;
+        q.opts.forEach((o, i) => {
+          h += `<label class="option-label"><input type="radio" name="${rid}" value="${i}"> <span>（${i+1}）${o}</span></label>`;
+        });
+        h += `</div>
+        <button class="btn-model" id="mb-${rid}" onclick="toggleModel('${rid}')">✅ 正解を見る</button>
+        <div class="model-wrap" id="mw-${rid}">
+          <div class="model-head">正解</div>
+          <div class="model-body">${q.ansDisplay || q.ans.map(a=>`（${a+1}）`).join('　')}</div>
+          ${q.exp ? `<div class="model-pt"><div class="model-pt-head">解説</div>${q.exp}</div>` : ''}
+        </div>`;
+      } else {
+        h += `<div>`;
+        q.opts.forEach((o, i) => {
+          h += `<label class="option-label"><input type="radio" name="${rid}" value="${i}"> <span>（${i+1}）${o}</span></label>`;
+        });
+        h += `</div>
+        <button class="btn-check" onclick="checkQ45MCQ('${rid}',${q.ans},'${rid}-res','${rid}-exp')">答え合わせ</button>
+        <div class="mcq-result" id="${rid}-res"></div>
+        <div class="model-wrap" id="${rid}-exp" style="display:none">
+          <div class="model-pt"><div class="model-pt-head">解説</div>${q.exp || ''}</div>
+        </div>`;
+      }
+
+    } else if (q.type === 'img-note') {
+      h += `<div class="img-note">${q.imgNote || '※ 実際の問題用紙の図・グラフを参照してください。'}</div>
+      <button class="btn-model" id="mb-${rid}" onclick="toggleModel('${rid}')">✅ 模範解答を見る</button>
+      <div class="model-wrap" id="mw-${rid}">
+        <div class="model-head">模範解答</div>
+        <div class="model-body">${q.model || ''}</div>
+        ${q.exp ? `<div class="model-pt"><div class="model-pt-head">解説</div>${q.exp}</div>` : ''}
+      </div>`;
+
+    } else if (q.type === 'write') {
+      const copyId = `cp-${rid}`;
+      h += `<textarea class="q-write-area" placeholder="英語で書いてみよう…"></textarea>
+      <div class="ai-assist-read">
+        <div class="ai-assist-read-label">📖 長文読解サポートAI</div>
+        <div style="font-size:.78rem;font-family:sans-serif;color:#1e40af;line-height:1.7;margin-bottom:8px">本文＋この問題をコピーして School AI に相談できます。</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-copy-prompt" style="background:#3b82f6" id="${copyId}" onclick="copyReadingAIPrompt('${suf}','${year}',${q.num},'${copyId}')">📋 本文＋問題をコピー</button>
+          <a class="btn-ai-link" style="border-color:#3b82f6;color:#3b82f6" href="${READING_AI_URL}" target="_blank">School AI で相談 →</a>
+        </div>
+      </div>
+      <button class="btn-model" id="mb-${rid}" onclick="toggleModel('${rid}')">✅ 模範解答を見る</button>
+      <div class="model-wrap" id="mw-${rid}">
+        <div class="model-head">模範解答</div>
+        <div class="model-body">${q.model || ''}</div>
+        ${q.exp ? `<div class="model-pt"><div class="model-pt-head">解説</div>${q.exp}</div>` : ''}
+      </div>`;
+    }
+
+    h += `</div>`;
+  });
+  h += `</div>`;
+
+  document.getElementById(`q${suf}y-title`).textContent = `大問 ${qnum}　長文読解（${year}年度）`;
+  document.getElementById(`q${suf}y-sub`).textContent = `${d.title}　${d.pts}`;
+  document.getElementById(`q${suf}y-body`).innerHTML = h;
+  showScreen(`q${suf}y`);
+}
+
+function toggleTrans(suf, year) {
+  const grid = document.getElementById(`tg-${suf}-${year}`);
+  const body = document.getElementById(`pb-${suf}-${year}`);
+  const btn = document.getElementById(`tb-${suf}-${year}`);
+  const open = grid.style.display === 'grid';
+  grid.style.display = open ? 'none' : 'grid';
+  body.style.display = open ? 'block' : 'none';
+  btn.textContent = open ? '対訳を見る' : '本文に戻る';
+  btn.classList.toggle('active', !open);
+}
+
+function copyReadingAIPrompt(suf, year, qnum, btnId) {
+  const d = (suf === '4' ? Q4 : Q5)[year];
+  if (!d) return;
+  const q = d.questions.find(q => q.num === qnum);
+  if (!q) return;
+  const text = `【本文】\n${d.passage}\n\n【設問】\n問${qnum}: ${q.q || ''}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById(btnId);
+    const orig = btn.textContent;
+    btn.textContent = '✅ コピーしました';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  }).catch(() => alert('コピーに失敗しました。'));
+}
+
+function checkQ45MCQ(name, ans, resId, expId) {
+  const sel = document.querySelector(`input[name="${name}"]:checked`);
+  const sv = sel ? parseInt(sel.value) : -1;
+  const ok = sv === ans;
+  const res = document.getElementById(resId);
+  res.innerHTML = ok
+    ? `<div class="r-item r-ok"><span class="tag-c">✓ 正解</span> <strong>（${ans+1}）</strong></div>`
+    : `<div class="r-item r-ng"><span class="tag-w">✗ 不正解</span> 正解は <strong>（${ans+1}）</strong>${sv>=0?' / あなた: （'+(sv+1)+'）':' / 未回答'}</div>`;
+  res.style.display = 'block';
+  if (expId) {
+    const exp = document.getElementById(expId);
+    if (exp) exp.style.display = 'block';
+  }
+}
+
+// ═══════════════════════════════════════════
+// Q6 RENDER
+// ═══════════════════════════════════════════
+function openQ6(year) {
+  prevScreen = 'q6';
+  const d = Q6[year];
+  let h = '';
+
+  // A 和文英訳
+  h += `<div class="q-section"><div class="q-sec-title">A　和文英訳（${d.ptsA}）</div>
+    <div class="q6-context"><div class="q6-context-label">文脈</div>${d.context}</div>`;
+  d.A.forEach((a,i) => {
+    const id = `q6a-${year}-${i}`;
+    h += `<div class="q-block">
+      <div class="q-num">${a.label}</div>
+      <div class="q-text"><span class="q6-underline">${a.ul}</span></div>
+      <textarea class="memo-area" placeholder="英訳をここに書いてみよう…（提出不要）"></textarea>
+      <div class="ai-assist">
+        <div class="ai-assist-label">✏️ AI活用（NotebookLM）</div>
+        <div class="ai-assist-note">英訳を書いたら NotebookLM で確認してみましょう。</div>
+        <a class="btn-ai-link" href="${NOTEBOOKLM_URL}" target="_blank">NotebookLM で確認 →</a>
+      </div>
+      <button class="btn-model" id="mb-${id}" onclick="toggleModel('${id}')">✅ 模範解答を見る</button>
+      <div class="model-wrap" id="mw-${id}">
+        <div class="model-head">模範解答</div>
+        <div class="model-body">${a.model}</div>
+        <div class="model-alt">別解: ${a.alt}</div>
+        <div class="model-pt"><div class="model-pt-head">文法ポイント</div>${a.pt.replace(/\n/g,'<br>')}</div>
+      </div></div>`;
+  });
+  h += `</div>`;
+
+  // B 英作文
+  const id = `q6b-${year}`;
+  const wmin = d.BwordsMin || d.Bwords;
+  const wmax = d.Bwords;
+  const wlabel = wmin===wmax ? `${wmax}語程度` : `${wmin}〜${wmax}語程度`;
+  const promptText = `「${d.Bsit}」という課題で英作文を書いています。文法・語法の点からライティングのエラーをチェックしてください。また，文章としての改善の視点をください。単にリライトされた英文を出すだけではなくて，私のライティングの学びになるようにアドバイスをしてください。\n\n【私の英作文】\n（テキストエリアに書いた内容をコピーして追加してください）`;
+  h += `<div class="q-section"><div class="q-sec-title">B　自由英作文（${d.ptsB}）</div>
+    <div class="q6-context"><div class="q6-context-label">設問</div>${d.Bsit}</div>
+    <div class="target-words">目安: ${wlabel}</div>
+    <textarea class="memo-area" id="ta-${year}" style="min-height:130px" placeholder="英文をここに書いてみよう…（提出不要）" oninput="updateWC('ta-${year}','wc-${year}')"></textarea>
+    <div class="word-counter"><span class="wc-num" id="wc-${year}">0</span> 語</div>
+    <div class="ai-assist">
+      <div class="ai-assist-label">✏️ AI添削支援（School AI）</div>
+      <div class="ai-prompt-text">${promptText}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-copy-prompt" onclick="copyAIPrompt(${year},event)">📋 プロンプトをコピー</button>
+        ${SCHOOL_AI_URL ? `<a class="btn-ai-link" href="${SCHOOL_AI_URL}" target="_blank">School AI で添削 →</a>` : '<span class="btn-ai-link disabled">School AI（URL設定待ち）</span>'}
+      </div>
+    </div>
+    <button class="btn-model" id="mb-${id}" onclick="toggleModel('${id}')">✅ 模範解答を見る</button>
+    <div class="model-wrap" id="mw-${id}">
+      <div class="model-head">模範解答</div>
+      <div class="model-body">${d.Bmodel}</div>
+      ${d.Bmodel2 ? `<div class="model-body2"><div class="model-label2">別の選択の場合</div><div class="model-body">${d.Bmodel2}</div></div>` : ''}
+      <div class="model-pt"><div class="model-pt-head">書き方のポイント</div>${d.Bpt.replace(/\n/g,'<br>')}</div>
+    </div></div>`;
+
+  document.getElementById('q6y-title').textContent = `大問 6　英作文（${year}年度）`;
+  document.getElementById('q6y-sub').textContent = `A 和文英訳 ${d.ptsA} ／ B 英作文 ${d.ptsB}`;
+  document.getElementById('q6y-body').innerHTML = h;
+  showScreen('q6y');
+}
+
+function updateWC(tid, did) {
+  const t = document.getElementById(tid).value.trim();
+  document.getElementById(did).textContent = t==='' ? 0 : t.split(/\s+/).length;
+}
+
+// ═══════════════════════════════════════════
+// FONT SIZE
+// ═══════════════════════════════════════════
+const FS_MAP={s:{fs:'0.92rem',lh:'1.85'},m:{fs:'1.05rem',lh:'1.9'},l:{fs:'1.2rem',lh:'2.0'}};
+function setFs(sz) {
+  const v=FS_MAP[sz];
+  document.documentElement.style.setProperty('--fs',v.fs);
+  document.documentElement.style.setProperty('--lh',v.lh);
+  ['s','m','l'].forEach(s=>document.getElementById('fs-'+s).style.background=s===sz?'rgba(255,255,255,.38)':'rgba(255,255,255,.15)');
+  localStorage.setItem('shinkenFs',sz);
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  showScreen('home');
+  setFs(localStorage.getItem('shinkenFs')||'m');
+});
+</script>
+</body>
+</html>
