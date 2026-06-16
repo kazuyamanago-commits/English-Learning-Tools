@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<!--
+  =====================================================================
+  タイピングゲーム — Phase 1（クラシック版）
+  =====================================================================
+  【このファイルの読み方】
+  HTMLファイルは大きく3つのブロックに分かれています。
+    1. <head>   : ブラウザへの設定（タイトル・文字コードなど）
+    2. <style>  : 見た目のデザイン（色・大きさ・レイアウト）
+    3. <script> : 動きのプログラム（タイピング判定・タイマーなど）
+  コメント（/* */ や // の後ろ）はプログラムに影響しないメモです。
+  =====================================================================
+-->
+<html lang="ja">
+<head>
+  <!-- UTF-8: 日本語を正しく表示するための文字コード設定 -->
+  <meta charset="UTF-8">
+  <!-- viewport: スマホでも崩れないように画面サイズを調整する設定 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>タイピングゲーム</title>
+
+  <style>
+    /*
+    =====================================================================
+    【CSS の読み方】
+    「セレクタ { プロパティ: 値; }」という形で書きます。
+    セレクタ = 「どの要素に」を指定する部分
+    例: body { } → ページ全体に適用
+        .card { } → class="card" を持つ要素に適用
+        #timer { } → id="timer" を持つ要素に適用
+    =====================================================================
+    */
+
+    /* ページ全体のリセット（ブラウザごとの初期スタイルのばらつきをなくす） */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: #1a1a2e; /* 暗い背景色（ゲームらしい雰囲気に） */
+      color: #e0e0e0;
+      min-height: 100vh;   /* vh = viewport height。画面の高さいっぱいに広げる */
+      display: flex;       /* Flexbox: 中身を縦方向に並べるレイアウト手法 */
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 16px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #a8dadc;
+      margin-bottom: 6px;
+      letter-spacing: 2px;
+    }
+    .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 32px; }
+
+    /* カード型のコンテナ（幅を広げて単語が折り返しやすくする） */
+    .card {
+      background: #16213e;
+      border-radius: 14px;
+      padding: 28px 32px;
+      width: 100%;
+      max-width: 900px;
+      margin-bottom: 16px;
+      border: 1px solid #0f3460;
+    }
+
+    /* ============================================================
+       問題テキスト表示エリア
+    ============================================================ */
+    #text-display {
+      font-family: 'Courier New', monospace;
+      font-size: 1.5rem;
+      line-height: 2.2;
+      letter-spacing: 1px;
+      min-height: 100px;
+      overflow-wrap: break-word; /* 単語の途中では折り返さない */
+    }
+
+    /*
+    .word-wrap: 単語ひとまとまりを inline-block にする。
+    こうすることで「単語の途中で改行される」を防げる。
+    単語全体が次の行に移動するので読みやすい。
+    */
+    .word-wrap { display: inline-block; white-space: nowrap; }
+
+    /* 各文字 span の共通スタイル */
+    #text-display [data-index] { transition: background 0.05s; border-radius: 2px; }
+
+    /* まだ打っていない文字 */
+    .char-pending { color: #8899aa; }
+
+    /* 今から打つべき文字（カーソル位置） */
+    .char-current {
+      color: #fff;
+      background: #457b9d;
+      border-bottom: 2px solid #a8dadc;
+    }
+
+    /* 正しく打った文字 */
+    .char-correct { color: #52b788; }
+
+    /* ミスした文字 */
+    .char-error {
+      color: #e63946;
+      background: rgba(230, 57, 70, 0.15);
+      text-decoration: underline;
+    }
+
+    /*
+    自動処理された文字（スペース・ピリオドなど）。
+    薄いグレーで「処理済み」と分かるようにする。
+    */
+    .char-auto { color: #3a4a5a; }
+
+    /* ============================================================
+       統計バー（タイム・WPM・正確率）
+    ============================================================ */
+    .stats {
+      display: flex;       /* 3つを横並びにする */
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .stat-box {
+      flex: 1;             /* 均等に横幅を配分 */
+      background: #0f3460;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #a8dadc;
+      font-variant-numeric: tabular-nums; /* 数字の幅を固定（ガタつき防止） */
+    }
+    .stat-label { font-size: 0.72rem; color: #556; margin-top: 2px; letter-spacing: 1px; }
+
+    /* ============================================================
+       ボタン
+    ============================================================ */
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;      /* マウスを乗せると指マークになる */
+      transition: opacity 0.15s;
+      letter-spacing: 1px;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-start  { background: #457b9d; color: #fff; }
+    .btn-reset  { background: #333; color: #aaa; margin-top: 10px; }
+
+    /* ============================================================
+       結果表示（クリア後に出る）
+    ============================================================ */
+    #result {
+      display: none;      /* 最初は非表示。JavaScriptで表示に切り替える */
+      text-align: center;
+      padding: 20px 0 8px;
+    }
+    .result-wpm   { font-size: 3rem; font-weight: bold; color: #a8dadc; }
+    .result-label { font-size: 0.9rem; color: #556; margin-bottom: 16px; }
+    .result-detail{ font-size: 0.85rem; color: #889; margin-top: 8px; }
+
+    /* 問題選択セレクト */
+    select {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 0.95rem;
+      background: #0f3460;
+      color: #e0e0e0;
+      border: 1px solid #457b9d;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+    select:focus { outline: none; border-color: #a8dadc; }
+
+    /* ヒント表示 */
+    .hint { font-size: 0.78rem; color: #556; text-align: center; margin-top: 12px; }
+
+    footer { margin-top: 16px; font-size: 0.78rem; color: #334; }
+  </style>
+</head>
+<body>
+
+<h1>TYPING GAME</h1>
+<p class="subtitle">タイピングゲーム — 英コミュⅠ</p>
+
+<!-- 問題選択 -->
+<div class="card">
+  <!--
+    <select> タグ: プルダウンメニュー。
+    onchange="loadText()" → 選択が変わったら loadText() 関数を呼ぶ
+  -->
+  <select id="text-select" onchange="loadText()">
+    <option value="0">① Zoos — Key Sentence（やさしい）</option>
+    <option value="1">② Zoos — Paragraph 1（ふつう）</option>
+    <option value="2">③ Dolphins — Opening（むずかしい）</option>
+  </select>
+
+  <!-- 統計バー -->
+  <div class="stats">
+    <div class="stat-box">
+      <div class="stat-value" id="timer">0:00</div>
+      <div class="stat-label">TIME</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value" id="wpm-display">—</div>
+      <div class="stat-label">WPM</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value" id="acc-display">—</div>
+      <div class="stat-label">ACCURACY</div>
+    </div>
+  </div>
+
+  <!-- 問題テキスト表示エリア（JavaScriptが書き込む） -->
+  <div id="text-display"></div>
+
+  <!-- 結果表示（クリア後に出る） -->
+  <div id="result">
+    <div class="result-wpm" id="result-wpm">—</div>
+    <div class="result-label">WPM</div>
+    <div class="result-detail" id="result-detail"></div>
+  </div>
+
+  <p class="hint" id="hint-msg">↑ クリックしてスタート。キーボードで打ち始めると計測開始。</p>
+
+  <!--
+    隠し入力フィールド:
+    ゲーム中はこの input にフォーカスを当て続け、キー入力を受け取る。
+    opacity:0 で見えなくしているが、実際には存在している。
+    onkeydown → キーを押した瞬間に handleKey() を呼ぶ
+  -->
+  <input
+    id="hidden-input"
+    type="text"
+    autocomplete="off"
+    autocorrect="off"
+    autocapitalize="off"
+    spellcheck="false"
+    style="position:absolute; opacity:0; width:1px; height:1px;"
+    onkeydown="handleKey(event)"
+  >
+
+  <button class="btn btn-start" id="start-btn" onclick="startGame()">スタート</button>
+  <button class="btn btn-reset" id="reset-btn" onclick="resetGame()" style="display:none">リセット</button>
+</div>
+
+<footer>広島大学附属福山高校 英語科</footer>
+
+<script>
+/*
+  =====================================================================
+  【JavaScript の基本構造】
+
+  プログラムは「データ」と「処理」でできています。
+    データ  → 変数（let, const）に入れて管理する
+    処理    → 関数（function）にまとめて必要なときに呼び出す
+
+  このゲームの流れ:
+    1. 問題テキストを <span> に分割して表示する
+    2. 入力フィールドにフォーカスを当てる
+    3. キーが押されるたびに handleKey() が呼ばれる
+    4. 正誤判定 → クラスを付け替えて色を変える
+    5. 全文字打ち終わったら結果を表示
+  =====================================================================
+*/
+
+/* ============================================================
+   🔧 問題テキスト（ここを変えると問題を追加・変更できる）
+   配列（Array）: 複数のデータを [ ] でまとめたもの
+============================================================ */
+const TEXTS = [
+  {
+    title: "Zoos — Key Sentence",
+    text:  "Zoos play an important role in protecting endangered species."
+  },
+  {
+    title: "Zoos — Paragraph 1",
+    text:  "Zoos play an important role in protecting endangered species. Many animals that are now extinct in the wild can still be found in zoos around the world."
+  },
+  {
+    title: "Dolphins — Opening",
+    text:  "Off the coast of Brazil, a remarkable partnership has developed between bottlenose dolphins and local fishermen that has lasted for over a century."
+  }
+];
+
+/* ============================================================
+   📦 状態管理（ゲームの「今の現状」を記録する変数）
+   let  → あとから値を変えられる変数
+   const → 一度決めたら変えない定数
+============================================================ */
+let currentText  = "";    // 今の問題文（文字列）
+let currentIndex = 0;     // 今から打つべき文字の位置（0から始まる）
+let totalTyped   = 0;     // 総打鍵数（正誤問わず）
+let errors       = 0;     // ミスした回数
+let startTime    = null;  // 計測開始時刻（null = まだ開始していない）
+let timerInterval= null;  // タイマーのID（clearIntervalで止めるために保存）
+let isRunning    = false; // 現在ゲーム中かどうか
+
+/* ============================================================
+   🎬 初期化（ページ読み込み時と問題変更時に呼ばれる）
+============================================================ */
+function loadText() {
+  /*
+    document.getElementById('ID名')
+    → HTML の中から id="ID名" の要素を取得する
+    .value → select タグで選ばれている番号を取得
+  */
+  const idx = parseInt(document.getElementById('text-select').value);
+  currentText = TEXTS[idx].text;
+  renderText();   // テキストを画面に描画する
+  resetState();   // ゲームの状態をリセット
+}
+
+/* ============================================================
+   🖼️ テキストを画面に描画する
+   単語ごとに .word-wrap でまとめ、文字ごとに <span> に分割する
+============================================================ */
+function renderText() {
+  const display = document.getElementById('text-display');
+  let charIndex = 0;
+  let html = '';
+
+  /*
+    split(/(\s)/) → スペースを「区切り文字として保持しながら」分割する
+    例: "Zoos play".split(/(\s)/) → ['Zoos', ' ', 'play']
+    ※ () で囲むと区切り文字自体も配列に残る
+  */
+  const tokens = currentText.split(/(\s)/);
+
+  tokens.forEach(token => {
+    if (token === '') return; // 空文字は無視
+
+    if (/\s/.test(token)) {
+      /*
+        スペース: word-wrap の外に置く（ここが折り返し点になる）
+        スペースは自動処理対象なので最初から char-auto クラスをつける
+      */
+      html += `<span class="char-auto" data-index="${charIndex}">&nbsp;</span>`;
+      charIndex++;
+
+    } else {
+      /*
+        単語: .word-wrap で包むことで「単語ごと折り返す」を実現する
+        単語内の各文字はさらに <span> に分割する
+      */
+      html += '<span class="word-wrap">';
+      for (const char of token) {
+        /*
+          ピリオド・カンマなど英字以外は最初から char-auto（自動処理対象）
+          英字は char-pending（ユーザーが打つ必要あり）
+          最初の文字だけ char-current（カーソル位置）
+        */
+        const isAuto = isAutoChar(char);
+        const cls = isAuto ? 'char-auto' : (charIndex === 0 ? 'char-current' : 'char-pending');
+        html += `<span class="${cls}" data-index="${charIndex}">${char}</span>`;
+        charIndex++;
+      }
+      html += '</span>';
+    }
+  });
+
+  display.innerHTML = html;
+
+  /*
+    最初の文字が自動処理対象の場合（例: テキストがスペースで始まる）に
+    カーソルを正しい位置まで進める
+  */
+  skipAutoChars();
+}
+
+/* ============================================================
+   ▶️ ゲーム開始
+============================================================ */
+function startGame() {
+  if (isRunning) return; // すでに動いているなら何もしない
+  isRunning = true;
+
+  /* ボタンの表示を切り替える */
+  document.getElementById('start-btn').style.display = 'none';
+  document.getElementById('reset-btn').style.display = 'block';
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('hint-msg').textContent = 'キーボードで打ち始めてください。';
+
+  /* 隠し input にフォーカスを当てる（キー入力を受け取れるようになる） */
+  document.getElementById('hidden-input').focus();
+
+  /* タイマーをスタート（まだ開始時刻はセットしない。最初のキー入力時にセット） */
+}
+
+/* ============================================================
+   🔍 自動処理文字の判定
+   英字（a-z, A-Z）以外はすべて自動でスキップする
+============================================================ */
+function isAutoChar(char) {
+  /*
+    正規表現 /[a-zA-Z]/ → 英字1文字にマッチするパターン
+    .test(char) → char がそのパターンに一致するか調べる（true/false）
+    ! を前につけると「一致しない」= 英字以外 = 自動処理対象
+  */
+  return !/[a-zA-Z]/.test(char);
+}
+
+/* ============================================================
+   ⏭️ 自動処理文字をスキップする
+   スペース・ピリオドなどを自動で「処理済み」にして次へ進む
+============================================================ */
+function skipAutoChars() {
+  /*
+    while ループ: 条件が true の間ずっと繰り返す
+    「現在位置が自動処理対象の間」繰り返してスキップする
+  */
+  while (currentIndex < currentText.length && isAutoChar(currentText[currentIndex])) {
+    const span = document.querySelector(`[data-index="${currentIndex}"]`);
+    if (span) span.className = 'char-auto';
+    currentIndex++;
+  }
+
+  /* スキップ後、次に打つべき文字をハイライトする */
+  if (currentIndex < currentText.length) {
+    const span = document.querySelector(`[data-index="${currentIndex}"]`);
+    if (span) span.className = 'char-current';
+  }
+}
+
+/* ============================================================
+   ⌨️ キー入力処理（メインロジック）
+   ゲーム中に何かキーが押されるたびにここが呼ばれる
+============================================================ */
+function handleKey(event) {
+  if (!isRunning) return;
+  if (event.key.length !== 1) return;
+  event.preventDefault();
+
+  if (startTime === null) {
+    startTime = Date.now();
+    startTimer();
+  }
+
+  /*
+    大文字・小文字を区別しない比較:
+    .toLowerCase() → すべて小文字に変換してから比較する
+    例: typed='z', expected='Z' → どちらも 'z' になるので一致 ✅
+    これで Shift キーを押さずに大文字の単語も打てる
+  */
+  const typed    = event.key.toLowerCase();
+  const expected = currentText[currentIndex].toLowerCase();
+
+  totalTyped++;
+
+  const currentSpan = document.querySelector(`[data-index="${currentIndex}"]`);
+
+  if (typed === expected) {
+    /* ✅ 正解 */
+    currentSpan.className = 'char-correct';
+    currentIndex++;
+
+    /* スペース・ピリオドなど自動処理文字を連続してスキップ */
+    skipAutoChars();
+
+    /* 全文字打ち終わったかチェック */
+    if (currentIndex >= currentText.length) {
+      finishGame();
+      return;
+    }
+
+  } else {
+    /* ❌ ミス */
+    currentSpan.className = 'char-error';
+    errors++;
+  }
+
+  updateStats();
+}
+
+/* ============================================================
+   ⏱️ タイマー（0.5秒ごとに画面を更新）
+============================================================ */
+function startTimer() {
+  /*
+    setInterval(処理, ミリ秒)
+    → 指定した間隔で処理を繰り返し実行する
+    戻り値（ID）を保存しておくと clearInterval で止められる
+  */
+  timerInterval = setInterval(() => {
+    updateStats();
+  }, 500);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval); // setInterval を止める
+  timerInterval = null;
+}
+
+/* ============================================================
+   📊 統計を計算して画面に表示する
+============================================================ */
+function updateStats() {
+  if (startTime === null) return;
+
+  /* 経過秒数を計算 */
+  const elapsedMs  = Date.now() - startTime; // 経過ミリ秒
+  const elapsedSec = Math.floor(elapsedMs / 1000);
+
+  /* タイム表示: 分:秒 の形式に変換 */
+  const minutes = Math.floor(elapsedSec / 60);
+  const seconds = elapsedSec % 60; // % は「余り」の演算子
+  document.getElementById('timer').textContent =
+    minutes + ':' + String(seconds).padStart(2, '0'); // 1秒 → "0:01"
+
+  /* WPM = 正しく打った文字数 ÷ 5 ÷ 経過分 */
+  /*
+    英語タイピングの慣習: 5文字 = 1単語として計算する
+    elapsedMs / 60000 → ミリ秒を「分」に変換（60秒 × 1000ミリ秒）
+  */
+  const correctChars = currentIndex; // 正解した文字数
+  const elapsedMin   = elapsedMs / 60000;
+  const wpm = elapsedMin > 0 ? Math.round((correctChars / 5) / elapsedMin) : 0;
+  document.getElementById('wpm-display').textContent = wpm;
+
+  /* 正確率 = 正解数 ÷ 総打鍵数 × 100 */
+  const acc = totalTyped > 0 ? Math.round(correctChars / totalTyped * 100) : 100;
+  document.getElementById('acc-display').textContent = acc + '%';
+}
+
+/* ============================================================
+   🏁 ゲームクリア
+============================================================ */
+function finishGame() {
+  isRunning = false;
+  stopTimer();
+
+  /* 最終統計を計算 */
+  const elapsedMs  = Date.now() - startTime;
+  const elapsedSec = Math.floor(elapsedMs / 1000);
+  const elapsedMin = elapsedMs / 60000;
+  const wpm        = Math.round((currentText.length / 5) / elapsedMin);
+  const acc        = Math.round(currentIndex / totalTyped * 100);
+
+  /* 結果を表示する */
+  const resultEl = document.getElementById('result');
+  resultEl.style.display = 'block';
+  document.getElementById('result-wpm').textContent = wpm;
+
+  const minutes = Math.floor(elapsedSec / 60);
+  const seconds = elapsedSec % 60;
+  document.getElementById('result-detail').textContent =
+    `⏱ ${minutes}:${String(seconds).padStart(2,'0')}  |  正確率 ${acc}%  |  ミス ${errors}回`;
+
+  document.getElementById('hint-msg').textContent = 'クリア！お疲れさまでした。';
+
+  /* localStorage に記録を保存 */
+  saveRecord(wpm, acc, elapsedSec);
+}
+
+/* ============================================================
+   💾 記録を localStorage に保存する
+   localStorage: ブラウザが持つ「小さなメモ帳」
+   タブを閉じても消えず、同じブラウザで次回開いても読める
+============================================================ */
+function saveRecord(wpm, acc, secs) {
+  const KEY = 'typing_history';
+
+  /* 既存の記録を取得（なければ空の配列） */
+  /*
+    JSON.parse()  → 文字列 → JavaScriptのデータに変換
+    JSON.stringify() → JavaScriptのデータ → 文字列に変換（保存用）
+    localStorage は文字列しか保存できないため変換が必要
+  */
+  const history = JSON.parse(localStorage.getItem(KEY) || '[]');
+
+  /* 新しい記録を先頭に追加 */
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  history.unshift({
+    date: `${now.getFullYear()}/${pad(now.getMonth()+1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`,
+    title: TEXTS[parseInt(document.getElementById('text-select').value)].title,
+    wpm,
+    acc,
+    secs
+  });
+
+  /* 最大30件まで保存 */
+  if (history.length > 30) history.length = 30;
+
+  /* localStorage に書き込む */
+  localStorage.setItem(KEY, JSON.stringify(history));
+}
+
+/* ============================================================
+   🔄 リセット
+============================================================ */
+function resetState() {
+  currentIndex  = 0;
+  totalTyped    = 0;
+  errors        = 0;
+  startTime     = null;
+  isRunning     = false;
+  stopTimer();
+
+  /* 表示をリセット */
+  document.getElementById('timer').textContent      = '0:00';
+  document.getElementById('wpm-display').textContent = '—';
+  document.getElementById('acc-display').textContent = '—';
+  document.getElementById('result').style.display    = 'none';
+  document.getElementById('hint-msg').textContent    = '↑ クリックしてスタート。キーボードで打ち始めると計測開始。';
+  document.getElementById('start-btn').style.display = 'block';
+  document.getElementById('reset-btn').style.display = 'none';
+}
+
+function resetGame() {
+  resetState();
+  loadText(); // テキストを再描画
+}
+
+/* ============================================================
+   📌 クリック時にフォーカスを維持する
+   ゲーム中にうっかり他をクリックしても入力が途切れないよう
+============================================================ */
+document.getElementById('text-display').addEventListener('click', () => {
+  if (isRunning) document.getElementById('hidden-input').focus();
+});
+
+/* ============================================================
+   🚀 ページ読み込み時に最初の問題をセットする
+   DOMContentLoaded → HTMLの読み込みが完了したタイミングで実行
+============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  loadText();
+});
+</script>
+</body>
+</html>

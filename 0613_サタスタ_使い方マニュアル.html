@@ -8,70 +8,73 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Hiragino Sans', 'Meiryo', sans-serif; background: #f5f6f8; color: #222; font-size: 16px; line-height: 1.75; }
 
-/* Hero */
 .hero { background: linear-gradient(135deg, #1a3a5c 0%, #2563eb 100%); color: white; padding: 36px 24px 30px; text-align: center; }
 .hero h1 { font-size: 1.85rem; margin-bottom: 6px; letter-spacing: .03em; }
-.hero p { font-size: 1rem; opacity: 0.88; }
+.hero p { font-size: .95rem; opacity: 0.88; }
 
-/* Container */
 .container { max-width: 780px; margin: 0 auto; padding: 28px 16px 72px; }
 
-/* Section headings */
 h2 { font-size: 1.2rem; color: #1a3a5c; border-left: 5px solid #2563eb; padding-left: 12px; margin: 40px 0 14px; }
 h3 { font-size: 1.02rem; color: #333; margin: 18px 0 7px; font-weight: bold; }
 
-/* Cards */
 .card { background: #fff; border-radius: 12px; padding: 18px 22px; margin: 12px 0; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
 p { margin: 8px 0; }
 ul, ol { padding-left: 1.5em; margin: 8px 0; }
 li { margin: 6px 0; }
 
-/* Tool overview cards */
 .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
 .tool-card { background: #fff; border-radius: 12px; padding: 18px 18px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.07); border-top: 4px solid #ccc; }
 .tool-card.green  { border-top-color: #16a34a; }
 .tool-card.blue   { border-top-color: #2563eb; }
 .tool-card.purple { border-top-color: #7c3aed; }
 .tool-card.teal   { border-top-color: #0891b2; }
+.tool-card.orange { border-top-color: #ea580c; }
+.tool-card.indigo { border-top-color: #4f46e5; }
 .tool-icon { font-size: 2rem; margin-bottom: 6px; }
 .tool-name { font-weight: bold; font-size: 1rem; margin-bottom: 4px; }
 .tool-desc { font-size: .84rem; color: #6b7280; line-height: 1.55; }
 
-/* Badge */
+.chip-new { display: inline-block; background: #dc2626; color: #fff; font-size: .62rem; font-weight: bold; padding: 1px 7px; border-radius: 10px; vertical-align: middle; margin-left: 8px; letter-spacing: .5px; }
+
 .badge { display: inline-block; color: white; border-radius: 16px; padding: 2px 12px; font-size: .8rem; margin-bottom: 6px; }
 .b-green  { background: #16a34a; }
 .b-blue   { background: #2563eb; }
 .b-purple { background: #7c3aed; }
 .b-teal   { background: #0891b2; }
 .b-gray   { background: #6b7280; }
+.b-orange { background: #ea580c; }
+.b-indigo { background: #4f46e5; }
 
-/* Steps */
 .step-row { display: flex; gap: 12px; margin: 10px 0; align-items: flex-start; }
 .step-num { background: #2563eb; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; font-size: .9rem; margin-top: 2px; }
 .step-num.green  { background: #16a34a; }
 .step-num.purple { background: #7c3aed; }
 .step-num.teal   { background: #0891b2; }
 .step-num.gray   { background: #374151; }
+.step-num.orange { background: #ea580c; }
+.step-num.indigo { background: #4f46e5; }
 .step-body { flex: 1; }
 
-/* Phase phases for speed reading */
 .phase-row { display: flex; gap: 10px; margin: 10px 0; }
 .phase-num { background: #16a34a; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
 .phase-body { flex: 1; }
 
-/* Alerts */
 .warn { background: #fff8e1; border-left: 4px solid #f0b429; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: .93rem; }
 .tip  { background: #eff6ff; border-left: 4px solid #2563eb; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: .93rem; }
 .tip.green  { background: #f0fdf4; border-left-color: #16a34a; }
 .tip.purple { background: #faf5ff; border-left-color: #7c3aed; }
 .tip.teal   { background: #f0f9ff; border-left-color: #0891b2; }
+.tip.orange { background: #fff7ed; border-left-color: #ea580c; }
+.tip.indigo { background: #eef2ff; border-left-color: #4f46e5; }
 
-/* Prompt box */
 .prompt-box { background: #faf5ff; border: 1.5px solid #c4b5fd; border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: .9rem; line-height: 1.9; }
 .prompt-box strong { color: #7c3aed; }
 
-/* Bookmark section */
-.bm-steps { counter-reset: bm; }
+.wpm-bar { display: flex; border-radius: 8px; overflow: hidden; height: 26px; margin: 12px 0; }
+.wpm-seg { display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: .72rem; }
+.wpm-labels { display: flex; font-size: .72rem; color: #6b7280; margin-bottom: 10px; }
+.wpm-labels div { text-align: center; }
+
 .bm-step { display: flex; gap: 14px; margin: 14px 0; align-items: flex-start; }
 .bm-step-num { background: #1a3a5c; color: #fff; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; font-size: .95rem; }
 .bm-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
@@ -80,26 +83,16 @@ li { margin: 6px 0; }
 .bm-item .bi { font-size: 1.3rem; flex-shrink: 0; }
 .bm-cat { font-size: .73rem; font-family: sans-serif; font-weight: bold; letter-spacing: 1px; color: #9ca3af; text-transform: uppercase; margin: 14px 0 5px; grid-column: 1 / -1; }
 
-/* Device grid */
-.device-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin: 12px 0; }
-.device-card { background: white; border-radius: 10px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
-.device-card h4 { font-size: .95rem; margin-bottom: 8px; color: #1a3a5c; }
-.device-card ol { padding-left: 1.2em; font-size: .88rem; }
-
-/* Table */
 table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 10px 0; }
 th { background: #1a3a5c; color: white; padding: 8px 12px; text-align: left; }
 td { padding: 8px 12px; border-bottom: 1px solid #e5e7eb; }
 tr:nth-child(even) td { background: #f9fafb; }
 
-/* FAQ */
 .faq-q { font-weight: bold; color: #1a3a5c; margin: 6px 0 2px; }
 .faq-a { font-size: .93rem; color: #374151; }
 
-/* Footer */
 .footer { text-align: center; color: #9ca3af; font-size: .82rem; margin-top: 48px; }
 
-/* nav pills */
 .nav-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
 .pill { background: #fff; border: 1.5px solid #d1d5db; border-radius: 20px; padding: 4px 14px; font-size: .83rem; color: #374151; text-decoration: none; transition: all .15s; }
 .pill:hover { border-color: #2563eb; color: #2563eb; }
@@ -108,7 +101,7 @@ tr:nth-child(even) td { background: #f9fafb; }
   .hero h1 { font-size: 1.4rem; }
   .tool-grid { grid-template-columns: 1fr; }
   .bm-list { grid-template-columns: 1fr; }
-  .device-grid { grid-template-columns: 1fr 1fr; }
+  .wpm-seg { font-size: .62rem; }
 }
 </style>
 </head>
@@ -116,26 +109,25 @@ tr:nth-child(even) td { background: #f9fafb; }
 
 <div class="hero">
   <h1>英語学習ツールガイド</h1>
-  <p>Speed Reading ／ 大学入試過去問 ／ SchoolAI ／ NotebookLM — 使い方マニュアル</p>
+  <p>速読 ／ 進研模試対策 ／ Speaking WPM ／ タイピング ／ SchoolAI ／ NotebookLM</p>
 </div>
 
 <div class="container">
 
-  <!-- ▼ クイックナビ -->
   <div class="nav-pills">
     <a class="pill" href="#tools">ツール一覧</a>
     <a class="pill" href="#bookmark">ブックマーク</a>
     <a class="pill" href="#speed">速読アプリ</a>
-    <a class="pill" href="#exam">過去問アプリ</a>
+    <a class="pill" href="#shinken">進研模試対策</a>
+    <a class="pill" href="#wpm">Speaking WPM</a>
+    <a class="pill" href="#typing">タイピング</a>
+    <a class="pill" href="#exam">岡山大過去問</a>
     <a class="pill" href="#schoolai">SchoolAI</a>
     <a class="pill" href="#notebooklm">NotebookLM</a>
-    <a class="pill" href="#download">ダウンロード</a>
     <a class="pill" href="#faq">よくある質問</a>
   </div>
 
-  <!-- ══════════════════════════════════════════ -->
-  <!-- ▼ ツール一覧 -->
-  <!-- ══════════════════════════════════════════ -->
+  <!-- ツール一覧 -->
   <h2 id="tools">今日使うツール一覧</h2>
   <div class="tool-grid">
     <div class="tool-card green">
@@ -143,9 +135,24 @@ tr:nth-child(even) td { background: #f9fafb; }
       <div class="tool-name">速読トレーニング</div>
       <div class="tool-desc">タイマーで英文を読む → 問題を解く → シャドーイング。Level 1・Level 2 各20本。</div>
     </div>
+    <div class="tool-card orange">
+      <div class="tool-icon">📝</div>
+      <div class="tool-name">進研模試 英語対策<span class="chip-new">NEW</span></div>
+      <div class="tool-desc">高1・7月進研模試 大問3〜6 を6年分収録。取り組んだ年度に ✓ 済みバッジが付く。</div>
+    </div>
+    <div class="tool-card blue">
+      <div class="tool-icon">🎤</div>
+      <div class="tool-name">Speaking WPM Meter<span class="chip-new">NEW</span></div>
+      <div class="tool-desc">スピーキング速度を計測・記録。クリックカウンター・マイク自動認識・手動入力の3モード。</div>
+    </div>
+    <div class="tool-card indigo">
+      <div class="tool-icon">⌨️</div>
+      <div class="tool-name">タイピング練習 Level 1<span class="chip-new">NEW</span></div>
+      <div class="tool-desc">速読 Level 1 の英文でタイピング練習。正確さとスピードを鍛える。</div>
+    </div>
     <div class="tool-card blue">
       <div class="tool-icon">🎓</div>
-      <div class="tool-name">大学入試過去問</div>
+      <div class="tool-name">岡山大学 過去問</div>
       <div class="tool-desc">岡山大学の入試問題をブラウザで解く。T/F・選択は自動採点。記述はAIサポート。</div>
     </div>
     <div class="tool-card purple">
@@ -160,9 +167,7 @@ tr:nth-child(even) td { background: #f9fafb; }
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════ -->
-  <!-- ▼ ブックマーク -->
-  <!-- ══════════════════════════════════════════ -->
+  <!-- ブックマーク -->
   <h2 id="bookmark">⭐ ブックマークを作ろう</h2>
   <p style="margin-bottom:10px;">よく使うツールのリンクをまとめてブックマークしておくと、次回からすぐに開けます。「英語学習ツール」というフォルダを作って保存しましょう。</p>
 
@@ -216,13 +221,11 @@ tr:nth-child(even) td { background: #f9fafb; }
   </div>
 
   <div class="tip">
-    💡 <strong>HTMLファイル（速読・過去問アプリ）はダウンロードして使います。</strong><br>
-    Driveのリンクをブックマークしておけば、次回すぐにダウンロードし直せます。
+    💡 <strong>アプリはすべてURLを開くだけで使えます（ダウンロード不要）。</strong><br>
+    先生から共有されたリンク（英語学習ツール一覧ページ）をブックマークしておくと、次回からすぐにアクセスできます。
   </div>
 
-  <!-- ══════════════════════════════════════════ -->
-  <!-- ▼ 速読アプリ -->
-  <!-- ══════════════════════════════════════════ -->
+  <!-- 速読アプリ -->
   <h2 id="speed">📖 速読トレーニングアプリの使い方</h2>
 
   <div class="card">
@@ -262,10 +265,157 @@ tr:nth-child(even) td { background: #f9fafb; }
     ホーム画面の「WPM履歴」で過去の記録をグラフで確認できます。
   </div>
 
-  <!-- ══════════════════════════════════════════ -->
-  <!-- ▼ 過去問アプリ -->
-  <!-- ══════════════════════════════════════════ -->
-  <h2 id="exam">🎓 大学入試過去問アプリの使い方</h2>
+  <!-- 進研模試 英語対策 -->
+  <h2 id="shinken">📝 進研模試 英語対策アプリの使い方<span class="chip-new">NEW</span></h2>
+  <p>高1・7月進研模試の大問3〜6を6年分（2020〜2025年度）収録したアプリです。本番を想定して取り組もう。</p>
+
+  <div class="card">
+    <span class="badge b-orange">大問の構成</span>
+    <table style="margin-top:10px">
+      <tr><th>大問</th><th>内容</th><th>問題数</th></tr>
+      <tr><td>大問 3</td><td>文法・語彙（空所補充・誤り発見・語順整序）</td><td>約10問</td></tr>
+      <tr><td>大問 4</td><td>長文読解（会話文・説明文）</td><td>約10問</td></tr>
+      <tr><td>大問 5</td><td>長文読解 ＋ 図表読み取り</td><td>約8問</td></tr>
+      <tr><td>大問 6</td><td>英作文（条件英作文・自由英作文）</td><td>2問</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="badge b-orange">使い方の流れ</span>
+    <div class="step-row" style="margin-top:10px">
+      <div class="step-num orange">1</div>
+      <div class="step-body"><strong>大問を選ぶ</strong><br>ホーム画面で「大問3」〜「大問6」のカードをクリック。取り組んだことがある大問には <strong>✓ N / 6 完了</strong> が表示されます。</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num orange">2</div>
+      <div class="step-body"><strong>年度を選ぶ</strong><br>2020〜2025年の6年分から選べます。取り組み済みの年度には <strong>✓ 済み</strong> バッジが付きます。</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num orange">3</div>
+      <div class="step-body"><strong>問題を解く</strong><br>選択肢は選んで「答え合わせ」ボタンで確認。英作文はメモ欄に自分の答えを書こう。</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num orange">4</div>
+      <div class="step-body"><strong>解答・解説を確認する</strong><br>「解答を見る」ボタンで全問の正解が表示されます。間違えた問題は解説を読んで理解しよう。</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num orange">5</div>
+      <div class="step-body"><strong>英作文は SchoolAI に相談（大問6）</strong><br>書いた英文を SchoolAI に貼り付けると、文法や表現のアドバイスがもらえます。</div>
+    </div>
+  </div>
+
+  <div class="tip orange">
+    ✓ <strong>取り組み記録は自動で保存されます。</strong><br>
+    一度取り組むとその年度に「済み」バッジが付きます。すべての年度を制覇してみよう！
+  </div>
+
+  <!-- Speaking WPM Meter -->
+  <h2 id="wpm">🎤 Speaking WPM Meter の使い方<span class="chip-new">NEW</span></h2>
+  <p>自分やパートナーのスピーキング速度（WPM：Words Per Minute＝1分あたりの語数）を計測・記録するツールです。</p>
+
+  <div class="card">
+    <span class="badge b-blue">3つの計測モード</span>
+    <div class="step-row" style="margin-top:12px">
+      <div class="step-num gray" style="font-size:.75rem;width:34px;border-radius:8px;">👂</div>
+      <div class="step-body">
+        <strong>クリックカウンター（基本モード）</strong><br>
+        パートナーが話している間、1語ごとにボタンをクリック。60秒計測でWPMを自動計算。<br>
+        <em style="font-size:.85rem;color:#6b7280">→ 自分が「聞き役」になってパートナーの速度を測るときに使います。</em>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num gray" style="font-size:.75rem;width:34px;border-radius:8px;">🎤</div>
+      <div class="step-body">
+        <strong>音声自動認識（マイクモード）</strong><br>
+        マイクに向かって話すと、ブラウザが自動で語数をカウント。Chrome/Edge 推奨。<br>
+        <em style="font-size:.85rem;color:#6b7280">→ 自分のスピーキングを手を使わずに測りたいときに。</em>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num gray" style="font-size:.75rem;width:34px;border-radius:8px;">✏️</div>
+      <div class="step-body">
+        <strong>手動入力</strong><br>
+        「語数」と「秒数」を入力するとWPMを計算。後から記録したいときに使います。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge b-blue">クリックカウンターの手順</span>
+    <div class="step-row" style="margin-top:10px">
+      <div class="step-num">1</div>
+      <div class="step-body">「👂 クリックカウンター」を選んで「スタート」を押す</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-body">パートナーが話し始めたら、<strong>1語ごとにボタンをクリック</strong>（60秒カウントダウン）</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div class="step-body">60秒経つと自動でWPMを表示。「記録する」でトピック・日付と一緒に保存</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">4</div>
+      <div class="step-body">「📊 記録を見る」で過去の記録とグラフを確認</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge b-blue">WPMの目安</span>
+    <div class="wpm-bar">
+      <div class="wpm-seg" style="flex:22;background:#94a3b8">〜80</div>
+      <div class="wpm-seg" style="flex:18;background:#22c55e">〜100</div>
+      <div class="wpm-seg" style="flex:20;background:#06b6d4">〜120</div>
+      <div class="wpm-seg" style="flex:20;background:#f59e0b">〜150</div>
+      <div class="wpm-seg" style="flex:20;background:#7c3aed">150+</div>
+    </div>
+    <div class="wpm-labels">
+      <div style="flex:22">ゆっくり</div>
+      <div style="flex:18">普通</div>
+      <div style="flex:20">流暢</div>
+      <div style="flex:20">上級</div>
+      <div style="flex:20">🌟ネイティブ</div>
+    </div>
+    <p style="font-size:.85rem;color:#6b7280">高校生の日常会話は 100〜130 WPM 程度が目安。繰り返し練習して上げていこう。</p>
+  </div>
+
+  <div class="tip">
+    💡 <strong>クリックカウンターとWPM記録は別々に動きます。</strong><br>
+    カウンターでパートナーの語数を測りながら、自分のWPMは「手動入力」モードで別に記録することができます。
+  </div>
+
+  <div class="warn">
+    ⚠️ <strong>音声認識モード（🎤）はマイクの許可が必要です。</strong><br>
+    ブラウザがマイクの使用を確認してきたら「許可」を押してください。Safari（iPad）では音声認識は動作しません。
+  </div>
+
+  <!-- タイピング練習 -->
+  <h2 id="typing">⌨️ タイピング練習 Level 1 の使い方<span class="chip-new">NEW</span></h2>
+  <p>速読 Level 1 の英文を使ったタイピング練習ゲームです。英語入力のスピードと正確さを鍛えましょう。</p>
+
+  <div class="card">
+    <span class="badge b-indigo">使い方の流れ</span>
+    <div class="step-row" style="margin-top:10px">
+      <div class="step-num indigo">1</div>
+      <div class="step-body"><strong>ゲームを開始する</strong><br>「スタート」ボタンを押すとタイピング画面が始まります。</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num indigo">2</div>
+      <div class="step-body"><strong>表示された英文を入力する</strong><br>画面に表示された英文をできるだけ正確にタイピングします。スペルミスに注意！</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num indigo">3</div>
+      <div class="step-body"><strong>結果を確認する</strong><br>正確に入力した語数・WPM（タイピング速度）・正確率が表示されます。</div>
+    </div>
+  </div>
+
+  <div class="tip indigo">
+    💡 <strong>まず「正確に」、次に「速く」が上達のコツです。</strong><br>
+    スピードを上げようとして間違えるより、確実に打つ練習から始めましょう。
+  </div>
+
+  <!-- 岡山大 過去問 -->
+  <h2 id="exam">🎓 岡山大学 過去問アプリの使い方</h2>
   <p>岡山大学の英語入試（大問1〜4）をブラウザで解くアプリです。本番の試験問題に挑戦してみよう。</p>
 
   <div class="card">
@@ -295,7 +445,7 @@ tr:nth-child(even) td { background: #f9fafb; }
     </div>
     <div class="step-row">
       <div class="step-num">4</div>
-      <div class="step-body"><strong>記述・英作文はAIに相談</strong><br>「SchoolAI でヒントを受ける」ボタンを押すと、AIとの対話画面が別タブで開きます。<br><em style="font-size:.88rem;color:#6b7280">→ SchoolAI の使い方は下の節を読んでください。</em></div>
+      <div class="step-body"><strong>記述・英作文はAIに相談</strong><br>「SchoolAI でヒントを受ける」ボタンを押すと、AIとの対話画面が別タブで開きます。</div>
     </div>
     <div class="step-row">
       <div class="step-num">5</div>
@@ -307,9 +457,7 @@ tr:nth-child(even) td { background: #f9fafb; }
     💡 文字サイズは画面右上の <strong>小 ／ 中 ／ 大</strong> ボタンで変更できます。
   </div>
 
-  <!-- ══════════════════════════════════════════ -->
-  <!-- ▼ SchoolAI -->
-  <!-- ══════════════════════════════════════════ -->
+  <!-- SchoolAI -->
   <h2 id="schoolai">🤖 SchoolAI の使い方</h2>
   <p>記述問題・英作文のヒントをもらえるAIチャットです。<strong>答えをそのまま教えることはしません</strong>。ヒントをもとに自分で考える練習です。</p>
 
@@ -337,16 +485,15 @@ tr:nth-child(even) td { background: #f9fafb; }
     <strong>💬 話しかけ方の例：</strong><br>
     「大問1 設問2について答えます：スーパーエイジャーに意外なことが見られなかった例として、食事や睡眠の量に差がなかったことが挙げられます。」<br><br>
     「大問2 設問4について答えます：問題を解く責任が学生自身にあるということ。」<br><br>
-    「大問4 英作文です：（書いた英文をそのまま貼り付ける）」
+    「大問4 英作文です：（書いた英文をそのまま貼り付ける）」<br><br>
+    「進研模試 大問6 英作文です：（書いた英文をそのまま貼り付ける）」
   </div>
 
   <div class="tip purple">
     💡 <strong>コツ：</strong>まず自分でメモ欄に答えを書いてから SchoolAI に送ろう。<br>何も考えずに「答えを教えて」と言っても、ヒントしか返ってきません。
   </div>
 
-  <!-- ══════════════════════════════════════════ -->
-  <!-- ▼ NotebookLM -->
-  <!-- ══════════════════════════════════════════ -->
+  <!-- NotebookLM -->
   <h2 id="notebooklm">📚 NotebookLM の使い方</h2>
   <p>大問3（和文英訳）に取り組むとき、英訳に必要な語彙・文法・構文を参考資料をもとに教えてくれるAIです。</p>
 
@@ -378,79 +525,32 @@ tr:nth-child(even) td { background: #f9fafb; }
     出典や根拠が表示されるので、信頼性の高い文法解説が得られます。
   </div>
 
-  <!-- ══════════════════════════════════════════ -->
-  <!-- ▼ ダウンロード -->
-  <!-- ══════════════════════════════════════════ -->
-  <h2 id="download">ファイルのダウンロードと開き方</h2>
-  <p>速読アプリ・過去問アプリは HTML ファイルをダウンロードして使います。</p>
-
-  <div class="warn">
-    ⚠️ Google Drive のリンクを開いても、そのままでは正しく動きません。<br>
-    必ず「<strong>ダウンロード</strong>」してから、保存したファイルをブラウザで開いてください。
-  </div>
-
-  <div class="device-grid">
-    <div class="device-card">
-      <h4>🖥 Chromebook</h4>
-      <ol>
-        <li>Drive でファイルを開く</li>
-        <li>右上「⬇ ダウンロード」</li>
-        <li>「ファイル」アプリ → ダウンロード</li>
-        <li>ファイルをダブルクリック ✅</li>
-      </ol>
-    </div>
-    <div class="device-card">
-      <h4>💻 Windows</h4>
-      <ol>
-        <li>Drive でファイルを開く</li>
-        <li>右上「⬇ ダウンロード」</li>
-        <li>エクスプローラーで開く</li>
-        <li>Chrome/Edge で開く ✅</li>
-      </ol>
-    </div>
-    <div class="device-card">
-      <h4>🍎 Mac</h4>
-      <ol>
-        <li>Drive でファイルを開く</li>
-        <li>右上「⬇ ダウンロード」</li>
-        <li>Finder → ダウンロード</li>
-        <li>Chrome で開く ✅</li>
-      </ol>
-    </div>
-    <div class="device-card">
-      <h4>📱 iPad</h4>
-      <ol>
-        <li>Drive アプリで開く</li>
-        <li>「…」→「別のアプリで開く」</li>
-        <li>「Safari」を選択</li>
-        <li>Safari で動作 ✅</li>
-      </ol>
-    </div>
-  </div>
-
-  <div class="tip">
-    💡 <strong>推奨ブラウザ：Google Chrome または Microsoft Edge</strong><br>
-    シャドーイングの音声機能が最もよく動きます。Internet Explorer は非対応。
-  </div>
-
-  <!-- ══════════════════════════════════════════ -->
-  <!-- ▼ FAQ -->
-  <!-- ══════════════════════════════════════════ -->
+  <!-- FAQ -->
   <h2 id="faq">よくある質問</h2>
 
   <div class="card">
     <div class="faq-q">Q. 速読アプリの音声が出ない</div>
-    <div class="faq-a">ブラウザの音声許可が必要な場合があります。アドレスバー横の 🔒 または 🔊 アイコンをクリックして「音声を許可」してください。iPad（Safari）の場合はシャドーイング開始前に画面をタップする必要があります。</div>
-  </div>
-
-  <div class="card">
-    <div class="faq-q">Q. ファイルをクリックしても開けない</div>
-    <div class="faq-a">HTML ファイルはブラウザで開く必要があります。右クリック → 「プログラムから開く」→「Chrome」または「Edge」を選んでください。</div>
+    <div class="faq-a">アドレスバー横の 🔒 または 🔊 アイコンをクリックして「音声を許可」してください。iPad（Safari）の場合はシャドーイング開始前に画面をタップする必要があります。</div>
   </div>
 
   <div class="card">
     <div class="faq-q">Q. WPMの記録が消えてしまった</div>
     <div class="faq-a">WPM の記録はブラウザの閲覧データとして保存されます。「閲覧履歴の削除」を行うと消えることがあります。大切な記録はスクリーンショットで残しておきましょう。</div>
+  </div>
+
+  <div class="card">
+    <div class="faq-q">Q. 進研模試の「済み」バッジが付かない / 消えた</div>
+    <div class="faq-a">問題ページを開いた時点で自動的に記録されます。同じブラウザ・同じデバイスで開いている限り引き継がれますが、「履歴の削除」をするとリセットされます。</div>
+  </div>
+
+  <div class="card">
+    <div class="faq-q">Q. Speaking WPM のマイクが反応しない</div>
+    <div class="faq-a">① アドレスバー横のアイコンをクリックして「マイクを許可」してください。② 音声認識は Chrome / Edge でのみ動作します。Safari（iPad）では音声認識モードは使えません（クリックカウンターと手動入力は使えます）。</div>
+  </div>
+
+  <div class="card">
+    <div class="faq-q">Q. タイピング練習でキーボードが出ない（iPad）</div>
+    <div class="faq-a">入力欄をタップするとソフトキーボードが表示されます。外付けキーボードがあればより快適に練習できます。</div>
   </div>
 
   <div class="card">
@@ -468,25 +568,24 @@ tr:nth-child(even) td { background: #f9fafb; }
     <div class="faq-a">上のプロンプト例をそのままコピーして使ってみましょう。英訳したい日本語文を一緒に送ると、より具体的な解説が返ってきます。</div>
   </div>
 
-  <!-- ══════════════════════════════════════════ -->
-  <!-- ▼ 動作環境 -->
-  <!-- ══════════════════════════════════════════ -->
+  <!-- 動作環境 -->
   <h2>動作環境まとめ</h2>
   <table>
     <tr><th>ツール</th><th>Chrome / Edge</th><th>Safari (iPad)</th></tr>
-    <tr><td>速読アプリ（タイマー・問題）</td><td>✅</td><td>✅</td></tr>
-    <tr><td>速読アプリ（シャドーイング音声）</td><td>✅（推奨）</td><td>✅</td></tr>
-    <tr><td>速読アプリ（WPM履歴グラフ）</td><td>✅</td><td>✅</td></tr>
-    <tr><td>過去問アプリ（T/F・選択・計算）</td><td>✅</td><td>✅</td></tr>
-    <tr><td>過去問アプリ（辞書ポップアップ）</td><td>✅</td><td>✅</td></tr>
-    <tr><td>SchoolAI（ブラウザ）</td><td>✅</td><td>✅</td></tr>
-    <tr><td>NotebookLM（ブラウザ）</td><td>✅</td><td>✅ ※要ログイン</td></tr>
+    <tr><td>速読アプリ（タイマー・問題・シャドーイング）</td><td>✅</td><td>✅</td></tr>
+    <tr><td>進研模試（問題・解答・進捗バッジ）</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Speaking WPM（クリックカウンター・手動入力）</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Speaking WPM（音声自動認識）</td><td>✅</td><td>❌ 非対応</td></tr>
+    <tr><td>タイピング練習</td><td>✅</td><td>✅（外付けキーボード推奨）</td></tr>
+    <tr><td>岡山大過去問（T/F・選択・辞書ポップアップ）</td><td>✅</td><td>✅</td></tr>
+    <tr><td>SchoolAI</td><td>✅</td><td>✅</td></tr>
+    <tr><td>NotebookLM</td><td>✅</td><td>✅ ※要Googleログイン</td></tr>
   </table>
 
   <div class="footer">
-    <p>広島大学附属福山高等学校 英語科 ／ 英語学習ツールガイド v2.0（2026-06-13）</p>
+    <p>広島大学附属福山高等学校 英語科 ／ 英語学習ツールガイド v3.0（2026-06-16）</p>
   </div>
 
-</div><!-- /container -->
+</div>
 </body>
 </html>

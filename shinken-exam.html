@@ -123,6 +123,10 @@ body{font-family:'Georgia','Times New Roman',serif;background:#f5f6f8;color:#222
 .model-body2{margin-top:10px;padding-top:10px;border-top:1px solid #bbf7d0}
 .model-label2{font-size:.7rem;font-family:sans-serif;color:#15803d;font-weight:bold;margin-bottom:4px}
 
+/* Progress badges */
+.year-card-badge{font-size:.62rem;font-family:sans-serif;font-weight:bold;padding:2px 8px;border-radius:10px;margin-top:5px;display:inline-block;background:#dcfce7;color:#15803d}
+.home-card-progress{font-size:.72rem;font-family:sans-serif;font-weight:bold;color:#15803d;margin-top:6px;display:inline-block}
+
 /* Bottom nav */
 .nav-bottom{margin-top:28px;display:flex;justify-content:center;gap:12px}
 .btn-tohome{padding:10px 28px;border-radius:7px;border:none;font-size:.88rem;cursor:pointer;font-family:sans-serif;font-weight:bold;background:#1a3a5c;color:#fff;transition:opacity .15s}
@@ -221,6 +225,7 @@ details.hint-detail .hint-body{margin-top:6px;color:#374151;font-size:.82rem;lin
           <span class="tag t-error">誤り発見</span>
           <span class="tag t-reorder">並べ替え</span>
         </div>
+        <div id="hcs-q3"></div>
       </div>
     </div>
     <div class="home-card" onclick="goSection('q4')">
@@ -230,6 +235,7 @@ details.hint-detail .hint-body{margin-top:6px;color:#374151;font-size:.82rem;lin
         <div class="card-title">長文読解（物語文）</div>
         <div class="card-desc">物語文の読解。空所補充・英文記述・日本語説明。2020〜2025年度。</div>
         <div class="tags"><span class="tag t-mcq">選択問題</span><span class="tag t-write">記述問題</span></div>
+        <div id="hcs-q4"></div>
       </div>
     </div>
     <div class="home-card" onclick="goSection('q5')">
@@ -239,6 +245,7 @@ details.hint-detail .hint-body{margin-top:6px;color:#374151;font-size:.82rem;lin
         <div class="card-title">長文読解（説明文）</div>
         <div class="card-desc">説明文の読解。グラフ・図版問題含む。2020〜2025年度。</div>
         <div class="tags"><span class="tag t-mcq">選択問題</span><span class="tag t-write">記述問題</span></div>
+        <div id="hcs-q5"></div>
       </div>
     </div>
     <div class="home-card" onclick="goSection('q6')">
@@ -251,6 +258,7 @@ details.hint-detail .hint-body{margin-top:6px;color:#374151;font-size:.82rem;lin
           <span class="tag t-trans">和文英訳 × 2</span>
           <span class="tag t-write">英作文 × 1</span>
         </div>
+        <div id="hcs-q6"></div>
       </div>
     </div>
   </div>
@@ -286,12 +294,12 @@ details.hint-detail .hint-body{margin-top:6px;color:#374151;font-size:.82rem;lin
     </div>
   </div>
   <div class="year-cards">
-    <div class="year-card" onclick="openQ3(2020)"><div class="year-card-yr">2020</div><div class="year-card-sub">A×7・誤り発見・並べ替え×2</div></div>
-    <div class="year-card" onclick="openQ3(2021)"><div class="year-card-yr">2021</div><div class="year-card-sub">A×7・誤り発見・並べ替え×2</div></div>
-    <div class="year-card" onclick="openQ3(2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">A×7・並べ替え×2</div></div>
-    <div class="year-card" onclick="openQ3(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">A×7・並べ替え×2</div></div>
-    <div class="year-card" onclick="openQ3(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">A×7・並べ替え×2</div></div>
-    <div class="year-card" onclick="openQ3(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">A×7・並べ替え×2</div></div>
+    <div class="year-card" id="yc-q3-2020" onclick="openQ3(2020)"><div class="year-card-yr">2020</div><div class="year-card-sub">A×7・誤り発見・並べ替え×2</div><div id="ycb-q3-2020"></div></div>
+    <div class="year-card" id="yc-q3-2021" onclick="openQ3(2021)"><div class="year-card-yr">2021</div><div class="year-card-sub">A×7・誤り発見・並べ替え×2</div><div id="ycb-q3-2021"></div></div>
+    <div class="year-card" id="yc-q3-2022" onclick="openQ3(2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">A×7・並べ替え×2</div><div id="ycb-q3-2022"></div></div>
+    <div class="year-card" id="yc-q3-2023" onclick="openQ3(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">A×7・並べ替え×2</div><div id="ycb-q3-2023"></div></div>
+    <div class="year-card" id="yc-q3-2024" onclick="openQ3(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">A×7・並べ替え×2</div><div id="ycb-q3-2024"></div></div>
+    <div class="year-card" id="yc-q3-2025" onclick="openQ3(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">A×7・並べ替え×2</div><div id="ycb-q3-2025"></div></div>
   </div>
   <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
 </div>
@@ -313,12 +321,12 @@ details.hint-detail .hint-body{margin-top:6px;color:#374151;font-size:.82rem;lin
     <div class="hero-sub">年度を選んで読解問題に挑戦しよう</div>
   </div>
   <div class="year-cards">
-    <div class="year-card" onclick="openQ45(4,2020)"><div class="year-card-yr">2020</div><div class="year-card-sub">Lucas と生徒会選挙</div></div>
-    <div class="year-card" onclick="openQ45(4,2021)"><div class="year-card-yr">2021</div><div class="year-card-sub">Sara とコミックストリップ</div></div>
-    <div class="year-card" onclick="openQ45(4,2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">Emma と Sophie</div></div>
-    <div class="year-card" onclick="openQ45(4,2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">Clare と幸運の石</div></div>
-    <div class="year-card" onclick="openQ45(4,2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">Simon とイタリア旅行</div></div>
-    <div class="year-card" onclick="openQ45(4,2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">Margie と絵画の約束</div></div>
+    <div class="year-card" id="yc-q4-2020" onclick="openQ45(4,2020)"><div class="year-card-yr">2020</div><div class="year-card-sub">Lucas と生徒会選挙</div><div id="ycb-q4-2020"></div></div>
+    <div class="year-card" id="yc-q4-2021" onclick="openQ45(4,2021)"><div class="year-card-yr">2021</div><div class="year-card-sub">Sara とコミックストリップ</div><div id="ycb-q4-2021"></div></div>
+    <div class="year-card" id="yc-q4-2022" onclick="openQ45(4,2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">Emma と Sophie</div><div id="ycb-q4-2022"></div></div>
+    <div class="year-card" id="yc-q4-2023" onclick="openQ45(4,2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">Clare と幸運の石</div><div id="ycb-q4-2023"></div></div>
+    <div class="year-card" id="yc-q4-2024" onclick="openQ45(4,2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">Simon とイタリア旅行</div><div id="ycb-q4-2024"></div></div>
+    <div class="year-card" id="yc-q4-2025" onclick="openQ45(4,2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">Margie と絵画の約束</div><div id="ycb-q4-2025"></div></div>
   </div>
   <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
 </div>
@@ -340,12 +348,12 @@ details.hint-detail .hint-body{margin-top:6px;color:#374151;font-size:.82rem;lin
     <div class="hero-sub">年度を選んで読解問題に挑戦しよう</div>
   </div>
   <div class="year-cards">
-    <div class="year-card" onclick="openQ45(5,2020)"><div class="year-card-yr">2020</div><div class="year-card-sub">サーネームの歴史</div></div>
-    <div class="year-card" onclick="openQ45(5,2021)"><div class="year-card-yr">2021</div><div class="year-card-sub">気候変動教育</div></div>
-    <div class="year-card" onclick="openQ45(5,2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">座りすぎと健康</div></div>
-    <div class="year-card" onclick="openQ45(5,2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">ボランティアと健康</div></div>
-    <div class="year-card" onclick="openQ45(5,2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">Creative Thinking</div></div>
-    <div class="year-card" onclick="openQ45(5,2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">バイリンガルと脳</div></div>
+    <div class="year-card" id="yc-q5-2020" onclick="openQ45(5,2020)"><div class="year-card-yr">2020</div><div class="year-card-sub">サーネームの歴史</div><div id="ycb-q5-2020"></div></div>
+    <div class="year-card" id="yc-q5-2021" onclick="openQ45(5,2021)"><div class="year-card-yr">2021</div><div class="year-card-sub">気候変動教育</div><div id="ycb-q5-2021"></div></div>
+    <div class="year-card" id="yc-q5-2022" onclick="openQ45(5,2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">座りすぎと健康</div><div id="ycb-q5-2022"></div></div>
+    <div class="year-card" id="yc-q5-2023" onclick="openQ45(5,2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">ボランティアと健康</div><div id="ycb-q5-2023"></div></div>
+    <div class="year-card" id="yc-q5-2024" onclick="openQ45(5,2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">Creative Thinking</div><div id="ycb-q5-2024"></div></div>
+    <div class="year-card" id="yc-q5-2025" onclick="openQ45(5,2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">バイリンガルと脳</div><div id="ycb-q5-2025"></div></div>
   </div>
   <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
 </div>
@@ -367,12 +375,12 @@ details.hint-detail .hint-body{margin-top:6px;color:#374151;font-size:.82rem;lin
     <div class="hero-sub">和文英訳（ア・イ）と自由英作文。年度を選んで練習しよう。</div>
   </div>
   <div class="year-cards">
-    <div class="year-card" onclick="openQ6(2020)"><div class="year-card-yr">2020</div><div class="year-card-sub">英訳5点×2 / B 30語</div></div>
-    <div class="year-card" onclick="openQ6(2021)"><div class="year-card-yr">2021</div><div class="year-card-sub">英訳5点×2 / B 30語</div></div>
-    <div class="year-card" onclick="openQ6(2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">英訳3点×2 / B 20語</div></div>
-    <div class="year-card" onclick="openQ6(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">英訳3点×2 / B 20語</div></div>
-    <div class="year-card" onclick="openQ6(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">英訳3点×2 / B 20語</div></div>
-    <div class="year-card" onclick="openQ6(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">英訳3点×2 / B 20〜25語</div></div>
+    <div class="year-card" id="yc-q6-2020" onclick="openQ6(2020)"><div class="year-card-yr">2020</div><div class="year-card-sub">英訳5点×2 / B 30語</div><div id="ycb-q6-2020"></div></div>
+    <div class="year-card" id="yc-q6-2021" onclick="openQ6(2021)"><div class="year-card-yr">2021</div><div class="year-card-sub">英訳5点×2 / B 30語</div><div id="ycb-q6-2021"></div></div>
+    <div class="year-card" id="yc-q6-2022" onclick="openQ6(2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">英訳3点×2 / B 20語</div><div id="ycb-q6-2022"></div></div>
+    <div class="year-card" id="yc-q6-2023" onclick="openQ6(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">英訳3点×2 / B 20語</div><div id="ycb-q6-2023"></div></div>
+    <div class="year-card" id="yc-q6-2024" onclick="openQ6(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">英訳3点×2 / B 20語</div><div id="ycb-q6-2024"></div></div>
+    <div class="year-card" id="yc-q6-2025" onclick="openQ6(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">英訳3点×2 / B 20〜25語</div><div id="ycb-q6-2025"></div></div>
   </div>
   <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
 </div>
@@ -1167,8 +1175,8 @@ function showScreen(id) {
   window.scrollTo(0,0);
 }
 function goBack() { showScreen(prevScreen); }
-function goHome() { prevScreen = 'home'; showScreen('home'); }
-function goSection(id) { prevScreen = 'home'; showScreen(id); }
+function goHome() { prevScreen = 'home'; showScreen('home'); updateHomeBadges(); }
+function goSection(id) { prevScreen = 'home'; showScreen(id); updateYearBadges(id); }
 
 // ═══════════════════════════════════════════
 // MODEL TOGGLE
@@ -1197,6 +1205,7 @@ function toggleTrend() {
 // Q3 RENDER
 // ═══════════════════════════════════════════
 function openQ3(year) {
+  markDone('q3-' + year);
   prevScreen = 'q3';
   const d = Q3[year];
   let h = '';
@@ -1325,6 +1334,7 @@ function checkQ3A(year) {
 // Q4/Q5 RENDER
 // ═══════════════════════════════════════════
 function openQ45(qnum, year) {
+  markDone('q' + qnum + '-' + year);
   const suf = qnum === 4 ? '4' : '5';
   prevScreen = 'q' + suf;
   const d = (qnum === 4 ? Q4 : Q5)[year];
@@ -1490,6 +1500,7 @@ function checkQ45MCQ(name, ans, resId, expId) {
 // Q6 RENDER
 // ═══════════════════════════════════════════
 function openQ6(year) {
+  markDone('q6-' + year);
   prevScreen = 'q6';
   const d = Q6[year];
   let h = '';
@@ -1557,6 +1568,35 @@ function updateWC(tid, did) {
 }
 
 // ═══════════════════════════════════════════
+// PROGRESS TRACKING
+// ═══════════════════════════════════════════
+const YEARS = [2020,2021,2022,2023,2024,2025];
+function getDoneSet() {
+  try { return new Set(JSON.parse(localStorage.getItem('shinken-progress') || '[]')); } catch { return new Set(); }
+}
+function markDone(key) {
+  const s = getDoneSet(); s.add(key);
+  localStorage.setItem('shinken-progress', JSON.stringify([...s]));
+}
+function updateYearBadges(section) {
+  const done = getDoneSet();
+  YEARS.forEach(yr => {
+    const el = document.getElementById(`ycb-${section}-${yr}`);
+    if (!el) return;
+    el.innerHTML = done.has(`${section}-${yr}`) ? '<span class="year-card-badge">✓ 済み</span>' : '';
+  });
+}
+function updateHomeBadges() {
+  const done = getDoneSet();
+  ['q3','q4','q5','q6'].forEach(q => {
+    const el = document.getElementById(`hcs-${q}`);
+    if (!el) return;
+    const count = YEARS.filter(y => done.has(`${q}-${y}`)).length;
+    el.innerHTML = count > 0 ? `<span class="home-card-progress">✓ ${count} / 6 完了</span>` : '';
+  });
+}
+
+// ═══════════════════════════════════════════
 // FONT SIZE
 // ═══════════════════════════════════════════
 const FS_MAP={s:{fs:'0.92rem',lh:'1.85'},m:{fs:'1.05rem',lh:'1.9'},l:{fs:'1.2rem',lh:'2.0'}};
@@ -1574,6 +1614,7 @@ function setFs(sz) {
 document.addEventListener('DOMContentLoaded',()=>{
   showScreen('home');
   setFs(localStorage.getItem('shinkenFs')||'m');
+  updateHomeBadges();
 });
 </script>
 </body>
