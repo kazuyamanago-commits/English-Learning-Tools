@@ -79,6 +79,17 @@
     .mode-btn.active      { border-color: #58a6ff; background: rgba(88,166,255,0.15); color: #e6edf3; }
     .mode-btn.hard.active { border-color: #bc8cff; background: rgba(188,140,255,0.15); color: #bc8cff; }
 
+    /* ---- confirmed bar (全文モード用) ---- */
+    #full-confirmed-bar {
+      display: none;
+      padding: 6px 14px;
+      background: #0d1117; border: 1px solid #30363d; border-bottom: none;
+      border-radius: 12px 12px 0 0;
+      font-family: 'Courier New', monospace; font-size: 0.95rem;
+      color: #3fb950; min-height: 32px; word-break: break-word;
+    }
+    #full-confirmed-bar.flash { background: rgba(63,185,80,0.12); }
+
     /* ---- input bar ---- */
     #input-bar {
       background: #161b22; border: 1px solid #30363d;
@@ -146,8 +157,8 @@
     }
     #pause-btn:hover { border-color: #58a6ff; color: #58a6ff; }
     #pause-btn.paused { border-color: #3fb950; color: #3fb950; }
-    #replay-btn { padding: 7px 14px; background: #21262d; border: 1px solid #30363d; border-radius: 7px; color: #8b949e; font-size: 0.85rem; font-weight: bold; cursor: pointer; white-space: nowrap; display: none; transition: all 0.15s; font-family: inherit; }
-    #replay-btn:hover { border-color: #f0883e; color: #f0883e; }
+    #replay-btn { padding: 7px 14px; background: #21262d; border: 1px solid #f0883e; border-radius: 7px; color: #f0883e; font-size: 0.85rem; font-weight: bold; cursor: pointer; white-space: nowrap; display: none; transition: all 0.15s; font-family: inherit; }
+    #replay-btn:hover { background: rgba(240,136,62,0.12); }
     #how-to-play {
       width: 100%; max-width: 900px;
       background: #161b22; border: 1px solid #30363d;
@@ -165,15 +176,11 @@
     #res-best  { font-size:0.82rem; color:#8b949e; margin-top:2px; }
     #scene-desc { font-size:0.78rem; color:#8b949e; text-align:center; max-width:480px; padding:0 8px; min-height:1.3em; }
     #type-progress { font-size:0.72rem; color:#484f58; text-align:right; padding:3px 14px 0; height:16px; }
-    #game-f2-hint {
-      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-      background: rgba(13,17,23,0.65); border-radius: 6px; padding: 3px 14px;
-      font-size: 0.72rem; color: #484f58; pointer-events: none; z-index: 5;
-      white-space: nowrap; display: none;
-    }
   </style>
 </head>
 <body>
+<audio id="bgm" src="assets/music/bgm-loop.mp3" loop preload="auto"></audio>
+<audio id="sfx-fire-audio" src="assets/music/sfx-fire.wav" preload="auto"></audio>
 <button id="mute-btn" onclick="toggleMute()" title="サウンドON/OFF">🔊</button>
 
 
@@ -228,8 +235,6 @@
       <button class="btn-go dim" onclick="showTitle()" style="margin-top:6px">タイトルへ</button>
     </div>
 
-    <div id="game-f2-hint">F2 で音声は何度も再生できるよ！</div>
-
     <!-- Clear animation -->
     <div class="screen hidden" id="screen-clear">
       <img id="clear-lion" style="width:175px;height:175px;object-fit:contain;display:block;margin:0 auto;">
@@ -238,9 +243,10 @@
     </div>
   </div><!-- /canvas-wrap -->
 
+  <div id="full-confirmed-bar"></div>
   <div id="input-bar">
     <button id="pause-btn" onclick="togglePause()">⏸ 一時停止</button>
-    <button id="replay-btn" onclick="replayAudio()">🔊 再生</button>
+    <button id="replay-btn" onclick="replayAudio()">🔁 再生</button>
     <label>TYPE:</label>
     <div id="input-wrapper">
       <input type="text" id="type-input"
@@ -250,6 +256,9 @@
     </div>
   </div>
   <div id="type-progress"></div>
+  <div id="f2-hint-bar" style="display:none; text-align:center; font-size:0.75rem; color:#8b949e; padding:4px 0 2px; letter-spacing:0.02em;">
+    🔁 再生ボタン または <kbd style="background:#21262d;border:1px solid #444;border-radius:3px;padding:1px 5px;font-size:0.85em;">F2</kbd> で落下中の音声をもう一度聴けます　　🔊 は全音声 ON/OFF
+  </div>
   <div class="foot-hint">L3 — Bye Bye Plastics</div>
   <div id="how-to-play">
     <h3>🎮 How to Play</h3>
@@ -364,22 +373,19 @@ function sfxClear() {
 function sfxGameOver() {
   [280,220,170,120,90].forEach((f, i) => _tone(f, 0.13, 0.30, 'sawtooth', i * 0.14));
 }
-let _bgmTimer = null, _bgmStep = 0;
-const BGM_NOTES = [523.3, 659.3, 784, 659.3, 523.3, 440, 392, 440];
 function startBGM() {
-  if (_bgmTimer || _muted) return;
-  function _step() {
-    const ctx = _ctx(), o = ctx.createOscillator(), g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.type = 'triangle'; o.frequency.value = BGM_NOTES[_bgmStep % BGM_NOTES.length];
-    g.gain.setValueAtTime(0.032, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
-    o.start(); o.stop(ctx.currentTime + 0.25);
-    _bgmStep++; _bgmTimer = setTimeout(_step, 265);
-  }
-  _bgmTimer = setTimeout(_step, 0);
+  if (_muted) return;
+  const a = document.getElementById('bgm');
+  if (!a) return;
+  a.volume = 0.35;
+  a.play().catch(() => {});
 }
-function stopBGM() { clearTimeout(_bgmTimer); _bgmTimer = null; }
+function stopBGM() {
+  const a = document.getElementById('bgm');
+  if (!a) return;
+  a.pause();
+  a.currentTime = 0;
+}
 
 
 /* ===== DATA =====
@@ -624,9 +630,9 @@ function showTitle() {
   const inp = document.getElementById('type-input');
   inp.disabled = true; inp.value = '';
   document.getElementById('type-input-overlay').innerHTML = '';
-  document.getElementById('game-f2-hint').style.display = 'none';
   document.getElementById('pause-btn').style.display = 'none';
   document.getElementById('replay-btn').style.display = 'none';
+  document.getElementById('f2-hint-bar').style.display = 'none';
   if (pGame) { pGame.destroy(true); pGame = null; gameScene = null; }
 }
 
@@ -637,9 +643,9 @@ function showResult() {
   const inp = document.getElementById('type-input');
   inp.disabled = true; inp.value = '';
   document.getElementById('type-input-overlay').innerHTML = '';
-  document.getElementById('game-f2-hint').style.display = 'none';
   document.getElementById('pause-btn').style.display = 'none';
   document.getElementById('replay-btn').style.display = 'none';
+  document.getElementById('f2-hint-bar').style.display = 'none';
   document.getElementById('screen-result').classList.remove('hidden');
   document.getElementById('screen-pause').classList.add('hidden');
 
@@ -738,28 +744,17 @@ let _fullRepeatTimer  = null;
 function _startFullRepeat(item) {
   _stopFullRepeat();
   _fullRepeatActive = true;
-  // 初回再生が終わるまで待つ（11秒 = 長文でも確実に読み終わる余裕）
-  _fullRepeatTimer = setTimeout(() => _fullRepeatLoop(item), 11000);
-}
-function _fullRepeatLoop(item) {
-  if (!_fullRepeatActive || gameMode !== 'full' || !activeItem || activeItem !== item) return;
-  const u = new SpeechSynthesisUtterance(ttsForMode(item));
-  u.lang = 'en-US'; u.rate = 0.82;
-  const voices = (_voices && _voices.length) ? _voices : speechSynthesis.getVoices();
-  const preferred = ['Google US English','Microsoft Zira Desktop','Samantha','Karen','Moira','Tessa'];
-  const voice = preferred.reduce((f, n) => f || voices.find(v => v.name === n), null)
-             || voices.find(v => v.lang === 'en-US') || null;
-  if (voice) u.voice = voice;
-  // 読み終わったら2.5秒後にまた流す
-  u.onend = () => {
-    if (!_fullRepeatActive || gameMode !== 'full' || !activeItem || activeItem !== item) return;
-    _fullRepeatTimer = setTimeout(() => _fullRepeatLoop(item), 2500);
-  };
-  window.speechSynthesis.speak(u);
+  // 12秒ごとに繰り返し（onendは使わない：Chromeで発火しないことがある）
+  _fullRepeatTimer = setInterval(() => {
+    if (!_fullRepeatActive || gameMode !== 'full' || !activeItem || activeItem !== item) {
+      _stopFullRepeat(); return;
+    }
+    speak(ttsForMode(item));
+  }, 12000);
 }
 function _stopFullRepeat() {
   _fullRepeatActive = false;
-  if (_fullRepeatTimer !== null) { clearTimeout(_fullRepeatTimer); _fullRepeatTimer = null; }
+  if (_fullRepeatTimer !== null) { clearInterval(_fullRepeatTimer); _fullRepeatTimer = null; }
 }
 
 let _voices = [];
@@ -812,10 +807,11 @@ function startGame() {
 
   qIdx = 0; hp = MAX_HP; score = 0; combo = 0; maxCombo = 0; hits = 0;
   activeItem = null; isPaused = false; wrongList = []; _stopFullRepeat();
-  document.getElementById('game-f2-hint').style.display = 'block';
-  document.getElementById('pause-btn').style.display = '';
+  confirmedWords = []; updateConfirmedBar();
+  document.getElementById('pause-btn').style.display = 'inline-block';
   document.getElementById('pause-btn').textContent = '⏸ 一時停止';
-  document.getElementById('replay-btn').style.display = '';
+  document.getElementById('replay-btn').style.display = 'inline-block';
+  document.getElementById('f2-hint-bar').style.display = 'block';
 
   if (pGame) { pGame.destroy(true); pGame = null; }
   pGame = new Phaser.Game({
@@ -830,8 +826,16 @@ function startGame() {
 /* ===== INPUT ===== */
 const inp = document.getElementById('type-input');
 const _ov  = document.getElementById('type-input-overlay');
+let confirmedWords = [];
 
-function _clearInp() { inp.value = ''; _ov.innerHTML = ''; }
+function updateConfirmedBar() {
+  // 全文モードはPhaser内の発射台UIで表示するため、HTMLバーは常に非表示
+  document.getElementById('full-confirmed-bar').style.display = 'none';
+}
+function _clearInp() {
+  inp.value = ''; _ov.innerHTML = '';
+  confirmedWords = []; updateConfirmedBar();
+}
 
 function shakeInput() {
   inp.classList.remove('shake');
@@ -842,6 +846,13 @@ function shakeInput() {
 function sfxWrongEnter() {
   _tone(260, 0.18, 0.10, 'sawtooth', 0);
   _tone(200, 0.14, 0.14, 'sawtooth', 0.07);
+}
+function sfxFire() {
+  const a = document.getElementById('sfx-fire-audio');
+  if (!a) return;
+  a.currentTime = 0;
+  a.volume = 0.7;
+  a.play().catch(() => {});
 }
 function updateOverlay() {
   if (!activeItem) { _ov.innerHTML = ''; return; }
@@ -857,11 +868,61 @@ function updateOverlay() {
   _ov.innerHTML = html;
 }
 
+function _handleFullInput() {
+  const _tp  = document.getElementById('type-progress');
+  const normWords = norm(activeItem.full).split(' ');
+  const origWords = activeItem.full.split(/\s+/);
+  const idx = confirmedWords.length;
+
+  if (inp.value.endsWith(' ')) {
+    const wordTyped = norm(inp.value);
+    if (idx < normWords.length && wordTyped === normWords[idx]) {
+      confirmedWords.push(origWords[idx] || normWords[idx]);
+      updateConfirmedBar();
+      const bar = document.getElementById('full-confirmed-bar');
+      bar.classList.add('flash');
+      setTimeout(() => bar.classList.remove('flash'), 220);
+      if (gameScene) gameScene._updateLaunchZone(confirmedWords, normWords.length);
+      inp.value = ''; _ov.innerHTML = '';
+      if (_tp) _tp.textContent = confirmedWords.length + ' / ' + normWords.length + ' 語完了';
+
+      if (confirmedWords.length === normWords.length) {
+        inp.value = ''; _ov.innerHTML = '';
+        if (_tp) _tp.textContent = '🚀 発射！';
+        inp.classList.add('correct');
+        setTimeout(() => inp.classList.remove('correct'), 340);
+        hits++; combo++;
+        if (combo > maxCombo) maxCombo = combo;
+        const gain = 100 + (combo - 1) * 20;
+        score += gain;
+        sfxCombo(combo);
+        gameScene.fireAtBlock(gain); // _clearInp() は fireAtBlock の onComplete 内で呼ばれる
+      }
+    } else {
+      sfxWrongEnter(); shakeInput();
+      inp.value = ''; _ov.innerHTML = '';
+    }
+    return;
+  }
+
+  const rawExpWord = normWords[idx] || '';
+  let html = '';
+  for (let i = 0; i < inp.value.length; i++) {
+    const ch  = inp.value[i];
+    const ok  = ch.toLowerCase() === (rawExpWord[i] || '').toLowerCase();
+    const esc = ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch;
+    html += '<span style="color:' + (ok ? '#e6edf3' : '#f85149') + '">' + esc + '</span>';
+  }
+  _ov.innerHTML = html;
+  if (_tp) _tp.textContent = (idx + 1) + '語目 (' + rawExpWord.length + '文字)';
+}
+
 inp.addEventListener('input', () => {
   if (!gameScene || !activeItem || isPaused) return;
+  if (gameMode === 'full') { _handleFullInput(); return; }
   const _tp = document.getElementById('type-progress');
   if (norm(inp.value) === getExpected(activeItem)) {
-    _clearInp();
+    inp.value = ''; _ov.innerHTML = '';
     if (_tp) _tp.textContent = '';
     inp.classList.add('correct');
     setTimeout(() => inp.classList.remove('correct'), 340);
@@ -869,8 +930,8 @@ inp.addEventListener('input', () => {
     if (combo > maxCombo) maxCombo = combo;
     const gain = 100 + (combo - 1) * 20;
     score += gain;
-    sfxHit(); sfxCombo(combo);
-    gameScene.onHit(gain);
+    sfxCombo(combo);
+    gameScene.fireAtBlock(gain);
   } else {
     updateOverlay();
     if (_tp && activeItem) {
@@ -980,6 +1041,31 @@ class GameScene extends Phaser.Scene {
       this._lion.setTexture(this._lionFrames[this._lionIdx]);
     }});
     this.tweens.add({ targets: this._lion, y: { from: GH - 40, to: GH - 35 }, duration: 280, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
+
+    /* ━━ 発射台UI（全文ディクテーションモード専用） ━━ */
+    const LZ_Y = DANGER_Y + 10;
+    const LZ_H = 44;
+    this._launchBg = this.add.graphics();
+    this._launchBg.fillStyle(0x0d1117, 0.88);
+    this._launchBg.fillRect(0, LZ_Y, GW, LZ_H);
+
+    this._launchBarBg = this.add.graphics();
+    this._launchBarBg.fillStyle(0x21262d, 1);
+    this._launchBarBg.fillRect(10, LZ_Y + 6, GW - 80, 6);
+
+    this._launchBarFill = this.add.graphics();
+
+    this._launchTx = this.add.text(10, LZ_Y + 18, '', {
+      fontSize: '12px', fill: '#3fb950', fontFamily: 'Courier New, monospace'
+    });
+
+    this._launchIcon = this.add.text(GW - 12, LZ_Y + LZ_H / 2, '🚀', {
+      fontSize: '20px'
+    }).setOrigin(1, 0.5);
+
+    const isFullMode = gameMode === 'full';
+    [this._launchBg, this._launchBarBg, this._launchBarFill, this._launchTx, this._launchIcon]
+      .forEach(el => el.setVisible(isFullMode));
 
   }
 
@@ -1179,11 +1265,75 @@ class GameScene extends Phaser.Scene {
     this.tweens.add({ targets: this._box, alpha: 1, duration: 280, ease: 'Power2' });
   }
 
+  _updateLaunchZone(words, total) {
+    if (!this._launchBarFill) return;
+    const barW = GW - 80;
+    const fillW = (words.length / total) * barW;
+    this._launchBarFill.clear();
+    this._launchBarFill.fillStyle(0x3fb950, 1);
+    this._launchBarFill.fillRect(10, DANGER_Y + 16, fillW, 6);
+    const display = words.join(' ');
+    this._launchTx.setText(display);
+    this.tweens.add({ targets: this._launchTx, alpha: 0.4, duration: 60, yoyo: true });
+  }
+
+  _clearLaunchZone() {
+    if (this._launchBarFill) this._launchBarFill.clear();
+    if (this._launchTx) this._launchTx.setText('');
+  }
+
+  fireAtBlock(gain) {
+    const box = this._box;
+    if (!box) return;
+    box._firing = true;
+
+    const colorInt = box._colorInt || 0xffd700;
+
+    // 発射台アイコンをパルス
+    this.tweens.add({ targets: this._launchIcon, scaleX: 2.0, scaleY: 2.0, duration: 140, yoyo: true });
+
+    // プロジェクタイル（単一graphicsで確実に描画）
+    const proj = this.add.graphics();
+    proj.setDepth(50);
+    proj.x = GW / 2;
+    proj.y = DANGER_Y + 20;
+    proj.fillStyle(colorInt, 0.5);
+    proj.fillCircle(0, 0, 20);
+    proj.fillStyle(0xffffff, 1);
+    proj.fillCircle(0, 0, 11);
+    proj.fillStyle(colorInt, 1);
+    proj.fillCircle(0, 0, 7);
+
+    sfxFire();
+
+    this.tweens.add({
+      targets: proj,
+      x: box.x,
+      y: box.y,
+      duration: 500,
+      ease: 'Power3.In',
+      onComplete: () => {
+        // 衝突フラッシュ
+        const flash = this.add.graphics();
+        flash.setDepth(51);
+        flash.fillStyle(0xffffff, 0.9);
+        flash.fillCircle(box.x, box.y, 40);
+        this.tweens.add({ targets: flash, alpha: 0, scaleX: 3, scaleY: 3,
+          duration: 200, onComplete: () => flash.destroy() });
+
+        proj.destroy();
+        this._clearLaunchZone();
+        _clearInp();
+        this.onHit(gain);
+      }
+    });
+  }
+
   update(_, delta) {
     if (this._lion && this._lionTargetX !== undefined) {
       this._lion.x += (this._lionTargetX - this._lion.x) * 0.025;
     }
-    if (!this._box || this._box._missed || this._box._grace) return;
+    if (!this._box || this._box._missed || this._box._grace || this._box._firing) return;
     const dt = Math.min(delta, 50) / 1000;
     const spd = gameMode === 'full' ? 7 : gameMode === 'phrase' ? 27 : gameMode === 'clause' ? 20 : 41;
     this._box.y += spd * dt;
