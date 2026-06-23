@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<!-- Dictation Game L2 — Christian the Lion -->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dictation — L2 Christian the Lion</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: #0d1117; color: #e6edf3;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 24px 16px 48px;
+    }
+    h1 { font-size: 1.4rem; color: #58a6ff; letter-spacing: 2px; margin-bottom: 4px; }
+    .lesson-label { font-size: 0.8rem; color: #8b949e; margin-bottom: 24px; }
+    .hidden { display: none !important; }
+
+    .mode-toggle { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+    .mode-btn {
+      padding: 8px 18px; border: 1px solid #30363d; border-radius: 20px;
+      background: #161b22; color: #8b949e; cursor: pointer;
+      font-size: 0.85rem; font-weight: bold; transition: all 0.15s;
+    }
+    .mode-btn.active       { background: #1f6feb; border-color: #58a6ff; color: #fff; }
+    .mode-btn.hard.active  { background: #6e2da8; border-color: #bc8cff; color: #fff; }
+
+    .scene-tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+    .scene-tab {
+      padding: 6px 16px; border: 1px solid #30363d; border-radius: 8px;
+      background: #161b22; color: #8b949e; cursor: pointer;
+      font-size: 0.82rem; font-weight: bold; transition: all 0.15s;
+    }
+
+    .dict-card {
+      width: 100%; max-width: 760px;
+      background: #161b22; border: 1px solid #30363d; border-radius: 16px;
+      padding: 28px; margin-bottom: 16px;
+    }
+
+    .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .progress-label { font-size: 0.78rem; color: #8b949e; white-space: nowrap; }
+    .progress-dots { display: flex; gap: 5px; flex-wrap: wrap; }
+    .pdot { width: 9px; height: 9px; border-radius: 50%; background: #30363d; transition: background 0.2s; }
+    .pdot.done    { background: #3fb950; }
+    .pdot.current { background: #58a6ff; }
+    .pdot.wrong   { background: #f85149; }
+
+    .timer-wrap { height: 4px; background: #21262d; border-radius: 2px; margin-bottom: 24px; overflow: hidden; }
+    .timer-bar  { height: 100%; background: #3fb950; border-radius: 2px; transition: background 0.4s; }
+
+    .sentence-display {
+      font-size: 1.2rem; line-height: 2.3; margin-bottom: 18px;
+      min-height: 3rem; word-break: break-word;
+    }
+    .first-word { color: #8b949e; }
+
+    .blank-input {
+      display: inline-block;
+      border: none; border-bottom: 2px solid #58a6ff;
+      background: rgba(88,166,255,0.08); color: #e6edf3;
+      font-size: 1.2rem; font-family: inherit;
+      padding: 0 6px; border-radius: 4px 4px 0 0;
+      outline: none; vertical-align: baseline; min-width: 80px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .blank-input:focus { background: rgba(88,166,255,0.18); }
+    .blank-input.ok { border-bottom-color: #3fb950; background: rgba(63,185,80,0.12); color: #3fb950; }
+    .blank-input.ng { border-bottom-color: #f85149; background: rgba(248,81,73,0.10); color: #f85149; }
+    .blank-input.sent {
+      display: block; width: 100%; margin-top: 10px;
+      font-size: 1.05rem; min-width: unset;
+    }
+
+    .vocab-hint {
+      font-size: 0.82rem; color: #8b949e;
+      margin-bottom: 18px; padding: 8px 12px;
+      background: #21262d; border-radius: 6px;
+    }
+    .vocab-hint strong { color: #58a6ff; }
+
+    .audio-row { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .btn-audio {
+      padding: 9px 16px; border: 1px solid #30363d; border-radius: 8px;
+      background: #21262d; color: #e6edf3; cursor: pointer;
+      font-size: 0.88rem; transition: all 0.15s;
+    }
+    .btn-audio:hover { border-color: #58a6ff; color: #58a6ff; }
+    .btn-audio.speaking { border-color: #3fb950; color: #3fb950; }
+    #timer-text { margin-left: auto; font-size: 0.85rem; color: #8b949e; font-variant-numeric: tabular-nums; }
+
+    .btn-submit {
+      width: 100%; padding: 12px; background: #238636; border: none; border-radius: 8px;
+      color: #fff; font-size: 1rem; font-weight: bold; cursor: pointer;
+      letter-spacing: 1px; transition: opacity 0.15s;
+    }
+    .btn-submit:hover { opacity: 0.85; }
+    .btn-submit:disabled { opacity: 0.4; cursor: default; }
+
+    .result-feedback { margin-top: 16px; padding: 14px 18px; border-radius: 10px; font-size: 0.95rem; }
+    .result-feedback.ok { background: rgba(63,185,80,0.12); border: 1px solid #3fb950; color: #3fb950; }
+    .result-feedback.ng { background: rgba(248,81,73,0.10); border: 1px solid #f85149; color: #f85149; }
+    .correct-answer { color: #58a6ff; font-weight: bold; margin-top: 6px; font-size: 0.95rem; word-break: break-word; }
+
+    .scene-complete { text-align: center; padding: 28px 20px; }
+    .scene-complete h2 { font-size: 1.5rem; color: #3fb950; margin-bottom: 6px; }
+    .score-display { font-size: 3rem; font-weight: bold; color: #ffd700; margin: 18px 0 4px; }
+    .score-sub  { font-size: 0.82rem; color: #8b949e; margin-bottom: 12px; }
+    .key-hint   { font-size: 0.75rem; color: #484f58; margin-bottom: 18px; }
+    .btn-next {
+      padding: 12px 32px; background: #238636; border: none;
+      border-radius: 8px; color: #fff; font-size: 1rem; font-weight: bold;
+      cursor: pointer; transition: opacity 0.15s;
+    }
+    .btn-next:hover { opacity: 0.85; }
+    .btn-retry {
+      display: block; margin: 12px auto 0; padding: 9px 24px;
+      background: #21262d; border: 1px solid #30363d; border-radius: 8px;
+      color: #8b949e; font-size: 0.9rem; cursor: pointer;
+    }
+
+    footer { margin-top: 20px; font-size: 0.75rem; color: #21262d; }
+  </style>
+</head>
+<body>
+
+<h1>DICTATION</h1>
+<p class="lesson-label">L2 — Christian the Lion</p>
+
+<div class="mode-toggle">
+  <button class="mode-btn active" id="mode-word"     onclick="setMode('word')">語モード（1語）</button>
+  <button class="mode-btn"        id="mode-phrase"   onclick="setMode('phrase')">節モード（フレーズ）</button>
+  <button class="mode-btn hard"   id="mode-sentence" onclick="setMode('sentence')">文モード（むずかしい）</button>
+</div>
+
+<div class="scene-tabs" id="scene-tabs"></div>
+
+<div class="dict-card">
+  <div class="progress-row">
+    <span class="progress-label" id="prog-label">1 / 8</span>
+    <div class="progress-dots" id="prog-dots"></div>
+  </div>
+  <div class="timer-wrap"><div class="timer-bar" id="timer-bar" style="width:100%"></div></div>
+  <div class="sentence-display" id="sent-display"></div>
+  <div class="vocab-hint hidden" id="vocab-hint"></div>
+  <div class="audio-row" id="audio-row">
+    <button class="btn-audio" id="btn-listen" onclick="speakCurrent()">▶ 聞く</button>
+    <button class="btn-audio" onclick="speakCurrent()">🔁 もう一度</button>
+    <span id="timer-text"></span>
+  </div>
+  <button class="btn-submit" id="btn-submit" onclick="submitAnswer()">確認 (Enter)</button>
+  <div id="result-feedback" class="hidden"></div>
+
+  <div id="scene-complete" class="hidden scene-complete">
+    <h2 id="sc-title">Scene 1 完了！</h2>
+    <div class="score-display" id="sc-score">4 / 8</div>
+    <div class="score-sub">正解数</div>
+    <div class="key-hint">Enter: 次のScene &nbsp;|&nbsp; R: もう一度</div>
+    <button class="btn-next" id="btn-next-scene" onclick="nextScene()">次のScene へ →</button>
+    <button class="btn-retry" onclick="retryScene()">このSceneをもう一度</button>
+  </div>
+</div>
+
+<footer>広島大学附属福山高校 英語科</footer>
+
+<script>
+/* ===== DATA ===== */
+const DICT_DATA = [
+  {
+    scene: 'Scene 1', color: '#58a6ff',
+    items: [
+      {
+        full:   'Shoppers filled a big London department store one day in 1969.',
+        word:   { target: 'Shoppers',        hint: '<strong>shopper</strong>（名）買い物客' },
+        phrase: { target: 'department store', hint: '<strong>department store</strong>：百貨店・デパート（複合名詞）' }
+      },
+      {
+        full:   'Two of the shoppers, John and Ace, shared a house in London.',
+        word:   { target: 'shoppers',      hint: '<strong>shopper</strong>（名）買い物客（複数形）' },
+        phrase: { target: 'shared a house', hint: '「家をシェアした」shared a house — live together の言い換え' }
+      },
+      {
+        full:   'They were shopping for Christmas presents to send to their families in Australia.',
+        word:   { target: 'presents',           hint: '「贈り物」presents（≠ present 現在の）— 文脈で品詞に注意' },
+        phrase: { target: 'Christmas presents', hint: '「クリスマスプレゼント」複合名詞 — CHRISTmas PREsents' }
+      },
+      {
+        full:   'While they were shopping, they found a small cage with a baby lion in it for sale!',
+        word:   { target: 'cage',    hint: '<strong>cage</strong>（名）おり・ケージ' },
+        phrase: { target: 'for sale', hint: '<strong>for sale</strong>：売り物の' }
+      },
+      {
+        full:   `"I've never seen a lion in a department store!" Ace cried out in surprise.`,
+        word:   { target: 'surprise',              hint: '<strong>in surprise</strong>：驚いて（= with surprise）' },
+        phrase: { target: 'cried out in surprise',  hint: '<strong>cry out in surprise</strong>：驚いて叫ぶ' }
+      },
+      {
+        full:   'The baby lion was cute, but it looked really sad.',
+        word:   { target: 'cute',            hint: '「かわいい」cute /kjuːt/ — 聞き取り注意（/kj/音）' },
+        phrase: { target: 'looked really sad', hint: '「本当に悲しそうに見えた」look +形容詞（連結動詞）' }
+      },
+      {
+        full:   'They felt sorry for the lion in such a small cage.',
+        word:   { target: 'sorry',          hint: '<strong>feel sorry for A</strong>：Aをかわいそうに思う' },
+        phrase: { target: 'felt sorry for',  hint: '<strong>feel sorry for A</strong>：Aをかわいそうに思う（動詞句で）' }
+      },
+      {
+        full:   `Finally John said, "Let's buy him."`,
+        word:   { target: 'Finally',      hint: '「ついに」Finally — 結論を導く副詞（接続副詞）' },
+        phrase: { target: `Let's buy him`, hint: `「彼を買おう」Let's do = 提案（= Why don't we ...）` }
+      }
+    ]
+  },
+  {
+    scene: 'Scene 2', color: '#3fb950',
+    items: [
+      {
+        full:   'The male lion was named Christian.',
+        word:   { target: 'named',              hint: '「～と名付けられた」be named: 受動態' },
+        phrase: { target: 'was named Christian', hint: '「クリスチャンと名付けられた」be named ...: 受動態' }
+      },
+      {
+        full:   'In just a few days, Christian came to like his new life with John and Ace.',
+        word:   { target: 'came',          hint: '<strong>come to do</strong>：～するようになる（comeの過去形）' },
+        phrase: { target: 'came to like',   hint: '<strong>come to do</strong>（= begin to do）：～するようになる' }
+      },
+      {
+        full:   'The two men and Christian got on really well.',
+        word:   { target: 'well',               hint: '<strong>get on well</strong>：仲良くする（well = うまく）' },
+        phrase: { target: 'got on really well',  hint: '<strong>get on well (with A)</strong>：（Aと）仲良くする' }
+      },
+      {
+        full:   'When one of the men was talking to the other, Christian would touch him gently to show that he wanted to play with them.',
+        word:   { target: 'gently',          hint: '<strong>gently</strong>（副）優しく・穏やかに' },
+        phrase: { target: 'touch him gently', hint: '<strong>gently</strong>（副）優しく（動詞句ごと）' }
+      },
+      {
+        full:   'Christian also loved to go out.',
+        word:   { target: 'go',              hint: '「外出する」go out — 句動詞（goの原形）' },
+        phrase: { target: 'loved to go out', hint: '「外出するのが大好きだった」loved to do + 句動詞' }
+      },
+      {
+        full:   'John and Ace bought a special collar for him.',
+        word:   { target: 'collar',          hint: '<strong>collar</strong>（名）首輪' },
+        phrase: { target: 'a special collar', hint: '<strong>collar</strong>（名）首輪（名詞句で）' }
+      },
+      {
+        full:   'When they went out for a walk with him, he pulled on his lead like an excited little dog.',
+        word:   { target: 'pulled',            hint: '<strong>pull on A</strong>：Aを引っ張る（過去形）' },
+        phrase: { target: 'pulled on his lead', hint: '<strong>pull on A</strong>：Aを引っ張る（リードを）' }
+      },
+      {
+        full:   'They also ran and played with a ball together in a field for hours.',
+        word:   { target: 'field',      hint: '「野原」field /fiːld/ — /iː/ の発音注意' },
+        phrase: { target: 'in a field', hint: '「野原で」前置詞句 — /ɪnə fiːld/ 音の連結' }
+      },
+      {
+        full:   `"I can't imagine life without him," John said with a smile.`,
+        word:   { target: 'smile',        hint: '<strong>with a smile</strong>：ほほ笑みながら' },
+        phrase: { target: 'with a smile',  hint: '<strong>with a smile</strong>：ほほ笑みながら（前置詞句）' }
+      },
+      {
+        full:   'At first, people were surprised to see a lion in London.',
+        word:   { target: 'surprised',  hint: '「驚いた」be surprised to do: ～して驚く（受動態）' },
+        phrase: { target: 'At first',   hint: '「最初は」At first — 後でHoweverと対比される重要表現' }
+      },
+      {
+        full:   'However, they soon recognised that Christian was a lovely little friend.',
+        word:   { target: 'recognised',           hint: '<strong>recognize</strong>（動）～を認識する（英国綴り）' },
+        phrase: { target: 'a lovely little friend', hint: '「かわいい小さな友達」形容詞の順序: opinion→size' }
+      },
+      {
+        full:   'Lots of people, including newspaper photographers and television reporters, came to see him.',
+        word:   { target: 'including',        hint: '<strong>including</strong>（前）～を含めて' },
+        phrase: { target: 'came to see him',   hint: '「彼に会いに来た」came to see = 目的の不定詞' }
+      },
+      {
+        full:   'However, Christian was growing up very fast.',
+        word:   { target: 'fast',              hint: '「速く」fast（副）— quickly と同義' },
+        phrase: { target: 'growing up very fast', hint: '「急速に成長していた」grow up + 速度副詞句' }
+      },
+      {
+        full:   `John and Ace felt that their happy life wouldn't last long.`,
+        word:   { target: 'last',               hint: '「続く」last（動）— 「長続きする」の意味の動詞' },
+        phrase: { target: `wouldn't last long`,  hint: '「長くは続かないだろう」助動詞 + 動詞 + 副詞' }
+      }
+    ]
+  },
+  {
+    scene: 'Scene 3', color: '#d29922',
+    items: [
+      {
+        full:   'One day, Christian found a belt in the house and picked it up in his teeth.',
+        word:   { target: 'teeth',                    hint: '「歯」teeth — tooth の複数形 /tiːθ/' },
+        phrase: { target: 'picked it up in his teeth', hint: '「歯でそれを拾い上げた」pick up + 前置詞句' }
+      },
+      {
+        full:   'Ace tried to snatch the belt away from him, but for the first time Christian angrily showed his sharp teeth.',
+        word:   { target: 'snatch',                      hint: '<strong>snatch</strong>（動）つかみ取る' },
+        phrase: { target: 'snatch the belt away from him', hint: '<strong>snatch away A from B</strong>：AをBから奪い取る' }
+      },
+      {
+        full:   'Ace was shocked, and that reminded him that Christian was a wild animal.',
+        word:   { target: 'reminded',         hint: '<strong>remind</strong>（動）～を思い出させる' },
+        phrase: { target: 'reminded him that', hint: '<strong>remind A that ～</strong>：Aに～を思い出させる' }
+      },
+      {
+        full:   'Since the two men began to worry about Christian, one of their friends advised them to talk to George, an expert on lions in Kenya.',
+        word:   { target: 'advised',              hint: '<strong>advise</strong>（動）～に助言する' },
+        phrase: { target: 'advised them to talk',  hint: '<strong>advise A to do</strong>：Aに～するよう助言する' }
+      },
+      {
+        full:   'George said that Christian should join other lions in the wild.',
+        word:   { target: 'wild',        hint: '「野生」the wild（名詞）= 野生の自然環境' },
+        phrase: { target: 'in the wild', hint: '「野生の中で」— /ɪn ðə waɪld/ 音の連結注意' }
+      },
+      {
+        full:   'John and Ace knew that a life in the wild was best for Christian, so they finally agreed with George.',
+        word:   { target: 'agreed',            hint: '「同意した」agree with A: Aに同意する（過去形）' },
+        phrase: { target: 'agreed with George', hint: '「ジョージの意見に同意した」agree with A' }
+      },
+      {
+        full:   'In 1970, the two men went to Kenya to set Christian free.',
+        word:   { target: 'free',               hint: '<strong>set A free</strong>：Aを自由にする（free = 自由な）' },
+        phrase: { target: 'set Christian free',  hint: '<strong>set A free</strong>（= release A）：Aを自由にする' }
+      },
+      {
+        full:   'They asked George to train Christian to live in the wild.',
+        word:   { target: 'train',                 hint: '<strong>train A to do</strong>：Aが～するよう訓練する' },
+        phrase: { target: 'train Christian to live', hint: '<strong>train A to do</strong>（= teach A to do）：Aが～するよう訓練する' }
+      },
+      {
+        full:   'Christian, then, met his new lion friends and learned their ways of living.',
+        word:   { target: 'learned',        hint: '「学んだ」learned / learnt — learnの過去形' },
+        phrase: { target: 'ways of living', hint: '「生き方・生活様式」ways of living — 名詞句' }
+      },
+      {
+        full:   'Their last day arrived quickly.',
+        word:   { target: 'quickly',         hint: '「すぐに」quickly /ˈkwɪkli/ — 速度を表す副詞' },
+        phrase: { target: 'arrived quickly', hint: '「すぐにやってきた」動詞 + 副詞（/kwɪkli/ 音に注意）' }
+      },
+      {
+        full:   'John and Ace spent one last fun day with Christian.',
+        word:   { target: 'spent',            hint: '「過ごした」spend A doing の過去形' },
+        phrase: { target: 'one last fun day', hint: '「最後の楽しい一日」形容詞の順序: number + last + opinion' }
+      },
+      {
+        full:   'The next morning they left early without saying goodbye.',
+        word:   { target: 'goodbye',               hint: '「さようなら」without saying goodbye: 別れを告げずに' },
+        phrase: { target: 'without saying goodbye', hint: '「別れを言わずに」without doing — 否定の副詞句' }
+      }
+    ]
+  },
+  {
+    scene: 'Scene 4', color: '#f78166',
+    items: [
+      {
+        full:   'One year later John and Ace went back to Africa.',
+        word:   { target: 'Africa',           hint: '「アフリカ」Africa /ˈæfrɪkə/ — 固有名詞の発音' },
+        phrase: { target: 'went back to Africa', hint: '「アフリカに戻った」go back to + 場所' }
+      },
+      {
+        full:   `He's been getting on with the other lions.`,
+        word:   { target: 'getting',        hint: '<strong>get on</strong>：うまくやっていく（進行形）' },
+        phrase: { target: 'getting on with', hint: '<strong>get on with A</strong>：Aとうまくやっていく' }
+      },
+      {
+        full:   'He loves his new life and behaves like a wild animal.',
+        word:   { target: 'behaves',                   hint: '<strong>behave</strong>（動）ふるまう' },
+        phrase: { target: 'behaves like a wild animal', hint: '<strong>behave</strong> + like ～：～のようにふるまう' }
+      },
+      {
+        full:   'The two men were also told that getting near Christian would be too dangerous now.',
+        word:   { target: 'near',                  hint: '<strong>get near A</strong>：Aに近づく' },
+        phrase: { target: 'getting near Christian', hint: '<strong>get near A</strong>（= get close to A）：Aに近づく' }
+      },
+      {
+        full:   'When they came to a field, a lion appeared.',
+        word:   { target: 'appeared',        hint: '「現れた」appear（動）: 突然姿を現す' },
+        phrase: { target: 'a lion appeared', hint: '「ライオンが現れた」無生物主語 + 自動詞' }
+      },
+      {
+        full:   'It was Christian!',
+        word:   { target: 'Christian',      hint: '固有名詞 Christian — 感嘆のイントネーション注意' },
+        phrase: { target: 'It was Christian', hint: '「それはクリスチャンだった！」強調の It was ... 構文' }
+      },
+      {
+        full:   'Suddenly, he started to run towards them.',
+        word:   { target: 'Suddenly',          hint: '「突然」Suddenly — 場面転換を示す副詞' },
+        phrase: { target: 'run towards them',   hint: '「彼らに向かって走り出した」run towards + 目標' }
+      },
+      {
+        full:   'It was a scary moment.',
+        word:   { target: 'scary',          hint: '<strong>scary</strong>（形）怖い・恐ろしい' },
+        phrase: { target: 'a scary moment', hint: '<strong>scary</strong>（形）怖い（名詞句で）' }
+      },
+      {
+        full:   `However, Christian placed his big paws on Ace's chest and started licking his face!`,
+        word:   { target: 'paws',             hint: '<strong>paw</strong>（名）（動物の）足・手' },
+        phrase: { target: 'licking his face',  hint: '<strong>lick</strong>（動）～をなめる（動名詞句で）' }
+      },
+      {
+        full:   'He did the same to John.',
+        word:   { target: 'same',          hint: '「同じことをした」do the same: 同じことをする' },
+        phrase: { target: 'did the same',   hint: '「同じことをした」did the same (to A): Aにも同様に' }
+      },
+      {
+        full:   `"I can't believe it. He has remembered us!" said Ace.`,
+        word:   { target: 'believe',           hint: `「信じられない」can't believe it — 驚きの表現` },
+        phrase: { target: 'has remembered us',  hint: '「私たちのことを覚えていた」現在完了形（結果）' }
+      },
+      {
+        full:   `"I knew he wouldn't forget us. I just knew it," said John.`,
+        word:   { target: 'forget',             hint: '「忘れる」forget /fəˈɡet/ — /fə/ 弱形注意' },
+        phrase: { target: `wouldn't forget us`,  hint: `「私たちを忘れないだろう」wouldn't = would not` }
+      },
+      {
+        full:   'Later, Christian even took his old friends to see his new family.',
+        word:   { target: 'even',                hint: '「さらには・～さえも」even — 強調の副詞' },
+        phrase: { target: 'to see his new family', hint: '「新しい家族に会わせるために」目的の不定詞句' }
+      },
+      {
+        full:   'The men realised that true friendship and love have no limits.',
+        word:   { target: 'limits',        hint: '<strong>limit</strong>（名）限度・限界' },
+        phrase: { target: 'have no limits', hint: '<strong>limit</strong>（名）限度・限界（動詞句で）' }
+      }
+    ]
+  }
+];
+
+/* ===== STATE ===== */
+let mode     = 'word';
+let sceneIdx = 0;
+let itemIdx  = 0;
+let results  = [];
+let timerIv  = null;
+let timerLeft = 30;
+let answered  = false;
+
+function getTimerSecs() {
+  return mode === 'sentence' ? 60 : mode === 'phrase' ? 40 : 30;
+}
+
+/* ===== MODE ===== */
+function setMode(m) {
+  mode = m;
+  ['word','phrase','sentence'].forEach(id => {
+    document.getElementById('mode-' + id).classList.toggle('active', id === m);
+  });
+  initScene(sceneIdx);
+}
+
+/* ===== SCENE ===== */
+function initScene(si) {
+  sceneIdx = si; itemIdx = 0; results = [];
+  showEl('scene-complete', false);
+  showEl('btn-submit', true);
+  showEl('audio-row', true);
+  renderSceneTabs();
+  showItem();
+}
+
+function renderSceneTabs() {
+  const wrap = document.getElementById('scene-tabs');
+  wrap.innerHTML = '';
+  DICT_DATA.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.className = 'scene-tab';
+    b.textContent = `S${i + 1}`;
+    if (i === sceneIdx) { b.style.color = s.color; b.style.borderColor = s.color; }
+    b.onclick = () => initScene(i);
+    wrap.appendChild(b);
+  });
+}
+
+/* ===== TARGET ===== */
+function getTarget(item) {
+  if (mode === 'sentence') {
+    const sp   = item.full.indexOf(' ');
+    const rest = sp !== -1 ? item.full.slice(sp + 1) : '';
+    const hint = item.word ? item.word.hint : (item.phrase ? item.phrase.hint : '');
+    return { target: rest, hint };
+  }
+  if (mode === 'phrase' && item.phrase) return item.phrase;
+  if (item.word)   return item.word;
+  if (item.phrase) return item.phrase;
+  return null;
+}
+
+/* ===== SHOW ITEM ===== */
+function showItem() {
+  const scene = DICT_DATA[sceneIdx];
+  const item  = scene.items[itemIdx];
+  const total = scene.items.length;
+
+  answered = false;
+  clearTimer();
+
+  /* dots */
+  const dotsEl = document.getElementById('prog-dots');
+  dotsEl.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'pdot' +
+      (i < results.length ? (results[i] ? ' done' : ' wrong') :
+       i === itemIdx ? ' current' : '');
+    dotsEl.appendChild(d);
+  }
+  document.getElementById('prog-label').textContent = `${itemIdx + 1} / ${total}`;
+
+  const tObj   = getTarget(item);
+  const target = tObj ? tObj.target : '';
+  const hint   = tObj ? tObj.hint   : '';
+  const full   = item.full;
+  const display = document.getElementById('sent-display');
+
+  if (mode === 'sentence') {
+    const sp        = full.indexOf(' ');
+    const firstWord = sp !== -1 ? full.slice(0, sp) : full;
+    display.innerHTML =
+      `<span class="first-word">${esc(firstWord)}</span>` +
+      `<input class="blank-input sent" id="blank-field" type="text"
+         autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+         placeholder="続きをディクテーション…"
+         onkeydown="onKey(event)" />`;
+  } else {
+    const idx = full.toLowerCase().indexOf(target.toLowerCase());
+    if (target && idx !== -1) {
+      const before = full.slice(0, idx);
+      const after  = full.slice(idx + target.length);
+      const w      = Math.max(80, target.length * 14) + 'px';
+      display.innerHTML =
+        esc(before) +
+        `<input class="blank-input" id="blank-field" type="text"
+           autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+           style="width:${w}" placeholder="${'_'.repeat(Math.max(3, target.length))}"
+           onkeydown="onKey(event)" />` +
+        esc(after);
+    } else {
+      display.innerHTML =
+        esc(full) +
+        `<br><input class="blank-input" id="blank-field" type="text"
+           autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+           style="width:140px" placeholder="答えを入力"
+           onkeydown="onKey(event)" />`;
+    }
+  }
+
+  const hintEl = document.getElementById('vocab-hint');
+  hintEl.innerHTML = `📚 ${hint}`;
+  hintEl.classList.add('hidden');
+  document.getElementById('result-feedback').className = 'hidden';
+  document.getElementById('btn-submit').disabled = false;
+  resetTimerBar();
+
+  setTimeout(() => {
+    speakCurrent();
+    const f = document.getElementById('blank-field');
+    if (f) f.focus();
+    startTimer();
+  }, 350);
+}
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ===== TTS ===== */
+function speakCurrent() {
+  const full = DICT_DATA[sceneIdx].items[itemIdx].full;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(full);
+  u.lang = 'en-US'; u.rate = 0.85;
+  const btn = document.getElementById('btn-listen');
+  btn.classList.add('speaking');
+  u.onend = () => btn.classList.remove('speaking');
+  speechSynthesis.speak(u);
+}
+
+/* ===== TIMER ===== */
+function resetTimerBar() {
+  const bar = document.getElementById('timer-bar');
+  bar.style.width = '100%'; bar.style.background = '#3fb950';
+  document.getElementById('timer-text').textContent = '';
+}
+
+function startTimer() {
+  timerLeft = getTimerSecs();
+  const secs = timerLeft;
+  const bar  = document.getElementById('timer-bar');
+  const txt  = document.getElementById('timer-text');
+  timerIv = setInterval(() => {
+    timerLeft -= 0.1;
+    const pct = Math.max(0, timerLeft / secs * 100);
+    bar.style.width = pct + '%';
+    bar.style.background = pct > 50 ? '#3fb950' : pct > 25 ? '#d29922' : '#f85149';
+    txt.textContent = Math.ceil(timerLeft) + 's';
+    if (timerLeft <= 0) { clearTimer(); if (!answered) timeOut(); }
+  }, 100);
+}
+
+function clearTimer() {
+  if (timerIv) { clearInterval(timerIv); timerIv = null; }
+  document.getElementById('timer-text').textContent = '';
+}
+
+function timeOut() {
+  const tObj = getTarget(DICT_DATA[sceneIdx].items[itemIdx]);
+  answered = true; results.push(false);
+  const f = document.getElementById('blank-field');
+  if (f) { f.classList.add('ng'); f.disabled = true; }
+  showFeedback(false, tObj ? tObj.target : '?');
+  setTimeout(advanceItem, 2500);
+}
+
+/* ===== INPUT ===== */
+function onKey(e) { if (e.key === 'Enter') submitAnswer(); }
+
+function submitAnswer() {
+  if (answered) return;
+  const item   = DICT_DATA[sceneIdx].items[itemIdx];
+  const tObj   = getTarget(item);
+  const target = tObj ? tObj.target : '';
+  const f      = document.getElementById('blank-field');
+  const val    = f ? f.value.trim() : '';
+
+  const norm = mode === 'sentence'
+    ? s => s.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim()
+    : s => s.toLowerCase().replace(/[!?,."'`]/g, '').trim();
+
+  const ok = norm(val) === norm(target);
+
+  answered = true; clearTimer(); results.push(ok);
+  document.getElementById('btn-submit').disabled = true;
+  if (f) { f.classList.add(ok ? 'ok' : 'ng'); f.disabled = true; }
+  showFeedback(ok, target);
+  setTimeout(advanceItem, ok ? 1500 : 2800);
+}
+
+function showFeedback(ok, correct) {
+  const el = document.getElementById('result-feedback');
+  el.className = 'result-feedback ' + (ok ? 'ok' : 'ng');
+  const correctDisplay = mode === 'sentence'
+    ? DICT_DATA[sceneIdx].items[itemIdx].full
+    : correct;
+  el.innerHTML = ok
+    ? '✓ 正解！'
+    : `✗ 不正解<div class="correct-answer">正解：${esc(correctDisplay)}</div>`;
+  document.getElementById('vocab-hint').classList.remove('hidden');
+}
+
+/* ===== ADVANCE ===== */
+function advanceItem() {
+  itemIdx++;
+  if (itemIdx >= DICT_DATA[sceneIdx].items.length) showSceneComplete();
+  else showItem();
+}
+
+function showSceneComplete() {
+  clearTimer();
+  const ok    = results.filter(Boolean).length;
+  const total = results.length;
+  const isLast = sceneIdx === DICT_DATA.length - 1;
+
+  document.getElementById('sc-title').textContent = `${DICT_DATA[sceneIdx].scene} 完了！`;
+  document.getElementById('sc-score').textContent = `${ok} / ${total}`;
+  document.getElementById('btn-next-scene').textContent = isLast ? '🔄 最初から' : '次のScene へ →';
+
+  document.getElementById('sent-display').innerHTML = '';
+  const hintEl = document.getElementById('vocab-hint');
+  hintEl.innerHTML = ''; hintEl.classList.add('hidden');
+  document.getElementById('result-feedback').className = 'hidden';
+  resetTimerBar();
+
+  showEl('scene-complete', true);
+  showEl('btn-submit', false);
+  showEl('audio-row', false);
+}
+
+function nextScene() {
+  const next = sceneIdx < DICT_DATA.length - 1 ? sceneIdx + 1 : 0;
+  showEl('btn-submit', true); showEl('audio-row', true);
+  initScene(next);
+}
+
+function retryScene() {
+  showEl('btn-submit', true); showEl('audio-row', true);
+  initScene(sceneIdx);
+}
+
+/* ===== KEYBOARD (scene-complete) ===== */
+document.addEventListener('keydown', e => {
+  const sc = document.getElementById('scene-complete');
+  if (sc.classList.contains('hidden')) return;
+  if (e.key === 'Enter') { e.preventDefault(); nextScene(); }
+  if (e.key === 'r' || e.key === 'R') { e.preventDefault(); retryScene(); }
+});
+
+/* ===== UTIL ===== */
+function showEl(id, visible) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('hidden', !visible);
+}
+
+/* ===== BOOT ===== */
+renderSceneTabs();
+showItem();
+</script>
+</body>
+</html>

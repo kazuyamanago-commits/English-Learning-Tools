@@ -147,8 +147,8 @@ tr:nth-child(even) td { background: #f9fafb; }
     </div>
     <div class="tool-card indigo">
       <div class="tool-icon">⌨️</div>
-      <div class="tool-name">タイピング練習 Level 1<span class="chip-new">NEW</span></div>
-      <div class="tool-desc">速読 Level 1 の英文でタイピング練習。正確さとスピードを鍛える。</div>
+      <div class="tool-name">タイピング練習 Level 1〜4<span class="chip-new">NEW</span></div>
+      <div class="tool-desc">各レッスン英文でタイピング練習。Scene別・段落別に挑戦。WPM・正確率・ランク記録。</div>
     </div>
     <div class="tool-card blue">
       <div class="tool-icon">🎓</div>
@@ -390,22 +390,39 @@ tr:nth-child(even) td { background: #f9fafb; }
   </div>
 
   <!-- タイピング練習 -->
-  <h2 id="typing">⌨️ タイピング練習 Level 1 の使い方<span class="chip-new">NEW</span></h2>
-  <p>速読 Level 1 の英文を使ったタイピング練習ゲームです。英語入力のスピードと正確さを鍛えましょう。</p>
+  <h2 id="typing">⌨️ タイピング練習 の使い方<span class="chip-new">NEW</span></h2>
+  <p>各レッスンの英文を使ったタイピング練習ゲームです。Level 1〜4 の4種類があり、それぞれ Scene・段落ごとに挑戦できます。</p>
+
+  <div class="card" style="margin-bottom:12px">
+    <span class="badge b-indigo">レベル一覧</span>
+    <table style="width:100%;border-collapse:collapse;margin-top:10px;font-size:0.88rem">
+      <thead><tr style="background:#f0f4f8">
+        <th style="padding:6px 10px;text-align:left;border-bottom:1px solid #ddd">レベル</th>
+        <th style="padding:6px 10px;text-align:left;border-bottom:1px solid #ddd">教材</th>
+        <th style="padding:6px 10px;text-align:center;border-bottom:1px solid #ddd">段落数</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:6px 10px">Level 1</td><td style="padding:6px 10px">Christian the Lion（全文）</td><td style="padding:6px 10px;text-align:center">14</td></tr>
+        <tr style="background:#f9fafb"><td style="padding:6px 10px">Level 2</td><td style="padding:6px 10px">Christian the Lion（全文）</td><td style="padding:6px 10px;text-align:center">14</td></tr>
+        <tr><td style="padding:6px 10px">Level 3</td><td style="padding:6px 10px">Bye Bye Plastics</td><td style="padding:6px 10px;text-align:center">9</td></tr>
+        <tr style="background:#f9fafb"><td style="padding:6px 10px">Level 4</td><td style="padding:6px 10px">Twice Bombed, Twice Survived</td><td style="padding:6px 10px;text-align:center">12</td></tr>
+      </tbody>
+    </table>
+  </div>
 
   <div class="card">
     <span class="badge b-indigo">使い方の流れ</span>
     <div class="step-row" style="margin-top:10px">
       <div class="step-num indigo">1</div>
-      <div class="step-body"><strong>ゲームを開始する</strong><br>「スタート」ボタンを押すとタイピング画面が始まります。</div>
+      <div class="step-body"><strong>段落を選ぶ</strong><br>一覧からScene・段落番号を選択します。クリアした段落にはランク（S〜D）が表示されます。</div>
     </div>
     <div class="step-row">
       <div class="step-num indigo">2</div>
-      <div class="step-body"><strong>表示された英文を入力する</strong><br>画面に表示された英文をできるだけ正確にタイピングします。スペルミスに注意！</div>
+      <div class="step-body"><strong>英文をタイピングする</strong><br>「スタート」を押して開始。表示された英文を正確にタイピングします。HP（ハート）がなくなるとゲームオーバー。</div>
     </div>
     <div class="step-row">
       <div class="step-num indigo">3</div>
-      <div class="step-body"><strong>結果を確認する</strong><br>正確に入力した語数・WPM（タイピング速度）・正確率が表示されます。</div>
+      <div class="step-body"><strong>結果を確認する</strong><br>WPM（語/分）・正確率・コンボ数・スコアとランク（S/A/B/C/D）が表示されます。記録はブラウザに自動保存。</div>
     </div>
   </div>
 
@@ -576,7 +593,7 @@ tr:nth-child(even) td { background: #f9fafb; }
     <tr><td>進研模試（問題・解答・進捗バッジ）</td><td>✅</td><td>✅</td></tr>
     <tr><td>Speaking WPM（クリックカウンター・手動入力）</td><td>✅</td><td>✅</td></tr>
     <tr><td>Speaking WPM（音声自動認識）</td><td>✅</td><td>❌ 非対応</td></tr>
-    <tr><td>タイピング練習</td><td>✅</td><td>✅（外付けキーボード推奨）</td></tr>
+    <tr><td>タイピング練習 Level 1〜4</td><td>✅</td><td>✅（外付けキーボード推奨）</td></tr>
     <tr><td>岡山大過去問（T/F・選択・辞書ポップアップ）</td><td>✅</td><td>✅</td></tr>
     <tr><td>SchoolAI</td><td>✅</td><td>✅</td></tr>
     <tr><td>NotebookLM</td><td>✅</td><td>✅ ※要Googleログイン</td></tr>

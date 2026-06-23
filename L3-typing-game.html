@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!-- Typing Game L3 — Bye Bye Plastics -->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Game — L3</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #0d1117; color: #e6edf3; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 24px 16px 48px; }
+    .hidden { display: none !important; }
+    h1 { font-size: 1.4rem; color: #58a6ff; letter-spacing: 2px; margin-bottom: 4px; }
+    .lesson-label { font-size: 0.8rem; color: #8b949e; margin-bottom: 28px; }
+    .scene-group { width: 100%; max-width: 820px; margin-bottom: 24px; }
+    .scene-title { font-size: 0.72rem; letter-spacing: 2px; color: #8b949e; text-transform: uppercase; margin-bottom: 10px; border-left: 3px solid #58a6ff; padding-left: 10px; }
+    .stage-grid { display: flex; flex-direction: column; gap: 8px; }
+    .stage-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px 18px; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: border-color 0.15s, transform 0.1s; }
+    .stage-card:hover { border-color: #58a6ff; transform: translateX(3px); }
+    .stage-card.done  { border-color: #238636; }
+    .stage-num { font-family: 'Courier New', monospace; font-size: 1.2rem; font-weight: bold; color: #58a6ff; min-width: 28px; text-align: center; }
+    .stage-card.done .stage-num { color: #3fb950; }
+    .stage-preview { font-size: 0.82rem; color: #8b949e; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .rank-badge { font-size: 1.1rem; font-weight: bold; min-width: 28px; text-align: center; }
+    .rank-S { color: #ffd700; } .rank-A { color: #58a6ff; } .rank-B { color: #3fb950; } .rank-C { color: #d29922; } .rank-D { color: #8b949e; }
+    #phase-playing { width: 100%; max-width: 900px; }
+    .play-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+    .btn-back { background: none; border: 1px solid #30363d; color: #8b949e; border-radius: 6px; padding: 5px 12px; cursor: pointer; font-size: 0.82rem; }
+    .btn-back:hover { border-color: #58a6ff; color: #58a6ff; }
+    .play-title { font-size: 0.9rem; color: #e6edf3; flex: 1; }
+    .hp-bar { display: flex; gap: 6px; font-size: 1.3rem; }
+    .stats-row { display: flex; gap: 10px; margin-bottom: 14px; }
+    .stat-box { flex: 1; background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 10px; text-align: center; }
+    .stat-val { font-size: 1.4rem; font-weight: bold; color: #58a6ff; font-variant-numeric: tabular-nums; }
+    .stat-lbl { font-size: 0.68rem; color: #8b949e; letter-spacing: 1px; margin-top: 2px; }
+    .combo-display { text-align: center; margin-bottom: 12px; min-height: 32px; font-size: 1.1rem; font-weight: bold; transition: color 0.2s; }
+    .combo-0  { color: #30363d; } .combo-sm { color: #8b949e; } .combo-md { color: #d29922; } .combo-lg { color: #f78166; } .combo-xl { color: #ffd700; text-shadow: 0 0 12px gold; }
+    .text-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 24px 28px; margin-bottom: 14px; }
+    #text-display { font-family: 'Courier New', monospace; font-size: 1.35rem; line-height: 2.4; letter-spacing: 0.5px; overflow-wrap: break-word; }
+    .word-wrap { display: inline-block; white-space: nowrap; border-radius: 4px; padding: 0 1px; }
+    .word-current { background: rgba(88,166,255,0.12); outline: 1px solid rgba(88,166,255,0.3); }
+    .char-pending  { color: #484f58; }
+    .char-current  { color: #fff; background: #1f4e79; border-bottom: 2px solid #58a6ff; border-radius: 2px; }
+    .char-correct  { color: #3fb950; }
+    .char-error    { color: #f85149; background: rgba(248,81,73,0.15); text-decoration: underline wavy #f85149; }
+    .char-auto     { color: #21262d; }
+    .btn { display: block; width: 100%; padding: 13px; font-size: 1rem; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.15s; letter-spacing: 1px; }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary   { background: #238636; color: #fff; }
+    .btn-secondary { background: #21262d; color: #8b949e; margin-top: 8px; border: 1px solid #30363d; }
+    .btn-danger    { background: #da3633; color: #fff; }
+    #gameover-panel { text-align: center; padding: 24px; background: rgba(218,54,51,0.1); border: 1px solid #da3633; border-radius: 12px; margin-top: 12px; }
+    #gameover-panel h2 { font-size: 1.8rem; color: #f85149; margin-bottom: 8px; }
+    #gameover-panel p  { color: #8b949e; font-size: 0.88rem; margin-bottom: 16px; }
+    .hint { font-size: 0.75rem; color: #484f58; text-align: center; margin-top: 10px; }
+    #damage-flash { position: fixed; inset: 0; pointer-events: none; opacity: 0; z-index: 9999; }
+    @keyframes flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
+    #damage-flash.flash-active { animation: flash-anim 0.45s ease-out forwards; }
+    #mute-btn { position: fixed; top: 14px; right: 16px; background: #161b22; border: 1px solid #30363d; color: #e6edf3; border-radius: 8px; padding: 5px 11px; font-size: 1.1rem; cursor: pointer; z-index: 1000; line-height: 1; }
+    #mute-btn:hover { border-color: #58a6ff; }
+    @keyframes word-done-kf { 0% { background: rgba(63,185,80,0.45); border-radius: 3px; } 100% { background: transparent; } }
+    .word-done { animation: word-done-kf 0.4s ease-out; }
+    @keyframes combo-pulse-kf { 0%,100% { transform: scale(1); } 45% { transform: scale(1.4); } }
+    .combo-pulse { animation: combo-pulse-kf 0.32s ease-in-out; }
+    @keyframes rank-pop-kf { 0% { transform: scale(0) rotate(-15deg); opacity: 0; } 65% { transform: scale(1.18) rotate(4deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+    .rank-pop { animation: rank-pop-kf 0.55s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+    #phase-result { width: 100%; max-width: 560px; text-align: center; }
+    .rank-display { font-size: 7rem; font-weight: bold; line-height: 1; margin: 20px 0 8px; text-shadow: 0 0 40px currentColor; }
+    .rank-title { font-size: 0.85rem; color: #8b949e; margin-bottom: 24px; }
+    .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .result-stat { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px; }
+    .result-stat .val { font-size: 1.8rem; font-weight: bold; color: #58a6ff; }
+    .result-stat .lbl { font-size: 0.72rem; color: #8b949e; margin-top: 4px; }
+    .score-total { font-size: 2.4rem; font-weight: bold; color: #ffd700; margin-bottom: 6px; }
+    .score-label { font-size: 0.8rem; color: #8b949e; margin-bottom: 24px; }
+    footer { margin-top: 20px; font-size: 0.75rem; color: #21262d; }
+  </style>
+</head>
+<body>
+<button id="mute-btn" onclick="toggleMute()" title="サウンドON/OFF">🔊</button>
+<div id="damage-flash"></div>
+<h1>TYPING GAME</h1>
+<p class="lesson-label">L3 — Bye Bye Plastics</p>
+
+<div id="phase-home"></div>
+
+<div id="phase-playing" class="hidden">
+  <div class="play-header">
+    <button class="btn-back" onclick="showHome()">← 一覧</button>
+    <span class="play-title" id="play-title"></span>
+    <div class="hp-bar" id="hp-bar"></div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-val" id="stat-time">0:00</div><div class="stat-lbl">TIME</div></div>
+    <div class="stat-box"><div class="stat-val" id="stat-wpm">—</div><div class="stat-lbl">WPM</div></div>
+    <div class="stat-box"><div class="stat-val" id="stat-acc">—</div><div class="stat-lbl">ACC</div></div>
+    <div class="stat-box"><div class="stat-val" id="stat-score">0</div><div class="stat-lbl">SCORE</div></div>
+  </div>
+  <div class="combo-display" id="combo-display">— combo —</div>
+  <div class="text-card"><div id="text-display"></div></div>
+  <div id="gameover-panel" class="hidden">
+    <h2>GAME OVER</h2>
+    <p>HPがなくなりました。もう一度挑戦しますか？</p>
+    <button class="btn btn-danger" onclick="retryStage()">もう一度</button>
+    <button class="btn btn-secondary" onclick="showHome()">一覧に戻る</button>
+  </div>
+  <button class="btn btn-primary" id="start-btn" onclick="startTyping()">スタート</button>
+  <button class="btn btn-secondary" id="retry-btn" onclick="retryStage()" style="display:none">リトライ</button>
+  <p class="hint" id="hint-msg">スタートを押してキーボードで入力開始</p>
+  <input id="hidden-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+    style="position:absolute;opacity:0;width:1px;height:1px;" onkeydown="handleKey(event)">
+</div>
+
+<div id="phase-result" class="hidden">
+  <div class="rank-display" id="result-rank">—</div>
+  <div class="rank-title" id="result-rank-label"></div>
+  <div class="score-total" id="result-score">0</div>
+  <div class="score-label">SCORE</div>
+  <div class="result-stats">
+    <div class="result-stat"><div class="val" id="res-wpm">—</div><div class="lbl">WPM</div></div>
+    <div class="result-stat"><div class="val" id="res-acc">—</div><div class="lbl">ACCURACY</div></div>
+    <div class="result-stat"><div class="val" id="res-combo">—</div><div class="lbl">MAX COMBO</div></div>
+    <div class="result-stat"><div class="val" id="res-time">—</div><div class="lbl">TIME</div></div>
+  </div>
+  <button class="btn btn-primary" id="next-btn" onclick="goNext()">次のステージへ</button>
+  <button class="btn btn-secondary" onclick="retryStage()">もう一度</button>
+  <button class="btn btn-secondary" onclick="showHome()">一覧に戻る</button>
+</div>
+
+<footer>広島大学附属福山高校 英語科</footer>
+
+<script>
+/* ===== SOUND ENGINE (Web Audio API — no audio files) ===== */
+let _ac=null;
+let _muted=localStorage.getItem('tg_muted')==='1';
+function toggleMute(){_muted=!_muted;localStorage.setItem('tg_muted',_muted?'1':'0');document.getElementById('mute-btn').textContent=_muted?'🔇':'🔊';}
+document.addEventListener('DOMContentLoaded',()=>{if(_muted)document.getElementById('mute-btn').textContent='🔇';});
+function _ctx(){if(!_ac)_ac=new(window.AudioContext||window.webkitAudioContext)();return _ac;}
+function _tone(freq,vol,dur,type,delay){if(_muted)return;const ctx=_ctx(),o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type=type;o.frequency.setValueAtTime(freq,ctx.currentTime+delay);g.gain.setValueAtTime(0,ctx.currentTime+delay);g.gain.linearRampToValueAtTime(vol,ctx.currentTime+delay+0.015);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+delay+dur);o.start(ctx.currentTime+delay);o.stop(ctx.currentTime+delay+dur+0.01);}
+function sfxClick(){if(_muted)return;const ctx=_ctx(),g=ctx.createGain();g.connect(ctx.destination);g.gain.setValueAtTime(0.055,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.022);const buf=ctx.createBuffer(1,Math.floor(ctx.sampleRate*0.022),ctx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length);const s=ctx.createBufferSource();s.buffer=buf;s.connect(g);s.start();}
+function sfxError(){_tone(160,0.08,0.12,'sawtooth',0);}
+function sfxWordDone(){[523,784].forEach((f,i)=>_tone(f,0.11,0.14,'sine',i*0.07));}
+function sfxCombo(tier){[[523,659],[659,784],[784,1047],[1047,1319]][tier].forEach((f,i)=>_tone(f,0.1,0.16,'sine',i*0.07));}
+function sfxHPLoss(){_tone(100,0.15,0.28,'square',0);}
+function sfxGameOver(){[280,220,170,120].forEach((f,i)=>_tone(f,0.13,0.25,'square',i*0.14));}
+function sfxStageClear(){[[523,0],[659,0.1],[784,0.2],[1047,0.32],[1319,0.48]].forEach(([f,t])=>_tone(f,0.15,0.45,'triangle',t));}
+function flashWordDone(wordId){document.querySelectorAll(`[data-word="${wordId}"]`).forEach(el=>{el.classList.remove('word-done');void el.offsetWidth;el.classList.add('word-done');});}
+/* ========================================================== */
+
+const GAME_DATA = [
+  {
+    scene: "Scene 1", color: "#58a6ff",
+    paragraphs: [
+      {
+        label: "1",
+        text: `Sisters Melati and Isabel were 12 and 10 years old when they were inspired by a lesson in school in Bali. They learned about significant people such as Nelson Mandela, Lady Diana, and Mahatma Gandhi. They returned home and wondered, "What can we do as children in Bali, NOW, to make a difference?" That was the very beginning of their campaign called "Bye Bye Plastic Bags." It started in 2013 and has now grown into a well-known international movement which says NO to plastic bags.`
+      },
+      {
+        label: "2",
+        text: "Bali is known by local people as a green paradise. The sisters found, however, that people in Bali then produced 680 cubic meters of plastic garbage a day. Amazingly, this was about the size of a 14-story building, but less than 5% got recycled. The rest ended up in rivers and the ocean, or it was just burned or thrown away. Such plastic pollution was damaging the whole island."
+      }
+    ]
+  },
+  {
+    scene: "Scene 2", color: "#3fb950",
+    paragraphs: [
+      {
+        label: "3",
+        text: "Since they were driven by a love of their home and its nature, Melati and Isabel started Bye Bye Plastic Bags in October 2013. Their aim was to put a ban on the use and sale of single-use plastic bags in Bali to stop plastic pollution. Their first efforts focused on giving out non-plastic bags, such as net bags, newspaper bags, and 100% organic material bags, to local shops. They also began to teach local people about the pollution problems."
+      },
+      {
+        label: "4",
+        text: "In order to educate all the island on the dangerous effects of single-use plastic bags, Melati and Isabel thought that government policies needed to change as well. They decided to collect one million signatures so that government officials would not ignore them. To collect that many signatures, they came up with a great idea: collecting signatures at the very busy Bali International Airport. They went there and talked with airport officials again and again. They were finally allowed to collect signatures there."
+      }
+    ]
+  },
+  {
+    scene: "Scene 3", color: "#d29922",
+    paragraphs: [
+      {
+        label: "5",
+        text: "However, they received no answer from the government of Bali. Since they were inspired by Gandhi, they decided to go on a hunger strike to get more attention. Their parents and teachers were worried about their health and tried to make them drop the idea. The two girls then talked with a health specialist and settled for not eating from sunrise to sunset every day. Finally, the governor of Bali heard about this and agreed to meet them. To their surprise, he actually thanked them for caring about the beauty and the environment of Bali and agreed to work toward a plastic bag-free Bali."
+      },
+      {
+        label: "6",
+        text: "In 2016, Indonesia began a 2-cent charge on single-use plastic bags in Bali, but the government quickly ended the policy. This was because many people thought that the tax was too low to be effective. And they disagreed on how the collected taxes should be spent. Melati and Isabel were frustrated, but they remained hopeful and continued reminding the government about its promise. They also kept on trying to gather support from local people in Bali."
+      }
+    ]
+  },
+  {
+    scene: "Scene 4", color: "#f78166",
+    paragraphs: [
+      {
+        label: "7",
+        text: "On December 24, 2018, history was made. The governor of Bali placed a ban on single-use plastic starting in 2019. This meant no more plastic bags or plastic straws. With this ban, the governor hoped to reduce Bali's plastic pollution by 70%."
+      },
+      {
+        label: "8",
+        text: "Melati and Isabel have been named among the world's most influential teenagers by three global companies. Also, they were invited to talk about their campaign on TV programs and at the United Nations. However, they think they still have a lot of work to do. They want to spread the no plastic bags campaign not just in Bali but around the world."
+      },
+      {
+        label: "9",
+        text: "They are proud that they have shown even kids can do things that can contribute to society. They are hoping that other young people will join them to change the world."
+      }
+    ]
+  }
+];
+
+const HP_MAX=3, HP_THRESHOLD=10, LS_KEY='tg_l3_records';
+let state={sceneIdx:0,paraIdx:0,text:"",charIndex:0,totalTyped:0,errors:0,hp:HP_MAX,combo:0,maxCombo:0,score:0,startTime:null,timerInterval:null,isRunning:false,charWordMap:[]};
+
+function showPhase(id){['phase-home','phase-playing','phase-result'].forEach(p=>{document.getElementById(p).classList.toggle('hidden',p!==id);});}
+function showHome(){stopTimer();state.isRunning=false;showPhase('phase-home');renderHome();}
+function renderHome(){
+  const records=loadAllRecords();let html='';
+  GAME_DATA.forEach((scene,si)=>{
+    html+=`<div class="scene-group"><div class="scene-title" style="border-color:${scene.color}">${scene.scene}</div><div class="stage-grid">`;
+    scene.paragraphs.forEach((para,pi)=>{
+      const rec=records[`${si}-${pi}`],isDone=!!rec,rankCls=isDone?`rank-${rec.rank}`:'',rankTxt=isDone?rec.rank:'';
+      html+=`<div class="stage-card${isDone?' done':''}" onclick="selectStage(${si},${pi})"><div class="stage-num">${para.label}</div><div class="stage-preview">${para.text.slice(0,50)}…</div><div class="rank-badge ${rankCls}">${rankTxt}</div></div>`;
+    });
+    html+=`</div></div>`;
+  });
+  document.getElementById('phase-home').innerHTML=html;
+}
+function selectStage(si,pi){state.sceneIdx=si;state.paraIdx=pi;state.text=GAME_DATA[si].paragraphs[pi].text;showPhase('phase-playing');initPlayingScreen();}
+function initPlayingScreen(){
+  state.charIndex=0;state.totalTyped=0;state.errors=0;state.hp=HP_MAX;state.combo=0;state.maxCombo=0;state.score=0;state.startTime=null;state.isRunning=false;state.charWordMap=[];stopTimer();
+  const scene=GAME_DATA[state.sceneIdx],para=scene.paragraphs[state.paraIdx];
+  document.getElementById('play-title').textContent=`${scene.scene} — ${para.label}`;
+  renderHP();
+  ['stat-time','stat-wpm','stat-acc'].forEach((id,i)=>document.getElementById(id).textContent=['0:00','—','—'][i]);
+  document.getElementById('stat-score').textContent='0';
+  setComboDisplay(0);renderText();
+  document.getElementById('start-btn').style.display='block';
+  document.getElementById('retry-btn').style.display='none';
+  document.getElementById('gameover-panel').classList.add('hidden');
+  document.getElementById('hint-msg').textContent='スタートを押してキーボードで入力開始';
+}
+function renderText(){
+  const display=document.getElementById('text-display');let charIndex=0,wordId=0,html='';
+  state.text.split(/(\s)/).forEach(token=>{
+    if(!token)return;
+    if(/\s/.test(token)){html+=`<span class="char-auto" data-index="${charIndex}">&nbsp;</span>`;state.charWordMap[charIndex]=-1;charIndex++;}
+    else{const wid=wordId++;html+=`<span class="word-wrap" data-word="${wid}">`;for(const char of token){const auto=isAutoChar(char),cls=auto?'char-auto':(charIndex===0?'char-current':'char-pending');html+=`<span class="${cls}" data-index="${charIndex}">${char}</span>`;state.charWordMap[charIndex]=wid;charIndex++;}html+='</span>';}
+  });
+  display.innerHTML=html;skipAutoChars();updateWordHighlight();
+}
+function updateWordHighlight(){document.querySelectorAll('.word-current').forEach(el=>el.classList.remove('word-current'));const wid=state.charWordMap[state.charIndex];if(wid>=0){const w=document.querySelector(`[data-word="${wid}"]`);if(w)w.classList.add('word-current');}}
+function startTyping(){state.isRunning=true;document.getElementById('start-btn').style.display='none';document.getElementById('retry-btn').style.display='block';document.getElementById('hint-msg').textContent='英字だけ打てばOK。大文字・スペース・記号は自動処理。';document.getElementById('hidden-input').focus();}
+function isAutoChar(char){return!/[a-zA-Z]/.test(char);}
+function skipAutoChars(){while(state.charIndex<state.text.length&&isAutoChar(state.text[state.charIndex])){const span=document.querySelector(`[data-index="${state.charIndex}"]`);if(span)span.className='char-auto';state.charIndex++;}if(state.charIndex<state.text.length){const span=document.querySelector(`[data-index="${state.charIndex}"]`);if(span)span.className='char-current';}}
+function handleKey(event){
+  if(!state.isRunning)return;if(event.key===' '){event.preventDefault();return;}if(event.key.length!==1)return;event.preventDefault();
+  if(!state.startTime){state.startTime=Date.now();startTimer();}
+  const typed=event.key.toLowerCase(),expected=state.text[state.charIndex].toLowerCase();state.totalTyped++;
+  const currentSpan=document.querySelector(`[data-index="${state.charIndex}"]`);
+  if(typed===expected){sfxClick();const prevW=state.charWordMap[state.charIndex];currentSpan.className='char-correct';state.charIndex++;state.combo++;if(state.combo>state.maxCombo)state.maxCombo=state.combo;state.score+=10+Math.floor(state.combo/10)*5;skipAutoChars();updateWordHighlight();setComboDisplay(state.combo);const nextW=state.charWordMap[state.charIndex];if(prevW>=0&&nextW!==prevW){flashWordDone(prevW);sfxWordDone();}const tier=[10,20,30,50].indexOf(state.combo);if(tier>=0)sfxCombo(Math.min(tier,3));if(state.charIndex>=state.text.length){finishStage();return;}}
+  else{sfxError();currentSpan.className='char-error';state.errors++;state.combo=0;setComboDisplay(0);if(state.errors%HP_THRESHOLD===0){state.hp--;renderHP();if(state.hp<=0){sfxGameOver();gameOver();return;}sfxHPLoss();triggerDamageFlash();}}
+  updateStats();
+}
+function setComboDisplay(c){const el=document.getElementById('combo-display');if(c===0){el.className='combo-display combo-0';el.textContent='— combo —';}else if(c<10){el.className='combo-display combo-sm';el.textContent=`${c} combo`;}else if(c<25){el.className='combo-display combo-md';el.textContent=`${c} combo 🔥`;}else if(c<50){el.className='combo-display combo-lg';el.textContent=`${c} combo ⚡`;}else{el.className='combo-display combo-xl';el.textContent=`${c} COMBO ✨`;}}
+function triggerDamageFlash(strong=false){const el=document.getElementById('damage-flash');el.style.background=strong?'rgba(248,81,73,0.65)':'rgba(248,81,73,0.38)';el.style.animationDuration=strong?'0.75s':'0.45s';el.classList.remove('flash-active');void el.offsetWidth;el.classList.add('flash-active');}
+function renderHP(){document.getElementById('hp-bar').innerHTML=Array.from({length:HP_MAX},(_,i)=>`<span>${i<state.hp?'❤️':'🖤'}</span>`).join('');}
+function updateStats(){if(!state.startTime)return;const elapsed=Date.now()-state.startTime,sec=Math.floor(elapsed/1000),min=Math.floor(sec/60);document.getElementById('stat-time').textContent=`${min}:${String(sec%60).padStart(2,'0')}`;document.getElementById('stat-wpm').textContent=elapsed>0?Math.round((state.charIndex/5)/(elapsed/60000)):0;document.getElementById('stat-acc').textContent=(state.totalTyped>0?Math.round(state.charIndex/state.totalTyped*100):100)+'%';document.getElementById('stat-score').textContent=state.score;}
+function startTimer(){state.timerInterval=setInterval(updateStats,500);}
+function stopTimer(){clearInterval(state.timerInterval);state.timerInterval=null;}
+function gameOver(){state.isRunning=false;stopTimer();triggerDamageFlash(true);document.getElementById('gameover-panel').classList.remove('hidden');document.getElementById('retry-btn').style.display='none';document.getElementById('hint-msg').textContent='';}
+function finishStage(){
+  state.isRunning=false;stopTimer();
+  const elapsed=Date.now()-state.startTime,sec=Math.floor(elapsed/1000),min=Math.floor(sec/60);
+  const wpm=Math.round((state.text.length/5)/(elapsed/60000)),acc=Math.round(state.charIndex/state.totalTyped*100),rank=getRank(wpm,acc);
+  const finalScore=Math.round(state.score*(acc/100)+Math.max(0,wpm-40)*10);
+  saveRecord(state.sceneIdx,state.paraIdx,{wpm,acc,rank,score:finalScore,maxCombo:state.maxCombo});
+  const rankColors={S:'#ffd700',A:'#58a6ff',B:'#3fb950',C:'#d29922',D:'#8b949e'},rankLabels={S:'PERFECT',A:'GREAT',B:'GOOD',C:'OK',D:'TRY AGAIN'};
+  sfxStageClear();const rankEl=document.getElementById('result-rank');rankEl.textContent=rank;rankEl.style.color=rankColors[rank];rankEl.classList.remove('rank-pop');void rankEl.offsetWidth;rankEl.classList.add('rank-pop');
+  document.getElementById('result-rank-label').textContent=rankLabels[rank];document.getElementById('result-score').textContent=finalScore.toLocaleString();
+  document.getElementById('res-wpm').textContent=wpm;document.getElementById('res-acc').textContent=acc+'%';document.getElementById('res-combo').textContent=state.maxCombo;document.getElementById('res-time').textContent=`${min}:${String(sec%60).padStart(2,'0')}`;
+  const scene=GAME_DATA[state.sceneIdx],hasNext=state.paraIdx+1<scene.paragraphs.length||state.sceneIdx+1<GAME_DATA.length;
+  document.getElementById('next-btn').style.display=hasNext?'block':'none';showPhase('phase-result');
+}
+function getRank(wpm,acc){if(acc>=95&&wpm>=70)return'S';if(acc>=88&&wpm>=50)return'A';if(acc>=78&&wpm>=35)return'B';if(acc>=65)return'C';return'D';}
+function goNext(){const scene=GAME_DATA[state.sceneIdx];if(state.paraIdx+1<scene.paragraphs.length)selectStage(state.sceneIdx,state.paraIdx+1);else if(state.sceneIdx+1<GAME_DATA.length)selectStage(state.sceneIdx+1,0);else showHome();}
+function retryStage(){selectStage(state.sceneIdx,state.paraIdx);}
+function saveRecord(si,pi,rec){const all=loadAllRecords(),key=`${si}-${pi}`;if(!all[key]||rec.score>all[key].score)all[key]=rec;localStorage.setItem(LS_KEY,JSON.stringify(all));}
+function loadAllRecords(){return JSON.parse(localStorage.getItem(LS_KEY)||'{}');}
+document.addEventListener('keydown',function(e){if(state.isRunning)return;const pv=!document.getElementById('phase-playing').classList.contains('hidden'),sv=document.getElementById('start-btn').style.display!=='none';if(pv&&sv&&(e.key===' '||e.key==='Enter')){e.preventDefault();startTyping();}});
+showHome();
+</script>
+</body>
+</html>

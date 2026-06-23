@@ -27,6 +27,16 @@
     h1 { font-size: 1.4rem; color: #58a6ff; letter-spacing: 2px; margin-bottom: 4px; }
     .lesson-label { font-size: 0.8rem; color: #8b949e; margin-bottom: 28px; }
 
+    /* ===================== MUTE BUTTON ===================== */
+    #mute-btn {
+      position: fixed; top: 14px; right: 16px;
+      background: #161b22; border: 1px solid #30363d;
+      color: #e6edf3; border-radius: 8px;
+      padding: 5px 11px; font-size: 1.1rem;
+      cursor: pointer; z-index: 1000; line-height: 1;
+    }
+    #mute-btn:hover { border-color: #58a6ff; }
+
     /* ===================== HOME ===================== */
     .scene-group { width: 100%; max-width: 820px; margin-bottom: 24px; }
     .scene-title {
@@ -164,6 +174,26 @@
       animation: flash-anim 0.45s ease-out forwards;
     }
 
+    /* === WORD / COMBO / RANK ANIMATIONS === */
+    @keyframes word-done-kf {
+      0%   { background: rgba(63,185,80,0.45); border-radius: 3px; }
+      100% { background: transparent; }
+    }
+    .word-done { animation: word-done-kf 0.4s ease-out; }
+
+    @keyframes combo-pulse-kf {
+      0%,100% { transform: scale(1); }
+      45%     { transform: scale(1.4); }
+    }
+    .combo-pulse { animation: combo-pulse-kf 0.32s ease-in-out; }
+
+    @keyframes rank-pop-kf {
+      0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
+      65%  { transform: scale(1.18) rotate(4deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0); opacity: 1; }
+    }
+    .rank-pop { animation: rank-pop-kf 0.55s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
     /* ===================== RESULT ===================== */
     #phase-result { width: 100%; max-width: 560px; text-align: center; }
 
@@ -194,6 +224,8 @@
   </style>
 </head>
 <body>
+
+<button id="mute-btn" onclick="toggleMute()" title="サウンドON/OFF">🔊</button>
 
 <!-- 画面全体の赤フラッシュ演出用オーバーレイ -->
 <div id="damage-flash"></div>
@@ -262,6 +294,61 @@
 <footer>広島大学附属福山高校 英語科</footer>
 
 <script>
+/* ===== SOUND ENGINE (Web Audio API — no audio files) ===== */
+let _ac = null;
+let _muted = localStorage.getItem('tg_muted') === '1';
+function toggleMute() {
+  _muted = !_muted;
+  localStorage.setItem('tg_muted', _muted ? '1' : '0');
+  document.getElementById('mute-btn').textContent = _muted ? '🔇' : '🔊';
+}
+document.addEventListener('DOMContentLoaded', () => {
+  if (_muted) document.getElementById('mute-btn').textContent = '🔇';
+});
+function _ctx() {
+  if (!_ac) _ac = new (window.AudioContext || window.webkitAudioContext)();
+  return _ac;
+}
+function _tone(freq, vol, dur, type, delay) {
+  if (_muted) return;
+  const ctx = _ctx(), o = ctx.createOscillator(), g = ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.type = type; o.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+  g.gain.setValueAtTime(0, ctx.currentTime + delay);
+  g.gain.linearRampToValueAtTime(vol, ctx.currentTime + delay + 0.015);
+  g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + dur);
+  o.start(ctx.currentTime + delay); o.stop(ctx.currentTime + delay + dur + 0.01);
+}
+function sfxClick() {
+  if (_muted) return;
+  const ctx = _ctx(), g = ctx.createGain();
+  g.connect(ctx.destination);
+  g.gain.setValueAtTime(0.055, ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.022);
+  const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.022), ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+  const s = ctx.createBufferSource(); s.buffer = buf; s.connect(g); s.start();
+}
+function sfxError()    { _tone(160, 0.08, 0.12, 'sawtooth', 0); }
+function sfxWordDone() { [523,784].forEach((f,i)=>_tone(f,0.11,0.14,'sine',i*0.07)); }
+function sfxCombo(tier) {
+  [[523,659],[659,784],[784,1047],[1047,1319]][tier].forEach((f,i)=>_tone(f,0.1,0.16,'sine',i*0.07));
+}
+function sfxHPLoss()   { _tone(100, 0.15, 0.28, 'square', 0); }
+function sfxGameOver() { [280,220,170,120].forEach((f,i)=>_tone(f,0.13,0.25,'square',i*0.14)); }
+function sfxStageClear() {
+  [[523,0],[659,0.1],[784,0.2],[1047,0.32],[1319,0.48]].forEach(([f,t])=>_tone(f,0.15,0.45,'triangle',t));
+}
+function flashWordDone(wordId) {
+  document.querySelectorAll(`[data-word="${wordId}"]`).forEach(el => {
+    el.classList.remove('word-done');
+    void el.offsetWidth;
+    el.classList.add('word-done');
+  });
+}
+/* ========================================================== */
+
 /* ============================================================
    📚 ゲームデータ: Lesson 1 の段落をステージとして定義
    Scene（場面）→ paragraphs（段落）の2階層構造
@@ -556,7 +643,9 @@ function handleKey(event) {
 
   if (typed === expected) {
     /* ✅ 正解 */
+    sfxClick();
     currentSpan.className = 'char-correct';
+    const prevWordId = state.charWordMap[state.charIndex];
     state.charIndex++;
     state.combo++;
     if (state.combo > state.maxCombo) state.maxCombo = state.combo;
@@ -568,10 +657,23 @@ function handleKey(event) {
     updateWordHighlight();
     setComboDisplay(state.combo);
 
+    /* 単語完了検出 */
+    const nextWordId = state.charWordMap[state.charIndex];
+    if (prevWordId >= 0 && nextWordId !== prevWordId) {
+      flashWordDone(prevWordId);
+      sfxWordDone();
+    }
+
+    /* コンボマイルストーン SE */
+    const comboTiers = [10, 20, 30, 50];
+    const tier = comboTiers.indexOf(state.combo);
+    if (tier >= 0) sfxCombo(Math.min(tier, 3));
+
     if (state.charIndex >= state.text.length) { finishStage(); return; }
 
   } else {
     /* ❌ ミス */
+    sfxError();
     currentSpan.className = 'char-error';
     state.errors++;
     state.combo = 0;
@@ -581,7 +683,8 @@ function handleKey(event) {
     if (state.errors % HP_THRESHOLD === 0) {
       state.hp--;
       renderHP();
-      if (state.hp <= 0) { gameOver(); return; }
+      if (state.hp <= 0) { sfxGameOver(); gameOver(); return; }
+      sfxHPLoss();
       triggerDamageFlash();   /* ダメージフラッシュ（通常）*/
     }
   }
@@ -697,8 +800,14 @@ function finishStage() {
   const rankColors = { S:'#ffd700', A:'#58a6ff', B:'#3fb950', C:'#d29922', D:'#8b949e' };
   const rankLabels = { S:'PERFECT', A:'GREAT', B:'GOOD', C:'OK', D:'TRY AGAIN' };
 
-  document.getElementById('result-rank').textContent    = rank;
-  document.getElementById('result-rank').style.color    = rankColors[rank];
+  sfxStageClear();
+
+  const rankEl = document.getElementById('result-rank');
+  rankEl.textContent = rank;
+  rankEl.style.color = rankColors[rank];
+  rankEl.classList.remove('rank-pop');
+  void rankEl.offsetWidth;
+  rankEl.classList.add('rank-pop');
   document.getElementById('result-rank-label').textContent = rankLabels[rank];
   document.getElementById('result-score').textContent   = finalScore.toLocaleString();
   document.getElementById('res-wpm').textContent        = wpm;

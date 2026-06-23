@@ -87,17 +87,44 @@
       display: flex; align-items: center; gap: 10px;
     }
     #input-bar label { font-size: 0.78rem; color: #8b949e; white-space: nowrap; }
+    #input-wrapper { flex: 1; position: relative; }
     #type-input {
-      flex: 1; background: #0d1117;
+      width: 100%; background: #0d1117;
       border: 1.5px solid #30363d; border-radius: 8px;
-      color: #e6edf3; font-size: 1.05rem;
+      color: transparent; caret-color: #e6edf3; font-size: 1.05rem;
       padding: 9px 14px; outline: none;
       font-family: 'Courier New', monospace;
       transition: border-color 0.15s, background 0.15s;
     }
+    #type-input::placeholder { color: #484f58; }
     #type-input:focus   { border-color: #58a6ff; }
     #type-input.correct { border-color: #3fb950; background: rgba(63,185,80,0.07); }
     #type-input:disabled { opacity: 0.35; }
+    #type-input-overlay {
+      position: absolute; inset: 0; padding: 9px 14px;
+      font-family: 'Courier New', monospace; font-size: 1.05rem;
+      pointer-events: none; display: flex; align-items: center;
+      white-space: pre; letter-spacing: 0;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-7px); }
+      40%      { transform: translateX(7px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
+    }
+    #type-input.shake { animation: shake 0.32s ease; border-color: #f85149 !important; }
+    #res-wrong-list {
+      max-height: 130px; overflow-y: auto; width: 100%; max-width: 520px;
+      text-align: left; margin-top: 6px;
+    }
+    #res-wrong-list .wl-title { font-size: 0.8rem; color: #f85149; margin-bottom: 5px; letter-spacing: 1px; }
+    #res-wrong-list .wl-item {
+      padding: 3px 10px; border-left: 3px solid #f85149;
+      margin-bottom: 3px; font-size: 0.82rem;
+    }
+    #res-wrong-list .wl-correct { color: #3fb950; font-weight: bold; font-family: 'Courier New', monospace; }
+    #res-wrong-list .wl-ja { color: #6e7681; }
 
     .foot-hint { font-size: 0.72rem; color: #484f58; text-align: center; margin-top: 8px; }
 
@@ -138,6 +165,12 @@
     #res-best  { font-size:0.82rem; color:#8b949e; margin-top:2px; }
     #scene-desc { font-size:0.78rem; color:#8b949e; text-align:center; max-width:480px; padding:0 8px; min-height:1.3em; }
     #type-progress { font-size:0.72rem; color:#484f58; text-align:right; padding:3px 14px 0; height:16px; }
+    #game-f2-hint {
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+      background: rgba(13,17,23,0.65); border-radius: 6px; padding: 3px 14px;
+      font-size: 0.72rem; color: #484f58; pointer-events: none; z-index: 5;
+      white-space: nowrap; display: none;
+    }
   </style>
 </head>
 <body>
@@ -186,12 +219,15 @@
       <div class="detail" id="res-detail"></div>
       <div id="res-stars"></div>
       <div id="res-best"></div>
+      <div id="res-wrong-list"></div>
       <div class="btn-row" style="margin-top:12px">
         <button class="btn-go blue" onclick="retryGame()">もう一度</button>
         <button class="btn-go" id="btn-next-scene" onclick="nextScene()" style="display:none">次の Scene →</button>
       </div>
       <button class="btn-go dim" onclick="showTitle()" style="margin-top:6px">タイトルへ</button>
     </div>
+
+    <div id="game-f2-hint">F2 で音声は何度も再生できるよ！</div>
 
     <!-- Clear animation -->
     <div class="screen hidden" id="screen-clear">
@@ -205,9 +241,12 @@
     <button id="pause-btn" onclick="togglePause()">⏸ 一時停止</button>
     <button id="replay-btn" onclick="replayAudio()">🔊 再生</button>
     <label>TYPE:</label>
-    <input type="text" id="type-input"
-      placeholder="英語をタイプ..."
-      autocomplete="off" autocorrect="off" spellcheck="false" disabled />
+    <div id="input-wrapper">
+      <input type="text" id="type-input"
+        placeholder="英語をタイプ..."
+        autocomplete="off" autocorrect="off" spellcheck="false" disabled />
+      <div id="type-input-overlay"></div>
+    </div>
   </div>
   <div id="type-progress"></div>
   <div class="foot-hint">L3 — Bye Bye Plastics</div>
@@ -553,6 +592,7 @@ let pGame       = null;
 let gameScene   = null;
 let activeItem  = null;
 let isPaused    = false;
+let wrongList   = [];
 
 /* ===== UI ===== */
 const SCENE_DESCS = [
@@ -582,6 +622,8 @@ function showTitle() {
   ['screen-result','screen-pause'].forEach(id => document.getElementById(id).classList.add('hidden'));
   const inp = document.getElementById('type-input');
   inp.disabled = true; inp.value = '';
+  document.getElementById('type-input-overlay').innerHTML = '';
+  document.getElementById('game-f2-hint').style.display = 'none';
   document.getElementById('pause-btn').style.display = 'none';
   document.getElementById('replay-btn').style.display = 'none';
   if (pGame) { pGame.destroy(true); pGame = null; gameScene = null; }
@@ -593,6 +635,8 @@ function showResult() {
   isPaused = false;
   const inp = document.getElementById('type-input');
   inp.disabled = true; inp.value = '';
+  document.getElementById('type-input-overlay').innerHTML = '';
+  document.getElementById('game-f2-hint').style.display = 'none';
   document.getElementById('pause-btn').style.display = 'none';
   document.getElementById('replay-btn').style.display = 'none';
   document.getElementById('screen-result').classList.remove('hidden');
@@ -613,6 +657,14 @@ function showResult() {
     document.getElementById('res-best').textContent = !_prev ? '初回クリア！🎉' : '🏆 NEW RECORD!';
   } else {
     document.getElementById('res-best').textContent = 'ベスト: ' + _prev.score.toLocaleString() + ' pt';
+  }
+  const wlEl = document.getElementById('res-wrong-list');
+  if (wrongList.length > 0) {
+    const seen = new Set(), uniq = wrongList.filter(w => seen.has(w.correct) ? false : seen.add(w.correct));
+    wlEl.innerHTML = '<div class="wl-title">⚠ 次回はこれらに気をつけよう</div>' +
+      uniq.map(w => `<div class="wl-item"><span class="wl-correct">${w.correct}</span>　<span class="wl-ja">${w.ja}</span></div>`).join('');
+  } else {
+    wlEl.innerHTML = '';
   }
 }
 
@@ -673,10 +725,21 @@ function speakForMode(item) {
   if (gameMode === 'phrase') return item.phrase.target;
   return item.full;
 }
+let _voices = [];
+if (typeof speechSynthesis !== 'undefined') {
+  speechSynthesis.onvoiceschanged = () => { _voices = speechSynthesis.getVoices(); };
+  _voices = speechSynthesis.getVoices();
+}
 function speak(text) {
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-US'; u.rate = 0.82;
+  const preferred = ['Google US English', 'Microsoft Zira Desktop', 'Samantha', 'Karen', 'Moira', 'Tessa'];
+  const voices = _voices.length ? _voices : speechSynthesis.getVoices();
+  const voice = preferred.reduce((f, n) => f || voices.find(v => v.name === n), null)
+             || voices.find(v => v.lang === 'en-US')
+             || null;
+  if (voice) u.voice = voice;
   window.speechSynthesis.speak(u);
 }
 
@@ -710,7 +773,8 @@ function startGame() {
     : DICT_DATA.flatMap(sc => sc.items.map(it => ({ ...it, _color: sc.color })));
 
   qIdx = 0; hp = MAX_HP; score = 0; combo = 0; maxCombo = 0; hits = 0;
-  activeItem = null; isPaused = false;
+  activeItem = null; isPaused = false; wrongList = [];
+  document.getElementById('game-f2-hint').style.display = 'block';
   document.getElementById('pause-btn').style.display = '';
   document.getElementById('pause-btn').textContent = '⏸ 一時停止';
   document.getElementById('replay-btn').style.display = '';
@@ -727,11 +791,39 @@ function startGame() {
 
 /* ===== INPUT ===== */
 const inp = document.getElementById('type-input');
+const _ov  = document.getElementById('type-input-overlay');
+
+function _clearInp() { inp.value = ''; _ov.innerHTML = ''; }
+
+function shakeInput() {
+  inp.classList.remove('shake');
+  void inp.offsetWidth;
+  inp.classList.add('shake');
+  inp.addEventListener('animationend', () => inp.classList.remove('shake'), { once: true });
+}
+function sfxWrongEnter() {
+  _tone(260, 0.18, 0.10, 'sawtooth', 0);
+  _tone(200, 0.14, 0.14, 'sawtooth', 0.07);
+}
+function updateOverlay() {
+  if (!activeItem) { _ov.innerHTML = ''; return; }
+  const typed  = inp.value;
+  const rawExp = speakForMode(activeItem).toLowerCase();
+  let html = '';
+  for (let i = 0; i < typed.length; i++) {
+    const ch  = typed[i];
+    const ok  = ch.toLowerCase() === (rawExp[i] || '').toLowerCase();
+    const esc = ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch === ' ' ? ' ' : ch;
+    html += `<span style="color:${ok ? '#e6edf3' : '#f85149'}">${esc}</span>`;
+  }
+  _ov.innerHTML = html;
+}
+
 inp.addEventListener('input', () => {
   if (!gameScene || !activeItem || isPaused) return;
   const _tp = document.getElementById('type-progress');
   if (norm(inp.value) === getExpected(activeItem)) {
-    inp.value = '';
+    _clearInp();
     if (_tp) _tp.textContent = '';
     inp.classList.add('correct');
     setTimeout(() => inp.classList.remove('correct'), 340);
@@ -741,15 +833,28 @@ inp.addEventListener('input', () => {
     score += gain;
     sfxHit(); sfxCombo(combo);
     gameScene.onHit(gain);
-  } else if (_tp && activeItem) {
-    const _exp = getExpected(activeItem), _typed = norm(inp.value);
-    let _m = 0; while (_m < _typed.length && _m < _exp.length && _typed[_m] === _exp[_m]) _m++;
-    _tp.textContent = _typed.length ? (_m + ' / ' + _exp.length + '文字一致') : '(' + _exp.length + '文字)';
+  } else {
+    updateOverlay();
+    if (_tp && activeItem) {
+      const _exp = getExpected(activeItem), _typed = norm(inp.value);
+      let _m = 0; while (_m < _typed.length && _m < _exp.length && _typed[_m] === _exp[_m]) _m++;
+      _tp.textContent = _typed.length ? (_m + ' / ' + _exp.length + '文字一致') : '(' + _exp.length + '文字)';
+    }
   }
 });
 let _bsCount = 0;
 inp.addEventListener('keydown', (e) => {
-  if (e.key === 'Backspace') { _bsCount++; if (_bsCount >= 8) { inp.value = ''; _bsCount = 0; } } else { _bsCount = 0; }
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if (!gameScene || !activeItem || isPaused) return;
+    if (norm(inp.value) !== getExpected(activeItem)) {
+      sfxWrongEnter();
+      shakeInput();
+      _clearInp();
+    }
+    return;
+  }
+  if (e.key === 'Backspace') { _bsCount++; if (_bsCount >= 8) { _clearInp(); _bsCount = 0; } } else { _bsCount = 0; }
 });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
@@ -1150,6 +1255,15 @@ class GameScene extends Phaser.Scene {
     this._clearGrace(box);
 
     const correct = activeItem ? getExpected(activeItem) : '';
+    if (activeItem) {
+      wrongList.push({
+        correct: speakForMode(activeItem),
+        ja: gameMode === 'word'   ? activeItem.word.ja
+          : gameMode === 'phrase' ? activeItem.phrase.ja
+          :                         activeItem.clause.ja
+      });
+    }
+    _clearInp();
     activeItem = null;
     combo = 0;
     hp--;
