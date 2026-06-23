@@ -197,6 +197,7 @@
         <button class="mode-btn active" id="mbtn-word"   onclick="selectMode('word')">語モード（原形入力）</button>
         <button class="mode-btn"        id="mbtn-phrase"  onclick="selectMode('phrase')">語句モード（フレーズ）</button>
         <button class="mode-btn hard"   id="mbtn-clause"  onclick="selectMode('clause')">節モード（節クローズ） ★</button>
+        <button class="mode-btn hard"   id="mbtn-full"    onclick="selectMode('full')">全文ディクテーション ★★</button>
       </div>
       <button class="btn-go" onclick="startGame()">▶ スタート</button>
     </div>
@@ -409,7 +410,7 @@ const DICT_DATA = [
       { full: 'It started in 2013 and has now grown into a well-known international movement which says NO to plastic bags.',
         word:   { target: 'movement',    base: 'movement',    ja: '運動、活動' },
         phrase: { target: 'a well-known international movement',    ja: '世界的に有名な国際的な運動' },
-        clause: { target: 'it has now grown into',                  ja: '今や～に成長した' } },
+        clause: { target: 'has now grown into a well-known',        ja: '世界的に有名な活動に成長した' } },
       { full: 'Bali is known by local people as a green paradise.',
         word:   { target: 'paradise',    base: 'paradise',    ja: '楽園、天国' },
         phrase: { target: 'known by local people as',               ja: '地元の人々には～として知られている' },
@@ -417,11 +418,11 @@ const DICT_DATA = [
       { full: 'The sisters found, however, that people in Bali then produced 680 cubic meters of plastic garbage a day.',
         word:   { target: 'cubic',       base: 'cubic',       ja: '立方体の' },
         phrase: { target: 'cubic meters of plastic garbage',        ja: '～立方メートルのプラスチックごみ' },
-        clause: { target: 'that people in Bali produced',           ja: 'バリの人々が生み出していたことを' } },
+        clause: { target: 'that people in Bali then produced',      ja: 'バリの人々が生み出していたことを' } },
       { full: 'Amazingly, this was about the size of a 14-story building, but less than 5% got recycled.',
         word:   { target: 'amazingly',   base: 'amazing',     ja: '驚くことに' },
         phrase: { target: 'less than 5% got recycled',              ja: '5%未満しかリサイクルされなかった' },
-        clause: { target: 'this was about the size of a building',  ja: 'これはビルの大きさほどだった' } },
+        clause: { target: 'this was about the size of',             ja: 'これは～の大きさほどだった' } },
       { full: 'The rest ended up in rivers and the ocean, or it was just burned or thrown away.',
         word:   { target: 'ocean',       base: 'ocean',       ja: '海' },
         phrase: { target: 'ended up in rivers and the ocean',       ja: '最終的に川や海に流れ着いた' },
@@ -429,7 +430,7 @@ const DICT_DATA = [
       { full: 'Such plastic pollution was damaging the whole island.',
         word:   { target: 'pollution',   base: 'pollution',   ja: '汚染' },
         phrase: { target: 'Such plastic pollution was damaging',     ja: 'そのようなプラスチック汚染が傷つけていた' },
-        clause: { target: 'plastic pollution was damaging the island', ja: 'プラスチック汚染が島を傷つけていた' } }
+        clause: { target: 'plastic pollution was damaging the whole island', ja: 'プラスチック汚染が島を傷つけていた' } }
     ]
   },
   {
@@ -446,7 +447,7 @@ const DICT_DATA = [
       { full: 'Their first efforts focused on giving out non-plastic bags, such as net bags, newspaper bags, and 100% organic material bags, to local shops.',
         word:   { target: 'organic',     base: 'organic',     ja: '有機の、天然素材の' },
         phrase: { target: 'giving out non-plastic bags',            ja: '非プラスチック袋を配ること' },
-        clause: { target: 'Their first efforts focused on giving out bags', ja: '最初の取り組みは袋を配ることに焦点を当てた' } },
+        clause: { target: 'focused on giving out non-plastic bags',  ja: '非プラスチック袋を配ることに焦点を当てた' } },
       { full: 'They also began to teach local people about the pollution problems.',
         word:   { target: 'teach',       base: 'teach',       ja: '教える' },
         phrase: { target: 'teach local people about the pollution',  ja: '地元の人々に汚染について教える' },
@@ -466,7 +467,7 @@ const DICT_DATA = [
       { full: 'They went there and talked with airport officials again and again.',
         word:   { target: 'officials',   base: 'official',    ja: '職員、関係者' },
         phrase: { target: 'again and again',                        ja: '何度も繰り返し' },
-        clause: { target: 'They talked with airport officials again and again', ja: '彼女たちは空港職員と何度も話し合った' } },
+        clause: { target: 'talked with airport officials again and again', ja: '空港職員と何度も話し合った' } },
       { full: 'They were finally allowed to collect signatures there.',
         word:   { target: 'allowed',     base: 'allow',       ja: '許可された' },
         phrase: { target: 'were finally allowed to collect',         ja: 'ついに収集を許可された' },
@@ -491,15 +492,15 @@ const DICT_DATA = [
       { full: 'The two girls then talked with a health specialist and settled for not eating from sunrise to sunset every day.',
         word:   { target: 'specialist',  base: 'specialist',  ja: '専門家' },
         phrase: { target: 'settled for not eating',                  ja: '食べないことで手を打った' },
-        clause: { target: 'they settled for not eating from sunrise to sunset', ja: '彼女たちは日の出から日没まで食べないことにした' } },
+        clause: { target: 'settled for not eating from sunrise to sunset', ja: '日の出から日没まで食べないことにした' } },
       { full: 'Finally, the governor of Bali heard about this and agreed to meet them.',
         word:   { target: 'governor',    base: 'governor',    ja: '知事' },
         phrase: { target: 'the governor of Bali heard about this',   ja: 'バリ知事がこのことを聞いた' },
-        clause: { target: 'the governor agreed to meet them',        ja: '知事は彼女たちと会うことに同意した' } },
+        clause: { target: 'the governor of Bali heard about this',   ja: 'バリの知事はこのことを聞いた' } },
       { full: 'To their surprise, he actually thanked them for caring about the beauty and the environment of Bali and agreed to work toward a plastic bag-free Bali.',
         word:   { target: 'surprise',    base: 'surprise',    ja: '驚き' },
         phrase: { target: 'To their surprise',                       ja: '驚いたことに' },
-        clause: { target: 'he thanked them for caring about the environment', ja: '彼は環境を気にかけたことに感謝した' } },
+        clause: { target: 'he actually thanked them for caring',     ja: '彼は気にかけてくれたことに感謝した' } },
       { full: 'In 2016, Indonesia began a 2-cent charge on single-use plastic bags in Bali, but the government quickly ended the policy.',
         word:   { target: 'policy',      base: 'policy',      ja: '政策' },
         phrase: { target: 'ended the policy',                        ja: '政策を終わらせた' },
@@ -511,7 +512,7 @@ const DICT_DATA = [
       { full: 'And they disagreed on how the collected taxes should be spent.',
         word:   { target: 'disagreed',   base: 'disagree',    ja: '意見が合わなかった' },
         phrase: { target: 'disagreed on how the taxes should be spent', ja: '税金をどう使うかで意見が合わなかった' },
-        clause: { target: 'they disagreed on how taxes should be spent', ja: '彼らは税金の使い方で意見が合わなかった' } },
+        clause: { target: 'they disagreed on how the collected taxes', ja: '集めた税金の使い方で意見が合わなかった' } },
       { full: 'Melati and Isabel were frustrated, but they remained hopeful and continued reminding the government about its promise.',
         word:   { target: 'hopeful',     base: 'hopeful',     ja: '希望を持って' },
         phrase: { target: 'remained hopeful',                        ja: '希望を持ち続けた' },
@@ -519,7 +520,7 @@ const DICT_DATA = [
       { full: 'They also kept on trying to gather support from local people in Bali.',
         word:   { target: 'gather',      base: 'gather',      ja: '集める' },
         phrase: { target: 'kept on trying to gather support',        ja: '支持を集めようとし続けた' },
-        clause: { target: 'They kept on trying to gather support',   ja: '彼女たちは支持を集めようとし続けた' } }
+        clause: { target: 'They also kept on trying to gather support', ja: '彼女たちは支持を集めようとし続けた' } }
     ]
   },
   {
@@ -532,7 +533,7 @@ const DICT_DATA = [
       { full: 'The governor of Bali placed a ban on single-use plastic starting in 2019.',
         word:   { target: 'placed',      base: 'place',       ja: '設けた、置いた' },
         phrase: { target: 'placed a ban on single-use plastic',      ja: '使い捨てプラスチックの禁止令を設けた' },
-        clause: { target: 'The governor placed a ban on plastic',    ja: '知事はプラスチックの禁止令を設けた' } },
+        clause: { target: 'The governor of Bali placed a ban',       ja: '知事はプラスチックの禁止令を設けた' } },
       { full: 'This meant no more plastic bags or plastic straws.',
         word:   { target: 'straws',      base: 'straw',       ja: 'ストロー' },
         phrase: { target: 'no more plastic bags or plastic straws',  ja: 'もうプラスチック袋もストローもない' },
@@ -540,15 +541,15 @@ const DICT_DATA = [
       { full: 'With this ban, the governor hoped to reduce Bali\'s plastic pollution by 70%.',
         word:   { target: 'reduce',      base: 'reduce',      ja: '減らす' },
         phrase: { target: 'hoped to reduce plastic pollution by 70%', ja: 'プラスチック汚染を70%削減したいと願った' },
-        clause: { target: 'the governor hoped to reduce plastic pollution', ja: '知事はプラスチック汚染を減らしたいと願った' } },
+        clause: { target: 'the governor hoped to reduce Bali\'s plastic pollution', ja: '知事はバリのプラスチック汚染を減らしたいと願った' } },
       { full: 'Melati and Isabel have been named among the world\'s most influential teenagers by three global companies.',
         word:   { target: 'influential', base: 'influential',  ja: '影響力のある' },
         phrase: { target: 'the world\'s most influential teenagers',  ja: '世界で最も影響力のある10代' },
-        clause: { target: 'Melati and Isabel have been named among the most influential', ja: 'メラティとイザベルは最も影響力のある一人に選ばれた' } },
+        clause: { target: 'Melati and Isabel have been named among', ja: 'メラティとイザベルは最も影響力のある一人に選ばれた' } },
       { full: 'Also, they were invited to talk about their campaign on TV programs and at the United Nations.',
         word:   { target: 'invited',     base: 'invite',      ja: '招かれた' },
         phrase: { target: 'were invited to talk about their campaign', ja: 'キャンペーンについて話すよう招かれた' },
-        clause: { target: 'they were invited to talk at the United Nations', ja: '彼女たちは国連で話すよう招かれた' } },
+        clause: { target: 'they were invited to talk about their campaign', ja: '彼女たちはキャンペーンについて話すよう招かれた' } },
       { full: 'However, they think they still have a lot of work to do.',
         word:   { target: 'still',       base: 'still',       ja: 'まだ' },
         phrase: { target: 'still have a lot of work to do',          ja: 'まだやるべき仕事がたくさんある' },
@@ -556,11 +557,11 @@ const DICT_DATA = [
       { full: 'They want to spread the "no plastic bags" campaign not just in Bali but around the world.',
         word:   { target: 'spread',      base: 'spread',      ja: '広める' },
         phrase: { target: 'not just in Bali but around the world',   ja: 'バリだけでなく世界中に' },
-        clause: { target: 'They want to spread the campaign around the world', ja: '彼女たちはキャンペーンを世界に広めたい' } },
+        clause: { target: 'They want to spread the "no plastic bags" campaign', ja: '「プラスチック袋ノー」キャンペーンを広めたい' } },
       { full: 'They are proud that they have shown even kids can do things that can contribute to society.',
         word:   { target: 'contribute',  base: 'contribute',  ja: '貢献する' },
         phrase: { target: 'contribute to society',                   ja: '社会に貢献する' },
-        clause: { target: 'even kids can contribute to society',     ja: '子どもでも社会に貢献できる' } },
+        clause: { target: 'even kids can do things that can contribute', ja: '子どもでも社会に貢献できる' } },
       { full: 'They are hoping that other young people will join them to change the world.',
         word:   { target: 'hoping',      base: 'hope',        ja: '願っている' },
         phrase: { target: 'will join them to change the world',      ja: '世界を変えるために加わる' },
@@ -608,7 +609,7 @@ function selectScene(s) {
 }
 function selectMode(m) {
   gameMode = m;
-  ['word','phrase','clause'].forEach(k =>
+  ['word','phrase','clause','full'].forEach(k =>
     document.getElementById('mbtn-' + k).classList.toggle('active', k === m)
   );
 }
@@ -716,15 +717,51 @@ function togglePause() {
 function replayAudio() {
   if (!activeItem || isPaused) return;
   window.speechSynthesis.cancel();
-  speak(speakForMode(activeItem));
+  speak(ttsForMode(activeItem));
 }
 
 /* ===== SPEECH ===== */
 function speakForMode(item) {
   if (gameMode === 'word')   return item.word.base || item.word.target;
   if (gameMode === 'phrase') return item.phrase.target;
+  if (gameMode === 'clause') return item.clause.target;
   return item.full;
 }
+function ttsForMode(item) {
+  if (gameMode === 'word')   return item.word.base || item.word.target;
+  if (gameMode === 'phrase') return item.phrase.target;
+  return item.full;
+}
+
+let _fullRepeatActive = false;
+let _fullRepeatTimer  = null;
+function _startFullRepeat(item) {
+  _stopFullRepeat();
+  _fullRepeatActive = true;
+  // 初回再生が終わるまで待つ（11秒 = 長文でも確実に読み終わる余裕）
+  _fullRepeatTimer = setTimeout(() => _fullRepeatLoop(item), 11000);
+}
+function _fullRepeatLoop(item) {
+  if (!_fullRepeatActive || gameMode !== 'full' || !activeItem || activeItem !== item) return;
+  const u = new SpeechSynthesisUtterance(ttsForMode(item));
+  u.lang = 'en-US'; u.rate = 0.82;
+  const voices = (_voices && _voices.length) ? _voices : speechSynthesis.getVoices();
+  const preferred = ['Google US English','Microsoft Zira Desktop','Samantha','Karen','Moira','Tessa'];
+  const voice = preferred.reduce((f, n) => f || voices.find(v => v.name === n), null)
+             || voices.find(v => v.lang === 'en-US') || null;
+  if (voice) u.voice = voice;
+  // 読み終わったら2.5秒後にまた流す
+  u.onend = () => {
+    if (!_fullRepeatActive || gameMode !== 'full' || !activeItem || activeItem !== item) return;
+    _fullRepeatTimer = setTimeout(() => _fullRepeatLoop(item), 2500);
+  };
+  window.speechSynthesis.speak(u);
+}
+function _stopFullRepeat() {
+  _fullRepeatActive = false;
+  if (_fullRepeatTimer !== null) { clearTimeout(_fullRepeatTimer); _fullRepeatTimer = null; }
+}
+
 let _voices = [];
 if (typeof speechSynthesis !== 'undefined') {
   speechSynthesis.onvoiceschanged = () => { _voices = speechSynthesis.getVoices(); };
@@ -751,7 +788,8 @@ function norm(s) {
 function getExpected(item) {
   if (gameMode === 'word')   return norm(item.word.base || item.word.target);
   if (gameMode === 'phrase') return norm(item.phrase.target);
-  return norm(item.clause.target);
+  if (gameMode === 'clause') return norm(item.clause.target);
+  return norm(item.full);
 }
 
 function clozeDisplay(full, target) {
@@ -773,7 +811,7 @@ function startGame() {
     : DICT_DATA.flatMap(sc => sc.items.map(it => ({ ...it, _color: sc.color })));
 
   qIdx = 0; hp = MAX_HP; score = 0; combo = 0; maxCombo = 0; hits = 0;
-  activeItem = null; isPaused = false; wrongList = [];
+  activeItem = null; isPaused = false; wrongList = []; _stopFullRepeat();
   document.getElementById('game-f2-hint').style.display = 'block';
   document.getElementById('pause-btn').style.display = '';
   document.getElementById('pause-btn').textContent = '⏸ 一時停止';
@@ -918,7 +956,7 @@ class GameScene extends Phaser.Scene {
       fontSize: '10px', fill: '#484f58', fontFamily: 'Arial'
     }).setOrigin(0.5, 1);
 
-    const mLabel = { word: '語モード（原形）', phrase: '語句モード（フレーズ）', clause: '節モード（節クローズ）' }[gameMode];
+    const mLabel = { word: '語モード（原形）', phrase: '語句モード（フレーズ）', clause: '節モード（節クローズ）', full: '全文ディクテーション' }[gameMode];
     this.add.text(16, GH - 10, mLabel, {
       fontSize: '10px', fill: '#21262d', fontFamily: 'Arial'
     }).setOrigin(0, 1);
@@ -1003,7 +1041,8 @@ class GameScene extends Phaser.Scene {
 
       const lionPct = queue.length > 0 ? qIdx / queue.length : 0;
     this._lionTargetX = 30 + lionPct * (GW - 80);
-    speak(speakForMode(item));
+    speak(ttsForMode(item));
+    if (gameMode === 'full') _startFullRepeat(item);
       this.time.delayedCall(700, () => {
         if (!gameScene || activeItem !== item) return;
         this._spawnBox(item);
@@ -1020,8 +1059,10 @@ class GameScene extends Phaser.Scene {
       this._spawnStdBox(item, colorHex, colorInt);
     } else if (gameMode === 'phrase') {
       this._spawnClozeBox(item, item.phrase.target, item.phrase.ja, colorHex, colorInt);
-    } else {
+    } else if (gameMode === 'clause') {
       this._spawnClozeBox(item, item.clause.target, item.clause.ja, colorHex, colorInt);
+    } else {
+      this._spawnFullBox(item, colorHex, colorInt);
     }
   }
 
@@ -1102,13 +1143,49 @@ class GameScene extends Phaser.Scene {
     this.tweens.add({ targets: this._box, alpha: 1, duration: 280, ease: 'Power2' });
   }
 
+  /* 全文ディクテーションモード用BOX */
+  _spawnFullBox(item, colorHex, colorInt) {
+    const ja   = item.clause.ja;
+    const boxW = 860, boxH = 90;
+
+    const glow = this.add.graphics();
+    glow.lineStyle(9, colorInt, 0.10);
+    glow.strokeRoundedRect(-boxW / 2 - 5, -boxH / 2 - 5, boxW + 10, boxH + 10, 13);
+    glow.lineStyle(4, colorInt, 0.18);
+    glow.strokeRoundedRect(-boxW / 2 - 2, -boxH / 2 - 2, boxW + 4, boxH + 4, 11);
+
+    const bg = this.add.graphics();
+    bg.fillStyle(colorInt, 0.10);
+    bg.lineStyle(2, colorInt, 0.75);
+    bg.fillRoundedRect(-boxW / 2, -boxH / 2, boxW, boxH, 10);
+    bg.strokeRoundedRect(-boxW / 2, -boxH / 2, boxW, boxH, 10);
+
+    const jaTx = this.add.text(0, -14, ja, {
+      fontSize: '16px', fill: colorHex, fontStyle: 'bold',
+      fontFamily: `'Hiragino Kaku Gothic ProN','Noto Sans JP',Arial`,
+      wordWrap: { width: boxW - 40 }, align: 'center'
+    }).setOrigin(0.5, 0.5);
+
+    const hintTx = this.add.text(0, 30, '★★ 一文丸ごと入力 | 🔊 ループ再生中', {
+      fontSize: '11px', fill: '#484f58', fontFamily: 'Arial'
+    }).setOrigin(0.5, 0.5);
+
+    this._box = this.add.container(GW / 2, SPAWN_Y, [glow, bg, jaTx, hintTx]);
+    this._box._missed   = false;
+    this._box._grace    = false;
+    this._box._colorInt = colorInt;
+
+    this._box.setAlpha(0);
+    this.tweens.add({ targets: this._box, alpha: 1, duration: 280, ease: 'Power2' });
+  }
+
   update(_, delta) {
     if (this._lion && this._lionTargetX !== undefined) {
       this._lion.x += (this._lionTargetX - this._lion.x) * 0.025;
     }
     if (!this._box || this._box._missed || this._box._grace) return;
     const dt = Math.min(delta, 50) / 1000;
-    const spd = gameMode === 'phrase' ? 27 : gameMode === 'clause' ? 20 : 41;
+    const spd = gameMode === 'full' ? 7 : gameMode === 'phrase' ? 27 : gameMode === 'clause' ? 20 : 41;
     this._box.y += spd * dt;
     if (this._box.y >= DANGER_Y) {
       this._box.y = DANGER_Y;
@@ -1178,6 +1255,7 @@ class GameScene extends Phaser.Scene {
     const colorInt = box._colorInt || 0x58a6ff;
     this._box = null;
     activeItem = null;
+    _stopFullRepeat();
 
     this._clearGrace(box);
     this._updateHUD();
@@ -1263,6 +1341,7 @@ class GameScene extends Phaser.Scene {
           :                         activeItem.clause.ja
       });
     }
+    _stopFullRepeat();
     _clearInp();
     activeItem = null;
     combo = 0;
