@@ -94,6 +94,46 @@
             margin-bottom: 14px;
             padding-left: 4px;
         }
+        .feature-banner {
+            max-width: 600px;
+            margin: 0 auto 28px;
+        }
+        .feature-card {
+            display: block;
+            background: linear-gradient(135deg, #e07b00 0%, #dc2626 100%);
+            border-radius: 18px;
+            padding: 24px 26px;
+            text-decoration: none;
+            color: #fff;
+            box-shadow: 0 6px 22px rgba(220,38,38,0.35);
+            transition: box-shadow 0.15s, transform 0.1s;
+            position: relative;
+        }
+        .feature-card:hover {
+            box-shadow: 0 8px 28px rgba(220,38,38,0.45);
+            transform: translateY(-2px);
+        }
+        .feature-badge {
+            display: inline-block;
+            background: #fff;
+            color: #dc2626;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 2px 10px;
+            border-radius: 10px;
+            letter-spacing: .5px;
+            margin-bottom: 10px;
+        }
+        .feature-title {
+            font-size: 1.35rem;
+            font-weight: bold;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+        .feature-desc {
+            font-size: 0.88rem;
+            color: rgba(255,255,255,0.92);
+        }
         footer {
             text-align: center;
             font-size: 0.78rem;
@@ -108,6 +148,15 @@
     <h1>英語学習ツール</h1>
     <p>広島大学附属福山高校 英語科</p>
 </header>
+
+<!-- 全統模試 特集バナー -->
+<div class="feature-banner">
+    <a class="feature-card" href="zenkoku-exam.html">
+        <span class="feature-badge">NEW</span>
+        <div class="feature-title">全統模試 8/29に向けて取り組もう</div>
+        <div class="feature-desc">大問2〜6（語彙・文法・英作文・長文読解×2）4年分。対訳表示・取り組み記録つき。</div>
+    </a>
+</div>
 
 <!-- Daily Tools -->
 <div class="daily-section">
@@ -152,16 +201,16 @@
         <div class="title">Speed Reading — Level 2</div>
         <div class="desc">Level 2 教材（タイマー・内容確認・音声読み上げ）</div>
     </a>
-
-    <a class="card-link" href="speed-reading-L01.html">
-        <div class="title">Speed Reading — L01: Why Zoos Are Important</div>
-        <div class="desc">400語・8問MCQ・音声読み上げ</div>
-    </a>
 </div>
 
-<!-- 入試対策 -->
+<!-- サタスタで使用 -->
 <div class="section">
-    <h2>入試対策</h2>
+    <h2>サタスタで使用</h2>
+
+    <a class="card-link orange" href="zenkoku-exam.html">
+        <div class="title">全統模試 英語対策（高1・8月）<span class="chip-new">NEW</span></div>
+        <div class="desc">大問2〜6（語彙・文法・英作文・長文読解×2）4年分。対訳表示・取り組み記録つき。</div>
+    </a>
 
     <a class="card-link orange" href="shinken-exam.html">
         <div class="title">進研模試 英語対策（高1・7月）<span class="chip-new">NEW</span></div>
@@ -181,31 +230,6 @@
     <a class="card-link blue" href="speaking-wpm.html">
         <div class="title">Speaking WPM Meter<span class="chip-new">NEW</span></div>
         <div class="desc">スピーキング速度（語/分）を計測・記録。クリックカウンター・音声自動計測・記録グラフ。</div>
-    </a>
-
-    <a class="card-link blue" href="L2-dictation.html">
-        <div class="title">ディクテーション — Level 2<span class="chip-new">NEW</span></div>
-        <div class="desc">Christian the Lion ／ 語モード・節モード・文モード。TTS音声付き。</div>
-    </a>
-
-    <a class="card-link blue" href="L1-typing-game.html">
-        <div class="title">タイピング練習 — Level 1</div>
-        <div class="desc">Christian the Lion ／ Scene 1〜4・14段落</div>
-    </a>
-
-    <a class="card-link blue" href="L2-typing-game.html">
-        <div class="title">タイピング練習 — Level 2<span class="chip-new">NEW</span></div>
-        <div class="desc">Christian the Lion ／ Scene 1〜4・14段落</div>
-    </a>
-
-    <a class="card-link blue" href="L3-typing-game.html">
-        <div class="title">タイピング練習 — Level 3<span class="chip-new">NEW</span></div>
-        <div class="desc">Bye Bye Plastics ／ Scene 1〜4・9段落</div>
-    </a>
-
-    <a class="card-link blue" href="L4-typing-game.html">
-        <div class="title">タイピング練習 — Level 4<span class="chip-new">NEW</span></div>
-        <div class="desc">Twice Bombed, Twice Survived ／ Scene 1〜4・12段落</div>
     </a>
 </div>
 

@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全統模試 英語（高1・8月　４年分）</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--fs:1.05rem;--lh:1.9}
+body{font-family:'Georgia','Times New Roman',serif;background:#f5f6f8;color:#222;line-height:var(--lh)}
+.container{max-width:820px;margin:0 auto;padding:70px 20px 60px}
+
+/* Top bar */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:#1a3a5c;color:#fff;display:flex;align-items:center;gap:8px;padding:8px 16px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.topbar-title{flex:1;font-size:.92rem;font-weight:bold;font-family:sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fs-controls{display:flex;align-items:center;gap:4px;margin-left:auto}
+.fs-label{font-size:.7rem;color:rgba(255,255,255,.6);font-family:sans-serif;margin-right:2px}
+.fs-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:4px;cursor:pointer;font-family:sans-serif;transition:background .12s;padding:3px 7px;line-height:1}
+.fs-btn:hover{background:rgba(255,255,255,.3)}
+#fs-s{font-size:.7rem}#fs-m{font-size:.82rem}#fs-l{font-size:.95rem}
+.btn-back{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:5px;cursor:pointer;font-size:.8rem;padding:4px 11px;font-family:sans-serif;display:none}
+.btn-back:hover{background:rgba(255,255,255,.3)}
+
+/* Home */
+.home-hero{background:linear-gradient(135deg,#1a3a5c 0%,#7c3aed 100%);color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:22px}
+.home-hero h1{font-size:1.35rem;margin-bottom:4px}
+.home-hero .sub{opacity:.75;font-size:.88rem;font-family:sans-serif;margin-top:5px;line-height:1.6}
+.home-cards{display:flex;flex-direction:column;gap:13px}
+.home-card{background:#fff;border-radius:12px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:flex-start;gap:16px;transition:transform .15s,box-shadow .15s,border-color .15s;border:2px solid transparent}
+.home-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12);border-color:#7c3aed}
+.home-card.wip{opacity:.75}
+.card-icon{font-size:2rem;flex-shrink:0;width:44px;text-align:center;padding-top:2px}
+.card-body{flex:1}
+.card-num{font-size:.7rem;font-family:sans-serif;font-weight:bold;letter-spacing:2px;color:#9ca3af;margin-bottom:3px}
+.card-title{font-size:.98rem;font-weight:bold;color:#1a3a5c;margin-bottom:4px}
+.card-desc{font-size:.8rem;color:#6b7280;font-family:sans-serif;line-height:1.55}
+.tags{margin-top:7px;display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-size:.66rem;font-family:sans-serif;font-weight:bold;padding:2px 7px;border-radius:10px}
+.t-mcq{background:#dbeafe;color:#1d4ed8}
+.t-error{background:#fef9c3;color:#854d0e}
+.t-reorder{background:#fce7f3;color:#9d174d}
+.t-write{background:#faf5ff;color:#7e22ce}
+.t-trans{background:#f0fdf4;color:#15803d}
+.t-match{background:#e0f2fe;color:#0369a1}
+.t-wip{background:#f1f5f9;color:#64748b}
+
+/* Screens */
+.screen{display:none}
+.screen.active{display:block}
+.sec-hero{background:#1a3a5c;color:#fff;border-radius:12px;padding:18px 26px;margin-bottom:18px}
+.sec-hero h2{font-size:1.15rem;margin-bottom:2px}
+.sec-hero .hero-sub{font-size:.8rem;opacity:.73;font-family:sans-serif;margin-top:5px;line-height:1.5}
+
+/* Year cards */
+.year-cards{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.year-card{background:#fff;border-radius:10px;padding:14px 18px;box-shadow:0 2px 8px rgba(0,0,0,.07);cursor:pointer;flex:1;min-width:110px;text-align:center;border:2px solid transparent;transition:all .15s}
+.year-card:hover{border-color:#7c3aed;box-shadow:0 4px 14px rgba(124,58,237,.15)}
+.year-card-yr{font-size:1.1rem;font-weight:bold;color:#1a3a5c;margin-bottom:2px}
+.year-card-sub{font-size:.68rem;font-family:sans-serif;color:#6b7280}
+
+/* Trend */
+.trend-section{background:#fff;border-radius:10px;padding:20px 24px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:18px}
+.trend-toggle{font-size:.9rem;font-weight:bold;color:#1a3a5c;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:sans-serif;user-select:none}
+.trend-arrow{font-size:.7rem;transition:transform .2s;display:inline-block}
+.trend-body{display:none;margin-top:14px}
+.trend-table{width:100%;border-collapse:collapse;font-size:.78rem;font-family:sans-serif;margin-bottom:12px}
+.trend-table th{background:#f8fafc;padding:7px 9px;text-align:left;border-bottom:2px solid #e5e7eb;font-weight:bold;color:#374151}
+.trend-table td{padding:7px 9px;border-bottom:1px solid #f1f5f9;color:#374151;vertical-align:top}
+.trend-note{font-size:.78rem;font-family:sans-serif;color:#374151;line-height:1.85;padding:12px 16px;background:#f8fafc;border-radius:7px;border-left:3px solid #7c3aed}
+
+/* Q section */
+.q-section{background:#fff;border-radius:10px;padding:24px 30px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:16px}
+.q-sec-title{font-size:.93rem;font-weight:bold;color:#1a3a5c;padding-bottom:9px;border-bottom:2px solid #e5e7eb;margin-bottom:18px;font-family:sans-serif}
+.q-block{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid #f1f5f9}
+.q-block:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.q-num{font-size:.72rem;font-family:sans-serif;font-weight:bold;letter-spacing:1px;color:#9ca3af;margin-bottom:4px}
+.q-text{font-size:var(--fs);font-weight:bold;margin-bottom:10px;line-height:1.7}
+.option-label{display:flex;align-items:flex-start;gap:10px;margin:5px 0;cursor:pointer;padding:6px 10px;border-radius:6px;transition:background .1s;font-size:calc(var(--fs) - .05rem)}
+.option-label:hover{background:#f5f3ff}
+.option-label input{margin-top:3px;flex-shrink:0;cursor:pointer;accent-color:#7c3aed}
+
+/* Buttons & results */
+.btn-check{display:inline-block;padding:9px 22px;border-radius:7px;border:none;font-size:.88rem;cursor:pointer;font-family:sans-serif;font-weight:bold;background:#7c3aed;color:#fff;margin-top:10px;transition:opacity .15s}
+.btn-check:hover{opacity:.87}
+.mcq-result{display:none;margin-top:14px}
+.r-item{padding:10px 14px;border-radius:7px;margin-bottom:8px;font-size:.84rem;line-height:1.65;font-family:sans-serif}
+.r-ok{background:#f0fdf4;border-left:3px solid #16a34a}
+.r-ng{background:#fff7ed;border-left:3px solid #ea580c}
+.tag-c{display:inline-block;background:#dcfce7;color:#15803d;border-radius:4px;font-size:.68rem;font-weight:bold;padding:1px 6px;margin-right:5px}
+.tag-w{display:inline-block;background:#fee2e2;color:#b91c1c;border-radius:4px;font-size:.68rem;font-weight:bold;padding:1px 6px;margin-right:5px}
+
+/* Matching (select) UI */
+.match-options-box{background:#f8fafc;border-radius:8px;padding:10px 14px;font-size:.8rem;font-family:sans-serif;color:#374151;margin-bottom:16px;line-height:1.9}
+.match-select{font-family:sans-serif;font-size:.85rem;padding:7px 10px;border:2px solid #e5e7eb;border-radius:6px;margin-top:4px;background:#fff;color:#1a3a5c;cursor:pointer;max-width:100%}
+.match-select:focus{outline:none;border-color:#7c3aed}
+
+/* Error finding (underline sentence) */
+.err-sentence{background:#fffbf0;border-radius:9px;padding:16px 20px;border-left:4px solid #f59e0b;font-weight:normal;line-height:2}
+.err-lab{color:#f59e0b;font-weight:bold;margin-right:1px;font-family:sans-serif}
+
+/* Reorder */
+.reorder-scramble{background:#f8fafc;border-radius:9px;padding:14px 18px;border:2px dashed #c4b5fd;font-size:calc(var(--fs) - .05rem);line-height:1.9;margin-bottom:10px;color:#374151}
+.reorder-note{font-size:.75rem;font-family:sans-serif;color:#b45309;background:#fffbeb;padding:6px 10px;border-radius:6px;margin-bottom:8px;display:inline-block}
+
+/* Model answer */
+.btn-model{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:6px;border:2px solid #16a34a;background:#fff;color:#16a34a;font-size:.82rem;cursor:pointer;font-family:sans-serif;font-weight:bold;margin-top:10px;transition:all .15s}
+.btn-model:hover,.btn-model.open{background:#16a34a;color:#fff}
+.model-wrap{display:none;margin-top:12px;background:#f0fdf4;border-radius:9px;padding:18px 22px;border-left:4px solid #16a34a}
+.model-head{font-size:.68rem;font-family:sans-serif;font-weight:bold;color:#15803d;letter-spacing:1.5px;margin-bottom:8px;text-transform:uppercase}
+.model-body{font-size:calc(var(--fs) - .05rem);line-height:var(--lh);color:#1a3a5c}
+.model-alt{margin-top:8px;font-size:.78rem;font-family:sans-serif;color:#6b7280}
+.model-pt{margin-top:12px;background:#fff;border-radius:7px;padding:11px 15px;font-size:.78rem;font-family:sans-serif;color:#374151;line-height:1.8;border:1px solid #bbf7d0}
+.model-pt-head{font-weight:bold;color:#15803d;margin-bottom:5px}
+
+/* Context / conversation box */
+.q6-context{background:#fffbeb;border-radius:9px;padding:14px 18px;border-left:4px solid #f59e0b;font-size:calc(var(--fs) - .06rem);line-height:var(--lh);margin-bottom:14px;color:#1a3a5c}
+.q6-context-label{font-size:.65rem;font-family:sans-serif;font-weight:bold;color:#b45309;letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase}
+.q6-underline{text-decoration:underline;text-decoration-color:#7c3aed;text-decoration-thickness:2px}
+.conv-line{font-size:calc(var(--fs) - .08rem);line-height:1.95;margin-bottom:4px;color:#1a3a5c;font-family:sans-serif}
+.memo-area{width:100%;min-height:90px;padding:11px 14px;border:2px solid #e5e7eb;border-radius:8px;font-size:calc(var(--fs) - .05rem);line-height:1.75;font-family:'Georgia',serif;resize:vertical;margin-top:10px;transition:border-color .15s}
+.memo-area:focus{outline:none;border-color:#7c3aed}
+.word-counter{font-size:.72rem;font-family:sans-serif;color:#9ca3af;margin-top:4px;text-align:right}
+.word-counter .wc-num{font-weight:bold;color:#7c3aed}
+.target-words{font-size:.78rem;font-family:sans-serif;color:#7c3aed;margin-bottom:8px}
+
+/* Progress badges */
+.year-card-badge{font-size:.62rem;font-family:sans-serif;font-weight:bold;padding:2px 8px;border-radius:10px;margin-top:5px;display:inline-block;background:#dcfce7;color:#15803d}
+.home-card-progress{font-size:.72rem;font-family:sans-serif;font-weight:bold;color:#15803d;margin-top:6px;display:inline-block}
+
+/* Bottom nav */
+.nav-bottom{margin-top:28px;display:flex;justify-content:center;gap:12px}
+.btn-tohome{padding:10px 28px;border-radius:7px;border:none;font-size:.88rem;cursor:pointer;font-family:sans-serif;font-weight:bold;background:#1a3a5c;color:#fff;transition:opacity .15s}
+.btn-tohome:hover{opacity:.85}
+
+/* Tile reorder UI */
+.tile-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:12px;background:#f8fafc;border:2px solid #e5e7eb;border-radius:8px;margin-bottom:10px;align-content:flex-start}
+.tile-answer-area{min-height:52px;padding:12px;background:#fffbf0;border:2px dashed #c4b5fd;border-radius:8px;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;align-items:flex-start;align-content:flex-start}
+.tile{display:inline-block;padding:6px 12px;border-radius:6px;border:2px solid #7c3aed;background:#fff;color:#7c3aed;font-size:calc(var(--fs) - .08rem);cursor:pointer;user-select:none;transition:all .12s;font-family:sans-serif;font-weight:bold}
+.tile:hover{background:#7c3aed;color:#fff}
+.tile.placed{border-color:#1a3a5c;color:#1a3a5c;background:#dbeafe}
+.tile.placed:hover{background:#fee2e2;border-color:#ef4444;color:#ef4444}
+.tile.correct{background:#dcfce7;border-color:#16a34a;color:#15803d;cursor:default}
+.tile.incorrect{background:#fee2e2;border-color:#ef4444;color:#b91c1c;cursor:default}
+.reorder-frame{font-size:var(--fs);line-height:1.8;margin-bottom:10px;color:#1a3a5c;padding:10px 14px;background:#f5f3ff;border-radius:8px}
+.btn-reset{padding:8px 14px;border-radius:7px;border:2px solid #e5e7eb;background:#fff;color:#6b7280;font-family:sans-serif;font-size:.82rem;cursor:pointer;margin-left:8px}
+
+/* Q3 hint collapsible */
+details.hint-detail{margin-top:6px}
+details.hint-detail summary{font-size:.78rem;font-family:sans-serif;color:#7c3aed;cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#f5f3ff;user-select:none}
+details.hint-detail summary::-webkit-details-marker{display:none}
+details.hint-detail summary::before{content:"▶ ";font-size:.65rem}
+details.hint-detail[open] summary::before{content:"▼ "}
+details.hint-detail .hint-body{margin-top:6px;color:#374151;font-size:.82rem;line-height:1.75;padding-left:4px}
+
+/* Passage reading area (Q5/Q6) */
+.passage-wrap{background:#fff;border-radius:10px;padding:22px 28px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:16px}
+.passage-title{font-size:.82rem;font-family:sans-serif;font-weight:bold;color:#1a3a5c;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.passage-body{font-size:var(--fs);line-height:var(--lh);color:#222;border-left:3px solid #c4b5fd;padding-left:16px}
+.passage-body p{margin-bottom:.7em}
+.p-blank{display:inline;background:#f5f3ff;color:#7c3aed;font-weight:bold;border-radius:3px;padding:0 3px;font-family:sans-serif}
+.passage-note{font-size:.74rem;font-family:sans-serif;color:#6b7280;margin-top:12px;padding-top:10px;border-top:1px dashed #e5e7eb;line-height:1.9}
+
+/* Translation view (Q5/Q6 対訳トグル) */
+.trans-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:6px;border:2px solid #7c3aed;background:#fff;color:#7c3aed;font-size:.8rem;cursor:pointer;font-family:sans-serif;font-weight:bold;transition:all .12s}
+.trans-btn:hover,.trans-btn.active{background:#7c3aed;color:#fff}
+.trans-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-top:4px}
+.trans-col-head{background:#f8fafc;padding:8px 14px;font-size:.7rem;font-family:sans-serif;font-weight:bold;letter-spacing:1px;color:#6b7280;border-bottom:1px solid #e5e7eb}
+.trans-col-head.en{border-right:1px solid #e5e7eb}
+.trans-row-en{padding:10px 14px;font-size:calc(var(--fs) - .1rem);line-height:1.8;color:#1a3a5c;border-bottom:1px solid #f1f5f9;border-right:1px solid #e5e7eb;background:#fff}
+.trans-row-ja{padding:10px 14px;font-size:calc(var(--fs) - .12rem);line-height:1.85;color:#374151;border-bottom:1px solid #f1f5f9;background:#fafafa;font-family:sans-serif}
+.trans-row-en:last-of-type,.trans-row-ja:last-of-type{border-bottom:none}
+@media(max-width:580px){.trans-grid{grid-template-columns:1fr}.trans-col-head.en{border-right:none}.trans-row-en{border-right:none;border-bottom:2px solid #e5e7eb;background:#f5f3ff}.trans-row-ja{border-bottom:1px solid #f1f5f9}}
+
+/* Q6 checkbox（7択から3つ選択） */
+.option-label input[type=checkbox]{accent-color:#7c3aed}
+.option-label.disabled{opacity:.4;pointer-events:none}
+
+/* WIP screen */
+.wip-box{background:#fff;border-radius:10px;padding:40px 30px;box-shadow:0 2px 8px rgba(0,0,0,.07);text-align:center;font-family:sans-serif;color:#6b7280;margin-bottom:16px}
+.wip-box .wip-icon{font-size:2.4rem;margin-bottom:12px}
+.wip-box .wip-title{font-size:1rem;font-weight:bold;color:#1a3a5c;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="btn-back" id="btn-back" onclick="goBack()">← 戻る</button>
+  <div class="topbar-title" id="topbar-title">全統模試 英語（高1・8月　4年分）</div>
+  <div class="fs-controls">
+    <span class="fs-label">文字</span>
+    <button class="fs-btn" id="fs-s" onclick="setFs('s')">小</button>
+    <button class="fs-btn" id="fs-m" onclick="setFs('m')" style="background:rgba(255,255,255,.35)">中</button>
+    <button class="fs-btn" id="fs-l" onclick="setFs('l')">大</button>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ══ HOME ══ -->
+<div id="screen-home" class="screen active">
+  <div class="home-hero">
+    <h1>全統模試 英語対策</h1>
+    <div class="sub">高校1年生 / 8月実施（河合塾・第2回）/ 2022〜2025年度<br>大問2（語彙），大問3（文法・語法），大問4（英作文），大問5・6（長文読解）に挑戦しよう。</div>
+  </div>
+  <div class="home-cards">
+    <div class="home-card" onclick="goSection('q2')">
+      <div class="card-icon">🔎</div>
+      <div class="card-body">
+        <div class="card-num">大問 2</div>
+        <div class="card-title">語彙</div>
+        <div class="card-desc">定義文→語句選択・句動詞の穴埋め／言い換え。4年分の問題と解説。</div>
+        <div class="tags">
+          <span class="tag t-mcq">定義文選択</span>
+          <span class="tag t-match">マッチング</span>
+        </div>
+        <div id="hcs-q2"></div>
+      </div>
+    </div>
+    <div class="home-card" onclick="goSection('q3')">
+      <div class="card-icon">🔤</div>
+      <div class="card-body">
+        <div class="card-num">大問 3</div>
+        <div class="card-title">文法・語法</div>
+        <div class="card-desc">空所補充×7・誤文訂正×3。4年分の問題と解説。傾向と対策コラム付き。</div>
+        <div class="tags">
+          <span class="tag t-mcq">空所補充 × 7</span>
+          <span class="tag t-error">誤文訂正 × 3</span>
+        </div>
+        <div id="hcs-q3"></div>
+      </div>
+    </div>
+    <div class="home-card" onclick="goSection('q4')">
+      <div class="card-icon">✍️</div>
+      <div class="card-body">
+        <div class="card-num">大問 4</div>
+        <div class="card-title">英作文</div>
+        <div class="card-desc">並べ替え英作文・和文英訳・会話補充（自由英作文）。4年分の模範解答・文法解説付き。</div>
+        <div class="tags">
+          <span class="tag t-reorder">並べ替え</span>
+          <span class="tag t-trans">和文英訳</span>
+          <span class="tag t-write">会話補充</span>
+        </div>
+        <div id="hcs-q4"></div>
+      </div>
+    </div>
+    <div class="home-card" onclick="goSection('q5')">
+      <div class="card-icon">📚</div>
+      <div class="card-body">
+        <div class="card-num">大問 5</div>
+        <div class="card-title">長文読解①（説明文）</div>
+        <div class="card-desc">動物の寿命・生態学・心理学・考古学など説明文の読解。下線部訳・内容一致など多様な設問形式。4年分の対訳つき。</div>
+        <div class="tags">
+          <span class="tag t-mcq">選択問題</span>
+          <span class="tag t-write">記述・下線部訳</span>
+          <span class="tag t-trans">対訳表示</span>
+        </div>
+        <div id="hcs-q5"></div>
+      </div>
+    </div>
+    <div class="home-card" onclick="goSection('q6')">
+      <div class="card-icon">📖</div>
+      <div class="card-body">
+        <div class="card-num">大問 6</div>
+        <div class="card-title">長文読解②（物語文）</div>
+        <div class="card-desc">物語文・伝記の読解。設問A（4択×5）・設問B（7択から3つ選択）。4年分の対訳つき。</div>
+        <div class="tags">
+          <span class="tag t-mcq">4択 × 5</span>
+          <span class="tag t-match">7択から3つ</span>
+          <span class="tag t-trans">対訳表示</span>
+        </div>
+        <div id="hcs-q6"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Q2 HOME ══ -->
+<div id="screen-q2" class="screen">
+  <div class="sec-hero">
+    <h2>大問 2　語彙</h2>
+    <div class="hero-sub">年度を選んで問題に挑戦しよう（A：定義文→語句選択／B：句動詞・熟語）</div>
+  </div>
+  <div class="year-cards">
+    <div class="year-card" id="yc-q2-2022" onclick="openQ2(2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">A 個別4択 / B 穴埋め</div><div id="ycb-q2-2022"></div></div>
+    <div class="year-card" id="yc-q2-2023" onclick="openQ2(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">A 個別4択 / B 言い換え</div><div id="ycb-q2-2023"></div></div>
+    <div class="year-card" id="yc-q2-2024" onclick="openQ2(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">A マッチング / B 言い換え</div><div id="ycb-q2-2024"></div></div>
+    <div class="year-card" id="yc-q2-2025" onclick="openQ2(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">A マッチング / B 言い換え</div><div id="ycb-q2-2025"></div></div>
+  </div>
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div>
+
+<!-- ══ Q2 YEAR (dynamic) ══ -->
+<div id="screen-q2y" class="screen">
+  <div class="sec-hero"><h2 id="q2y-title"></h2><div class="hero-sub" id="q2y-sub"></div></div>
+  <div id="q2y-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-tohome" onclick="goSection('q2')">← 年度一覧</button>
+    <button class="btn-tohome" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+<!-- ══ Q3 HOME ══ -->
+<div id="screen-q3" class="screen">
+  <div class="sec-hero">
+    <h2>大問 3　文法・語法</h2>
+    <div class="hero-sub">年度を選んで問題に挑戦しよう</div>
+  </div>
+  <div class="trend-section">
+    <div class="trend-toggle" onclick="toggleTrend()">
+      📊 傾向と対策　<span class="trend-arrow" id="trend-arrow">▼</span>
+    </div>
+    <div class="trend-body" id="trend-body">
+      <table class="trend-table">
+        <tr><th>年度</th><th>⑴</th><th>⑵</th><th>⑶</th><th>⑷</th><th>⑸</th><th>⑹</th><th>⑺</th></tr>
+        <tr><td><strong>2022</strong></td><td>How soon</td><td>現在完了進行形</td><td>動名詞の意味上の主語</td><td>have O done</td><td>関係代名詞what</td><td>関係代名詞と関係副詞の区別</td><td>not as/so+原級+as・分詞形容詞</td></tr>
+        <tr><td><strong>2023</strong></td><td>金銭を表す名詞の修飾語(high/low)</td><td>疑問詞whoseの用法</td><td>keep O doing/done</td><td>自動詞sitと他動詞seat</td><td>resembleの語法</td><td>seemの用法・完了不定詞</td><td>句動詞の受動態</td></tr>
+        <tr><td><strong>2024</strong></td><td>自動詞と間違いやすい他動詞(enter)</td><td>look forward to doing</td><td>進行形にしない動詞(belong)</td><td>過去完了</td><td>推量の助動詞(must)</td><td>付加疑問(shall we?)</td><td>分詞形容詞(surprised)</td></tr>
+        <tr><td><strong>2025</strong></td><td>自動詞と間違いやすい他動詞(discuss)</td><td>be used to doing</td><td>forget to do/doing</td><td>過去完了</td><td>時制の一致の例外</td><td>in case S V</td><td>分詞形容詞(tired)</td></tr>
+      </table>
+      <div class="trend-note">
+        <strong>A（空所補充）の頻出カテゴリ：</strong>①分詞形容詞（-ing/-ed）が4年中3回、②過去完了（had done）が2024・2025連続出題、③自動詞と紛らわしい他動詞（enter, discuss, resemble, reach, approach, attend, consider, marry, visit 等）がほぼ毎年、④to不定詞・動名詞の使い分け（look forward to doing, be used to doing, forget to do/doing）も頻出。
+      </div>
+      <table class="trend-table" style="margin-top:14px">
+        <tr><th>年度</th><th>⑴</th><th>⑵</th><th>⑶</th></tr>
+        <tr><td><strong>2022</strong></td><td>知覚動詞 see O doing/do</td><td>代動詞（時制一致）</td><td>過去分詞 compared with</td></tr>
+        <tr><td><strong>2023</strong></td><td>be worth doing</td><td>代動詞do（be動詞の代用不可）</td><td>in order not to do</td></tr>
+        <tr><td><strong>2024</strong></td><td>分詞による名詞修飾（過去分詞called）</td><td>不可算名詞advice</td><td>不定詞の受動態(be praised)</td></tr>
+        <tr><td><strong>2025</strong></td><td>形容詞+enough to do の語順</td><td>had better not do</td><td>不定詞の受動態(need to be repaired)</td></tr>
+      </table>
+      <div class="trend-note">
+        <strong>B（誤文訂正）は4年連続で「受動の形にすべき箇所」が出題の中心。</strong>能動・受動の判断（主語が「する」側か「される」側か）を素早く行う視点を鍛えることが最優先。加えて不定詞・動名詞の形の選択（be worth doing、in order not to do、had better not do）、代動詞・比較・不可算名詞などの基礎知識確認も出題される。<br><br>
+        <strong>指導への示唆：</strong>①分詞形容詞（-ing/-ed の使い分け）は最頻出。②過去完了（had done）は2024・2025年度で連続出題。③受動の形にすべき箇所の即時判断力を鍛える。④自動詞と間違えやすい他動詞（enter, discuss, resemble, reach, approach, attend, consider, marry, visit）は一覧化して繰り返し確認する価値がある。
+      </div>
+    </div>
+  </div>
+  <div class="year-cards">
+    <div class="year-card" id="yc-q3-2022" onclick="openQ3(2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">A×7・誤文訂正×3</div><div id="ycb-q3-2022"></div></div>
+    <div class="year-card" id="yc-q3-2023" onclick="openQ3(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">A×7・誤文訂正×3</div><div id="ycb-q3-2023"></div></div>
+    <div class="year-card" id="yc-q3-2024" onclick="openQ3(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">A×7・誤文訂正×3</div><div id="ycb-q3-2024"></div></div>
+    <div class="year-card" id="yc-q3-2025" onclick="openQ3(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">A×7・誤文訂正×3</div><div id="ycb-q3-2025"></div></div>
+  </div>
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div>
+
+<!-- ══ Q3 YEAR (dynamic) ══ -->
+<div id="screen-q3y" class="screen">
+  <div class="sec-hero"><h2 id="q3y-title"></h2><div class="hero-sub" id="q3y-sub"></div></div>
+  <div id="q3y-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-tohome" onclick="goSection('q3')">← 年度一覧</button>
+    <button class="btn-tohome" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+<!-- ══ Q4 HOME ══ -->
+<div id="screen-q4" class="screen">
+  <div class="sec-hero">
+    <h2>大問 4　英作文</h2>
+    <div class="hero-sub">年度を選んで練習しよう（A：並べ替え／B：和文英訳／C：会話補充）</div>
+  </div>
+  <div class="year-cards">
+    <div class="year-card" id="yc-q4-2022" onclick="openQ4(2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">A4問 / B / C</div><div id="ycb-q4-2022"></div></div>
+    <div class="year-card" id="yc-q4-2023" onclick="openQ4(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">A4問 / B(4択+英訳) / C</div><div id="ycb-q4-2023"></div></div>
+    <div class="year-card" id="yc-q4-2024" onclick="openQ4(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">A5問(不要語) / B / C</div><div id="ycb-q4-2024"></div></div>
+    <div class="year-card" id="yc-q4-2025" onclick="openQ4(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">A5問(不要語) / B / C</div><div id="ycb-q4-2025"></div></div>
+  </div>
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div>
+
+<!-- ══ Q4 YEAR (dynamic) ══ -->
+<div id="screen-q4y" class="screen">
+  <div class="sec-hero"><h2 id="q4y-title"></h2><div class="hero-sub" id="q4y-sub"></div></div>
+  <div id="q4y-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-tohome" onclick="goSection('q4')">← 年度一覧</button>
+    <button class="btn-tohome" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+<!-- ══ Q5 HOME ══ -->
+<div id="screen-q5" class="screen">
+  <div class="sec-hero">
+    <h2>大問 5　長文読解①（説明文）</h2>
+    <div class="hero-sub">年度を選んで読解問題に挑戦しよう（対訳表示つき）</div>
+  </div>
+  <div class="year-cards">
+    <div class="year-card" id="yc-q5-2022" onclick="openQ5(2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">動物の寿命</div><div id="ycb-q5-2022"></div></div>
+    <div class="year-card" id="yc-q5-2023" onclick="openQ5(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">オオカミ・キツネの果実食</div><div id="ycb-q5-2023"></div></div>
+    <div class="year-card" id="yc-q5-2024" onclick="openQ5(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">バイリンガル児童の研究</div><div id="ycb-q5-2024"></div></div>
+    <div class="year-card" id="yc-q5-2025" onclick="openQ5(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">タッシリ・ナジェールの岩絵</div><div id="ycb-q5-2025"></div></div>
+  </div>
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div>
+
+<!-- ══ Q5 YEAR (dynamic) ══ -->
+<div id="screen-q5y" class="screen">
+  <div class="sec-hero"><h2 id="q5y-title"></h2><div class="hero-sub" id="q5y-sub"></div></div>
+  <div id="q5y-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-tohome" onclick="goSection('q5')">← 年度一覧</button>
+    <button class="btn-tohome" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+<!-- ══ Q6 HOME ══ -->
+<div id="screen-q6" class="screen">
+  <div class="sec-hero">
+    <h2>大問 6　長文読解②（物語文）</h2>
+    <div class="hero-sub">年度を選んで読解問題に挑戦しよう（対訳表示つき）</div>
+  </div>
+  <div class="year-cards">
+    <div class="year-card" id="yc-q6-2022" onclick="openQ6(2022)"><div class="year-card-yr">2022</div><div class="year-card-sub">心配性の少女と犬・金魚</div><div id="ycb-q6-2022"></div></div>
+    <div class="year-card" id="yc-q6-2023" onclick="openQ6(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">クロード・モネの生涯</div><div id="ycb-q6-2023"></div></div>
+    <div class="year-card" id="yc-q6-2024" onclick="openQ6(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">ベビーシッターに挑戦する少女</div><div id="ycb-q6-2024"></div></div>
+    <div class="year-card" id="yc-q6-2025" onclick="openQ6(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">アップサイクルデザイナーの経歴</div><div id="ycb-q6-2025"></div></div>
+  </div>
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div>
+
+<!-- ══ Q6 YEAR (dynamic) ══ -->
+<div id="screen-q6y" class="screen">
+  <div class="sec-hero"><h2 id="q6y-title"></h2><div class="hero-sub" id="q6y-sub"></div></div>
+  <div id="q6y-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-tohome" onclick="goSection('q6')">← 年度一覧</button>
+    <button class="btn-tohome" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+const LETTERS = ["ア","イ","ウ","エ","オ","カ","キ"];
+const YEARS = [2022,2023,2024,2025];
+const SECTIONS = ["q2","q3","q4","q5","q6"];
+
+// ═══════════════════════════════════════════
+// Q2 DATA（語彙）
+// ═══════════════════════════════════════════
+const Q2 = {
+  2022:{
+    A:{type:"mcq", items:[
+      {q:"A (　　) is the money that you pay for a journey by bus, train, or plane.", opts:["fare","fee","fine","fund"], ans:0, exp:"「バス・列車・飛行機での旅に対して支払うお金」＝運賃（fare）。fee は各種手数料、fine は罰金、fund は基金。"},
+      {q:"(　　) is the quality of being pure or free from evil, or believing things too easily.", opts:["Conscience","Evidence","Innocence","Prejudice"], ans:2, exp:"「純粋である、あるいは邪悪でないという性質」＝無邪気・潔白（innocence）。"},
+      {q:"You use (　　) when you want to cut something, such as cloth and paper.", opts:["chopsticks","compasses","scissors","trousers"], ans:2, exp:"「布や紙を切る道具」＝はさみ（scissors）。"},
+      {q:"A (　　) is a short, well-known sentence that states a general truth or gives a piece of advice about how to act.", opts:["dialect","grammar","poem","proverb"], ans:3, exp:"「一般的真理や行動への助言を述べる短い文」＝ことわざ（proverb）。"},
+      {q:"A (　　) is the part of a cell that is passed down from your parents and controls your physical characteristics.", opts:["brain","gene","muscle","vein"], ans:1, exp:"「親から伝わり身体的特徴を支配する細胞の一部」＝遺伝子（gene）。"}
+    ]},
+    B:{type:"match", options:["bring up","call off","put away","take out","try on","turn down"], items:[
+      {q:"Kaori had no choice but to work and (　　) her three children single-handed.", ans:0, exp:"bring O up「Oを育てる」。"},
+      {q:"We are very sorry to tell you that we have to (　　) your application for the job.", ans:5, exp:"turn O down「Oを断る」。"},
+      {q:"You should (　　) those shoes to make sure they fit your feet before buying them.", ans:4, exp:"try O on「Oを試着する」。"},
+      {q:"The government announced that they had to (　　) the search for the missing submarine.", ans:1, exp:"call O off「Oを中止する」。"},
+      {q:"I told my daughter to (　　) her toys before I stepped on them.", ans:2, exp:"put O away「Oを片づける」。"}
+    ]}
+  },
+  2023:{
+    A:{type:"mcq", items:[
+      {q:"(　　) are a tool used for weighing things.", opts:["Compasses","Crutches","Scales","Scissors"], ans:2, exp:"「物の重さを量る道具」＝秤（scales）。"},
+      {q:"A (　　) is someone who buys goods or services from a store.", opts:["customer","guest","passenger","patient"], ans:0, exp:"「店から商品・サービスを買う人」＝顧客（customer）。"},
+      {q:"(　　) is the loud noise in the sky after a flash of lightning, especially during a storm.", opts:["Flood","Thunder","Tornado","Typhoon"], ans:1, exp:"「稲妻の後にとどろく大きな音」＝雷鳴（thunder）。"},
+      {q:"A (　　) is an old story which was made up to explain natural events or religious beliefs.", opts:["biography","myth","novel","rumor"], ans:1, exp:"「自然現象や宗教的信条を説明するために作られた古い物語」＝神話（myth）。"},
+      {q:"(　　) is the scientific study of the stars, the planets, the sun, and the universe as a whole.", opts:["Astronomy","Ecology","Geology","Physics"], ans:0, exp:"「星・惑星・太陽・宇宙全体の科学的研究」＝天文学（astronomy）。"}
+    ]},
+    B:{type:"match", options:["carry out","figure out","put away","put on","turn in","turn off"], items:[
+      {q:"I can't understand how to solve these math problems. （下線部 understand の言い換え）", ans:1, exp:"figure O out「Oを理解する」＝understand。"},
+      {q:"Rebecca needs to gain some more weight for her health. （下線部 gain の言い換え）", ans:3, exp:"put O on「O(体重など)を増やす」＝gain。"},
+      {q:"Be sure to extinguish the light when you leave the room. （下線部 extinguish の言い換え）", ans:5, exp:"turn O off「O(灯火)を消す」＝extinguish。"},
+      {q:"At first, we thought it would be easy to perform the task. （下線部 perform の言い換え）", ans:0, exp:"carry O out「Oを実行する」＝perform。"},
+      {q:"Bridget managed to submit her homework assignment by the deadline. （下線部 submit の言い換え）", ans:4, exp:"turn O in「Oを提出する」＝submit。"}
+    ]}
+  },
+  2024:{
+    A:{type:"match", options:["cell","flood","fossil","refrigerator","thermometer","triangle"], items:[
+      {q:"A (　　) is an instrument for measuring and indicating temperature.", ans:4, exp:"温度計（thermometer）。"},
+      {q:"A (　　) is a large amount of water flowing over the banks of a river.", ans:1, exp:"洪水（flood）。"},
+      {q:"A (　　) is a large container in which food or drink is kept cold by electricity.", ans:3, exp:"冷蔵庫（refrigerator）。"},
+      {q:"A (　　) is a very small piece of matter that forms the basis of all living things.", ans:0, exp:"細胞（cell）。"},
+      {q:"A (　　) is the remains of animals or plants that have been preserved in rock for a very long time.", ans:2, exp:"化石（fossil）。"}
+    ]},
+    B:{type:"match", options:["cut down on","do away with","get along with","live up to","look up to","put up with"], items:[
+      {q:"It is often hard for children to meet their parents' expectations. （下線部 meet の言い換え）", ans:3, exp:"live up to A「A(期待など)に添う」＝meet。"},
+      {q:"I couldn't stand the street noise during our hotel stay in East London. （下線部 stand の言い換え）", ans:5, exp:"put up with A「Aをがまんする」＝stand。"},
+      {q:"David's father decided to reduce his smoking for the sake of his health. （下線部 reduce の言い換え）", ans:0, exp:"cut down on A「Aの量を減らす」＝reduce。"},
+      {q:"It is natural that every student should respect Ms. Albright because she is an excellent professor. （下線部 respect の言い換え）", ans:4, exp:"look up to A「Aを尊敬する」＝respect。"},
+      {q:"Rina needn't go to school in uniform next year because her school will abolish its school uniform policy. （下線部 abolish の言い換え）", ans:1, exp:"do away with A「Aを廃止する」＝abolish。"}
+    ]}
+  },
+  2025:{
+    A:{type:"match", options:["Archeology","Architecture","Economics","Ethics","Genetics","Geography","Geometry"], items:[
+      {q:"(　　) is the art and science of designing and constructing buildings.", ans:1, exp:"建築学（architecture）。"},
+      {q:"(　　) is the study of the production, consumption, distribution and use of wealth in a society.", ans:2, exp:"経済学（economics）。"},
+      {q:"(　　) is the study of oceans, rivers, mountains, climates, and towns and cities in the world.", ans:5, exp:"地理学（geography）。"},
+      {q:"(　　) is the study of systems of moral values and determining whether something is morally right or wrong.", ans:3, exp:"倫理学（ethics）。"},
+      {q:"(　　) is the scientific study of how inherited characteristics are passed on to the offspring of humans, animals and plants.", ans:4, exp:"遺伝学（genetics）。"}
+    ]},
+    B:{type:"match", options:["leave out","make out","make up","pick out","put off","show off"], items:[
+      {q:"When you copy this paragraph, please be sure not to omit anything. （下線部 omit の言い換え）", ans:0, exp:"leave O out「Oを省く」＝omit。"},
+      {q:"As the weather isn't good, we have to postpone the picnic until tomorrow. （下線部 postpone の言い換え）", ans:4, exp:"put O off「O(行事)を延ばす」＝postpone。"},
+      {q:"Excuse me, I want to choose some new scarves to give my mother as a present. （下線部 choose の言い換え）", ans:3, exp:"pick O out「Oを選び出す」＝choose。"},
+      {q:"Karen didn't finish her homework, so she tried to invent an excuse to tell the teacher. （下線部 invent の言い換え）", ans:2, exp:"make O up「O(弁解など)をでっちあげる」＝invent。"},
+      {q:"Dr. Matthews always speaks so fast that sometimes I cannot understand what he is saying. （下線部 understand の言い換え）", ans:1, exp:"make O out「O(考えなど)を理解する」＝understand。"}
+    ]}
+  }
+};
+
+// ═══════════════════════════════════════════
+// Q3 DATA（文法・語法）
+// ═══════════════════════════════════════════
+const Q3 = {
+  2022:{
+    A:[
+      {q:"\"(　　) will the concert start?\" \"In about 30 minutes.\"", opts:["How far","How fast","How long","How soon"], ans:3, exp:"How soon …?「今からあとどれくらいの時間で…か」と時間の近さをたずねる表現。How far は距離・進度、How fast は速度、How long は時間の長さをたずねる表現で、いずれも「あと何分後か」を問う応答（In about 30 minutes.）とは噛み合わない。"},
+      {q:"She plays the piano very well because she (　　) piano lessons since she was three years old.", opts:["is taking","had been taken","has been taking","took"], ans:2, exp:"since she was three years old「3歳のときから」という過去の起点があるので、過去から現在までの継続を表す時制が必要。動作動詞（take lessons）の継続は現在完了進行形 have/has been doing で表す（状態動詞なら現在完了形）。"},
+      {q:"Sarah has an only son. She is very proud of (　　) a famous dancer on YouTube.", opts:["he being","he is","him being","him to be"], ans:2, exp:"空所直前の前置詞 of の後には名詞・動名詞が入る。動名詞の意味上の主語が文の主語（She）と異なる場合、代名詞は所有格または目的格にして動名詞の前に置く（his/him being）。"},
+      {q:"I spilled some ketchup on my shirt, so I need to (　　) at the dry cleaner's.", opts:["have it wash","have it washed","have it washing","have washed it"], ans:1, exp:"have O done「Oを…してもらう」は O と done の間に受動関係が成立する構文。it（＝my shirt）は「洗われる」側なので過去分詞 washed を用いる。"},
+      {q:"(　　) is interesting to one person is not always so to another.", opts:["How","That","What","When"], ans:2, exp:"空所以下 is interesting to one person が文の主部になる名詞節を作る語を選ぶ。空所の直後が主語の欠けた不完全文なので、先行詞を含み「…すること・もの」の意味を表す関係代名詞 what が適切（接続詞thatの後ろは完全文になるため不可）。"},
+      {q:"Takayama is a city (　　) Nozomi has wanted to visit for a long time.", opts:["in that","that","to which","where"], ans:1, exp:"関係詞節内の visit は他動詞で目的語が欠けているので、目的格の関係代名詞 that[which] が入る。先行詞が a city（場所）だからといって安易に関係副詞 where を選ばないよう注意（where は節内の要素が欠けていない完全文に用いる）。"},
+      {q:"To my disappointment, tonight's game was not (　　) as last week's.", opts:["more excited","more exciting","so excited","so exciting"], ans:3, exp:"空所の後ろに as があるので〈not as[so]＋原級＋as …〉「…ほど〜でない」の形。主語が tonight's game（もの）なので、分詞形容詞は「(人を)わくわくさせる」という能動の意味を持つ現在分詞 exciting を用いる。"}
+    ],
+    B:[
+      {sentence:"アSince I felt I イwas being watched by someone, I ウlooked around the garden, but I saw nothing but a cat エto sit on the wall.", ansIdx:3, correct:"sitting［sit］", exp:"知覚動詞 see は see O doing［do］「Oが…している［する］のが見える」の形で用い、see O to do の形はとらない。"},
+      {sentence:"Miyako Island, アwhich now イattracts far ウmore tourists than it エdoes 10 years ago, is surrounded by clear blue waters.", ansIdx:3, correct:"did", exp:"文中に10 years ago（過去を示す語句）があるので、前出の動詞 attracted の反復を避ける代動詞は過去形 did にする必要がある（does は現在形なので時制が合わない）。"},
+      {sentence:"We take アit for granted イthat the earth is warm, rich in water, and ウfull of life エcomparing with Mars.", ansIdx:3, correct:"compared", exp:"the earth は火星と「比較される」側なので、「…と比較すると」の意味を表すには過去分詞を用いた compared with … とする（comparing だと能動〈比較している〉の意味になり不適切）。"}
+    ]
+  },
+  2023:{
+    A:[
+      {q:"The main reason for such (　　) prices is a decline in imports.", opts:["expensive","high","large","much"], ans:1, exp:"price（価格）のような金銭に関する名詞を修飾して「高い／安い」を表すには high／low を用いる（cost, fee, income, salary, wage なども同様）。expensive は「(商品・サービスが)値段が高い」の意味で金銭に関する語自体は修飾しない。"},
+      {q:"(　　) the car painted with anime characters?", opts:["Who is it","Who's","Whose","Whose is"], ans:3, exp:"the car painted with anime characters「アニメのキャラクターが描かれた車」の持ち主をたずねる文。whose は単独で「誰のもの」の意味の疑問詞であり、Whose is …?「…は誰のものか」の形で使う。"},
+      {q:"Fred is not angry with Lucy although she kept him (　　) for over an hour.", opts:["wait","waited","waiting","to wait"], ans:2, exp:"keep O C の C に現在分詞・過去分詞を置くことができる。wait は自動詞で「彼が待っている」という能動関係が成立するので現在分詞 waiting を用いる（wait には「…を待たせる」の他動詞用法がないため過去分詞 waited は誤り）。"},
+      {q:"Six people could (　　) comfortably at the dinner table.", opts:["be seated","be seating","be to seat","seat"], ans:0, exp:"「座る」人を主語にする場合、他動詞 seat「…を座らせる」を受動態にした be seated「座っている」を用いる（自動詞 sit と他動詞 seat の区別）。"},
+      {q:"You and your brother both (　　) your father in personality.", opts:["are resembling","are resembling with","resemble","resemble with"], ans:2, exp:"resemble は他動詞で resemble O「Oに似ている」の形をとり、with は不要。また「似ている」という状態を表す動詞なので原則進行形にしない。"},
+      {q:"Her father seems (　　) the president of a big company before he retired.", opts:["that he is","that he was","to be","to have been"], ans:3, exp:"S seem(s) to do「Sは…するようだ」で、to do の内容が述語動詞 seems より前のことを表す場合は完了不定詞 to have done を用いる。before he retired（過去）から、現在形 seems より前の内容だとわかる。"},
+      {q:"More renewable energy sources should be (　　) developing as well as industrialized countries.", opts:["made use by","made use of","made use of by","making use of by"], ans:2, exp:"句動詞 make use of A「Aを利用する」を受動態にすると A be made use of by …「Aは…によって利用される」となる（2語以上の句動詞は全体を1つの他動詞として扱う）。"}
+    ],
+    B:[
+      {sentence:"There are アmany places that イare definitely worth ウto visit while エstudying in Kyoto.", ansIdx:2, correct:"visiting", exp:"be worth doing「…する価値がある」の形をとる（be worth to do とはしない）。"},
+      {sentence:"アIn communication, tones イof voice are just as important ウas gestures エdo.", ansIdx:3, correct:"are", exp:"代動詞 do は一般動詞の代わりには使えるが be動詞の代わりには使えない。tones of voice are important と gestures are important の比較なので、gestures の後は are にする。"},
+      {sentence:"It is important アfor students イto receive academic guidance ウearly, in order not エlimiting their options.", ansIdx:3, correct:"to limit", exp:"「…しないように」は in order not to do の形。in order not の直後に doing は続かない。"}
+    ]
+  },
+  2024:{
+    A:[
+      {q:"My mother (　　) the living room quietly in order not to wake my little sister.", opts:["arrived","came","entered","went"], ans:2, exp:"空所の直後に目的語（the living room）が続いているので他動詞が必要。enter O「Oに入る」は他動詞。arrive、come、go は自動詞で目的語をとらない（自動詞と間違えやすい他動詞：enter, reach, resemble, marry, discuss, attend, approach, consider, visit など）。"},
+      {q:"I'm looking forward (　　) you again next week.", opts:["see","seeing","to see","to seeing"], ans:3, exp:"look forward to doing「…することを楽しみにする」の to は前置詞なので後ろは動名詞。"},
+      {q:"My grandfather (　　) the tennis club when he was a high school student.", opts:["belonged","belonged to","was belonging","was belonging to"], ans:1, exp:"belong to A「Aに所属している」。「所属している」は状態を表すので進行形にはしない。"},
+      {q:"The last train for Narita (　　) when I reached the station.", opts:["already left","had already left","have already left","was already left"], ans:1, exp:"when I reached the station（過去の一時点）より前の出来事を表すには過去完了 had done を用いる。"},
+      {q:"Tom (　　) be hungry because he skipped lunch and has been studying for eight hours.", opts:["cannot","must","need","should not"], ans:1, exp:"must do「…にちがいない」という推量の意味。because以下の内容（昼食抜き・8時間勉強）から「お腹が空いているにちがいない」と判断する。need は通例否定文・疑問文で用いる。"},
+      {q:"Let's go to the shopping mall tomorrow, (　　)?", opts:["shall I","shall we","will I","will we"], ans:1, exp:"Let's do ….の付加疑問は shall we? を文尾に置く。"},
+      {q:"She looked (　　) to hear the news that her son won the first prize.", opts:["surprise","surprised","surprising","surprisingly"], ans:1, exp:"look C「Cに見える」のCには形容詞が入る。「(人が)驚いている」は分詞形容詞 surprised（surprising は「(人を)驚かせるような」の意味で人には使わない）。"}
+    ],
+    B:[
+      {sentence:"A tomato-throwing festival アcalling La Tomatina イis held in a Spanish town ウduring the last Wednesday エof August.", ansIdx:0, correct:"called", exp:"「ラ・トマティーナと呼ばれる」は直前の名詞 A tomato-throwing festival を修飾する形容詞句。festival は「呼ばれる」側（受動）なので過去分詞 called を用いる（calling だと「(festivalが)呼んでいる」という能動の意味になり不適切）。"},
+      {sentence:"Monica and I アare going to ask our teacher イfor some ウadvices on the course エto take after graduation.", ansIdx:2, correct:"advice", exp:"advice「助言」は不可算名詞なので複数形にしない（数えるときは a piece of advice のように表す）。"},
+      {sentence:"Yesterday Jane was very happy to アpraise イby her teacher ウfor her essay in front of エall the students.", ansIdx:0, correct:"be praised", exp:"「ジェーンがほめられてうれしかった」という受け身の意味なので、praise を受動態 be praised にする必要がある。"}
+    ]
+  },
+  2025:{
+    A:[
+      {q:"In this newspaper article, a famous professor (　　) the problems of social media.", opts:["discusses","discusses about","talks","talks with"], ans:0, exp:"discuss「…について論じる」は他動詞なので前置詞なしで目的語を続ける（自動詞 talk を使う場合は talk about A の形が必要）。"},
+      {q:"My parents are used (　　) up early due to their busy schedules.", opts:["get","getting","to get","to getting"], ans:3, exp:"be used to doing「…することに慣れている」。この to は前置詞なので動名詞が続く（be used to do「…するために使われる」と混同しないよう注意）。"},
+      {q:"Don't forget (　　) the plants in the garden while I'm away.", opts:["to water","to watering","water","watering"], ans:0, exp:"forget to do「…するのを忘れる」／forget doing「…したことを忘れる」の区別。while I'm away「留守中に」から、これからすべきことを忘れないでという意味なので to do を用いる。"},
+      {q:"The train (　　) when I arrived at the station.", opts:["already left","had already left","has already left","was already left"], ans:1, exp:"when I arrived at the station（過去の一時点）より前の出来事は過去完了 had done で表す。"},
+      {q:"At school yesterday, Tom learned that water (　　) at 100 degrees Celsius.", opts:["boil","boiled","boils","was boiling"], ans:2, exp:"時制の一致の例外。従属節が不変の真理・自然現象を表す場合、主節の時制（learned＝過去）に関わらず現在形を用いる。"},
+      {q:"Take a map and compass with you (　　) you get lost in the mountains.", opts:["even though","in case","in that","now that"], ans:1, exp:"in case S V …「…する場合に備えて，…するといけないから」。even though「たとえ…でも」、in that「…という点で」、now that「今や…なので」は文意に合わない。"},
+      {q:"Since she was (　　), she decided to take a taxi instead of walking home yesterday.", opts:["tiring","tired","to tire","to be tired"], ans:1, exp:"「(人が)疲れている」は分詞形容詞 tired（tiring は「(人を)疲れさせるような」の意味で人が主語のときは使わない）。"}
+    ],
+    B:[
+      {sentence:"My daughter アturned eighteen last month, イso she is ウenough old to get エa driver's license.", ansIdx:2, correct:"old enough", exp:"〈形容詞［副詞］＋enough to do〉「…するほど〜な」の語順。enough は修飾する形容詞・副詞の後ろに置く（enough old ではなく old enough）。"},
+      {sentence:"You had better アnot to tell this secret イto anyone even if ウthey ask you エto.", ansIdx:0, correct:"not", exp:"had better do「…した方がよい」の否定形は had better not do（not to do ではない）。"},
+      {sentence:"The computers アin the office イthat we use every day ウneed to エrepair.", ansIdx:3, correct:"be repaired", exp:"主語 The computers は「修理される」側なので、repair は受動の意味にする必要がある（need to be repaired「修理される必要がある」）。"}
+    ]
+  }
+};
+
+// ═══════════════════════════════════════════
+// Q4 DATA（英作文）
+// ═══════════════════════════════════════════
+const Q4 = {
+  2022:{
+    ptsA:"4問・各3点・不要語なし", ptsB:"10点", ptsC:"8点・8〜15語",
+    A:[
+      {jp:"彼のお粗末な言い訳に思わず吹き出してしまった。", pre:"I", suf:"", tiles:["couldn't","help","laughing","at","his","poor excuse"], answer:"I <strong>couldn't help laughing at his poor excuse</strong>.", exp:"cannot help doing「…に思わず吹き出してしまった」＝「…に笑わずにはいられなかった」と読み替え、cannot help doing「…せずにはいられない」を用いる。「彼のお粗末な言い訳」は his poor excuse。"},
+      {jp:"そんなふうに行動した理由を彼は私に説明してくれた。", pre:"", suf:"a way.", tiles:["he explained","to","me","why","he'd acted","in","such"], answer:"<strong>He explained to me why he'd acted in such</strong> a way.", exp:"explain O to A の O が間接疑問（why he'd acted…）の場合は explain to A + 間接疑問 の語順になる。he'd＝he had（過去完了）。「そんなふうに」＝in such a way。"},
+      {jp:"ボリビアは私には未知の国だ。", pre:"Bolivia is", suf:"", tiles:["a country","that","I","know","nothing","of"], answer:"Bolivia is <strong>a country that I know nothing of</strong>.", exp:"前置詞の目的語になる関係代名詞：I know nothing of the country の the country を関係代名詞 that に置き換え、先行詞 a country の直後に移動した形。"},
+      {jp:"ワールドカップで、ケイスケはシンジの４倍のゴールを決めた。", pre:"At the World Cup, Keisuke", suf:"", tiles:["scored","four","times","as","many","goals","as Shinji"], answer:"At the World Cup, Keisuke <strong>scored four times as many goals as Shinji</strong>.", exp:"〈X times as＋原級＋as …〉「…のX倍〜」。数量形容詞 many は〈many＋名詞〉の語順（four times as many goals as Shinji）に注意。"}
+    ],
+    B:{type:"translation", jp:"あなただけでなく、他の誰もがその知らせに驚いている。（Not で始めて）", ans:"Not only you but (also) everybody[everyone] else is surprised at the news.", exp:"not only A but (also) B「Aだけでなく Bも」。「他の」は everybody/everyone とともに使うときは else となり、other は使わない。not only A but (also) B が主語のとき、述語動詞は B（三人称単数）に合わせる。「その知らせに驚いている」＝be surprised at [by] the news。"},
+    C:{
+      lines:[
+        {speaker:"Mary", text:"Hi, it's Mary. I'm arriving at Heathrow Airport around noon."},
+        {speaker:"Noel", text:"OK. The kids are really looking forward to seeing you."},
+        {speaker:"Mary", text:"I can't wait to see them. Could you tell me how I can get to your new place?"},
+        {speaker:"Noel", blank:true, before:"Don't worry.", after:""},
+        {speaker:"Mary", text:"Oh, that's so nice of you. I'll wait for you at the arrival gate then."}
+      ],
+      wordsMin:8, wordsMax:15,
+      models:["I'll meet you at the airport and drive you here. (10 words)","Please wait at the airport. I'll drive there so I can meet you there. (14 words)","I'll come and pick you up at the airport. So I'll be there by noon. (15 words)"],
+      exp:"下線部直前で Noel が「心配しないで」と言い、直後で Mary が「それはご親切に。到着ゲートで待っているわ」と応じている。よって下線部には「Noel が空港まで Mary を迎えに行く」という内容を入れれば文脈がつながる。"
+    }
+  },
+  2023:{
+    ptsA:"4問・各3点・不要語なし", ptsB:"10点（⑴2点・⑵8点）", ptsC:"8点・8〜15語",
+    A:[
+      {jp:"かっこいい自転車を200ドルで買ってあげることで彼女は息子の誕生日を祝った。", pre:"She celebrated her son's birthday", suf:"", tiles:["by","buying","him","a cool bike","for","two hundred dollars"], answer:"She celebrated her son's birthday <strong>by buying him a cool bike for two hundred dollars</strong>.", exp:"「買ってあげることで」＝by buying。「かっこいい自転車を買ってあげる」は buy O1 O2（buying him a cool bike）。「200ドルで」＝for A（代価）。"},
+      {jp:"山小屋に残された登山者は全員、夜明けまでに救助された。", pre:"", suf:"rescued by dawn.", tiles:["All the","climbers","left","in","the mountain hut","had been"], answer:"<strong>All the climbers left in the mountain hut had been</strong> rescued by dawn.", exp:"left in the mountain hut が all the climbers を後ろから修飾（過去分詞句の後置修飾）。述語は受動態の過去完了 had been rescued。"},
+      {jp:"100マイル走るのにどれくらいのガソリンがこの車に必要だと思いますか？", pre:"", suf:"to travel 100 miles?", tiles:["How much","gasoline","do","you think","this car","needs"], answer:"<strong>How much gasoline do you think this car needs</strong> to travel 100 miles?", exp:"How much gasoline does this car need? を do you think と組み合わせるには間接疑問の形（how much gasoline this car needs）にし、do you think を疑問詞句の直後に置く。"},
+      {jp:"教室に入って５分も経たないうちにベルが鳴った。", pre:"He hadn't", suf:"", tiles:["been","in the classroom","for","five minutes","before","the bell","rang"], answer:"He hadn't <strong>been in the classroom for five minutes before the bell rang</strong>.", exp:"「ベルが鳴る前に彼は５分間も教室にいなかった」と読み替える。before the bell rang（接続詞節）＋ had not been … for five minutes（過去完了で継続の否定）。"}
+    ],
+    B:{type:"mixed",
+      context:"Suzan: Hi, Mary. I saw you walking in the shopping mall with your sister.\nMary: With my sister? I was there, but with my mom, not with my sister.\nSuzan: (　⑴　) She looked very young for your mother.\nMary: In fact, just one year after she graduated from high school.",
+      mcq:{context:"⑴に入れるものとして最も適当なものを選べ。", opts:["How come?","No kidding.","No wonder.","What for?"], ans:1, exp:"Mary が「一緒にいたのは姉ではなく母だった」と訂正したことを受け、Suzan が「お母さんにしてはとても若く見えた」と続けている。空所には驚きを表す No kidding.「冗談でしょう」が入る。"},
+      translation:{jp:"⑵ あなたのお母さんは何歳であなたのお父さんと結婚したの？（How old で始めて）", ans:"How old was your mother when she married [got married to] your father?", exp:"「何歳で…したの？」＝ How old was your mother when … で表す。「結婚した」は marry O、または get married to A。"}
+    },
+    C:{
+      lines:[
+        {speaker:"Linda", text:"Excuse me. Is it OK if I leave early today?"},
+        {speaker:"Manager", text:"Of course. Is there something wrong?"},
+        {speaker:"Linda", blank:true, before:"It's my son. His teacher, Mrs. Green, has just texted me to say he has a high fever. So,", after:""},
+        {speaker:"Manager", text:"I see. You should go right away."},
+        {speaker:"Linda", text:"Thank you very much."}
+      ],
+      wordsMin:8, wordsMax:15,
+      models:["I need to take him home and take care of him. (11 words)","I'm going to take him home in case he has caught the flu. (13 words)","I have to pick him up at school and take him to a clinic. (14 words)"],
+      exp:"リンダは早退の理由（息子の発熱）を説明した後、So に続けて「これからすべき行動」を述べる必要がある。I have to do…／I need to do…／I'm going to do… の形が使いやすい。"
+    }
+  },
+  2024:{
+    ptsA:"5問・各3点・⑸のみ1語(句)不要", ptsB:"7点", ptsC:"8点・8〜15語",
+    A:[
+      {jp:"私はその場にいたすべての人から話しかけられた。", pre:"", suf:"in the place.", tiles:["I","was","spoken","to","by","everyone"], answer:"<strong>I was spoken to by everyone</strong> in the place.", exp:"句動詞 speak to A「Aに話しかける」の受動態 be spoken to by …。"},
+      {jp:"曇っていて星はまったく見えなかった。", pre:"", suf:"any stars.", tiles:["It","was","too","cloudy","to","see"], answer:"<strong>It was too cloudy to see</strong> any stars.", exp:"too … to do「あまりにも…なので〜できない」。天気の it を主語に。"},
+      {jp:"私たちはそのお金をどうすべきかについて話し合った。", pre:"", suf:"the money.", tiles:["We","talked","about","what","to","do","with"], answer:"<strong>We talked about what to do with</strong> the money.", exp:"what to do with A「Aをどのように扱うべきか」。talk about A と組み合わせる。"},
+      {jp:"私は暑さに負けないように辛いものを注文した。", pre:"", suf:"beat the heat.", tiles:["I","ordered","something","spicy","to","eat","to"], answer:"<strong>I ordered something spicy to eat to</strong> beat the heat.", exp:"something＋形容詞＋to do「something spicy to eat」＝「食べる何か辛いもの」。後半の to beat the heat は〈目的〉を表す副詞用法の不定詞。"},
+      {jp:"下の階で彼がギターを弾いているのをよく耳にする。（1語(句)不要）", pre:"", suf:"downstairs.", tiles:["He","can often","be","heard","playing","the guitar"], extra:["hearing"], answer:"<strong>He can often be heard playing the guitar</strong> downstairs.（不要語：hearing）", exp:"hear O doing「Oが…しているのを聞く」の受動態 be heard doing＋助動詞 can（often）「…ことがよくある」。"}
+    ],
+    B:{type:"translation", jp:"私の両親が結婚して20年になる。（It で始めて）", ans:"It is [has been] twenty years since my parents got married.", exp:"「…して〜年になる」＝「…以来〜年が過ぎた」＝ It is [has been] 〜 since S V …。（It で始めての指示がなければ Twenty years have passed since … でも可）"},
+    C:{
+      lines:[
+        {speaker:"Amy", text:"Can I get to ABC University by taking a train?"},
+        {speaker:"Brian", blank:true, before:"You could, but it's not a good idea.", after:""},
+        {speaker:"Amy", text:"Then, what is the best way to get to ABC University?"},
+        {speaker:"Brian", text:"You can take the red bus at the bus stop over there."}
+      ],
+      wordsMin:8, wordsMax:15,
+      models:["You have to change trains several times to get there. (10 words)","It's not that far, but the train fare is very expensive. (11 words)","The road from the station to the university is up a very steep hill. (14 words)"],
+      exp:"下線部直後で Amy が「一番いい行き方」を尋ねていることから、下線部には「列車を使うことを避けた方がいい具体的な理由」を書く。"
+    }
+  },
+  2025:{
+    ptsA:"5問・各3点・⑸のみ1語不要", ptsB:"8点", ptsC:"7点・8〜15語",
+    A:[
+      {jp:"彼女は博士号を取得するのに10年かかった。", pre:"", suf:"her doctoral degree.", tiles:["It","took","her","ten years","to","get"], answer:"<strong>It took her ten years to get</strong> her doctoral degree.", exp:"it takes O1 O2 to do「O1(人)が…するのにO2(時間)がかかる」。"},
+      {jp:"リードは有名なアーティストにちなんで娘をモレナと名付けた。", pre:"", suf:"a famous artist.", tiles:["Reed","named","his","daughter","Morena","after"], answer:"<strong>Reed named his daughter Morena after</strong> a famous artist.", exp:"name O C after A「Aにちなんで OをCと名付ける」。"},
+      {jp:"新しいシネコンが駅前に建設中だ。", pre:"A new cinema complex", suf:"", tiles:["is","being","built","across","the street","from","the station"], answer:"A new cinema complex <strong>is being built across the street from the station</strong>.", exp:"受動態の進行形 be being done「建設されているところである」＝ is being built。「駅前に」＝ across the street from A（道路を横断してAの向かいに）。"},
+      {jp:"メモを取るために何か書くものをもらえませんか。", pre:"", suf:"in order to take notes?", tiles:["Can","I","have","something","to","write","on"], answer:"<strong>Can I have something to write on</strong> in order to take notes?", exp:"不定詞の形容詞用法：「書くためのもの」＝ something to write on（write on something の on を残す）。"},
+      {jp:"チーズとマッシュルームのオムレツを作るのは簡単だった。（1語不要）", pre:"", suf:"a cheese and mushroom omelet.", tiles:["I","found","it","easy","to","make"], extra:["easily"], answer:"<strong>I found it easy to make</strong> a cheese and mushroom omelet.（不要語：easily）", exp:"find it C to do「…することがC(形容詞)だとわかる」の形式目的語構文。easily は副詞のため補語になれず不要語となる。"}
+    ],
+    B:{type:"translation", jp:"日本人は働きすぎだと言われる。（It で始めて）", ans:"It is said that Japanese people work too much.", alt:"It is said that the Japanese work too hard.", exp:"it is said that S V …「…だと言われる」。「働きすぎだ」は〈too＋副詞〉を用いて work too much / work too hard。"},
+    C:{
+      lines:[
+        {speaker:"Amy", text:"Nice weather, isn't it?"},
+        {speaker:"John", blank:true, before:"", after:""},
+        {speaker:"Amy", text:"Oh! I didn't bring an umbrella."},
+        {speaker:"John", text:"Then, I'll lend you one because I happen to have two."}
+      ],
+      wordsMin:8, wordsMax:15,
+      models:["It's expected to rain by the time school is over. (10 words)","It is, but the forecast says there's a chance of rain later. (12 words)","Yes, but according to the weather forecast, it is going to rain in the afternoon. (15 words)"],
+      exp:"Amyの最初の発話は「良い天気ね」だが、直後の発話では「傘を持ってこなかった」と述べている。よって下線部には、この後雨が降りそうな天候になることを示す内容を書く必要がある。"
+    }
+  }
+};
+
+// ═══════════════════════════════════════════
+// Q5 DATA（長文読解①・説明文）
+// ═══════════════════════════════════════════
+const Q5 = {
+  2022:{
+    title:"動物の寿命", pts:"50点",
+    passage:`Today, people can expect to live, on average, about 70 years. That is a long time in contrast to many other animals. Many birds and mice live only a few years, while some *worms ⑴last only three weeks. No animal has a（２）life than an insect called the *mayfly. Some female mayflies live just five minutes before they die of old age.
+
+But we do not live the longest of all the animals on *the planet. No person is known to have lived longer than 122 years. Jonathan, a *giant tortoise on *St. Helena island, celebrated that birthday over 60 years ago. On average, giant tortoises live to be about 100. No one knows the exact year when Jonathan came out of his egg. ⑶But it is believed that he was already 50 when he was brought to the island in 1882.
+
+Jonathan is the oldest known living land animal. But the sea holds several types of animals that can live even longer. In 2015, fishermen caught a fish called an *orange roughy. Scientists determined it was between 230 and 245 years old. Some whales can also live to 200. But the title for the oldest sea creature is held by the *sponge. It can be difficult to think of the sponge as an animal. ⑷It looks like a plant and often stays in one place its whole life. Only some types of sponges can move, and the most they ⑸cover in a day is less than half of a centimeter. However, saving their energy seems to work out well for these creatures, as they can live for thousands of years. The oldest ever found is thought to have lived to 11,000.
+
+To figure out the age of an animal in the wild, scientists use several different methods. To *track the life cycle of a bird, a scientist often puts a band with a number on it around its leg. That is how they know that a sea bird named Wisdom has lived to 69 years old. ⑹This, however, would be difficult to achieve with some sea animals, such as *clams. Luckily, much like trees, a clam's shell is marked with rings that show how much it grows each year. ⑺These are counted to determine its age.
+
+In 2006, scientists counted over 400 *growth rings on one clam's shell. A few years later, scientists realized that ⑻some of the clam's growth rings were too close together to count properly. So they used a method called *radiocarbon dating, which is often used to figure out the age of ancient bones. They found that the clam had actually lived to over 500.`,
+    note:"worm＝蠕虫（ミミズなどの仲間）　mayfly＝カゲロウ　the planet＝地球　giant tortoise＝ゾウガメ　St. Helena island＝セントヘレナ島　orange roughy＝オレンジラフィー（ヒウチダイ科の魚）　sponge＝海綿　track＝…をたどる　clam＝二枚貝　growth ring＝成長輪　radiocarbon dating＝放射性炭素年代測定法",
+    trans:[
+      "今日、人は平均して約70年生きると期待できる。これは他の多くの動物と比べると長い時間である。多くの鳥やネズミはほんの数年しか生きられず、中にはミミズの仲間のように3週間しか生きられないものもいる。カゲロウと呼ばれる昆虫ほど短命な動物はいない。メスのカゲロウの中には、老衰で死ぬまでにわずか5分しか生きないものもいる。",
+      "しかし、人間は地球上の全ての動物の中で最も長生きというわけではない。122歳より長く生きた人は知られていない。セントヘレナ島に住むゾウガメのジョナサンは、60年以上前にその誕生日（122歳の誕生日）を迎えた。ゾウガメは平均して100歳ほど生きる。ジョナサンが卵からかえった正確な年は誰にも分からない。しかし、1882年に島に連れて来られたとき、彼はすでに50歳だったと考えられている。",
+      "ジョナサンは、生存が確認されている中で最も長生きな陸上動物である。しかし海には、それよりもさらに長く生きられる動物が何種類もいる。2015年、漁師たちはオレンジラフィーと呼ばれる魚を捕獲した。科学者たちはその魚が230歳から245歳の間だと判定した。クジラの中にも200歳まで生きるものがいる。しかし、最も長生きな海洋生物という称号を持つのは海綿である。海綿を動物だと考えるのは難しいかもしれない。それは植物のように見え、しばしば一生涯１つの場所にとどまる。海綿の一部の種類だけが動くことができるが、それでも1日に移動する距離はせいぜい0.5センチメートル未満である。しかし、エネルギーを節約することはこれらの生物にとってうまく作用しているようで、彼らは何千年も生きることができる。これまでに見つかった最も高齢の個体は11,000歳まで生きたと考えられている。",
+      "野生の動物の年齢を知るために、科学者たちはいくつかの異なる方法を用いる。鳥の生活史を追跡するために、科学者はしばしば番号のついたバンドをその脚に巻きつける。ウィズダムという名の海鳥が69歳まで生きていることが分かっているのは、この方法による。しかし、この方法は二枚貝のような一部の海洋生物には適用しづらい。幸い、木と同じように、二枚貝の殻には毎年どれだけ成長したかを示す輪（成長輪）が刻まれている。これらを数えることで年齢が決定される。",
+      "2006年、科学者たちはある二枚貝の殻に400本以上の成長輪を数えた。数年後、科学者たちは、その二枚貝の成長輪の一部があまりにも密集していて正確に数えられないことに気づいた。そこで彼らは、古代の骨の年代を調べるためによく使われる放射性炭素年代測定法という方法を用いた。その結果、その二枚貝は実際には500歳を超えて生きていたことが判明した。"
+    ],
+    questions:[
+      {num:1,pts:"4点",type:"mcq",q:"下線部⑴last の意味に最も近いものを選べ。",opts:["die","end","stay","survive"],ans:3,exp:"last は自動詞で「続く、存続する」の意味。生き物 some worms が主語なので「生き続ける」＝survive が正解。"},
+      {num:2,pts:"4点",type:"mcq",q:"空所⑵に入れるのに最も適当なものを選べ。",opts:["longer","longest","shorter","shortest"],ans:2,exp:"空所の後に than an insect … があるので比較級が必要。直前の文脈（人間よりずっと短命な生き物の例）・直後の文（メスのカゲロウは5分しか生きない）から「これより短命な動物はいない」という文意になるので shorter が正解。"},
+      {num:3,pts:"4点・完答のみ",type:"write",q:"下線部⑶を書き換えよ：But he（　）（　）（　）（　）（　）already 50 when he was brought to the island in 1882.",model:"is believed to have been",exp:"it is believed that S was … を S is believed to have been … に書き換える（過去の時点よりさらに前を表すので to have done を用いる）。"},
+      {num:4,pts:"10点",type:"write",q:"下線部⑷It が指す内容を明示して和訳せよ。",model:"海綿は植物のように見え、しばしば一生涯１つの場所にとどまる。",exp:"It＝the sponge（海綿）。looks like a plant「植物のように見える」、stays in one place its whole life「一生涯１つの場所にとどまる」を訳出する。"},
+      {num:5,pts:"4点",type:"mcq",q:"下線部⑸の意味に最も近いものを選べ。",opts:["grow","live","measure","travel"],ans:3,exp:"「(海綿が)１日に移動する距離」の文脈で cover は「(距離を)行く、進む」の意味＝travel。"},
+      {num:6,pts:"10点",type:"write",q:"下線部⑹This が指すものを、本文に即して20字程度の日本語で答えよ。",model:"番号のついたバンドを脚の周りに巻くこと。（20字）",exp:"直前の文「鳥の脚に番号付きバンドを巻いて追跡する」という方法を指す。"},
+      {num:7,pts:"4点",type:"mcq",q:"下線部⑺These が指すものを選べ。",opts:["clams","rings","trees","years"],ans:1,exp:"「成長輪が数えられ年齢を決定する」という文脈なので rings が正解。"},
+      {num:8,pts:"10点",type:"write",q:"下線部⑻を和訳せよ。",model:"この二枚貝の成長輪の一部はあまりにも互いに密集しすぎていてきちんと数えることができなかった。",exp:"too close together to count properly「あまりに密集していて正確に数えられない」という too … to do の構文を訳出する。"}
+    ]
+  },
+  2023:{
+    title:"オオカミ・キツネの果実食", pts:"50点",
+    passage:`In popular culture, a wolf is often a large, frightening animal with pointed ears and sharp teeth. We know that like their close relatives, dogs, wolves eat meat. When we think of wolves in the wild, we often imagine them hunting. A wolf jumps on a rabbit or a *pack attacks a deer. Then some of the meat is offered to the young.
+
+Certainly, these scenes take place every day in remote places around the world. However, scientists recently discovered that wolves also *seek out a more peaceful food source: fruit. Before 2017, scientists in the northern United States were aware that wild wolves occasionally eat fruit besides meat. But in that year, they discovered that ⑴it was more important to the diet of one *Minnesota pack than they had thought.
+
+Members of the research team were following the movements of wolves that wore *tracking collars. When they saw many signals coming from a small area, they guessed that several wolves had killed a large animal there.（２）, they found a spot where many wolves were bringing food to the youngest members of the pack. ⑶To their surprise, they saw an adult wolf feeding young wolves a large number of blueberries that he had partly eaten, the way birds do. The scientists began to study this aspect of the animals' behavior more closely. They found that during July, when Minnesota has many *ripe blueberries, the fruit ⑷accounts for 83% of the pack's weekly diet.
+
+Similar discoveries have been made about other animals we associate with eating meat. In Spain, scientists found that foxes regularly eat the fruit of the *lotus tree. Over a 10-day period, the scientists discovered that foxes carried off more fallen fruit than animals like mice and rats. This information is more than just an interesting fact. ⑸In Spain, the lotus tree plays an important role in helping the forest grow. We now know that foxes help support that role by eating its fruit and *scattering its seeds through their *waste.
+
+Scientists in Minnesota believe their findings will impact how forests are managed. They are now studying different wolf packs to find out just how important the nutrition in fruit is to their diets. Do all wolf packs eat that much fruit? What other kinds of fruit do they eat? Do the young wolves that eat many blueberries survive at a higher rate than ⑹those that don't? Answering these questions will help wildlife managers know how best to help wolves when their numbers drop. It will also help（7a）them better predict how wolves will impact an area when（7b）they move into it. This information assists forest managers who are responsible for *ensuring that forests stay healthy and in balance.`,
+    note:"pack＝(オオカミや猟犬などの)群れ　seek out＝…を探し出す　Minnesota＝ミネソタ（アメリカ中北部の州）　tracking collar＝追跡用の首輪　ripe＝熟れた　lotus tree＝ナツメの木　scatter＝…をばらまく　waste＝排泄物　ensure＝…を確実にする",
+    trans:[
+      "一般的なイメージでは、オオカミはしばしば尖った耳と鋭い歯を持つ、大きくて恐ろしい動物として描かれる。近縁の動物であるイヌと同じく、オオカミが肉を食べることは知られている。野生のオオカミと聞くと、私たちはよく狩りをする姿を思い浮かべる。オオカミがウサギに飛びかかったり、群れでシカを襲ったりする姿である。そして肉の一部は子どもたちに与えられる。",
+      "確かに、こうした光景は世界各地の人里離れた場所で日々繰り広げられている。しかし科学者たちは最近、オオカミがもっと穏やかな食料源、すなわち果物も探し求めていることを発見した。2017年より前から、アメリカ北部の科学者たちは、野生のオオカミが肉のほかに時折果物を食べることを知っていた。しかしその年、彼らはそれがミネソタのあるオオカミの群れの食生活において、思っていた以上に重要であることを発見した。",
+      "研究チームのメンバーは、追跡用の首輪をつけたオオカミの動きを追っていた。狭い範囲から多くの信号が発せられているのを見たとき、彼らは複数のオオカミがそこで大型動物を仕留めたのだろうと推測した。ところが実際には、多くのオオカミが群れの最も幼いメンバーに食料を運んでいる場所を見つけた。驚いたことに、彼らは1匹の大人のオオカミが、鳥がするように自分が一部を食べたたくさんのブルーベリーを幼いオオカミに食べさせているのを目撃した。科学者たちはこの行動の側面をより詳しく研究し始めた。その結果、ミネソタで熟れたブルーベリーが多く実る7月には、その果物がその群れの週の食事の83％を占めることが分かった。",
+      "肉食のイメージがある他の動物についても、同様の発見がなされている。スペインでは、科学者たちがキツネが定期的にナツメの木の実を食べていることを発見した。10日間の調査で、科学者たちはキツネがネズミなどの動物よりも多くの落果を持ち去ることを発見した。この情報は単なる興味深い事実にとどまらない。スペインでは、ナツメの木は森林の成長を助けるうえで重要な役割を果たしている。キツネはその実を食べ、排泄物とともに種をまき散らすことで、その役割を支える助けをしていることが今では分かっている。",
+      "ミネソタの科学者たちは、この発見が森林管理の方法に影響を与えると考えている。彼らは現在、果物に含まれる栄養がオオカミの食生活にとってどれほど重要なのかを明らかにするため、様々なオオカミの群れを研究している。すべてのオオカミの群れがそれほど多くの果物を食べるのだろうか。他にどんな果物を食べるのだろうか。ブルーベリーをたくさん食べる幼いオオカミは、そうでない幼いオオカミよりも高い生存率を示すのだろうか。これらの問いに答えることは、オオカミの数が減少したときに野生生物管理者が最善の支援方法を知るのに役立つだろう。また、オオカミがある地域に移動してきたときにその地域にどのような影響を与えるかを、より的確に予測する助けにもなるだろう。この情報は、森林が健全でバランスの取れた状態を保つ責任を負う森林管理者の助けにもなる。"
+    ],
+    questions:[
+      {num:1,pts:"5点",type:"write",q:"下線部⑴it が指すものを本文中から１語で抜き出して書け。",model:"fruit",exp:"「オオカミの食事において果物が思っていた以上に重要だった」という文脈から it＝fruit。"},
+      {num:2,pts:"5点",type:"mcq",q:"空所⑵に入れるのに最も適当なものを選べ。",opts:["Fortunately","Instead","Moreover","Therefore"],ans:1,exp:"「大型動物を殺したと推測したが、そうではなく（instead）、子どもに食料を運ぶ様子を見た」という展開なので Instead が正解。"},
+      {num:3,pts:"12点",type:"write",q:"下線部⑶を和訳せよ。",model:"彼らが驚いたことに、彼らは一匹の大人のオオカミが、鳥がするように、彼が一部を食べたたくさんのブルーベリーを幼いオオカミに食べさせているのを見た。",exp:"To their surprise「彼らが驚いたことに」、feeding young wolves … that he had partly eaten「彼が一部を食べた…を幼いオオカミに食べさせている」、the way birds do「鳥がするように」を丁寧に訳出する。"},
+      {num:4,pts:"5点",type:"mcq",q:"下線部⑷の意味に最も近いものを選べ。",opts:["counts on","explains","increases","makes up"],ans:3,exp:"account for A「Aを占める」＝make up A なので makes up が正解。"},
+      {num:5,pts:"8点",type:"write",q:"下線部⑸を和訳せよ。",model:"スペインでは、ナツメの木は森林が成長するのを助けることにおいて、重要な役割を果たしている。",exp:"play an important role in doing「…することにおいて重要な役割を果たす」を訳出する。"},
+      {num:6,pts:"10点",type:"write",q:"下線部⑹those that don't の後に省略されている内容を本文に即して補い、下線部の内容を20字程度で書け。",model:"ブルーベリーをたくさんは食べない幼いオオカミ。（23字）",exp:"直前の the young wolves that eat many blueberries との対比から、those（＝young wolves）that don't（eat many blueberries）の意味を補う。"},
+      {num:7,pts:"5点",type:"mcq",q:"下線部(7a)them と(7b)they が指すものの組み合わせとして最も適当なものを選べ。",opts:["(7a)wildlife managers ― (7b)blueberries","(7a)wildlife managers ― (7b)wolves","(7a)wolves ― (7b)blueberries","(7a)wolves ― (7b)wildlife managers"],ans:1,exp:"「野生生物管理者(wildlife managers)がオオカミ(wolves)の影響をよりよく予測するのを助ける」という文脈なので、(7a)＝wildlife managers、(7b)＝wolves。"}
+    ]
+  },
+  2024:{
+    title:"バイリンガル児童の研究", pts:"50点",
+    passage:`*Fluency in *multiple languages makes travel easier and gives workers an ⑴edge in the *job market. But the benefits don't stop there. Research shows that living in a home where more than one language is spoken is good for children's *cognitive and social skills. In one study, babies from *bilingual homes showed a better ability to concentrate than those from homes where only one language was spoken. In a second study, researchers found that bilingual children did the best at a task that required them to understand another person's *perspective.
+
+That second study included three groups of children between the ages of four and six. These were bilingual children, children who spoke only one language, and children who often heard multiple languages being spoken but spoke only one. Each child played a board game with an adult. ⑵The child and adult sat face to face on opposite sides of a table with several objects on the board. The child could see all the objects from his or her perspective,（３）the adult could not.
+
+First, researchers asked the children to play the game from the adult's side. This way, the children could view what the adult could and couldn't see. Then the child played on the other side of the table. The adult asked questions like, “I see a small car. Could you move the small car?” The children could see three cars: one small, one *medium, and one large. But the adults could see only two: the medium and the large car. Over 75 percent of the time, bilingual children remembered the adult's perspective of the board. They understood the adult's *intended meaning and moved the correct object. In this case, that was the（４）car.
+
+This was not the only interesting finding of the study. Researchers found that the group of children who simply heard multiple languages being spoken performed nearly as well. The children who were exposed to only one language guessed correctly only half the time. But just one percentage point *separated the success rate of ⑸the other two groups. This seems to show that exposure to multiple languages can positively affect children's brain development even when they're not actively learning them.
+
+Children's brains *absorb new information quickly. But there's good news for adults as well. In ⑹a third study, researchers introduced Finnish words to two groups of adult English-only speakers. One group lived in an area where they often heard people speaking languages other than English. The second group didn't hear other languages very often. *Analysis of the participants' brain activity indicated that the first group was better at identifying real Finnish words versus nonsense words. Therefore, ⑺hearing other languages frequently may make it easier to learn a new one.`,
+    note:"fluency＝流暢さ　multiple＝複数の　job market＝労働市場　cognitive＝認知の　bilingual＝２つの言語を話す、バイリンガルの　perspective＝ものの見え方　medium＝中くらいの　intended＝意図された　separate＝…を分ける　absorb＝…を吸収する　analysis＝分析",
+    trans:[
+      "複数の言語を流暢に話せることは、旅行を容易にし、労働市場において働く人に強みを与える。しかし、その利点はそれだけにとどまらない。研究によると、複数の言語が話されている家庭で暮らすことは、子どもの認知能力や社会性の発達にとって良いことが示されている。ある研究では、バイリンガルの家庭で育った赤ちゃんは、1つの言語しか話されない家庭の赤ちゃんよりも集中力に優れていることが分かった。別の研究では、研究者たちは、他人のものの見方を理解する必要がある課題において、バイリンガルの子どもが最も優れた成績を収めることを発見した。",
+      "その2つ目の研究には、4歳から6歳までの子どもの3つのグループが参加した。バイリンガルの子ども、1つの言語しか話さない子ども、そして複数の言語が話されるのをよく耳にするが自分では1つの言語しか話さない子どもである。それぞれの子どもは大人とボードゲームをした。子どもと大人は、いくつかの物体が置かれたボードを挟んでテーブルの両側に向かい合って座った。子どもは自分の視点からすべての物体を見ることができたが、大人には見えないものもあった。",
+      "まず、研究者たちは子どもに大人の側からゲームをするよう頼んだ。こうすることで、子どもは大人に見えるものと見えないものを把握できた。その後、子どもはテーブルの反対側でゲームをした。大人は「小さい車が見えます。その小さい車を動かしてもらえますか」といった質問をした。子どもたちには小さい車、中くらいの車、大きい車の3台が見えていたが、大人には中くらいの車と大きい車の2台しか見えていなかった。バイリンガルの子どもは75％以上の確率で、大人の視点を覚えていた。彼らは大人の意図した意味を理解し、正しい物体を動かした。この場合、それは中くらいの車だった。",
+      "これはこの研究における唯一の興味深い発見ではなかった。研究者たちは、複数の言語が話されるのを耳にするだけのグループの子どもたちも、ほぼ同じくらい良い成績を収めることを発見した。1つの言語しか触れていなかった子どもたちは、半分の確率でしか正しく推測できなかった。しかし、残りの2つのグループの成功率の差はわずか1パーセントポイントだった。このことは、複数の言語に触れることが、たとえ積極的にそれらを学んでいなくても、子どもの脳の発達に良い影響を与えうることを示しているようである。",
+      "子どもの脳は新しい情報を素早く吸収する。しかし、大人にとっても朗報がある。3つ目の研究では、研究者たちが英語のみを話す2つの大人のグループにフィンランド語の単語を提示した。一方のグループは、英語以外の言語を話す人々の声をよく耳にする地域に住んでいた。もう一方のグループは、他の言語をあまり耳にすることがなかった。参加者の脳活動の分析から、前者のグループの方が、本物のフィンランド語の単語と意味のない単語を識別するのが得意だと分かった。したがって、他の言語を頻繁に耳にすることは、新しい言語を学ぶことをより容易にするかもしれない。"
+    ],
+    questions:[
+      {num:1,pts:"5点",type:"mcq",q:"下線部⑴の意味に最も近いものを選べ。",opts:["advantage","career","end","fault"],ans:0,exp:"give A an edge「Aに強みを与える」＝give A an advantage。"},
+      {num:2,pts:"10点",type:"write",q:"下線部⑵を和訳せよ。",model:"子どもと大人が、いくつかの物体がボードの上にあるテーブルの両側に向かい合って座った。（別解：〜テーブルの向かい合う側に対面して座った。）",exp:"sat face to face on opposite sides of a table with several objects on the board「いくつかの物体がボード上にあるテーブルの両側に向かい合って座った」を訳出する。"},
+      {num:3,pts:"5点",type:"mcq",q:"空所⑶に入れるのに最も適当なものを選べ。",opts:["because","since","until","while"],ans:3,exp:"「子どもは全ての物体が見えるが、大人には見えない（一方で）」という対比を表す while が正解。"},
+      {num:4,pts:"5点",type:"write",q:"空所⑷に入れる最も適当な１語を第３段落から抜き出して書け。",model:"medium",exp:"大人からは見えず子どもだけに見えていた「小さい車」ではなく、双方に見えていたmedium/largeのうち、意図された car は medium car。"},
+      {num:5,pts:"10点",type:"write",q:"下線部⑸が指す具体的内容を日本語で説明せよ。",model:"バイリンガルの子どもたちのグループと複数の言語が話されるのをしばしば耳にするが１つの言語しか話さない子どもたちのグループ。",exp:"the other two groups＝3グループのうち、単一言語のみのグループを除いた残り2グループ（バイリンガル・複数言語をよく耳にするグループ）を指す。"},
+      {num:6,pts:"5点",type:"mcq",q:"下線部⑹の研究はどのような人を対象としたか、最も適当なものを選べ。",opts:["バイリンガルの英語のネイティブスピーカー","英語以外の言語にも接する英語のネイティブスピーカー","英語も話せるフィンランド語のネイティブスピーカー","英語を話せないフィンランド語のネイティブスピーカー"],ans:1,exp:"two groups of adult English-only speakers のうち「他言語もよく耳にする」グループが対象という文脈。"},
+      {num:7,pts:"10点",type:"write",q:"下線部⑺を和訳せよ。",model:"他の言語を頻繁に耳にすることは新しい言語を学ぶことをより容易にするかもしれない。",exp:"hearing other languages frequently（動名詞句が主語）may make it easier to learn a new one（形式目的語構文）を訳出する。"}
+    ]
+  },
+  2025:{
+    title:"タッシリ・ナジェールの岩絵", pts:"50点",
+    passage:`The last time you saw many pieces of art in one place, you were probably in a museum or a gallery. However, one of the world's most important art collections is not in a building. It lies in *Tassili N'Ajjer National Park, which is in a desert in the African country of Algeria.
+
+In the park, there are many sandstone *formations. ⑴The unusual features of these giant formations make many of them look like pieces of art. Over thousands of years, wind and rain have *worn the stone down in interesting ways. In some places, a pointed piece of stone rises high into the sky like a castle tower. In others, a natural stone arch crossing the sand resembles a bridge over a river.
+
+But this is only the beginning of the park's wonders. A closer look at ⑵these natural structures *reveals pictures left there by many generations of the area's human inhabitants. Some are *carved into the rock. Other ancient artists made paintings using paint made of blood mixed with powdered stone.
+
+In the park, there are about 15,000 pieces of rock art. They show people, designs, and animals. The *images of animals, in particular, reveal an interesting history. Ancient people drew animals that no longer live in this part of Africa because it is too dry. These include elephants, giraffes, and even crocodiles, which live mostly in the water. This *indicates that at some point, the climate of Tassili N'Ajjer was much（３）and greener than it is today.
+
+The drawings reflect thousands of years of human history. Many of the oldest works are detailed and expressive. These are most likely the works of artists who ⑷took their time. They show the *graceful movements of people dancing and the patterns on animal fur.
+
+One of the most famous works is often called the “Crying Cows.” Several cows face the viewer and each one has a large tear in its eye. A local legend about ⑸this piece claims that it was done by an artist who brought cows to a spring. Unfortunately, the spring had dried up. For many local people, the piece reflects the worry early people in the area must have felt when less rain began to fall.
+
+Cave art from later periods of history in the park shows animals *associated with desert climates, such as camels. ⑹Most of these drawings are not as detailed as the oldest works. Historians believe this is（７）the climate of Tassili N'Ajjer could no longer support *permanent communities. These artists were simply passing by as they crossed the desert, going from one place to another. They made their mark quickly on the rocks, simply to show that they had been there.`,
+    note:"Tassili N'Ajjer National Park＝タッシリ・ナジェール国立公園　formation＝造形物　wear down＝…を風化させる　reveal＝…を明らかにする　carve＝…を彫る　image＝図像　indicate＝…を示す　graceful＝優雅な　associated with＝…を連想させる　permanent＝永続的な",
+    trans:[
+      "あなたが最後に一箇所で多くの美術作品を目にしたのは、おそらく美術館や画廊だっただろう。しかし、世界で最も重要な美術コレクションの1つは、建物の中にはない。それはアフリカのアルジェリアという国の砂漠にある、タッシリ・ナジェール国立公園にある。",
+      "その公園には、多くの砂岩の造形物がある。これらの巨大な造形物の珍しい特徴が、それらの多くを芸術作品のように見せている。何千年もの間、風と雨が興味深いやり方で岩を風化させてきた。ある場所では、尖った岩が城の塔のように高く空へとそびえ立っている。別の場所では、砂の上に架かる自然の石のアーチが、川に架かる橋のように見える。",
+      "しかし、これはこの公園の驚異のほんの始まりに過ぎない。これらの自然の造形物をよく見てみると、その地域に住んでいた何世代もの人々が残した絵が現れる。中には岩に彫られたものもある。他の古代の芸術家たちは、血と粉末状の石を混ぜて作った絵の具で絵を描いた。",
+      "この公園には約15,000点の岩絵がある。それらは人物、模様、そして動物を描いている。特に動物の図像は、興味深い歴史を明らかにしている。古代の人々は、乾燥しすぎているために現在ではアフリカのこの地域にはもう生息していない動物を描いた。それらには象やキリン、さらには主に水中で暮らすワニまで含まれる。このことは、ある時期、タッシリ・ナジェールの気候が今日よりもずっと湿潤で緑豊かだったことを示している。",
+      "これらの絵は何千年もの人類の歴史を反映している。最も古い作品の多くは詳細で表現力豊かである。これらはおそらく、時間をかけて制作した芸術家たちの作品であろう。それらは踊る人々の優雅な動きや、動物の毛皮の模様を描いている。",
+      "最も有名な作品の1つは、しばしば「泣く牛」と呼ばれる。数頭の牛が見る者の方を向いており、それぞれの目には大きな涙が描かれている。この作品にまつわる地元の伝説によれば、これは牛を泉に連れて行った芸術家によって描かれたものだとされる。あいにく、その泉は干上がってしまっていた。多くの地元の人々にとって、この作品は、雨が減り始めたときにこの地域の初期の人々が感じたに違いない不安を反映したものである。",
+      "この公園のより新しい時代の洞窟壁画には、ラクダなど砂漠気候を連想させる動物が描かれている。これらの絵のほとんどは、最も古い作品ほど詳細ではない。歴史家たちは、これはタッシリ・ナジェールの気候がもはや定住コミュニティを維持できなくなったためだと考えている。これらの芸術家たちは、砂漠を横断しながらある場所から別の場所へと単に通り過ぎていく人々だった。彼らは自分たちがそこにいたことを示すためだけに、急いで岩に痕跡を残したのである。"
+    ],
+    questions:[
+      {num:1,pts:"12点",type:"write",q:"下線部⑴を和訳せよ。",model:"これらの巨大な造形物の珍しい特徴がそれらの多くを芸術作品のように見せているのである。",exp:"The unusual features of these giant formations（主語）make many of them look like pieces of art（make O C「OをCにする」）を訳出する。"},
+      {num:2,pts:"5点",type:"mcq",q:"下線部⑵が指す内容の組み合わせとして最も適当なものを選べ。",opts:["a castle tower ― a bridge over a river","a natural stone arch ― a bridge over a river","a pointed piece of stone ― a castle tower","a pointed piece of stone ― a natural stone arch"],ans:3,exp:"直前の2文で挙げられた「城の塔のような尖った岩」と「川に架かる橋のような自然のアーチ」を指す。"},
+      {num:3,pts:"5点",type:"mcq",q:"空所⑶に入れる最も適当なものを選べ。",opts:["colder","drier","hotter","wetter"],ans:3,exp:"今は生息しないゾウやキリン、ワニの絵があることから、当時の気候は今より湿潤（wetter）で緑豊かだったと分かる。"},
+      {num:4,pts:"5点",type:"mcq",q:"下線部⑷の意味に最も近いものを選べ。",opts:["spent little time","spent much time","worked early","worked late"],ans:1,exp:"took their time「時間をかけた」＝spent much time。"},
+      {num:5,pts:"10点",type:"write",q:"下線部⑸が指すものとその特徴を含め、本文に即して45字程度の日本語で具体的に説明せよ。",model:"見る者の方を向いている、目に大きな涙を浮かべている数頭の牛を描いた「泣く牛」と呼ばれる作品。（46字）",exp:"直前の2文（“Crying Cows”という名称・向き・涙の描写）を要約してまとめる。"},
+      {num:6,pts:"8点",type:"write",q:"下線部⑹を和訳せよ。",model:"これらの絵のほとんどは、最も古い作品ほど詳細ではない。",exp:"not as … as ~「~ほど…ではない」の比較表現を訳出する。"},
+      {num:7,pts:"5点",type:"mcq",q:"空所⑺に入れる最も適当なものを選べ。",opts:["because","how","the way","why"],ans:0,exp:"this is because …「これは…だからだ」の形。"}
+    ]
+  }
+};
+
+// ═══════════════════════════════════════════
+// Q6 DATA（長文読解②・物語文）
+// ═══════════════════════════════════════════
+const Q6 = {
+  2022:{
+    title:"心配性の少女と犬・金魚",
+    passage:`Around the time Margaret turned twelve, she began to worry about a lot of things. She worried that she would disappoint her teammates by missing her serves while playing volleyball. She worried that her bus driver would get lost. She got anxious that her best friend would move away because her father got another job. Her best friend told her that her father was not even looking for another job, but it didn't matter. Margaret still worried.
+
+Once she was walking to the grocery store with her mother, *fretting that the store would not have her favorite ice cream. They were waiting to cross the street when Margaret felt something gently push against her hand. She turned to see a golden dog *wagging its tail in a friendly way. Its owner said, “You can pet him. He likes you.” Margaret *crouched down and the dog licked her face. Margaret *giggled and felt some of her anxiety ease. Yes, the store might not have butter pecan ice cream. But so what? Margaret liked other flavors, too. The dog's owner said that her dog was often drawn to people who were worried. When someone needed him, the dog knew that.
+
+That evening, Margaret said to her mother, “I need a dog like that. Can we get one?” Her mother reminded her that they could not have dogs in their apartment. Margaret suggested that they hide the dog or that they move. Her mother said that their building was convenient for Margaret's father because his office was only a few blocks away. Margaret *sighed. She *stomped to her room and slammed the door.
+
+A week later, Margaret came home from school and her mother told her there was a surprise in her room. As Margaret ran, she imagined an *adorable dog barking excitedly and jumping into her arms. Instead, her room was empty and quiet. Margaret couldn't believe her mother would play such an unkind trick. Then she saw a *fishbowl on her dresser with an orange fish in it. Her mother said, “The woman at the pet store said that having a fish might make you feel calmer.” Margaret tried hard to hide her unhappiness. “It's great,” she said miserably.
+
+The next morning, Margaret didn't feel like looking at the fish. He reminded her of the dog she did not have. But when she came into her room after school, the fish swam to the wall of his glass bowl. Had he seen her come in? Margaret put her backpack down and went to the bowl. She tapped the glass and the fish *wiggled his tail. Margaret smiled. “You really are a nice-looking fish,” she said. He was her favorite color. He also had yellow stripes and even white spots. Margaret decided to name him Spot, after the dog in a book she had liked when she was little. He was so graceful. It was relaxing to watch him glide.
+
+A while later, Margaret went into the kitchen to help her mother make supper. Her mother said, “It's all right, Margaret. I'm fine.” Her mother was frying bacon. She was always cautious when she cooked. Still, Margaret tended to fear that oil would *spit up from the pan and hit her mother in the eye. But now Margaret didn't worry so much. She felt something had changed inside her because of the dog and the fish. “I'm not worried,” she said to herself.`,
+    note:"fret＝…だとやきもきする　wag＝…を振る　crouch down＝しゃがむ　giggle＝くすくす笑う　sigh＝ため息をつく　stomp＝足を踏み鳴らす　adorable＝とてもかわいい　fishbowl＝金魚鉢　wiggle＝…をくねくね動かす　spit up＝はねる",
+    trans:[
+      "マーガレットは12歳になる頃から、多くのことを心配するようになった。バレーボールでサーブを失敗してチームメイトをがっかりさせるのではないかと心配した。スクールバスの運転手が道に迷うのではないかと心配した。親友の父親が転職して、親友が引っ越してしまうのではないかと不安になった。親友は、父親は転職先を探してすらいないと話したが、それは関係なかった。マーガレットは相変わらず心配し続けた。",
+      "ある日、マーガレットは母親と食料品店へ歩いていく途中、お気に入りのアイスクリームが売っていないのではないかとやきもきしていた。道路を渡ろうと待っていると、マーガレットは何かが優しく手に押し当てられるのを感じた。振り向くと、人懐っこく尻尾を振る金色の犬がいた。飼い主は「なでてあげていいですよ。あなたのことが気に入っているみたい」と言った。マーガレットがしゃがみ込むと、犬は彼女の顔をなめた。マーガレットはくすくす笑い、不安がいくらか和らぐのを感じた。そう、あの店にはバターピーカンアイスがないかもしれない。でも、それが何だというのだろう。マーガレットは他の味も好きだった。犬の飼い主は、この犬は心配している人によく引き寄せられるのだと言った。誰かが自分を必要としているとき、この犬にはそれが分かるのだ。",
+      "その夜、マーガレットは母親に「あんな犬が欲しい。飼ってもいい？」と言った。母親は、住んでいるアパートでは犬を飼えないことを彼女に思い出させた。マーガレットは犬を隠すか、引っ越すかすればいいと提案した。母親は、このアパートは父親の職場までほんの数ブロックなので都合が良いのだと言った。マーガレットはため息をついた。彼女は足を踏み鳴らしながら自分の部屋に行き、ドアをバタンと閉めた。",
+      "1週間後、マーガレットが学校から帰宅すると、母親は部屋にサプライズがあると彼女に告げた。マーガレットは走りながら、とてもかわいい犬が興奮して吠えながら自分の腕に飛び込んでくる様子を想像した。しかし実際には、部屋は空っぽで静かだった。マーガレットは、母親がこんな意地悪ないたずらをするなんて信じられなかった。そのとき、化粧台の上にオレンジ色の魚が入った金魚鉢を見つけた。母親は「ペットショップの女性が、魚を飼うと気持ちが落ち着くかもしれないと言っていたの」と言った。マーガレットは不満な気持ちを隠そうと必死になった。「すごくいいね」と、彼女はみじめな気持ちで言った。",
+      "翌朝、マーガレットは魚を見る気になれなかった。その魚を見ると、飼えなかった犬のことを思い出してしまうのだった。しかし放課後に部屋に入ると、魚がガラス鉢の壁際まで泳いできた。彼女が入ってきたのが分かったのだろうか。マーガレットはリュックを置いて鉢に近づいた。ガラスを軽くたたくと、魚は尾をくねくねと動かした。マーガレットは微笑んだ。「あなた、本当にきれいな魚ね」と彼女は言った。その魚は彼女の一番好きな色をしていた。黄色い縞模様まであり、白い斑点もあった。マーガレットは、小さい頃好きだった本に出てくる犬にちなんで、その魚をSpotと名付けることにした。その魚はとても優雅だった。彼が水中を滑るように泳ぐ様子を見るのは心が安らいだ。",
+      "しばらくして、マーガレットは夕食作りを手伝おうと台所へ行った。母親は「大丈夫よ、マーガレット。ちゃんとできているから」と言った。母親はベーコンを揚げていた。母親は料理をするときいつも慎重だった。それでも、マーガレットは油がフライパンからはねて母親の目に入るのではないかと心配する傾向があった。しかし今は、それほど心配していなかった。犬と金魚のおかげで、自分の中の何かが変わったように感じた。「私は心配していない」と、彼女は心の中でつぶやいた。"
+    ],
+    A:[
+      {num:1,q:"When Margaret was twelve years old, (　　).",opts:["she imagined much of the time that bad things would happen","her school bus driver sometimes lost his way in the city","her best friend told her she did not want to be friends anymore","her friend's father changed jobs and her family moved to another city"],ans:0,exp:"第1段落で列挙される心配事（サーブの失敗、バスの運転手が迷う、友人が引っ越す等）はすべて「起こってもいない悪いこと」への不安であり、実際には起きていない。"},
+      {num:2,q:"On her way to the grocery store with her mother, Margaret (　　).",opts:["fell down and hurt her hand when a dog pushed her on the sidewalk","found a friendly dog and asked her mother if she could keep it","felt less anxious after a friendly golden dog licked her face","was led by a dog to an ice cream shop, where she ate her favorite flavor"],ans:2,exp:"犬に顔をなめられ「不安がいくらか和らいだ(felt some of her anxiety ease)」という記述と一致。"},
+      {num:3,q:"When Margaret found out what her surprise was, she (　　).",opts:["decided to play a trick on her mother","filled a fishbowl with water for her orange fish","thanked her mother because the surprise was so great","said something that she didn't really mean"],ans:3,exp:"本心では喜べていないのに “It's great,” she said miserably. と言った＝本心と異なることを言った。"},
+      {num:4,q:"After spending some time with her new pet, Margaret (　　).",opts:["was reminded of a graceful fish she had had before","found that he tapped the wall of his fishbowl","drew a picture of him with orange, yellow, and white crayon","gave him the name of a character in a story she had read"],ans:3,exp:"「小さい頃好きだった本に出てくる犬にちなんでSpotと名付けた」という記述と一致。"},
+      {num:5,q:"When Margaret went to help her mother with supper, (　　).",opts:["her mother had already finished cooking it","bacon was already being prepared in the pan","oil spit up from the pan and hit her mother in the eye","she was disappointed that her mother didn't need any help"],ans:1,exp:"Her mother was frying bacon.（母はベーコンを揚げている最中だった）と一致。ウ（オイルがはねて母の目に入った）はマーガレットが恐れていたことであり実際には起きていない。"}
+    ],
+    B:{
+      opts:[
+        "Margaret was disappointed to miss her serves while playing volleyball.",
+        "Margaret was told by the owner of a dog that it could sense anxiety in people.",
+        "Margaret's family lived close to where her father worked.",
+        "An adorable dog rushed to Margaret excitedly when she came home.",
+        "A staff member at the pet shop suggested to Margaret that she have a fish.",
+        "The colors Margaret liked best were orange, yellow and white.",
+        "Margaret was no longer the worried girl she'd been thanks to the dog and the fish."
+      ],
+      ans:[1,2,6],
+      exp:"イ○：犬の飼い主が「心配している人によく引き寄せられる」と言った内容と一致。<br>ウ○：母がアパートは父の職場から「ほんの数ブロック」で都合が良いと言っており、家族は父の職場の近くに住んでいる。<br>キ○：結末の「犬と魚のおかげで何かが変わった」「心配していない」という記述と一致。<br>ア×：サーブを失敗すること自体ではなく「失敗してチームメイトをがっかりさせること」を心配していた。<br>エ×：想像しただけで、実際には犬は来なかった（サプライズは金魚だった）。<br>オ×：提案したのは母親ではなく「ペットショップの女性」であり、勧めた相手は母親であってマーガレット本人にではない。<br>カ×：好きな色は「彼（魚）のお気に入りの色」の1色（本文では色の詳細は明言されておらず、3色をすべて「一番好きな色」としたのは誤り）。"
+    }
+  },
+  2023:{
+    title:"クロード・モネの生涯",
+    passage:`For much of his life, the famous French artist *Claude Monet moved often and painted in many different places. As a child, he lived near the sea. There, he was *inspired by quickly shifting weather patterns that made the sky and ocean change color from one moment to the next. When he was twenty-one, Monet served in the *military in Algeria. He was *fascinated by how the light looked different from how it did in France. He was also excited about the color combinations he saw there. At other times in his life, Monet painted trains in Paris, boats and *windmills in the Netherlands, and trees in Italy.
+
+In 1883, when he was forty-three, Monet was on a train in the French countryside when he saw a pretty village, Giverny, from the window. He got off the train to take a closer look. When Monet found out that a farm was for rent in the area, he decided to move there that same year. Monet did not completely give up traveling to find *subjects to paint after this move. For example, he painted government buildings in London and *canals in Venice. But Giverny became not only his home but also the primary subject of his work for the rest of his life.
+
+Monet lived at the Giverny farm with his two sons, his second wife, and his wife's six children. In the years following his move, his paintings started selling well in the United States. Monet used the money to buy the farm in 1890. Then he started on a big project: composing the perfect garden to paint. Before, he had focused on painting things other people had made. At Giverny, he created his own subjects. He thought about what colors he wanted next to each other in a painting. Then he carefully arranged his flower beds and planted various flowers in yellow, pink, red, purple, and white. He put in metal arches and paths with attractive curves to create pleasing shapes. To make the outside of his house blend in with the colorful garden, he painted the walls pink and the window shutters green.
+
+After “painting” with plants, Monet put scenes from his flower garden on canvas. But he was not finished when it came to creating artistic subjects. In 1893, Monet bought land in front of his house. A stream ran through this part of his *property. He used water from it to build a pond. Monet put in a bridge, filled the water with *lily pads, and planted trees along the *bank. Then he built a studio with a glass wall right next to his creation. This way, he could paint it at various times of day as the light and shadows changed. Today, Monet's water lily paintings are some of his most famous and well-loved works.
+
+Monet's garden and pond were not easy to maintain. He had to hire several gardeners to take care of the flowers and trees. Dead leaves had to be removed from the pond. Water rats were always trying to eat his water lilies.
+
+But to Monet, it was worth it. He reportedly once said, “My garden is my most beautiful work of art.” He would be glad to know that his Giverny home and grounds are still carefully maintained by the French government as a national monument. Visitors are inspired by his living paintings every day.`,
+    note:"Claude Monet＝クロード・モネ（フランスの印象派画家）　inspire＝…に刺激を与える　military＝軍隊　fascinate＝…を魅了する　windmill＝風車　subject＝画題　canal＝運河　property＝所有地　lily pad＝スイレンの葉　bank＝ほとり",
+    trans:[
+      "生涯の多くの期間、フランスの有名な画家クロード・モネはしばしば引っ越しをし、さまざまな場所で絵を描いた。子どもの頃、彼は海の近くに住んでいた。そこで彼は、空と海の色を刻一刻と変化させる、めまぐるしく移り変わる天候パターンに刺激を受けた。21歳のとき、モネはアルジェリアで軍務についた。彼はそこでの光がフランスとは違って見えることに魅了された。また、そこで目にした色の組み合わせにも心を躍らせた。人生の別の時期には、モネはパリで列車を、オランダで船や風車を、イタリアで木々を描いた。",
+      "1883年、43歳のとき、モネはフランスの田舎を走る列車に乗っていたとき、車窓からジヴェルニーという美しい村を見かけた。彼はもっとよく見ようと列車を降りた。その地域に貸し農場があることを知ったモネは、その同じ年にそこへ移住することを決めた。この移住の後も、モネは絵の題材を求めて旅をすることを完全にはやめなかった。例えば、彼はロンドンの政府庁舎やヴェネツィアの運河を描いた。しかしジヴェルニーは、彼の住まいであるだけでなく、残りの人生における作品の主要な題材にもなった。",
+      "モネは2人の息子、後妻、そしてその連れ子6人とともにジヴェルニーの農場で暮らした。移住後の数年間で、彼の絵はアメリカでよく売れるようになった。モネはそのお金を使って1890年にその農場を買い取った。それから彼は、絵を描くための完璧な庭を作り上げるという大きな計画に取りかかった。それまでは、他の人が作ったものを描くことに専念していた。ジヴェルニーでは、彼は自ら題材を作り出した。彼は絵の中でどの色を隣り合わせにしたいかを考えた。そして花壇を丁寧に整え、黄色、ピンク、赤、紫、白のさまざまな花を植えた。心地よい形を作るために、金属製のアーチや魅力的な曲線を描く小道も設置した。家の外観を色とりどりの庭になじませるため、壁をピンクに、窓のシャッターを緑に塗った。",
+      "植物で「絵を描いた」後、モネは花園の光景をキャンバスに描いた。しかし、芸術の題材を作り出すことに関して、彼はまだ終わっていなかった。1893年、モネは自宅の前の土地を買った。この土地には小川が流れていた。彼はその水を使って池を作った。モネは橋を架け、水面をスイレンの葉で満たし、ほとりに木々を植えた。それから、この創作物のすぐ隣にガラス張りの壁を持つアトリエを建てた。こうすることで、光や影が変化するさまざまな時間帯にそれを描くことができた。今日、モネのスイレンの絵は彼の最も有名で愛される作品の一部となっている。",
+      "モネの庭と池の維持は簡単ではなかった。彼は花や木の手入れのために複数の庭師を雇わなければならなかった。池からは枯れ葉を取り除かなければならなかった。水ネズミはいつも彼のスイレンを食べようとしていた。",
+      "しかしモネにとって、それだけの価値はあった。彼はかつて「私の庭は私の最も美しい芸術作品だ」と語ったと伝えられている。ジヴェルニーの自宅と庭園が今もフランス政府によって国の記念物として大切に維持されていることを知れば、彼はきっと喜ぶだろう。訪れる人々は今日も、彼が生み出した生きた絵画に心を動かされている。"
+    ],
+    A:[
+      {num:1,q:"According to the first paragraph, Claude Monet (　　).",opts:["lived in many different places as a child","did not enjoy the time he spent in the military","found that light looked similar everywhere","painted elements of the natural world in Italy"],ans:3,exp:"第1段落末尾「trees in Italy」＝イタリアで自然の要素（木）を描いたと一致。"},
+      {num:2,q:"Monet became interested in Giverny when (　　).",opts:["he saw it from a train when he was going through it","he saw a pretty painting of it done by another artist","he happened to get off the train and looked around it","a friend whose family had a farm there told him about it"],ans:0,exp:"「列車で通りかかった際に車窓から見た」という記述と一致。"},
+      {num:3,q:"In Giverny, Claude Monet (　　).",opts:["lived on a farm with his wife and eight children","changed his painting style to appeal to Americans","began to compose music in addition to painting pictures","kept improving his garden but left his house as it was"],ans:0,exp:"「2人の息子、後妻、その連れ子6人と暮らした」＝合計8人の子どもと生活。"},
+      {num:4,q:"Every change in the grounds of his house was made in order to (　　).",opts:["create artistic subjects for his artworks","fulfil his goal of painting water lilies","attract more visitors to the village of Giverny","make the scene look more like the picture he had painted"],ans:0,exp:"庭・池づくりはすべて「自ら創作した画題を作る」ためだった。"},
+      {num:5,q:"Today, Monet's garden and pond (　　).",opts:["can only be seen in his water lily paintings","are maintained by the government and not open to the public","are no longer there and have been replaced by a national monument","are living paintings which fascinate tourists"],ans:3,exp:"最終文「Visitors are inspired by his living paintings every day.」と一致。"}
+    ],
+    B:{
+      opts:[
+        "Monet bought the Giverny farm seven years after moving there.",
+        "Monet's art was popular in the United States only after his death.",
+        "Monet painted his garden plants pink and green before painting them on canvas.",
+        "The studio Monet built was located to the right of his house.",
+        "Monet could paint his natural creation in the changing light and shadows.",
+        "Monet needed to employ gardeners to take care of his garden.",
+        "Monet was glad to know his garden would be maintained by the government."
+      ],
+      ans:[0,4,5],
+      exp:"ア○：1883年に移住、1890年に農場購入＝7年後。<br>オ○：「光や影が変わる様々な時間帯に描けるよう」ガラス張りのアトリエを建てた、という記述と一致。<br>カ○：庭木の手入れのため複数の庭師を雇う必要があった、という記述と一致。<br>イ×：モネの生前（死後ではなく）にアメリカで作品が売れ始めた。<br>ウ×：家の壁と窓シャッターをピンクと緑に塗ったのは庭に合わせるためで、庭の植物自体をピンクや緑に塗ったわけではない。<br>エ×：アトリエの位置（家の右側）についての記述はない。<br>キ×：本文は「(モネが生きていれば)今もフランス政府が大切に保存していることを知れば喜ぶだろう」という仮定的表現であり、モネ自身が生前に知っていたわけではない。"
+    }
+  },
+  2024:{
+    title:"ベビーシッターに挑戦する少女",
+    passage:`When Nora's little brother turned four, she began to teach him how to read. He read his first full sentence before he was five, and Nora was impressed with her teaching ability. She decided to be a teacher when she grew up. She went on to teach her brother how to count to one hundred and how to make a turkey out of paper.
+
+Then she wanted to practice her teaching skills with other children. But she did not have any other brothers or sisters. When she was ten, she asked her parents to let her start babysitting, but they said she was too young. Four years later, Nora's parents allowed her to offer her babysitting services to families in the neighborhood.
+
+Soon, Nora got her first job. She was going to take care of three children on a Saturday while their parents went shopping. All week, she planned the afternoon. Her plan was that at one o'clock, she would *assemble the children and tell them what they were going to do that afternoon. By two-thirty, the two older children should have memorized their lines for the *play Nora was writing for them. During the *rehearsal, she would show the youngest child how to *roar like a lion when she heard her *cue. The children's parents would be delighted to watch the performance. They would be astonished at the dance steps and songs Nora taught the children in just a few hours.
+
+She finished writing the play just in time. She arrived at the family's house with copies of the *script and several *props.
+
+Unfortunately, the children had other ideas. After their parents left, the oldest child, Trevor, began to run around the living room singing a football cheering song loudly. Nora managed to get his little sisters to sit on the couch, but they could not hear her instructions over the noise. The younger girl, Lily, stuck out her tongue at Nora. Then, the older girl, Laurel, began to shout as well.
+
+“Now, listen. This project will be fun,” Nora said.
+“I want to watch television,” said Laurel.
+“I want to throw rocks onto the garage roof and watch them roll down,” said Trevor.
+“Those activities aren't educational. Don't you want to put on a play?” Nora said.
+
+Nora looked down at the pages of the play she had worked so hard on. She felt like she was near tears. She could not let the children see her cry. Lily would get upset, while the older children would feel they had *gotten the best of her. Then, they might behave even worse.
+
+Nora thought quickly. She saw a football in the corner of the room. “Trevor,” she said, “I don't know how to throw a football properly. Will you teach me?”
+
+Immediately, Trevor stopped running and looked at her. “You're a teenager and you can't throw a football?”
+“I really need your help,” said Nora.
+
+In the yard, Nora put Lily in the *sandbox while Trevor taught Nora and Laurel how to grip and pass the football. He took his task very seriously. By the end of the afternoon, the three of them were taking turns throwing the ball at a target.
+
+When the children's parents came home, Trevor asked Nora to demonstrate her new skills. He was proud of himself.
+“She was terrible when we started,” he informed his parents. “I think I'll be a football coach when I grow up.”`,
+    note:"assemble＝…を集める　play＝芝居　rehearsal＝リハーサル　roar＝うなる　cue＝合図　script＝台本　prop＝小道具　get the best of A＝Aを負かす　sandbox＝砂場",
+    trans:[
+      "ノラの幼い弟が4歳になったとき、彼女は彼に読み方を教え始めた。弟は5歳になる前に初めての完全な文を読めるようになり、ノラは自分の指導力に感心した。彼女は大人になったら教師になろうと決めた。その後、彼女は弟に100まで数える方法や、紙で七面鳥を作る方法も教えた。",
+      "それから彼女は、他の子どもたちを相手にも指導のスキルを磨きたいと思った。しかし彼女には他にきょうだいがいなかった。10歳のとき、彼女はベビーシッターを始めさせてほしいと両親に頼んだが、まだ幼すぎると言われた。4年後、ノラの両親は、近所の家庭にベビーシッターのサービスを提供することを許可した。",
+      "まもなく、ノラは初めての仕事を得た。土曜日に、両親が買い物に出かけている間、3人の子どもの面倒を見ることになった。彼女は1週間かけてその午後の計画を立てた。彼女の計画では、1時に子どもたちを集め、その日の午後に何をするかを伝える。2時半までに、年上の2人の子どもには、ノラが彼らのために書いている劇のセリフを覚えさせておく。リハーサルの間、一番幼い子どもには、合図を聞いたらライオンのようにうなる方法を教える。子どもたちの両親はその発表を見て喜ぶだろう。ノラがわずか数時間で子どもたちに教えたダンスのステップや歌に、きっと驚くだろう。",
+      "彼女はぎりぎり間に合うように劇の脚本を書き終えた。台本のコピーといくつかの小道具を持って、その家族の家に到着した。",
+      "残念ながら、子どもたちには別の考えがあった。両親が出かけると、一番年上のトレバーは大声でフットボールの応援歌を歌いながらリビングを走り回り始めた。ノラは何とか妹たちをソファに座らせたが、騒がしくて彼女の指示は聞こえなかった。年下の女の子ライリーはノラに舌を出した。すると、年上の女の子ローレルも大声を出し始めた。",
+      "「ねえ、聞いて。この企画はきっと楽しいよ」とノラは言った。",
+      "「テレビが見たい」とローレルが言った。",
+      "「ガレージの屋根に石を投げて、転がり落ちるのを見たい」とトレバーが言った。",
+      "「それは教育的な活動じゃないでしょう。劇をやりたくないの？」とノラは言った。",
+      "ノラは、あれほど苦労して作った劇の台本のページを見下ろした。彼女は泣きそうな気分だった。子どもたちに泣く姿を見せるわけにはいかなかった。ライリーは動揺してしまうだろうし、年上の子どもたちは自分たちが彼女を負かしたと思ってしまうだろう。そうなれば、彼らはさらにひどい態度を取るかもしれない。",
+      "ノラはとっさに考えた。部屋の隅にフットボールがあるのが目に入った。「トレバー」と彼女は言った。「私、フットボールの正しい投げ方が分からないの。教えてくれる？」",
+      "トレバーはすぐに走るのをやめて彼女を見た。「お姉ちゃんはティーンエイジャーなのに、フットボールが投げられないの？」",
+      "「本当にあなたの助けが必要なの」とノラは言った。",
+      "庭で、ノラはライリーを砂場に入れ、トレバーはノラとローレルにフットボールの握り方とパスの仕方を教えた。彼はその役目をとても真剣に受け止めていた。その日の午後が終わる頃には、3人は交代でボールを的に向かって投げていた。",
+      "子どもたちの両親が帰宅すると、トレバーはノラに新しく身につけた技術を披露するよう頼んだ。彼は誇らしげだった。",
+      "「最初、お姉ちゃんは全然だめだったんだよ」と彼は両親に報告した。「僕、大人になったらフットボールのコーチになろうと思う」"
+    ],
+    A:[
+      {num:1,q:"According to the first paragraph, Nora seemed proud of the fact that she (　　).",opts:["successfully taught her brother to read when he was only four","had made up her mind to become a teacher in the future","could count to one hundred before she was five years old","had taught her little brother how to cook a turkey dinner"],ans:0,exp:"「弟が5歳になる前に完全な文を読めるようになった」＝ノラの指導の成果として誇りに感じたこと。"},
+      {num:2,q:"According to the second and third paragraphs, Nora started babysitting when (　　).",opts:["she wanted to practice teaching with other children","her parents thought she was old enough to do the job well","she turned ten and was able to take care of other children","a family in the neighborhood asked her to take care of their children"],ans:1,exp:"14歳になったとき両親が近所でのベビーシッターを許可した＝親が「十分な年齢」と判断した。"},
+      {num:3,q:"According to the third paragraph, Nora prepared for her first babysitting job by (　　).",opts:["memorizing lines from a play written a long time ago by a famous writer","planning what she was going to teach to the three children","writing a story to read to the children when they were going to bed","learning interesting facts about lions to teach the children"],ans:1,exp:"1週間かけて午後の計画（劇の練習・ライオンの鳴きまねなど教育的活動）を立てた。"},
+      {num:4,q:"When Nora tried to put her plan into action, (　　).",opts:["Trevor started to run around and shout at his sisters","Lily made a funny face at her while Nora was talking","Laurel was the only child who did what Nora told her to do","the children's parents asked her to come up with a different activity"],ans:1,exp:"Lily stuck out her tongue at Nora.（舌を出す＝おどけた顔をした）と一致。"},
+      {num:5,q:"You can learn from the story that (　　).",opts:["you shouldn't cry in front of young children","you shouldn't change your plans in any situation","you should force children to listen to your instructions","you should be flexible with your plans when necessary"],ans:3,exp:"計画通りにいかない状況で、フットボールを使って柔軟に対応し成功した、という教訓。"}
+    ],
+    B:{
+      opts:[
+        "Nora successfully taught her little brother how to roar like a lion.",
+        "Nora accepted her first babysitting job when she was fourteen years old.",
+        "The children in the neighborhood liked the play Nora had written.",
+        "Nora brought a football with her to play with the children when she was babysitting.",
+        "The children stopped listening to Nora's instructions when she started crying.",
+        "Trevor accepted Nora's request to teach her how to throw a football.",
+        "Trevor proudly told his parents that he had taught Nora an athletic skill."
+      ],
+      ans:[1,5,6],
+      exp:"イ○：14歳になったとき両親がベビーシッターの仕事を許可した、と一致。<br>カ○：「フットボールの投げ方を教えて」というノラの頼みにトレバーはすぐ応じた。<br>キ○：結末でトレバーは両親に「彼女(ノラ)に教えてあげた」と誇らしげに報告している。<br>ア×：ライオンの鳴きまねを教えたのは弟ではなく、ベビーシッター先の一番幼い子ども（Lily）に対して。<br>ウ×：劇は結局演じられず、子どもたちが気に入ったという記述もない。<br>エ×：フットボールはノラが持参したものではなく、部屋の隅にあったものを見つけた。<br>オ×：ノラは実際には泣かなかった（涙が出そうになったのを我慢した）。"
+    }
+  },
+  2025:{
+    title:"アップサイクルデザイナーの経歴",
+    passage:`Look in your closet. Perhaps you see clothes that need repairs or are out of style. You might see many pieces of clothing you just want to throw away. The designer Nicole McLaughlin, however, would see something quite different. When McLaughlin picks up a jacket with *torn pockets or a *stain, she sees possibilities for something exciting and new.
+
+As an artist and clothing designer, McLaughlin specializes in “*upcycling.” McLaughlin was born in New Jersey in 1993. In college, she studied digital media technology, graduating in 2015. With this degree, she was hired as a graphic designer at a sportswear company. While she was there, she noticed that many sample pieces produced by the company were simply thrown away. She did not like to see this waste. So she began taking them home and making new pieces out of them.
+
+McLaughlin did not have any training in designing or making clothes, so she learned sewing skills from her family and friends. Immediately, she was *inspired to make *playful things. She made a pair of sneakers out of bright yellow tennis balls that had been cut open. Soccer balls and volleyballs were transformed into slippers. McLaughlin made skirts out of backpacks and wallets.
+
+Then, she started sharing her playful designs on social media. Her posts quickly began getting thousands of views and she gained 800,000 followers. The positive feedback McLaughlin received inspired her to get even more creative. She began to make clothes out of random materials she found in her apartment, even in the garbage. She made a sandal out of a package of sushi and a pair of chopsticks and called it a “shoeshi.”
+
+McLaughlin's work soon caught the attention of top companies in the fashion and sportswear industries. Companies began to send her their *excess materials and asked her to make creative clothes out of them and share the images online. However, McLaughlin knows that there are many materials she can't use by herself. Her dream is to create a *nonprofit organization that would unite companies with design programs at schools and universities. Students need materials to practice on; isn't it better to give them materials that would be thrown away? McLaughlin is aware that cloth waste in the fashion industry is a huge environmental problem. She hopes to use her influence to encourage companies to do more to solve the problem.
+
+McLaughlin *donates some of her designs to sell them for charity. They have been worn by celebrities, including models and rappers. However, for McLaughlin, selling her “upcycled” clothes is not the point. In fact, she *takes apart some of her pieces and makes them into other things. Her primary goal is to inspire other people to use their own clothes and materials to make something new. She not only shares pictures of her creations online but has also published them in a book to make the images *permanent. She also leads workshops where she shows others how to “upcycle.” She suggests her students bring in an old dress or shirt and ask themselves why they haven't thrown it away yet. What do they like about it? Perhaps they like the material, but the sleeves are too short. “Could you take the sleeves off … and put them together to make a bag? And then you have a vest from it, too,” she says.`,
+    note:"torn＝破れた　stain＝しみ　upcycling＝アップサイクルすること（廃棄物や不要なものをより価値の高いものに再利用することを意味する造語）　inspire＝…するよう触発する　playful＝遊び心のある　excess＝余剰の　nonprofit organization＝非営利団体　donate＝…を寄贈する　take apart＝…をばらす　permanent＝長く残る",
+    trans:[
+      "自分のクローゼットを見てみてほしい。もしかすると、修理が必要な服や流行遅れの服が目に入るかもしれない。ただ捨ててしまいたいと思う服がたくさんあるかもしれない。しかし、デザイナーのニコール・マクラフリンには、まったく違うものが見えるだろう。マクラフリンは、ポケットが破れていたり、しみがついていたりするジャケットを手に取ると、そこにわくわくするような新しい可能性を見出すのだ。",
+      "アーティストであり衣服デザイナーであるマクラフリンは、「アップサイクル」を専門としている。マクラフリンは1993年にニュージャージー州で生まれた。大学ではデジタルメディア技術を学び、2015年に卒業した。この学位を活かし、彼女はスポーツウェア会社にグラフィックデザイナーとして採用された。その会社にいる間、彼女は会社が制作した多くのサンプル品が単に廃棄されていることに気づいた。彼女はこの無駄を見るのが嫌だった。そこで彼女はそれらを持ち帰り、新しい作品に作り替え始めた。",
+      "マクラフリンは服のデザインや制作の訓練を受けたことがなかったため、家族や友人から裁縫の技術を学んだ。彼女はすぐに、遊び心のあるものを作りたいという気持ちに駆られた。彼女は切り開いた明るい黄色のテニスボールでスニーカーを作った。サッカーボールやバレーボールはスリッパに姿を変えた。マクラフリンはリュックサックや財布からスカートも作った。",
+      "それから、彼女は遊び心あふれるデザインをSNSで発信し始めた。彼女の投稿はすぐに数千回の閲覧数を得るようになり、80万人のフォロワーを獲得した。マクラフリンが受け取った好意的な反応は、彼女をさらに創造的にさせた。彼女は自分の部屋にある、時にはゴミの中にすらある、手当たり次第の素材から服を作り始めた。彼女は寿司のパックと箸でサンダルを作り、それを「シューシー」と名付けた。",
+      "マクラフリンの作品は、ファッション業界やスポーツウェア業界の大手企業の注目を集めるようになった。企業は彼女に余った素材を送り、それを使って創造的な服を作り、その画像をネット上で共有するよう依頼するようになった。しかし、マクラフリンは自分一人では使いきれない素材が多くあることを知っている。彼女の夢は、企業と学校・大学のデザインプログラムを結びつける非営利団体を作ることだ。生徒たちは練習用の素材を必要としている。捨てられてしまう素材を彼らに提供する方がよいのではないか。マクラフリンは、ファッション業界における布の廃棄が大きな環境問題であることを認識している。彼女はこの問題の解決により力を入れるよう企業に働きかけるために、自分の影響力を役立てたいと願っている。",
+      "マクラフリンは自分の作品の一部をチャリティーのために販売用として寄贈している。それらはモデルやラッパーを含む著名人にも着用されてきた。しかし、マクラフリンにとって「アップサイクル」した服を売ることが目的ではない。実際、彼女は自分の作品の一部をばらして別のものに作り替えることもある。彼女の一番の目標は、他の人々が自分の服や素材を使って新しいものを作るよう促すことである。彼女は自分の作品の写真をネット上で共有するだけでなく、その画像を長く残すために本として出版もしている。また、彼女は「アップサイクル」の方法を人々に教えるワークショップも開いている。彼女は生徒たちに、古いワンピースやシャツを持ってきて、なぜまだ捨てていないのかを自問するよう勧めている。その服のどこが気に入っているのか。もしかすると生地は気に入っているが、袖が短すぎるのかもしれない。「その袖を取り外して……つなぎ合わせてバッグを作ってみたら？　そうすれば、そこから、ベストも作れるのよ」と彼女は言う。"
+    ],
+    A:[
+      {num:1,q:"Nicole McLaughlin (　　).",opts:["grew up with parents who worked at a sportswear company","hired a graphic designer to make her a website when she was in college","was unhappy with the practices at the company where she worked","went to school in New Jersey in 2015 to study fashion design"],ans:2,exp:"「サンプル品が単純に廃棄されるのを見て、この無駄を良く思わなかった(did not like to see this waste)」＝会社の慣行に不満を持った。"},
+      {num:2,q:"Some of the first pieces of clothing that McLaughlin created (　　).",opts:["were so playful that her family told her they were silly","were made with objects that are usually used to play sports","were made while she was watching sports on television with her friends","were inspired by her childhood experiences in soccer and tennis"],ans:1,exp:"テニスボール・サッカーボール・バレーボールなど「スポーツで使う物」から作った、という記述と一致。"},
+      {num:3,q:"After she began posting pictures of her creations online, (　　).",opts:["McLaughlin's social media account became very popular with other users","thousands of people sent random materials to her apartment for her to use","the company she was working for no longer let her take items from the garbage","a sushi restaurant asked McLaughlin to make a dress out of sushi packages"],ans:0,exp:"「数千回の閲覧数を得て80万人のフォロワーを獲得した」＝SNSで非常に人気になった。"},
+      {num:4,q:"McLaughlin hopes to (　　).",opts:["send materials to people who want to make their own creative clothes","bring businesses and educational organizations together to reduce waste","create a nonprofit organization that gives scholarships to talented designers","start a company that makes environmentally-friendly clothes on a large scale"],ans:1,exp:"「企業と学校のデザインプログラムを結びつける非営利団体を作りたい」という記述と一致。"},
+      {num:5,q:"McLaughlin's main goal as a designer is to (　　).",opts:["see her clothes worn by models, rappers, and other celebrities","encourage everyone to do what she does with their own materials","publish a book of patterns and instructions for making 'upcycled' clothes","lead workshops where people can learn how to 'upcycle' their clothes"],ans:1,exp:"「主な目標は、他の人が自分の服や素材で新しいものを作るよう促すことである」と一致。"}
+    ],
+    B:{
+      opts:[
+        "McLaughlin learned how to design and sew clothes all by herself.",
+        "McLaughlin was motivated to create clothing from waste materials.",
+        "McLaughlin gained a large number of followers on social media with her work.",
+        "McLaughlin created a pair of sandals together with a sushi restaurant.",
+        "McLaughlin runs a charity that provides clothes for poor people.",
+        "McLaughlin never changes her 'upcycled' clothes once she makes them.",
+        "McLaughlin teaches people how to transform clothes into something new."
+      ],
+      ans:[1,2,6],
+      exp:"イ○：会社で廃棄される素材を見て「アップサイクル」を始めるきっかけになった、という記述と一致。<br>ウ○：SNSで多くのフォロワーを獲得した、という記述と一致。<br>キ○：ワークショップで他の人に「アップサイクル」の方法を教えている、という記述と一致。<br>ア×：裁縫の訓練は受けておらず、家族や友人から学んだ（all by herselfではない）。<br>エ×：寿司店と共同制作したのではなく、家にあった寿司のパックと箸を使って自作した。<br>オ×：チャリティのために作品を寄付することはあるが、「困窮者に服を提供する慈善団体を運営している」とは書かれていない。<br>カ×：本文には「自分の作品の一部をばらして別のものに作り替える」とあり、変更しないという記述とは矛盾する。"
+    }
+  }
+};
+
+// ═══════════════════════════════════════════
+// TILE REORDER（進研模試アプリと同じ方式）
+// ═══════════════════════════════════════════
+const roState = {};
+
+function placeTile(rid, tileId) {
+  const s = roState[rid];
+  if (!s || s.checked) return;
+  const pidx = s.pool.findIndex(t => t.id === tileId);
+  if (pidx >= 0) {
+    const tile = s.pool.splice(pidx, 1)[0];
+    s.placed.push(tile);
+  } else {
+    const idx = s.placed.findIndex(t => t.id === tileId);
+    if (idx >= 0) {
+      const tile = s.placed.splice(idx, 1)[0];
+      s.pool.push(tile);
+    }
+  }
+  renderTiles(rid);
+}
+
+function renderTiles(rid) {
+  const s = roState[rid];
+  const poolEl = document.getElementById(`pool-${rid}`);
+  poolEl.innerHTML = s.pool.map(t =>
+    `<span class="tile" onclick="placeTile('${rid}',${t.id})">${t.text}</span>`
+  ).join('') || '<span style="font-size:.75rem;font-family:sans-serif;color:#9ca3af">（全て配置済み）</span>';
+  const ansEl = document.getElementById(`ans-${rid}`);
+  ansEl.innerHTML = s.placed.length === 0
+    ? '<span style="color:#c4b5fd;font-family:sans-serif;font-size:.8rem">ここに語句が並びます（上からクリック）</span>'
+    : s.placed.map(t =>
+        `<span class="tile placed" onclick="placeTile('${rid}',${t.id})">${t.text}</span>`
+      ).join('');
+}
+
+function checkReorder(rid) {
+  const s = roState[rid];
+  if (!s) return;
+  if (s.placed.length !== s.ansTiles.length) {
+    const res = document.getElementById(`ro-res-${rid}`);
+    res.innerHTML = `<div class="r-item r-ng">まだ全ての語句が並んでいません（${s.placed.length}/${s.ansTiles.length}語配置済み）</div>`;
+    res.style.display = 'block';
+    return;
+  }
+  s.checked = true;
+  const ansEl = document.getElementById(`ans-${rid}`);
+  ansEl.innerHTML = s.placed.map((t, i) => {
+    const ok = t.text.toLowerCase() === s.ansTiles[i].toLowerCase();
+    return `<span class="tile ${ok?'correct':'incorrect'}">${t.text}</span>`;
+  }).join('');
+  const allOk = s.placed.every((t,i) => t.text.toLowerCase() === s.ansTiles[i].toLowerCase());
+  const res = document.getElementById(`ro-res-${rid}`);
+  res.innerHTML = allOk
+    ? `<div class="r-item r-ok"><span class="tag-c">✓ 正解</span>正しく並べられました！</div>`
+    : `<div class="r-item r-ng"><span class="tag-w">✗ 不正解</span>正しい順番: <strong>${s.ansTiles.join(' ')}</strong></div>`;
+  res.style.display = 'block';
+}
+
+function resetReorder(rid) {
+  const s = roState[rid];
+  if (!s) return;
+  s.pool = [...s.pool, ...s.placed];
+  s.placed = [];
+  s.checked = false;
+  for(let i=s.pool.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [s.pool[i],s.pool[j]]=[s.pool[j],s.pool[i]];
+  }
+  renderTiles(rid);
+  const res = document.getElementById(`ro-res-${rid}`);
+  if (res) { res.style.display = 'none'; res.innerHTML = ''; }
+}
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+let prevScreen = 'home';
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.getElementById('btn-back').style.display = id === 'home' ? 'none' : 'inline-block';
+  const titles = {home:'全統模試 英語対策（高1・8月）',q2:'大問2 語彙',q2y:'大問2 語彙',q3:'大問3 文法・語法',q3y:'大問3 文法・語法',q4:'大問4 英作文',q4y:'大問4 英作文',q5:'大問5 長文読解①',q5y:'大問5 長文読解①',q6:'大問6 長文読解②',q6y:'大問6 長文読解②'};
+  document.getElementById('topbar-title').textContent = titles[id] || '全統模試 英語対策';
+  window.scrollTo(0,0);
+}
+function goBack() { showScreen(prevScreen); }
+function goHome() { prevScreen = 'home'; showScreen('home'); updateHomeBadges(); }
+function goSection(id) { prevScreen = 'home'; showScreen(id); updateYearBadges(id); }
+
+// ═══════════════════════════════════════════
+// MODEL TOGGLE / TREND TOGGLE
+// ═══════════════════════════════════════════
+function toggleModel(id) {
+  const w = document.getElementById('mw-'+id);
+  const b = document.getElementById('mb-'+id);
+  const open = w.style.display === 'block';
+  w.style.display = open ? 'none' : 'block';
+  b.textContent = open ? (b.textContent.includes('正解') ? '✅ 正解・解説を見る' : '✅ 模範解答を見る') : (b.textContent.includes('閉じる') ? b.textContent : b.textContent.replace('見る','閉じる'));
+  b.classList.toggle('open', !open);
+}
+function toggleTrend() {
+  const b = document.getElementById('trend-body');
+  const a = document.getElementById('trend-arrow');
+  const open = b.style.display === 'block';
+  b.style.display = open ? 'none' : 'block';
+  a.style.transform = open ? '' : 'rotate(180deg)';
+}
+function updateWC(tid, did) {
+  const t = document.getElementById(tid).value.trim();
+  document.getElementById(did).textContent = t==='' ? 0 : t.split(/\s+/).length;
+}
+
+// ═══════════════════════════════════════════
+// Q2 RENDER（語彙）
+// ═══════════════════════════════════════════
+function openQ2(year) {
+  markDone('q2-' + year);
+  prevScreen = 'q2';
+  const d = Q2[year];
+  let h = renderQ2Sub('A', year, d.A, '英語の定義文→語句選択（各2点×5）');
+  h += renderQ2Sub('B', year, d.B, 'フレーズ・句動詞（各2点×5）');
+  document.getElementById('q2y-title').textContent = `大問 2　語彙（${year}年度）`;
+  document.getElementById('q2y-sub').textContent = 'A 定義文選択 ／ B 句動詞・言い換え';
+  document.getElementById('q2y-body').innerHTML = h;
+  showScreen('q2y');
+}
+
+function renderQ2Sub(sec, year, data, label) {
+  if (data.type === 'mcq') {
+    let h = `<div class="q-section"><div class="q-sec-title">${sec}　${label}</div>`;
+    data.items.forEach((it,i) => {
+      h += `<div class="q-block">
+        <div class="q-num">問 ${i+1}</div>
+        <div class="q-text">${it.q}</div>
+        ${it.opts.map((o,j)=>`<label class="option-label"><input type="radio" name="q2${sec}-${year}-${i}" value="${j}"> ${j+1}　${o}</label>`).join('')}
+      </div>`;
+    });
+    h += `<button class="btn-check" onclick="checkQ2Mcq('${sec}',${year})">答え合わせ</button>
+          <div class="mcq-result" id="q2${sec}-res-${year}"></div></div>`;
+    return h;
+  } else {
+    const group = `q2${sec}-${year}`;
+    const optHtml = data.options.map((o,i)=>`<option value="${i}">${LETTERS[i]}．${o}</option>`).join('');
+    let h = `<div class="q-section"><div class="q-sec-title">${sec}　${label}</div>
+      <div class="match-options-box"><strong>選択肢：</strong>${data.options.map((o,i)=>`${LETTERS[i]}．${o}`).join('　')}<br><span style="color:#9ca3af">※各記号は1回のみ使用できます</span></div>`;
+    data.items.forEach((it,i) => {
+      h += `<div class="q-block">
+        <div class="q-num">問 ${i+1}</div>
+        <div class="q-text">${it.q}</div>
+        <select class="match-select" id="${group}-${i}" data-group="${group}" onchange="syncMatchSelects('${group}')">
+          <option value="-1">-- 選択 --</option>
+          ${optHtml}
+        </select>
+      </div>`;
+    });
+    h += `<button class="btn-check" onclick="checkQ2Match('${sec}',${year})">答え合わせ</button>
+          <div class="mcq-result" id="q2${sec}-res-${year}"></div></div>`;
+    return h;
+  }
+}
+
+function syncMatchSelects(group) {
+  const selects = [...document.querySelectorAll(`select[data-group="${group}"]`)];
+  const chosen = selects.map(s => s.value).filter(v => v !== '-1');
+  selects.forEach(s => {
+    [...s.options].forEach(opt => {
+      if (opt.value === '-1') return;
+      opt.disabled = chosen.includes(opt.value) && s.value !== opt.value;
+    });
+  });
+}
+
+function checkQ2Mcq(sec, year) {
+  const d = Q2[year][sec];
+  let correct = 0, h = '';
+  d.items.forEach((it,i) => {
+    const sel = document.querySelector(`input[name="q2${sec}-${year}-${i}"]:checked`);
+    const sv = sel ? parseInt(sel.value) : -1;
+    const ok = sv === it.ans;
+    if (ok) correct++;
+    h += `<div class="r-item ${ok?'r-ok':'r-ng'}">
+      <span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span>
+      <strong>問 ${i+1}</strong>　正解: <strong>${it.ans+1} ${it.opts[it.ans]}</strong>　あなた: ${sv>=0?(sv+1)+' '+it.opts[sv]:'未回答'}
+      <details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${it.exp}</div></details>
+    </div>`;
+  });
+  const res = document.getElementById(`q2${sec}-res-${year}`);
+  res.innerHTML = `<div style="font-size:.9rem;font-family:sans-serif;margin-bottom:10px;font-weight:bold;color:#1a3a5c">${correct} / ${d.items.length} 正解</div>${h}`;
+  res.style.display = 'block';
+}
+
+function checkQ2Match(sec, year) {
+  const d = Q2[year][sec];
+  const group = `q2${sec}-${year}`;
+  let correct = 0, h = '';
+  d.items.forEach((it,i) => {
+    const sel = document.getElementById(`${group}-${i}`);
+    const sv = sel ? parseInt(sel.value) : -1;
+    const ok = sv === it.ans;
+    if (ok) correct++;
+    h += `<div class="r-item ${ok?'r-ok':'r-ng'}">
+      <span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span>
+      <strong>問 ${i+1}</strong>　正解: <strong>${LETTERS[it.ans]}．${d.options[it.ans]}</strong>　あなた: ${sv>=0?LETTERS[sv]+'．'+d.options[sv]:'未回答'}
+      <details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${it.exp}</div></details>
+    </div>`;
+  });
+  const res = document.getElementById(`q2${sec}-res-${year}`);
+  res.innerHTML = `<div style="font-size:.9rem;font-family:sans-serif;margin-bottom:10px;font-weight:bold;color:#1a3a5c">${correct} / ${d.items.length} 正解</div>${h}`;
+  res.style.display = 'block';
+}
+
+// ═══════════════════════════════════════════
+// Q3 RENDER（文法・語法）
+// ═══════════════════════════════════════════
+function openQ3(year) {
+  markDone('q3-' + year);
+  prevScreen = 'q3';
+  const d = Q3[year];
+  let h = `<div class="q-section"><div class="q-sec-title">A　空所補充（各3点×7）</div>`;
+  d.A.forEach((q,i) => {
+    h += `<div class="q-block">
+      <div class="q-num">問 ${i+1}</div>
+      <div class="q-text">${q.q}</div>
+      ${q.opts.map((o,j)=>`<label class="option-label"><input type="radio" name="q3a-${year}-${i}" value="${j}"> ${j+1}　${o}</label>`).join('')}
+    </div>`;
+  });
+  h += `<button class="btn-check" onclick="checkQ3A(${year})">答え合わせ</button>
+        <div class="mcq-result" id="q3a-res-${year}"></div></div>`;
+
+  h += buildQ3BSection(year, d.B);
+
+  document.getElementById('q3y-title').textContent = `大問 3　文法・語法（${year}年度）`;
+  document.getElementById('q3y-sub').textContent = 'A 空所補充 / B 誤文訂正';
+  document.getElementById('q3y-body').innerHTML = h;
+  showScreen('q3y');
+}
+
+function checkQ3A(year) {
+  const d = Q3[year];
+  let correct = 0, h = '';
+  d.A.forEach((q,i) => {
+    const sel = document.querySelector(`input[name="q3a-${year}-${i}"]:checked`);
+    const sv = sel ? parseInt(sel.value) : -1;
+    const ok = sv === q.ans;
+    if (ok) correct++;
+    h += `<div class="r-item ${ok?'r-ok':'r-ng'}">
+      <span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span>
+      <strong>問 ${i+1}</strong>　正解: <strong>${q.ans+1} ${q.opts[q.ans]}</strong>　あなた: ${sv>=0?(sv+1)+' '+q.opts[sv]:'未回答'}
+      <details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${q.exp}</div></details>
+    </div>`;
+  });
+  const res = document.getElementById(`q3a-res-${year}`);
+  res.innerHTML = `<div style="font-size:.9rem;font-family:sans-serif;margin-bottom:10px;font-weight:bold;color:#1a3a5c">${correct} / 7 正解</div>${h}`;
+  res.style.display = 'block';
+}
+
+function buildQ3BSection(year, items) {
+  let h = `<div class="q-section"><div class="q-sec-title">B　誤文訂正（下線部ア〜エから誤りを1箇所選択）</div>`;
+  items.forEach((item,i) => {
+    const labeled = item.sentence.replace(/([アイウエ])/g, '<span class="err-lab">$1</span>');
+    h += `<div class="q-block">
+      <div class="q-num">問 ${i+1}</div>
+      <div class="q-text err-sentence">${labeled}</div>
+      ${['ア','イ','ウ','エ'].map((l,j)=>`<label class="option-label"><input type="radio" name="q3b-${year}-${i}" value="${j}"> ${l}</label>`).join('')}
+    </div>`;
+  });
+  h += `<button class="btn-check" onclick="checkQ3B(${year})">答え合わせ</button>
+        <div class="mcq-result" id="q3b-res-${year}"></div></div>`;
+  return h;
+}
+
+function checkQ3B(year) {
+  const items = Q3[year].B;
+  const labels = ['ア','イ','ウ','エ'];
+  let correct = 0, h = '';
+  items.forEach((item,i) => {
+    const sel = document.querySelector(`input[name="q3b-${year}-${i}"]:checked`);
+    const sv = sel ? parseInt(sel.value) : -1;
+    const ok = sv === item.ansIdx;
+    if (ok) correct++;
+    h += `<div class="r-item ${ok?'r-ok':'r-ng'}">
+      <span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span>
+      <strong>問 ${i+1}</strong>　正解: <strong>${labels[item.ansIdx]}　→　${item.correct}</strong>　あなた: ${sv>=0?labels[sv]:'未回答'}
+      <details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${item.exp}</div></details>
+    </div>`;
+  });
+  const res = document.getElementById(`q3b-res-${year}`);
+  res.innerHTML = `<div style="font-size:.9rem;font-family:sans-serif;margin-bottom:10px;font-weight:bold;color:#1a3a5c">${correct} / ${items.length} 正解</div>${h}`;
+  res.style.display = 'block';
+}
+
+// ═══════════════════════════════════════════
+// Q4 RENDER（英作文）
+// ═══════════════════════════════════════════
+function openQ4(year) {
+  markDone('q4-' + year);
+  prevScreen = 'q4';
+  const d = Q4[year];
+  let h = buildQ4ASection(year, d.A, d.ptsA);
+  h += buildQ4BSection(year, d.B, d.ptsB);
+  h += buildQ4CSection(year, d.C, d.ptsC);
+  document.getElementById('q4y-title').textContent = `大問 4　英作文（${year}年度）`;
+  document.getElementById('q4y-sub').textContent = 'A 並べ替え ／ B 和文英訳 ／ C 会話補充';
+  document.getElementById('q4y-body').innerHTML = h;
+  showScreen('q4y');
+}
+
+function buildQ4ASection(year, items, pts) {
+  let h = `<div class="q-section"><div class="q-sec-title">A　並べ替え英作文（${pts}）</div>`;
+  items.forEach((item, qi) => {
+    const rid = `q4a-${year}-${qi}`;
+    const poolWords = item.extra ? [...item.tiles, ...item.extra] : [...item.tiles];
+    const poolTiles = poolWords.map((t,i) => ({id:i, text:t}));
+    for (let i=poolTiles.length-1;i>0;i--) {
+      const j = Math.floor(Math.random()*(i+1));
+      [poolTiles[i],poolTiles[j]] = [poolTiles[j],poolTiles[i]];
+    }
+    roState[rid] = {pool: poolTiles, placed: [], ansTiles: item.tiles, checked: false};
+    h += `<div class="q-block">
+      <div class="q-num">問 ${qi+1}</div>
+      <div class="q-text">${item.jp}</div>
+      ${item.extra ? `<div class="reorder-note">⚠️ 与えられた語句の中に、使わない語（句）が1つ含まれています</div>` : ''}
+      <div class="reorder-frame">${item.pre ? item.pre+' ' : ''}<span style="color:#9ca3af;font-style:italic">（　語句を並べよう　）</span>${item.suf ? ' '+item.suf : ''}</div>
+      <div style="font-size:.75rem;font-family:sans-serif;color:#6b7280;margin-bottom:5px">↓ 語句をクリックして並べる（配置後クリックで戻す）</div>
+      <div class="tile-answer-area" id="ans-${rid}"><span style="color:#c4b5fd;font-family:sans-serif;font-size:.8rem">ここに語句が並びます（上からクリック）</span></div>
+      <div class="tile-pool" id="pool-${rid}">${poolTiles.map(t=>`<span class="tile" onclick="placeTile('${rid}',${t.id})">${t.text}</span>`).join('')}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+        <button class="btn-check" onclick="checkReorder('${rid}')">答え合わせ</button>
+        <button class="btn-reset" onclick="resetReorder('${rid}')">リセット</button>
+      </div>
+      <div class="mcq-result" id="ro-res-${rid}"></div>
+      <button class="btn-model" id="mb-${rid}" onclick="toggleModel('${rid}')">✅ 正解・解説を見る</button>
+      <div class="model-wrap" id="mw-${rid}">
+        <div class="model-head">正解</div>
+        <div class="model-body">${item.answer}</div>
+        <div class="model-pt"><div class="model-pt-head">解説</div>${item.exp}</div>
+      </div></div>`;
+  });
+  h += `</div>`;
+  return h;
+}
+
+function buildQ4BSection(year, d, pts) {
+  let h = `<div class="q-section"><div class="q-sec-title">B　和文英訳（${pts}）</div>`;
+  if (d.type === 'mixed') {
+    h += `<div class="q6-context"><div class="q6-context-label">会話文</div>${d.context.replace(/\n/g,'<br>')}</div>`;
+    const m = d.mcq;
+    h += `<div class="q-block">
+      <div class="q-num">⑴</div>
+      <div class="q-text">${m.context}</div>
+      ${m.opts.map((o,j)=>`<label class="option-label"><input type="radio" name="q4bmcq-${year}" value="${j}"> ${j+1}　${o}</label>`).join('')}
+      <button class="btn-check" onclick="checkQ4Bmcq(${year})">答え合わせ</button>
+      <div class="mcq-result" id="q4bmcq-res-${year}"></div>
+    </div>`;
+    h += buildTranslationBlock(year, 'q4btrans', d.translation, '⑵');
+  } else {
+    h += buildTranslationBlock(year, 'q4btrans', d, '');
+  }
+  h += `</div>`;
+  return h;
+}
+
+function buildTranslationBlock(year, idPrefix, t, label) {
+  const id = `${idPrefix}-${year}`;
+  return `<div class="q-block">
+    ${label ? `<div class="q-num">${label}</div>` : ''}
+    <div class="q-text">${t.jp}</div>
+    <textarea class="memo-area" placeholder="英訳をここに書いてみよう…（提出不要）"></textarea>
+    <button class="btn-model" id="mb-${id}" onclick="toggleModel('${id}')">✅ 模範解答を見る</button>
+    <div class="model-wrap" id="mw-${id}">
+      <div class="model-head">模範解答</div>
+      <div class="model-body">${t.ans}</div>
+      ${t.alt ? `<div class="model-alt">別解: ${t.alt}</div>` : ''}
+      <div class="model-pt"><div class="model-pt-head">文法ポイント</div>${t.exp}</div>
+    </div></div>`;
+}
+
+function checkQ4Bmcq(year) {
+  const d = Q4[year].B.mcq;
+  const sel = document.querySelector(`input[name="q4bmcq-${year}"]:checked`);
+  const sv = sel ? parseInt(sel.value) : -1;
+  const ok = sv === d.ans;
+  const res = document.getElementById(`q4bmcq-res-${year}`);
+  res.innerHTML = (ok
+    ? `<div class="r-item r-ok"><span class="tag-c">✓ 正解</span> <strong>${d.ans+1} ${d.opts[d.ans]}</strong></div>`
+    : `<div class="r-item r-ng"><span class="tag-w">✗ 不正解</span> 正解: <strong>${d.ans+1} ${d.opts[d.ans]}</strong>　あなた: ${sv>=0?(sv+1)+' '+d.opts[sv]:'未回答'}</div>`)
+    + `<details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${d.exp}</div></details>`;
+  res.style.display = 'block';
+}
+
+function buildQ4CSection(year, d, pts) {
+  const id = `q4c-${year}`;
+  const lines = d.lines.map(l => l.blank
+    ? `<div class="conv-line"><strong>${l.speaker}:</strong> ${l.before||''} <span class="q6-underline">＿＿＿＿＿＿＿＿＿＿</span> ${l.after||''}</div>`
+    : `<div class="conv-line"><strong>${l.speaker}:</strong> ${l.text}</div>`
+  ).join('');
+  const wlabel = d.wordsMin !== d.wordsMax ? `${d.wordsMin}〜${d.wordsMax}語程度` : `${d.wordsMax}語程度`;
+  return `<div class="q-section"><div class="q-sec-title">C　会話補充・自由英作文（${pts}）</div>
+    <div class="q6-context">${lines}</div>
+    <div class="target-words">目安: ${wlabel}</div>
+    <textarea class="memo-area" id="${id}-ta" style="min-height:90px" placeholder="下線部に入る英文を書いてみよう…（提出不要）" oninput="updateWC('${id}-ta','${id}-wc')"></textarea>
+    <div class="word-counter"><span class="wc-num" id="${id}-wc">0</span> 語</div>
+    <button class="btn-model" id="mb-${id}" onclick="toggleModel('${id}')">✅ 解答例を見る</button>
+    <div class="model-wrap" id="mw-${id}">
+      <div class="model-head">解答例</div>
+      ${d.models.map(m=>`<div class="model-body" style="margin-bottom:6px">・${m}</div>`).join('')}
+      <div class="model-pt"><div class="model-pt-head">考え方</div>${d.exp}</div>
+    </div></div>`;
+}
+
+// ═══════════════════════════════════════════
+// Q5/Q6 共通ヘルパー（本文ハイライト・対訳トグル）
+// ═══════════════════════════════════════════
+function highlightBlanks(s) {
+  return s
+    .replace(/[⑴⑵⑶⑷⑸⑹⑺⑻⑼]/g, m => `<span class="p-blank">${m}</span>`)
+    .replace(/（[0-9０-９]+[a-zA-Z]?）/g, m => `<span class="p-blank">${m}</span>`);
+}
+
+function buildPassageBlock(prefix, year, d) {
+  const paras = d.passage.split('\n').filter(l => l.trim());
+  const passageHtml = paras.map(l => `<p>${highlightBlanks(l)}</p>`).join('');
+  let transHtml = '';
+  if (d.trans && d.trans.length) {
+    const rows = paras.map((enP, i) => {
+      const jaP = d.trans[i] || '';
+      return `<div class="trans-row-en">${highlightBlanks(enP)}</div><div class="trans-row-ja">${jaP}</div>`;
+    }).join('');
+    transHtml = `<div class="trans-grid" id="tg-${prefix}-${year}" style="display:none">
+      <div class="trans-col-head en">英語（本文）</div><div class="trans-col-head">日本語（対訳）</div>
+      ${rows}
+    </div>`;
+  }
+  return `<div class="passage-wrap">
+    <div class="passage-title">
+      <span>▶ 本文</span>
+      ${d.trans ? `<button class="trans-btn" id="tb-${prefix}-${year}" onclick="toggleTrans('${prefix}',${year})">対訳を見る</button>` : ''}
+    </div>
+    <div class="passage-body" id="pb-${prefix}-${year}">${passageHtml}</div>
+    ${transHtml}
+    ${d.note ? `<div class="passage-note">注　${d.note}</div>` : ''}
+  </div>`;
+}
+
+function toggleTrans(prefix, year) {
+  const grid = document.getElementById(`tg-${prefix}-${year}`);
+  const body = document.getElementById(`pb-${prefix}-${year}`);
+  const btn = document.getElementById(`tb-${prefix}-${year}`);
+  const open = grid.style.display === 'grid';
+  grid.style.display = open ? 'none' : 'grid';
+  body.style.display = open ? 'block' : 'none';
+  btn.textContent = open ? '対訳を見る' : '本文に戻る';
+  btn.classList.toggle('active', !open);
+}
+
+// ═══════════════════════════════════════════
+// Q5 RENDER（長文読解①・説明文）
+// ═══════════════════════════════════════════
+function openQ5(year) {
+  markDone('q5-' + year);
+  prevScreen = 'q5';
+  const d = Q5[year];
+  let h = buildPassageBlock('q5', year, d);
+  h += `<div class="q-section"><div class="q-sec-title">設問（全${d.pts}）</div>`;
+  d.questions.forEach(q => {
+    const rid = `q5-${year}-${q.num}`;
+    h += `<div class="q-block">
+      <div class="q-num">問 ${q.num}（${q.pts}）</div>
+      <div class="q-text">${q.q}</div>`;
+    if (q.type === 'mcq') {
+      h += q.opts.map((o,i)=>`<label class="option-label"><input type="radio" name="${rid}" value="${i}"> ${i+1}　${o}</label>`).join('');
+      h += `<button class="btn-check" onclick="checkQ5(${year},${q.num})">答え合わせ</button>
+      <div class="mcq-result" id="${rid}-res"></div>`;
+    } else {
+      h += `<textarea class="memo-area" placeholder="日本語（または英語）で書いてみよう…（提出不要）"></textarea>
+      <button class="btn-model" id="mb-${rid}" onclick="toggleModel('${rid}')">✅ 模範解答を見る</button>
+      <div class="model-wrap" id="mw-${rid}">
+        <div class="model-head">模範解答</div>
+        <div class="model-body">${q.model}</div>
+        ${q.exp ? `<div class="model-pt"><div class="model-pt-head">解説</div>${q.exp}</div>` : ''}
+      </div>`;
+    }
+    h += `</div>`;
+  });
+  h += `</div>`;
+  document.getElementById('q5y-title').textContent = `大問 5　長文読解①（${year}年度）`;
+  document.getElementById('q5y-sub').textContent = `${d.title}　全${d.pts}`;
+  document.getElementById('q5y-body').innerHTML = h;
+  showScreen('q5y');
+}
+
+function checkQ5(year, qnum) {
+  const q = Q5[year].questions.find(x => x.num === qnum);
+  if (!q) return;
+  const rid = `q5-${year}-${qnum}`;
+  const sel = document.querySelector(`input[name="${rid}"]:checked`);
+  const sv = sel ? parseInt(sel.value) : -1;
+  const ok = sv === q.ans;
+  const res = document.getElementById(`${rid}-res`);
+  res.innerHTML = `<div class="r-item ${ok?'r-ok':'r-ng'}">
+    <span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span>
+    正解: <strong>${q.ans+1} ${q.opts[q.ans]}</strong>　あなた: ${sv>=0?(sv+1)+' '+q.opts[sv]:'未回答'}
+    <details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${q.exp}</div></details>
+  </div>`;
+  res.style.display = 'block';
+}
+
+// ═══════════════════════════════════════════
+// Q6 RENDER（長文読解②・物語文）
+// ═══════════════════════════════════════════
+function openQ6(year) {
+  markDone('q6-' + year);
+  prevScreen = 'q6';
+  const d = Q6[year];
+  let h = buildPassageBlock('q6', year, d);
+
+  h += `<div class="q-section"><div class="q-sec-title">設問A　内容一致（各5点×5）</div>`;
+  d.A.forEach(q => {
+    const rid = `q6a-${year}-${q.num}`;
+    h += `<div class="q-block">
+      <div class="q-num">問 ${q.num}</div>
+      <div class="q-text">${q.q}</div>
+      ${q.opts.map((o,i)=>`<label class="option-label"><input type="radio" name="${rid}" value="${i}"> ${i+1}　${o}</label>`).join('')}
+      <button class="btn-check" onclick="checkQ6A(${year},${q.num})">答え合わせ</button>
+      <div class="mcq-result" id="${rid}-res"></div>
+    </div>`;
+  });
+  h += `</div>`;
+
+  h += `<div class="q-section"><div class="q-sec-title">設問B　内容と一致するものを7つの中から3つ選択（各5点×3＝15点）</div>
+    <div class="match-options-box">本文の内容と一致するものを、次のア〜キの中から<strong>3つ</strong>選びましょう（4つ目以降はチェックできません）。</div>
+    <div class="q-block">
+      ${d.B.opts.map((o,i)=>`<label class="option-label" id="q6b-${year}-lab-${i}"><input type="checkbox" name="q6b-${year}" value="${i}" onchange="limitQ6BCheckbox(${year})"> ${LETTERS[i]}．${o}</label>`).join('')}
+      <button class="btn-check" onclick="checkQ6B(${year})">答え合わせ</button>
+      <div class="mcq-result" id="q6b-${year}-res"></div>
+    </div>
+  </div>`;
+
+  document.getElementById('q6y-title').textContent = `大問 6　長文読解②（${year}年度）`;
+  document.getElementById('q6y-sub').textContent = `${d.title}　全40点`;
+  document.getElementById('q6y-body').innerHTML = h;
+  showScreen('q6y');
+}
+
+function checkQ6A(year, qnum) {
+  const q = Q6[year].A.find(x => x.num === qnum);
+  if (!q) return;
+  const rid = `q6a-${year}-${qnum}`;
+  const sel = document.querySelector(`input[name="${rid}"]:checked`);
+  const sv = sel ? parseInt(sel.value) : -1;
+  const ok = sv === q.ans;
+  const res = document.getElementById(`${rid}-res`);
+  res.innerHTML = `<div class="r-item ${ok?'r-ok':'r-ng'}">
+    <span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span>
+    正解: <strong>${q.ans+1} ${q.opts[q.ans]}</strong>　あなた: ${sv>=0?(sv+1)+' '+q.opts[sv]:'未回答'}
+    <details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${q.exp}</div></details>
+  </div>`;
+  res.style.display = 'block';
+}
+
+function limitQ6BCheckbox(year) {
+  const boxes = [...document.querySelectorAll(`input[name="q6b-${year}"]`)];
+  const checkedCount = boxes.filter(b => b.checked).length;
+  boxes.forEach(b => {
+    b.disabled = !b.checked && checkedCount >= 3;
+    const lab = document.getElementById(`q6b-${year}-lab-${b.value}`);
+    if (lab) lab.classList.toggle('disabled', b.disabled);
+  });
+}
+
+function checkQ6B(year) {
+  const d = Q6[year].B;
+  const boxes = [...document.querySelectorAll(`input[name="q6b-${year}"]`)];
+  const selected = boxes.filter(b => b.checked).map(b => parseInt(b.value)).sort((a,b)=>a-b);
+  const res = document.getElementById(`q6b-${year}-res`);
+  if (selected.length !== 3) {
+    res.innerHTML = `<div class="r-item r-ng">3つ選んでから答え合わせをしてください（現在 ${selected.length} 個選択中）</div>`;
+    res.style.display = 'block';
+    return;
+  }
+  const correct = [...d.ans].sort((a,b)=>a-b);
+  const ok = selected.length === correct.length && selected.every((v,i)=>v===correct[i]);
+  res.innerHTML = `<div class="r-item ${ok?'r-ok':'r-ng'}">
+    <span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span>
+    正解: <strong>${correct.map(i=>LETTERS[i]).join('・')}</strong>　あなた: ${selected.map(i=>LETTERS[i]).join('・')}
+    <details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${d.exp}</div></details>
+  </div>`;
+  res.style.display = 'block';
+}
+
+// ═══════════════════════════════════════════
+// PROGRESS TRACKING
+// ═══════════════════════════════════════════
+function getDoneSet() {
+  try { return new Set(JSON.parse(localStorage.getItem('zenkoku-progress') || '[]')); } catch { return new Set(); }
+}
+function markDone(key) {
+  const s = getDoneSet(); s.add(key);
+  localStorage.setItem('zenkoku-progress', JSON.stringify([...s]));
+}
+function updateYearBadges(section) {
+  const done = getDoneSet();
+  YEARS.forEach(yr => {
+    const el = document.getElementById(`ycb-${section}-${yr}`);
+    if (!el) return;
+    el.innerHTML = done.has(`${section}-${yr}`) ? '<span class="year-card-badge">✓ 済み</span>' : '';
+  });
+}
+function updateHomeBadges() {
+  const done = getDoneSet();
+  SECTIONS.forEach(q => {
+    const el = document.getElementById(`hcs-${q}`);
+    if (!el) return;
+    const count = YEARS.filter(y => done.has(`${q}-${y}`)).length;
+    el.innerHTML = count > 0 ? `<span class="home-card-progress">✓ ${count} / 4 完了</span>` : '';
+  });
+}
+
+// ═══════════════════════════════════════════
+// FONT SIZE
+// ═══════════════════════════════════════════
+const FS_MAP={s:{fs:'0.92rem',lh:'1.85'},m:{fs:'1.05rem',lh:'1.9'},l:{fs:'1.2rem',lh:'2.0'}};
+function setFs(sz) {
+  const v=FS_MAP[sz];
+  document.documentElement.style.setProperty('--fs',v.fs);
+  document.documentElement.style.setProperty('--lh',v.lh);
+  ['s','m','l'].forEach(s=>document.getElementById('fs-'+s).style.background=s===sz?'rgba(255,255,255,.38)':'rgba(255,255,255,.15)');
+  localStorage.setItem('zenkokuFs',sz);
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  showScreen('home');
+  setFs(localStorage.getItem('zenkokuFs')||'m');
+  updateHomeBadges();
+});
+</script>
+</body>
+</html>
