@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>駿台模試 英語（高1・10月　3年分）</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--fs:1.05rem;--lh:1.9}
+body{font-family:'Georgia','Times New Roman',serif;background:#f5f6f8;color:#222;line-height:var(--lh)}
+.container{max-width:820px;margin:0 auto;padding:70px 20px 60px}
+
+/* Top bar */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:#1a3a5c;color:#fff;display:flex;align-items:center;gap:8px;padding:8px 16px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.topbar-title{flex:1;font-size:.92rem;font-weight:bold;font-family:sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fs-controls{display:flex;align-items:center;gap:4px;margin-left:auto}
+.fs-label{font-size:.7rem;color:rgba(255,255,255,.6);font-family:sans-serif;margin-right:2px}
+.fs-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:4px;cursor:pointer;font-family:sans-serif;transition:background .12s;padding:3px 7px;line-height:1}
+.fs-btn:hover{background:rgba(255,255,255,.3)}
+#fs-s{font-size:.7rem}#fs-m{font-size:.82rem}#fs-l{font-size:.95rem}
+.btn-back{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:5px;cursor:pointer;font-size:.8rem;padding:4px 11px;font-family:sans-serif;display:none}
+.btn-back:hover{background:rgba(255,255,255,.3)}
+
+/* Home */
+.home-hero{background:linear-gradient(135deg,#1a3a5c 0%,#7c3aed 100%);color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:22px}
+.home-hero h1{font-size:1.35rem;margin-bottom:4px}
+.home-hero .sub{opacity:.75;font-size:.88rem;font-family:sans-serif;margin-top:5px;line-height:1.6}
+.home-cards{display:flex;flex-direction:column;gap:13px}
+.home-card{background:#fff;border-radius:12px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:flex-start;gap:16px;transition:transform .15s,box-shadow .15s,border-color .15s;border:2px solid transparent}
+.home-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12);border-color:#7c3aed}
+.card-icon{font-size:2rem;flex-shrink:0;width:44px;text-align:center;padding-top:2px}
+.card-body{flex:1}
+.card-num{font-size:.7rem;font-family:sans-serif;font-weight:bold;letter-spacing:2px;color:#9ca3af;margin-bottom:3px}
+.card-title{font-size:.98rem;font-weight:bold;color:#1a3a5c;margin-bottom:4px}
+.card-desc{font-size:.8rem;color:#6b7280;font-family:sans-serif;line-height:1.55}
+.tags{margin-top:7px;display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-size:.66rem;font-family:sans-serif;font-weight:bold;padding:2px 7px;border-radius:10px}
+.t-mcq{background:#dbeafe;color:#1d4ed8}
+.t-reorder{background:#fce7f3;color:#9d174d}
+.t-write{background:#faf5ff;color:#7e22ce}
+.t-trans{background:#f0fdf4;color:#15803d}
+.t-match{background:#e0f2fe;color:#0369a1}
+
+/* Screens */
+.screen{display:none}
+.screen.active{display:block}
+.sec-hero{background:#1a3a5c;color:#fff;border-radius:12px;padding:18px 26px;margin-bottom:18px}
+.sec-hero h2{font-size:1.15rem;margin-bottom:2px}
+.sec-hero .hero-sub{font-size:.8rem;opacity:.73;font-family:sans-serif;margin-top:5px;line-height:1.5}
+
+/* Year cards */
+.year-cards{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.year-card{background:#fff;border-radius:10px;padding:14px 18px;box-shadow:0 2px 8px rgba(0,0,0,.07);cursor:pointer;flex:1;min-width:110px;text-align:center;border:2px solid transparent;transition:all .15s}
+.year-card:hover{border-color:#7c3aed;box-shadow:0 4px 14px rgba(124,58,237,.15)}
+.year-card-yr{font-size:1.1rem;font-weight:bold;color:#1a3a5c;margin-bottom:2px}
+.year-card-sub{font-size:.68rem;font-family:sans-serif;color:#6b7280}
+
+/* Q section */
+.q-section{background:#fff;border-radius:10px;padding:24px 30px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:16px}
+.q-sec-title{font-size:.93rem;font-weight:bold;color:#1a3a5c;padding-bottom:9px;border-bottom:2px solid #e5e7eb;margin-bottom:18px;font-family:sans-serif}
+.q-block{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid #f1f5f9}
+.q-block:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.q-num{font-size:.72rem;font-family:sans-serif;font-weight:bold;letter-spacing:1px;color:#9ca3af;margin-bottom:4px}
+.q-text{font-size:var(--fs);font-weight:bold;margin-bottom:10px;line-height:1.7}
+.option-label{display:flex;align-items:flex-start;gap:10px;margin:5px 0;cursor:pointer;padding:6px 10px;border-radius:6px;transition:background .1s;font-size:calc(var(--fs) - .05rem)}
+.option-label:hover{background:#f5f3ff}
+.option-label input{margin-top:3px;flex-shrink:0;cursor:pointer;accent-color:#7c3aed}
+
+/* Buttons & results */
+.btn-check{display:inline-block;padding:9px 22px;border-radius:7px;border:none;font-size:.88rem;cursor:pointer;font-family:sans-serif;font-weight:bold;background:#7c3aed;color:#fff;margin-top:10px;transition:opacity .15s}
+.btn-check:hover{opacity:.87}
+.mcq-result{display:none;margin-top:14px}
+.r-item{padding:10px 14px;border-radius:7px;margin-bottom:8px;font-size:.84rem;line-height:1.65;font-family:sans-serif}
+.r-ok{background:#f0fdf4;border-left:3px solid #16a34a}
+.r-ng{background:#fff7ed;border-left:3px solid #ea580c}
+.tag-c{display:inline-block;background:#dcfce7;color:#15803d;border-radius:4px;font-size:.68rem;font-weight:bold;padding:1px 6px;margin-right:5px}
+.tag-w{display:inline-block;background:#fee2e2;color:#b91c1c;border-radius:4px;font-size:.68rem;font-weight:bold;padding:1px 6px;margin-right:5px}
+
+/* Text input (fill-in) */
+.text-fill{font-family:sans-serif;font-size:.85rem;padding:8px 12px;border:2px solid #e5e7eb;border-radius:6px;margin:6px 0;width:100%;max-width:420px;display:block;color:#1a3a5c}
+.text-fill:focus{outline:none;border-color:#7c3aed}
+
+/* Reorder note */
+.reorder-note{font-size:.75rem;font-family:sans-serif;color:#b45309;background:#fffbeb;padding:6px 10px;border-radius:6px;margin-bottom:8px;display:inline-block}
+
+/* Model answer */
+.btn-model{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:6px;border:2px solid #16a34a;background:#fff;color:#16a34a;font-size:.82rem;cursor:pointer;font-family:sans-serif;font-weight:bold;margin-top:10px;transition:all .15s}
+.btn-model:hover,.btn-model.open{background:#16a34a;color:#fff}
+.model-wrap{display:none;margin-top:12px;background:#f0fdf4;border-radius:9px;padding:18px 22px;border-left:4px solid #16a34a}
+.model-head{font-size:.68rem;font-family:sans-serif;font-weight:bold;color:#15803d;letter-spacing:1.5px;margin-bottom:8px;text-transform:uppercase}
+.model-body{font-size:calc(var(--fs) - .05rem);line-height:var(--lh);color:#1a3a5c}
+.model-alt{margin-top:8px;font-size:.78rem;font-family:sans-serif;color:#6b7280}
+.model-pt{margin-top:12px;background:#fff;border-radius:7px;padding:11px 15px;font-size:.78rem;font-family:sans-serif;color:#374151;line-height:1.8;border:1px solid #bbf7d0}
+.model-pt-head{font-weight:bold;color:#15803d;margin-bottom:5px}
+
+.memo-area{width:100%;min-height:90px;padding:11px 14px;border:2px solid #e5e7eb;border-radius:8px;font-size:calc(var(--fs) - .05rem);line-height:1.75;font-family:'Georgia',serif;resize:vertical;margin-top:10px;transition:border-color .15s}
+.memo-area:focus{outline:none;border-color:#7c3aed}
+
+/* Progress badges */
+.year-card-badge{font-size:.62rem;font-family:sans-serif;font-weight:bold;padding:2px 8px;border-radius:10px;margin-top:5px;display:inline-block;background:#dcfce7;color:#15803d}
+.home-card-progress{font-size:.72rem;font-family:sans-serif;font-weight:bold;color:#15803d;margin-top:6px;display:inline-block}
+
+/* Bottom nav */
+.nav-bottom{margin-top:28px;display:flex;justify-content:center;gap:12px}
+.btn-tohome{padding:10px 28px;border-radius:7px;border:none;font-size:.88rem;cursor:pointer;font-family:sans-serif;font-weight:bold;background:#1a3a5c;color:#fff;transition:opacity .15s}
+.btn-tohome:hover{opacity:.85}
+
+/* Tile reorder UI */
+.tile-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:12px;background:#f8fafc;border:2px solid #e5e7eb;border-radius:8px;margin-bottom:10px;align-content:flex-start}
+.tile-answer-area{min-height:52px;padding:12px;background:#fffbf0;border:2px dashed #c4b5fd;border-radius:8px;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;align-items:flex-start;align-content:flex-start}
+.tile{display:inline-block;padding:6px 12px;border-radius:6px;border:2px solid #7c3aed;background:#fff;color:#7c3aed;font-size:calc(var(--fs) - .08rem);cursor:pointer;user-select:none;transition:all .12s;font-family:sans-serif;font-weight:bold}
+.tile:hover{background:#7c3aed;color:#fff}
+.tile.placed{border-color:#1a3a5c;color:#1a3a5c;background:#dbeafe}
+.tile.placed:hover{background:#fee2e2;border-color:#ef4444;color:#ef4444}
+.tile.correct{background:#dcfce7;border-color:#16a34a;color:#15803d;cursor:default}
+.tile.incorrect{background:#fee2e2;border-color:#ef4444;color:#b91c1c;cursor:default}
+.reorder-frame{font-size:var(--fs);line-height:1.8;margin-bottom:10px;color:#1a3a5c;padding:10px 14px;background:#f5f3ff;border-radius:8px}
+.btn-reset{padding:8px 14px;border-radius:7px;border:2px solid #e5e7eb;background:#fff;color:#6b7280;font-family:sans-serif;font-size:.82rem;cursor:pointer;margin-left:8px}
+
+/* hint collapsible */
+details.hint-detail{margin-top:6px}
+details.hint-detail summary{font-size:.78rem;font-family:sans-serif;color:#7c3aed;cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#f5f3ff;user-select:none}
+details.hint-detail summary::-webkit-details-marker{display:none}
+details.hint-detail summary::before{content:"▶ ";font-size:.65rem}
+details.hint-detail[open] summary::before{content:"▼ "}
+details.hint-detail .hint-body{margin-top:6px;color:#374151;font-size:.82rem;line-height:1.75;padding-left:4px}
+
+/* Passage reading area */
+.passage-wrap{background:#fff;border-radius:10px;padding:22px 28px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:16px}
+.passage-title{font-size:.82rem;font-family:sans-serif;font-weight:bold;color:#1a3a5c;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.passage-body{font-size:var(--fs);line-height:var(--lh);color:#222;border-left:3px solid #c4b5fd;padding-left:16px}
+.passage-body p{margin-bottom:.7em}
+.passage-body u{text-decoration-color:#7c3aed;text-decoration-thickness:2px}
+.p-blank{display:inline;background:#f5f3ff;color:#7c3aed;font-weight:bold;border-radius:3px;padding:0 3px;font-family:sans-serif}
+.passage-note{font-size:.74rem;font-family:sans-serif;color:#6b7280;margin-top:12px;padding-top:10px;border-top:1px dashed #e5e7eb;line-height:1.9}
+
+/* Translation view */
+.trans-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:6px;border:2px solid #7c3aed;background:#fff;color:#7c3aed;font-size:.8rem;cursor:pointer;font-family:sans-serif;font-weight:bold;transition:all .12s}
+.trans-btn:hover,.trans-btn.active{background:#7c3aed;color:#fff}
+.trans-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-top:4px}
+.trans-col-head{background:#f8fafc;padding:8px 14px;font-size:.7rem;font-family:sans-serif;font-weight:bold;letter-spacing:1px;color:#6b7280;border-bottom:1px solid #e5e7eb}
+.trans-col-head.en{border-right:1px solid #e5e7eb}
+.trans-row-en{padding:10px 14px;font-size:calc(var(--fs) - .1rem);line-height:1.8;color:#1a3a5c;border-bottom:1px solid #f1f5f9;border-right:1px solid #e5e7eb;background:#fff}
+.trans-row-ja{padding:10px 14px;font-size:calc(var(--fs) - .12rem);line-height:1.85;color:#374151;border-bottom:1px solid #f1f5f9;background:#fafafa;font-family:sans-serif}
+.trans-row-en:last-of-type,.trans-row-ja:last-of-type{border-bottom:none}
+@media(max-width:580px){.trans-grid{grid-template-columns:1fr}.trans-col-head.en{border-right:none}.trans-row-en{border-right:none;border-bottom:2px solid #e5e7eb;background:#f5f3ff}.trans-row-ja{border-bottom:1px solid #f1f5f9}}
+
+/* Footer note */
+.footer-note{font-size:.72rem;font-family:sans-serif;color:#9ca3af;line-height:1.9;padding:16px 20px;text-align:center;margin-top:6px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="btn-back" id="btn-back" onclick="goBack()">← 戻る</button>
+  <div class="topbar-title" id="topbar-title">駿台模試 英語対策（高1・10月）</div>
+  <div class="fs-controls">
+    <span class="fs-label">文字</span>
+    <button class="fs-btn" id="fs-s" onclick="setFs('s')">小</button>
+    <button class="fs-btn" id="fs-m" onclick="setFs('m')" style="background:rgba(255,255,255,.35)">中</button>
+    <button class="fs-btn" id="fs-l" onclick="setFs('l')">大</button>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ══ HOME ══ -->
+<div id="screen-home" class="screen active">
+  <div class="home-hero">
+    <h1>駿台模試 英語対策</h1>
+    <div class="sub">高校1年生 / 10月実施（駿台模試）/ 2023〜2025年度<br>大問1（物語文読解），大問2（論説文読解），大問3（語順整序＋英作文），大問4（文法＋共通語）に挑戦しよう。</div>
+  </div>
+  <div class="home-cards">
+    <div class="home-card" onclick="goSection('q1')">
+      <div class="card-icon">📖</div>
+      <div class="card-body">
+        <div class="card-num">大問 1</div>
+        <div class="card-title">物語文読解</div>
+        <div class="card-desc">登場人物の心情や関係性を読み取る物語文。下線部和訳・空所補充・内容理解・記述説明に挑戦しよう。3年分の対訳つき。</div>
+        <div class="tags">
+          <span class="tag t-trans">対訳表示</span>
+          <span class="tag t-write">記述・和訳</span>
+        </div>
+        <div id="hcs-q1"></div>
+      </div>
+    </div>
+    <div class="home-card" onclick="goSection('q2')">
+      <div class="card-icon">📰</div>
+      <div class="card-body">
+        <div class="card-num">大問 2</div>
+        <div class="card-title">論説文読解</div>
+        <div class="card-desc">科学・進化論など知的好奇心をくすぐる論説文。下線部和訳・空所補充・挿入文選択・内容理解に挑戦しよう。3年分の対訳つき。</div>
+        <div class="tags">
+          <span class="tag t-trans">対訳表示</span>
+          <span class="tag t-mcq">挿入文選択</span>
+        </div>
+        <div id="hcs-q2"></div>
+      </div>
+    </div>
+    <div class="home-card" onclick="goSection('q3')">
+      <div class="card-icon">🔤</div>
+      <div class="card-body">
+        <div class="card-num">大問 3</div>
+        <div class="card-title">語順整序＋英作文</div>
+        <div class="card-desc">語群をクリックして並べ替え、英文を完成させよう。和文英訳（自由記述）も収録。3年分・各5問＋2問。</div>
+        <div class="tags">
+          <span class="tag t-reorder">語順整序 × 5</span>
+          <span class="tag t-trans">和文英訳 × 2</span>
+        </div>
+        <div id="hcs-q3"></div>
+      </div>
+    </div>
+    <div class="home-card" onclick="goSection('q4')">
+      <div class="card-icon">🔎</div>
+      <div class="card-body">
+        <div class="card-num">大問 4</div>
+        <div class="card-title">文法＋共通語</div>
+        <div class="card-desc">4択（または空所補充）の文法問題と、2つの英文に共通して入る1語を考える問題。3年分・各5問＋5問。</div>
+        <div class="tags">
+          <span class="tag t-mcq">文法 × 5</span>
+          <span class="tag t-match">共通語 × 5</span>
+        </div>
+        <div id="hcs-q4"></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-note">
+    ※本アプリの解答・和訳・解説は、公式の解答解説が入手できなかったため、開発者（担当教員とAI）が文脈から判断した推定解答です。公式解答ではなく、あくまで学習の参考としてご利用ください。大問4(A)の一部の問題には正答が確定できないものが含まれています（該当箇所に注記あり）。また、リスニング問題（大問5）は音声・スクリプトが手元にないため本アプリには収録していません。
+  </div>
+</div>
+
+<!-- ══ Q1 HOME ══ -->
+<div id="screen-q1" class="screen">
+  <div class="sec-hero">
+    <h2>大問 1　物語文読解</h2>
+    <div class="hero-sub">年度を選んで読解問題に挑戦しよう（対訳表示つき）</div>
+  </div>
+  <div class="year-cards">
+    <div class="year-card" id="yc-q1-2023" onclick="openQ1(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">Rosa（家政婦と父の物語）</div><div id="ycb-q1-2023"></div></div>
+    <div class="year-card" id="yc-q1-2024" onclick="openQ1(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">Nathan West（警察官の訪問）</div><div id="ycb-q1-2024"></div></div>
+    <div class="year-card" id="yc-q1-2025" onclick="openQ1(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">Callum（大学の恋愛小話）</div><div id="ycb-q1-2025"></div></div>
+  </div>
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div>
+
+<!-- ══ Q1 YEAR (dynamic) ══ -->
+<div id="screen-q1y" class="screen">
+  <div class="sec-hero"><h2 id="q1y-title"></h2><div class="hero-sub" id="q1y-sub"></div></div>
+  <div id="q1y-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-tohome" onclick="goSection('q1')">← 年度一覧</button>
+    <button class="btn-tohome" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+<!-- ══ Q2 HOME ══ -->
+<div id="screen-q2" class="screen">
+  <div class="sec-hero">
+    <h2>大問 2　論説文読解</h2>
+    <div class="hero-sub">年度を選んで読解問題に挑戦しよう（対訳表示つき）</div>
+  </div>
+  <div class="year-cards">
+    <div class="year-card" id="yc-q2-2023" onclick="openQ2(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">ダーウィンと進化論</div><div id="ycb-q2-2023"></div></div>
+    <div class="year-card" id="yc-q2-2024" onclick="openQ2(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">純粋科学 vs 応用科学</div><div id="ycb-q2-2024"></div></div>
+    <div class="year-card" id="yc-q2-2025" onclick="openQ2(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">脳の老化（Dr. Vickery）</div><div id="ycb-q2-2025"></div></div>
+  </div>
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div>
+
+<!-- ══ Q2 YEAR (dynamic) ══ -->
+<div id="screen-q2y" class="screen">
+  <div class="sec-hero"><h2 id="q2y-title"></h2><div class="hero-sub" id="q2y-sub"></div></div>
+  <div id="q2y-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-tohome" onclick="goSection('q2')">← 年度一覧</button>
+    <button class="btn-tohome" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+<!-- ══ Q3 HOME ══ -->
+<div id="screen-q3" class="screen">
+  <div class="sec-hero">
+    <h2>大問 3　語順整序＋英作文</h2>
+    <div class="hero-sub">年度を選んで練習しよう（A：語順整序×5／B：和文英訳×2）</div>
+  </div>
+  <div class="year-cards">
+    <div class="year-card" id="yc-q3-2023" onclick="openQ3(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">A×5 / B×2</div><div id="ycb-q3-2023"></div></div>
+    <div class="year-card" id="yc-q3-2024" onclick="openQ3(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">A×5 / B×2</div><div id="ycb-q3-2024"></div></div>
+    <div class="year-card" id="yc-q3-2025" onclick="openQ3(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">A×5 / B×2</div><div id="ycb-q3-2025"></div></div>
+  </div>
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div>
+
+<!-- ══ Q3 YEAR (dynamic) ══ -->
+<div id="screen-q3y" class="screen">
+  <div class="sec-hero"><h2 id="q3y-title"></h2><div class="hero-sub" id="q3y-sub"></div></div>
+  <div id="q3y-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-tohome" onclick="goSection('q3')">← 年度一覧</button>
+    <button class="btn-tohome" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+<!-- ══ Q4 HOME ══ -->
+<div id="screen-q4" class="screen">
+  <div class="sec-hero">
+    <h2>大問 4　文法＋共通語</h2>
+    <div class="hero-sub">年度を選んで練習しよう（A：4択・空所補充×5／B：共通語補充×5）</div>
+  </div>
+  <div class="year-cards">
+    <div class="year-card" id="yc-q4-2023" onclick="openQ4(2023)"><div class="year-card-yr">2023</div><div class="year-card-sub">A×5 / B×5</div><div id="ycb-q4-2023"></div></div>
+    <div class="year-card" id="yc-q4-2024" onclick="openQ4(2024)"><div class="year-card-yr">2024</div><div class="year-card-sub">A×5 / B×5</div><div id="ycb-q4-2024"></div></div>
+    <div class="year-card" id="yc-q4-2025" onclick="openQ4(2025)"><div class="year-card-yr">2025</div><div class="year-card-sub">A×5 / B×5（⚠️A③正答未確定）</div><div id="ycb-q4-2025"></div></div>
+  </div>
+  <div class="nav-bottom"><button class="btn-tohome" onclick="goHome()">← 大問一覧に戻る</button></div>
+</div>
+
+<!-- ══ Q4 YEAR (dynamic) ══ -->
+<div id="screen-q4y" class="screen">
+  <div class="sec-hero"><h2 id="q4y-title"></h2><div class="hero-sub" id="q4y-sub"></div></div>
+  <div id="q4y-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-tohome" onclick="goSection('q4')">← 年度一覧</button>
+    <button class="btn-tohome" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+const YEARS = [2023,2024,2025];
+const SECTIONS = ["q1","q2","q3","q4"];
+
+// ═══════════════════════════════════════════
+// Q1 DATA（大問1・物語文読解）
+// ═══════════════════════════════════════════
+const Q1 = {
+2023:{
+  title:"Rosa（家政婦と父の物語）",
+  passage:`During the fall of 1982, my first year in college, my parents advertised in the local paper for a housekeeper and caregiver for my mother, who was a wheelchair user. The only person who applied was an African-American woman from a nearby community. When I learned my father had hired her, <u>(1)a large knot formed deep in my stomach.</u>
+Although my father had a great sense of humor and a huge heart, he was also a racist bigot, a white Anglo-Saxon Protestant who grew up in Kansas. I believed he would behave horribly to this woman. Memories flooded back: the gentleman who drove into our farm yard in the middle of summer with an overheating car and my father's cruel refusal to allow him any water; all the racist comments Dad had made over the years….
+Shortly after Rosa started working for my parents, I telephoned home. When she answered, I introduced myself and asked to speak to my father. Rosa replied, "Sorry, he's busy. I told him to clean up his room and he's doing it now."
+Fishlike, my mouth opened and closed until I heard her laugh, and then I laughed, too. When I finally met her in person, I found a woman of dignity, laughter, and gentleness who cooked the most delicious meals imaginable. One day I asked Rosa where she had learned to cook so well. "My mother taught me to make everything with love and it would turn out right," was her answer.
+My father was polite and respectful, but communicated little with Rosa the first few times I was home. As time progressed, I watched their relationship ( 2 ) and my father's attitude change. Within a few months, they were joking, laughing, and quarreling like brother and sister.
+<u>(3)One day Dad told me that because of Rosa he had learned to judge a person by what's inside, not by skin color.</u> Her goodness and love had touched him deeply, changing his lifelong attitudes.
+Years later, after my father's death, Rosa told me friends had warned her not to work for him. On her first day of work, Dad demanded his meals be on the table promptly at 12 noon and 6 p.m., not 10 to 15 minutes later. She obeyed. Then one day, he was late arriving to eat and she had already removed his plate from the table. He said nothing, but retrieved his plate, sat down and ate. According to Rosa, that was the turning point of their relationship. I said he deserved it, but she disagreed. She said it was only foolish pride, something that she tried to avoid.
+Rosa followed her mother's lesson to make everything with love, and even took it further. <u>(4)Without her strength, courage, and gentleness, my father would have remained just as he was. Instead, he was a better man for having been touched with Rosa's love.</u>`,
+  note:"racist bigot＝頑迷な人種差別主義者　dignity＝威厳",
+  trans:[
+    "1982年の秋、大学1年生だった私の両親は、車椅子を使う母のための家政婦兼介護者を新聞広告で募集した。応募してきたのは近隣に住むアフリカ系アメリカ人の女性ただ一人だった。父が彼女を雇ったと知ったとき、(1)私の胃の奥に大きな結び目ができたような感覚に襲われた。",
+    "父はユーモアのセンスがあり、心の広い人だったが、同時にカンザス州育ちの白人アングロサクソン系プロテスタントで、頑固な人種差別主義者でもあった。私は父がこの女性にひどい態度を取るだろうと思っていた。記憶がよみがえってきた。真夏にオーバーヒートした車で我が家の農場にやってきた紳士に、父が水一杯さえ与えることを冷たく拒んだこと。長年にわたって父が口にしてきた数々の人種差別的な発言のこと……。",
+    "ローザが両親のもとで働き始めてすぐ、私は実家に電話をかけた。彼女が電話に出たので、自己紹介をして父と話したいと伝えた。ローザはこう答えた。「すみません、彼は今忙しいんです。部屋を片付けるように言ったので、今やっているところなんですよ」",
+    "私は魚のように口をぱくぱくさせていたが、やがて彼女の笑い声が聞こえ、私も一緒に笑ってしまった。実際に会ってみると、彼女は威厳と笑いと優しさを兼ね備えた女性で、想像しうる限り最も美味しい料理を作ってくれた。ある日、私はローザにどこでそんなに料理が上手になったのか尋ねた。「母が、すべてを愛情を込めて作れば、きっとうまくいくと教えてくれたの」というのが彼女の答えだった。",
+    "父は礼儀正しく敬意を持って接していたが、私が実家に帰った最初の数回はローザとほとんど言葉を交わさなかった。時が経つにつれて、私は二人の関係が( 2 )し、父の態度が変わっていくのを目の当たりにした。数ヶ月のうちに、二人は兄妹のように冗談を言い合い、笑い合い、時にはけんかもするようになっていた。",
+    "(3)ある日、父は私に、ローザのおかげで人を肌の色ではなく中身で判断することを学んだのだと話した。彼女の善良さと愛情は父の心に深く触れ、生涯にわたる考え方を変えたのだった。",
+    "何年も後、父が亡くなった後になって、ローザは友人たちから「彼のもとでは働かない方がいい」と忠告されていたことを私に話してくれた。働き始めた初日、父は食事を正午と午後6時ちょうどにテーブルに出すよう要求し、10分から15分の遅れも許さなかった。彼女はそれに従った。ところがある日、父が食事に遅れてやってきたとき、ローザはすでに彼の皿を片付けてしまっていた。父は何も言わず、自分の皿を取り戻し、席に座って食事をした。ローザによれば、それが二人の関係の転機だったという。私は「父にはそれが当然の報いだ」と言ったが、彼女はそれに同意しなかった。それはただの愚かなプライドであり、彼女自身が避けようとしていたものだと言った。",
+    "ローザは母の教え通りすべてを愛情を込めて行い、さらにそれ以上のことをした。(4)彼女の強さ、勇気、そして優しさがなければ、私の父はそのままの彼であり続けただろう。そうではなく、ローザの愛に触れたことで、彼はより良い人間になったのだ。"
+  ],
+  questions:[
+    {num:1,label:"⑴ 下線部(1)の心情説明",type:'write',prompt:"下線部(1)はどのような心情を表すか説明せよ。",model:"父がこの女性（ローザ）にひどい態度を取るのではないか、何か恐ろしいことが起きるのではないかという不安な気持ち。（本試験の正解選択肢：ア）",exp:"a large knot formed deep in my stomach＝「胃の奥に固い結び目ができた」という身体感覚の比喩で、強い不安・緊張を表す決まった言い回し。直後の段落で父が人種差別的な人物だと説明されており、その父が新しく雇われたローザにひどい態度を取るのではという不安が根拠。"},
+    {num:2,label:"⑵ 空所(2)",type:'fill',prompt:"空所( 2 )に入る最も適切な1語を答えよ。",answer:"develop",exp:"develop「（関係などが）発展する」。their relationship developという無生物主語＋自動詞の形。直後で「数ヶ月のうちに兄妹のように冗談を言い合うようになった」と関係の進展が描かれている点が根拠。"},
+    {num:3,label:"⑶ 下線部(3)和訳",type:'write',model:"ある日父は、ローザのおかげで人を肌の色ではなく中身で判断することを学んだと私に話した。",exp:"One day Dad told me that S+V...＝tell A that節の間接話法。judge a person by A「人をAによって判断する」、not by B「Bによってではなく」はbyの目的語の対比（by what's inside＝中身で ⇔ not by skin color＝肌の色でではなく）。"},
+    {num:4,label:"⑷ 下線部(4)和訳",type:'write',model:"彼女の強さ、勇気、そして優しさがなければ、私の父はそのままの彼であり続けただろう。そうではなく、ローザの愛に触れたことで、彼はより良い人間になったのだ。",exp:"Without her strength, courage, and gentleness, S would have +過去分詞...＝Withoutがif it had not been forの代わりとなる仮定法過去完了（過去の事実に反する仮定）。for having been touched with A「Aに触れたことで」は理由を表す動名詞句（having done＝完了形の動名詞）。"},
+    {num:5,label:"⑸ 二人の関係のターニングポイント",type:'write',prompt:"本文に即して、父とローザの関係の転機となった出来事を80字以内の日本語で説明せよ。",model:"父が食事の時間に遅れて来た際、ローザがすでに彼の皿を片付けていたが、父は何も言わずに皿を取り戻して座り、食事をしたという出来事。（約60字）",exp:"第6段落（Years later...）後半の「ある日、父が食事に遅れてやってきたとき、ローザはすでに彼の皿を片付けてしまっていた。父は何も言わず、自分の皿を取り戻し、席に座って食事をした」の部分が根拠。直後にthat was the turning point of their relationshipと明記されている。"},
+    {num:6,label:"⑹ 内容一致（2つ選択）",type:'write',prompt:"本文の内容と一致するものを2つ選ぶ設問。選択肢の英文は元の解答解説PDFが入手できなかったため未収録。本文全体を読み返し、内容が一致しそうな点を自分でまとめてみよう。",model:"正解の記号：ウ・エ（選択肢自体の英文は原本未収録）",exp:"本文全体、特に「父がローザとの交流を通じて人種差別的な態度を軟化させていった」という第5〜7段落の展開と、「ローザ自身が母の教えを実践し、さらにそれを超えていった」という最終段落の内容が根拠になっていると考えられる。選択肢の英文が手元にない場合は、本文中の事実関係（誰が何をしたか、時系列）を正確に押さえることを優先しよう。"}
+  ]
+},
+2024:{
+  title:"Nathan West（警察官の訪問）",
+  passage:`I glanced at my phone again as I headed back to my office, and I saw I had another missed call and also a voicemail from The Garden School, Ruby's preschool.
+"Mr. West? This is Miss Willis, Ruby's teacher. I'm calling you because no one has picked Ruby up from school today, and it has now been … twenty-five minutes since pick-up time."
+I called The Garden School back, half hoping that Laura, my wife, would have already come and ( 1 ) Ruby.
+"No one has picked up Ruby, Mr. West, and it has now been nearly an hour."
+"I'll come," I said reluctantly, because there was no one else. <u>(2)I didn't know Laura's mom friends, not well enough to phone anyway. I had just disconnected the call when I saw a police officer come into my office, looking far too serious.</u>
+"Mr. West?"<br>"<u>(3)Nathan, please.</u> What can I do for you?"<br>"Well, Nathan, I'm very sorry, but I have some difficult news to give you. Some very difficult news."
+No. I didn't speak; I couldn't. I just stared at her, my body completely still and tense.
+"Would you like to sit down?"<br>"No thank you."
+"I'm afraid your wife was involved in an incident on the subway this morning."
+An incident? What did that mean? "The subway?" I repeated blankly. I shook my head. Laura never took the subway, or at least very rarely.
+"Yes, on the J Train, between the Bowery and Canal Street Stations."
+A seemingly small detail, but <u>(4)such a crucial one.</u> "Then it can't be Laura." I almost laughed with the sheer relief of it; I felt giddy with sudden, sure knowledge. "There's no way my wife would travel that far downtown." No way had Laura been on that train.
+Yet even as I said the words, I felt their futility. Here was a police officer, saying Laura had been in an incident, and only moments ago I had talked to Miss Willis, who had told me Laura hadn't come to pick up Ruby as usual. <u>(5)Two and two usually made an understandable four, but not this time.</u> Not this time.
+"I'm afraid <u>(6)we're quite certain it was your wife</u>, Mr. West," the police officer said. She was surprisingly slight for an officer of the law, with dark hair and gentle eyes.
+"<u>(7)How are you certain?</u>" I sounded aggressive, but I couldn't help it. Laura <u>could not have been on the J train. It was simply not possible.</u>
+"She had her license on her," the police officer said, "and your details were on her phone."<br>I swallowed hard and said nothing.<br>"You are Nathan West, and your wife is Laura West?"<br>"Yes." Even this came out unwillingly.<br>"And this is your wife?" The woman's face was filled with compassion as she handed me Laura's driver's license. I stared at it disbelievingly.`,
+  note:"incident＝事件　giddy＝めまいがする　futility＝無益さ；くだらなさ",
+  trans:[
+    "電話を見ながらオフィスへ戻る途中、私はまた着信を見逃していたことに気づいた。ルビーの通う保育園、ガーデン・スクールからの留守番電話もあった。",
+    "「ウェストさん？　ルビーの先生のウィリスです。今日、誰もルビーをお迎えに来ていないのでお電話しました。お迎えの時間からもう…25分が経っています」",
+    "私はガーデン・スクールに折り返し電話をかけた。妻のローラがすでに迎えに行って( 1 )いてくれたらいいのだが、と半ば期待しながら。",
+    "「誰もルビーを迎えに来ていません、ウェストさん。もう1時間近く経っています」",
+    "「私が行きます」と私は渋々言った。他に頼れる人がいなかったからだ。(2)私はローラの母親仲間のことをよく知らず、電話をかけるほどではなかった。電話を切ったちょうどそのとき、警察官が私のオフィスに入ってくるのが見えた。ひどく深刻な様子だった。",
+    "「ウェストさんですか？」<br>「(3)ネイサンで結構です。何かご用でしょうか」<br>「実は、ネイサンさん、大変申し上げにくいのですが、お伝えしなければならない、つらい知らせがあります。とてもつらい知らせです」",
+    "だめだ。私は言葉を発することができなかった。ただ体を完全にこわばらせたまま彼女を見つめていた。",
+    "「おかけになりますか」<br>「いえ、結構です」",
+    "「残念ながら、今朝、奥様が地下鉄での事件に巻き込まれました」",
+    "事件？　それはどういう意味だ？「地下鉄ですか？」私は呆然と繰り返した。首を振った。ローラが地下鉄に乗ることは決してない、少なくともめったにないはずだ。",
+    "「はい、Ｊ線で、バワリー駅とキャナル・ストリート駅の間です」",
+    "一見小さな情報に思えたが、(4)それはきわめて重要な情報だった。「それなら、ローラのはずがない」私は心底ほっとして、思わず笑いそうになった。突然の確信にめまいすら覚えた。「妻がそんなに繁華街の奥まで行くはずがない」ローラがあの電車に乗っていたはずはない。",
+    "しかし、その言葉を口にしながらも、私はその空しさを感じていた。目の前には、ローラが事件に巻き込まれたと告げる警察官がいて、つい先ほどウィリス先生からはローラがいつものようにルビーを迎えに来ていないと聞いたばかりだった。(5)いつもなら2たす2は納得のいく4になるはずなのに、今回はそうではなかった。今回だけは。",
+    "「残念ながら、(6)奥様であることはほぼ間違いないと確信しています、ウェストさん」と警察官は言った。彼女は法の執行官にしては意外なほど小柄で、黒髪と優しい目をしていた。",
+    "「(7)どうしてそんなに確信があるのですか」私の口調は攻撃的に聞こえたが、抑えられなかった。ローラがＪ線に乗っていたはずがない。それは単純にあり得なかった。",
+    "「彼女は免許証を携帯していました」と警察官は言った。「それに、あなたの連絡先が彼女の携帯電話に登録されていました」<br>私はごくりと唾を飲み込み、何も言わなかった。<br>「あなたはネイサン・ウェストさんで、奥様はローラ・ウェストさんですね？」<br>「はい」これさえも不本意な様子で口から出た。<br>「そして、これが奥様ですか？」その女性警察官は、ローラの運転免許証を私に手渡しながら、思いやりに満ちた表情を浮かべた。私は信じられない思いでそれを見つめた。"
+  ],
+  questions:[
+    {num:1,label:"⑴ 空所(1)",type:'fill',prompt:"空所( 1 )に入る最も適切な1語を答えよ。",answer:"collected",exp:"come and collect Ruby「ルビーを迎えに来る」。collect＝pick up（＝迎えに行く）とほぼ同義。half hoping that S+V「半ば〜であればいいのにと思いながら」の願望が外れる展開に注意。"},
+    {num:2,label:"⑵ 下線部(2)和訳",type:'write',model:"私はローラの母親仲間のことをよく知らなかった、電話をかけるほどには。ちょうどその電話を切ったところで、ひどく深刻な様子の警察官が私のオフィスに入ってくるのが見えた。",exp:"not well enough to phone anyway＝直前のI didn't know Laura's mom friendsを補足する言い方（「とはいえ、電話をかけられるほどには知らなかった」）。I had just disconnected the call when S+V…は「ちょうど〜したところで…した」という過去完了＋過去形の時制表現（had just done ～ when …）。"},
+    {num:3,label:"⑶ 下線部(3)の意図",type:'write',prompt:"下線部(3) \"Nathan, please.\" はどのような意図で言われたか説明せよ。",model:"「ウェストさんではなく、ネイサンと呼んでください」と、堅苦しくない呼び方をしてほしいと伝えている。（本試験の正解選択肢：ウ）",exp:"直前で警察官が\"Mr. West?\"と苗字（姓）で呼びかけたのに対し、下線部でファーストネームのみを告げてpleaseを添えている。名前＋pleaseだけで「〜と呼んでください」という依頼を表す省略表現。"},
+    {num:4,label:"⑷ 下線部(4)の理由",type:'write',prompt:"下線部(4)のように、なぜその情報が重要だったのか説明せよ。",model:"地下鉄の路線・駅名という具体的な情報が、語り手にとって「これは妻のローラではないはずだ」と感じさせる決め手になったから。（本試験の正解選択肢：エ）",exp:"such a crucial one＝such a+形容詞+名詞の強調構文（one＝detailの代用）。直後で語り手が「ローラがそんな遠い繁華街まで行くはずがない」と安堵する展開が続いており、この「詳細な情報」が根拠として機能している。"},
+    {num:5,label:"⑸ 下線部(5)の内容",type:'write',prompt:"下線部(5) \"Two and two usually made an understandable four, but not this time.\" はどのような意味か説明せよ。",model:"普段なら状況証拠を組み合わせれば納得のいく結論に至るはずなのに、今回はその結論（妻が事件に遭ったという事実）を受け入れられない、という意味。（本試験の正解選択肢：イ）",exp:"Two and two make four＝「2+2=4」で「当然の帰結」を表す比喩的表現。usually（普段は）とbut not this time（しかし今回は違う）の対比がポイント。状況証拠（警察官の話＋ミス・ウィリスの電話）は明白な結論を示しているのに、語り手の心はそれを拒んでいる。"},
+    {num:6,label:"⑹ 下線部(6)の理由",type:'write',prompt:"下線部(6)のように警察官が確信している理由を50字程度の日本語で説明せよ。",model:"警察官の手元にローラの運転免許証があり、また彼女の携帯電話にナサンの連絡先情報が登録されていたから。（約48字）",exp:"直後の2文（She had her license on her...と your details were on her phone）が根拠。物証（免許証・携帯電話の登録情報）の提示という形で理由が示されている点に注目。"},
+    {num:7,label:"⑺ 下線部(7)和訳",type:'write',model:"どうしてそんなに確信があるのですか。",exp:"How are you certain?＝howは「どのような根拠で」と方法・理由を問う疑問副詞。be certain (that)〜「〜だと確信している」のthat節が省略された形（このcertainは前文のwe're quite certain it was your wifeを受けている）。"}
+  ]
+},
+2025:{
+  title:"Callum（大学の恋愛小話）",
+  passage:`I'm sure I failed yesterday's test, probably because I couldn't stop secretly glancing at Callum while taking it. Not only that, but last night <u>(1)I had a strange dream about going to class with him and wearing a shirt I thought was cute, and everyone insisted they liked it, but I realized it was just pants I'd cut armholes out of somehow and actually was ridiculously ugly.</u> It seems that even in my dreams I feel that I'm not good enough for him.
+Which is why I'm very surprised when he steps up beside me as I'm getting on my bike.
+"Hey," he says. I barely manage to not drop my coffee. It's freezing out, and he's wearing a black knit cap that makes his eyes glimmer. He has the longest lashes I've ever seen on a guy.<br>"Hi," I say, pushing my hat up a little.<br>"I'm glad I ( 2 ) into you this morning," he says.<br>"You are?"<br>It's just starting to snow, and snowflakes land on his cheeks, immediately melting. In his black jacket, he looks warm. And he's so tall.<br>Callum nods. "I was just thinking about you," he says.<br>"You were?" <u>(3)I am nothing but stupid questions.</u><br>"There's something about you, Terra Solace…"
+Yes, <u>(4)I am aware that a handful of men have found me attractive enough to want to date, but still.</u> This is Callum. Almost everyone I know would love to go out with him.
+"Something about me, huh?" I say. "You barely know me."<br>"Maybe I'm curious about a student who was the only one in the class to get every question ( 5 ) on an extremely difficult neuroanatomy exam."<br>My eyes go wide. I aced it?
+"Dr. Ashkar emailed me the grade distribution. I'm happy I get to give you the good news in person."<br>"That is really hard to believe, actually, because I was such a distracted mess yesterday."<br>He studies me for a mysterious second. "<u>(6)Well, it didn't show.</u>"
+I make fists, hold them up at shoulder height, and do a little dance. I am so happy.<br>Callum watches me with a smile. "Can I take you out to dinner?"<br>His question comes out of absolutely ( 7 ), and my fists drop like stones.<br>"What?"
+"Dinner." He cutely mimes spooning food into his mouth. "Sun goes down. People eat."<br>"Like a date?"<br>"I hope so?"<br>"When?"<br>He smiles and gives a happy shrug. "Whenever you want."
+It feels absolutely impossible that this is happening. Callum Sundberg is asking me out on a date? After two and a half conversations and zero makeup or wardrobe efforts on my part? I look behind me.<br>When I turn back, he's fighting a laugh. "What are you doing?" he asks.<br>"<u>(8)Double-checking there wasn't someone behind me.</u>"
+He releases the laugh, tilting my face up with a finger under my chin. "I'm asking you."<br>When our eyes meet, I finally realize this is actually happening.<br>"I'm in."`,
+  note:"lashes＝まつ毛　neuroanatomy＝神経解剖学　distribution＝分布　a distracted mess＝非常に気が散った人　fists＝（握り）拳",
+  trans:[
+    "私は昨日のテストにきっと失敗した。試験中もこっそりカラムを見つめてしまうのを止められなかったからだ。それだけでなく、昨夜は(1)彼と一緒に授業に行く奇妙な夢を見た。かわいいと思ったシャツを着ていて、みんなが気に入ったと言ってくれたのに、実はそれはどうにか腕を通す穴を開けただけのパンツにすぎず、実際はばかばかしいほど不格好だったことに気づいた、という夢だった。どうやら夢の中でさえ、私は彼にふさわしくないと感じているらしい。",
+    "だからこそ、自転車に乗ろうとしている私の横に彼が歩み寄ってきたとき、私はとても驚いた。",
+    "「やあ」と彼は言う。私は危うくコーヒーを落としそうになるのをこらえる。外はとても寒く、彼は目をきらめかせる黒いニット帽をかぶっている。彼は男の子にしては見たことがないほど長いまつ毛をしている。<br>「こんにちは」と私は帽子を少し押し上げながら言う。<br>「今朝、君に( 2 )うれしいよ」と彼は言う。<br>「そうなの？」<br>雪が降り始め、雪片が彼の頬に落ちてはすぐに溶けていく。黒いジャケットを着た彼は温かそうに見える。それに、とても背が高い。<br>カラムはうなずく。「君のことを考えていたんだ」と彼は言う。<br>「そうだったの？」(3)僕の頭の中は馬鹿げた質問だらけなんだ。<br>「テラ・ソレスにはなにか特別なものがある……」",
+    "確かに、(4)自分をデートに誘いたいと思うほど魅力的だと感じてくれた男性が何人かいることは分かっている。それでもやっぱり別だ。これはカラムなのだ。私の知り合いのほとんどが、彼と付き合いたいと思っているような人なのだから。",
+    "「私に何か特別なものがあるって？」と私は言う。「あなたは私のことをほとんど知らないじゃない」<br>「とても難しい神経解剖学の試験で、クラスでただ一人すべての問題を( 5 )した学生のことが気になっているのかもね」<br>私は目を見開く。満点だったなんて？",
+    "「アシュカー先生が成績の分布をメールで送ってくれたんだ。直接いい知らせを伝えられてうれしいよ」<br>「それは本当に信じがたいわ。だって昨日の私は本当に気が散っていてめちゃくちゃだったんだもの」<br>彼は謎めいた表情で少しの間私を見つめる。「(6)まあ、そうは見えなかったよ」",
+    "私は両手を握りこぶしにして肩の高さまで上げ、小さくダンスをする。とても嬉しいのだ。<br>カラムは微笑みながら私を見ている。「夕食に連れて行ってもいい？」<br>彼の質問はまったく( 7 )に出てきたもので、私の握りこぶしは石のように落ちる。<br>「え？」",
+    "「夕食だよ」彼はかわいらしくスプーンで食べ物を口に運ぶまねをする。「日が沈む。人は食事をする」<br>「デートみたいな？」<br>「そうだといいな？」<br>「いつ？」<br>彼は微笑んで嬉しそうに肩をすくめる。「君の好きな時に」",
+    "こんなことが起きているなんてまったく信じられない。カラム・サンドバーグが私をデートに誘っている？　たった2回半の会話しかしていないし、私は化粧も服装の工夫もまったくしていないのに？　私は自分の後ろを振り返る。<br>振り向くと、彼は笑いをこらえている。「何をしているの？」と彼は尋ねる。<br>「(8)後ろに誰かいないか確かめていたの」",
+    "彼はこらえていた笑いを解き放ち、あごの下に指を添えて私の顔を上げさせる。「僕が誘っているのは君だよ」<br>私たちの目が合ったとき、私はようやくこれが本当に起きていることだと実感する。<br>「行くわ」"
+  ],
+  questions:[
+    {num:1,label:"⑴ 下線部(1)和訳",type:'write',model:"私は彼と一緒に授業に行く奇妙な夢を見た。かわいいと思ったシャツを着ていて、みんなが気に入ったと言ってくれたが、実はそれはどうにか腕を通す穴を開けたパンツにすぎず、実際はばかばかしいほど不格好だったことに気づいた、という夢だった。",exp:"had a strange dream about Ving「〜する奇妙な夢を見た」。but I realized (that) it was just pants I'd cut armholes out of somehow「なんとか腕を通す穴を開けただけのパンツにすぎなかったと気づいた」がrealizedの目的語節。I'd cut armholes out of（が関係代名詞節としてpantsを修飾）＝腕を通す穴を開けた、の意。"},
+    {num:2,label:"⑵ 空所(2)",type:'fill',prompt:"空所( 2 )に入る最も適切な1語を答えよ。",answer:"ran",exp:"run into A「Aに（偶然）出会う」の過去形。I'm glad I ran into you this morning「今朝君に偶然会えてうれしい」という文脈。"},
+    {num:3,label:"⑶ 下線部(3)の意味",type:'write',prompt:"下線部(3) \"I am nothing but stupid questions.\" はどのような意味か、内容を説明せよ。",model:"「僕の頭の中は君についての他愛もない疑問だらけだ」という意味。カラムが冗談めかして、テラのことが気になって仕方がないと伝えている。（本試験の正解選択肢：ア）",exp:"nothing but ～「～にすぎない、～だけ」（only ～と同義）。直訳は「私は他愛もない疑問にすぎない」で不自然だが、「頭の中が〜でいっぱいだ」というくだけた言い回し。選択肢アAll I am doing is asking silly questions.（愚問ばかりしている）とほぼ同義。"},
+    {num:4,label:"⑷ 下線部(4)和訳",type:'write',model:"私は、自分をデートに誘いたいと思うほど魅力的だと感じてくれた男性が何人かいることは分かっている。それでもやっぱり（カラムは別格だ）。",exp:"I am aware that S+V「〜だと分かっている、自覚している」。found me attractive enough to want to date＝find A adj enough to do「Aが〜するのに十分…だと分かる」（find+O+C構文にenough to doが続く）。but still＝「それでもやはり（別だ）」という譲歩を表す決まり文句、直後のThis is Callum.につながる。"},
+    {num:5,label:"⑸ 空所(5)",type:'fill',prompt:"空所( 5 )に入る最も適切な1語を答えよ。",answer:"right",exp:"get every question right「すべての問題に正解する」。get+O+C（形容詞）の形。直後にMy eyes go wide. I aced it?（満点だったなんて？）と続き、正解＝rightだったことが裏付けられる。"},
+    {num:6,label:"⑹ 下線部(6)の意味",type:'write',prompt:"下線部(6) \"Well, it didn't show.\" はどのような意味か、内容を説明せよ。",model:"「（気が散っていたようには）見えなかったよ」という意味。テラが昨日気が散っていたと言ったのに対し、カラムはそのようには見えなかったと答えている。（本試験の正解選択肢：ア）",exp:"show＝自動詞で「（様子・兆候が）表に出る、見える」。it＝直前のテラの発言（a distracted mess yesterday＝気が散っていたこと）を指す。「そのこと（気が散っていたこと）は外見に表れていなかった＝気づかなかった」という意味。"},
+    {num:7,label:"⑺ 空所(7)",type:'fill',prompt:"空所( 7 )に入る最も適切な1語を答えよ。",answer:"nowhere",exp:"out of nowhere「突然に、予期せず」。His question comes out of absolutely nowhere「彼の質問はまったく予期せず飛び出してきた」という文脈。"},
+    {num:8,label:"⑻ 下線部(8)の理由",type:'write',prompt:"下線部(8)のような行動をとった理由を30字以内の日本語で説明せよ。",model:"自分ではなく後ろの誰かをデートに誘っているのではと確認するため。（33字）",exp:"直前のI look behind me.（自分の後ろを振り返る）という行動と、Double-checking there wasn't someone behind me.（後ろに誰もいなかったことを再確認していた）という下線部が対応。「自分ではなく後ろにいる別人を誘っているのでは」という疑いが根拠。"}
+  ]
+}
+};
+
+// ═══════════════════════════════════════════
+// Q2 DATA（大問2・論説文読解）
+// ═══════════════════════════════════════════
+const Q2 = {
+2023:{
+  title:"ダーウィンと進化論",
+  passage:`The year 2009 was the 200th anniversary of the birth of Charles Darwin. He is one of the greatest biologists in history, and his idea of evolution has had a strong influence on science and society. Everyone knows the word "evolution," but it usually isn't used with its scientific meaning. ［Ａ］ For example, it is very common to describe the progress of an athlete or shogi player as an evolution. ［Ｂ］ You've probably seen headlines such as "A new evolution in Ohtani's batting!" ［Ｃ］ This kind of use of the word is different from what Darwin meant. It is important to make a clear distinction between such uses and the scientific meaning, which refers to a specific mechanism. ［Ｄ］
+<u>(1)We must keep in mind that even if the characteristics of individuals, whether they are humans, plants, or animals, change over the course of their lives, this is not evolution in the scientific sense.</u> Evolution happens between generations. Parents' characteristics are not perfectly copied when they reproduce. This means that the individuals of all new ( 2 ) have characteristics that are slightly different from their parents'. According to biology, these new characteristics appear at random, and if they increase the chances of survival and reproduction, they tend to be passed down to following ( 2 ) as well. If they do not, then they tend not to be transmitted. Small changes appear repeatedly over thousands of millions of years and those that are inherited again and again result in new species that are distinct from their ancestors.
+Darwin is said to have gotten his insight from the science of geology and <u>(3)its answer to the question</u>, "Why are fossils of seashells sometimes found high up in mountains?" Previous answers had been very complicated. Geologists in the nineteenth century, however, realized that the places where such fossils were found had once been at the bottom of a sea, and that the seabed had been lifted up little by little by geological forces, eventually becoming mountains. This led other scientists to realize that it was more useful to look for a few important principles rather than to create complicated explanations. In fact, now <u>(4)a key idea in scientific thought is that the principles of nature don't change, and that what is seen in nature can be explained as a result of certain principles acting over time on natural phenomena.</u> In other words, behind phenomena that appear to be confusing or extremely complex must be simple principles. Darwin himself reasoned that the principles behind evolution also were probably simple.
+One thing to add is that in the nineteenth century, it was still dangerous to deny the Christian explanation for the world, which says that the world and everything in it was created by God, and that humans were God's special creation. When Darwin was sixty-two, he published <u>(5)a book about the origin of humans</u> in which he argued that humans were actually the descendants of other animals. Because of the Christianity of the time, this book was very controversial, but now it is regarded as one of Darwin's greatest achievements.`,
+  note:"reproduce＝生殖する；繁殖する　geology＝地質学　挿入文（(A)で使用）：Some companies even call an improvement to their products an evolution.",
+  trans:[
+    "2009年はチャールズ・ダーウィンの生誕200周年にあたる年だった。彼は史上最も偉大な生物学者の一人であり、彼の進化という考え方は科学と社会に強い影響を与えてきた。誰もが「進化」という言葉を知っているが、それは通常、科学的な意味で使われているわけではない。［Ａ］例えば、スポーツ選手や将棋の棋士の上達を「進化」と表現することは非常によくある。［Ｂ］「大谷選手のバッティングに新たな進化！」といった見出しを目にしたこともあるだろう。［Ｃ］このような言葉の使い方は、ダーウィンが意味したものとは異なる。こうした用法と、特定の仕組みを指す科学的な意味とをはっきり区別することが重要である。［Ｄ］",
+    "(1)個体の特徴は、それが人間であれ植物であれ動物であれ、生涯のうちに変化したとしても、それは科学的な意味での進化ではないということを心に留めておかなければならない。進化は世代と世代の間に起こる。親の特徴は、生殖の際に完璧にコピーされるわけではない。つまり、すべての新しい(2)世代の個体は、親とはわずかに異なる特徴を持つということである。生物学によれば、これらの新しい特徴はランダムに現れ、もしそれが生存や繁殖の可能性を高めるなら、それらは次の(2)世代にも受け継がれる傾向がある。そうでなければ、伝えられない傾向がある。小さな変化が何千万年、何億年にもわたって繰り返し現れ、それが何度も受け継がれることで、祖先とは異なる新しい種が生まれる。",
+    "ダーウィンは地質学、そして(3)『貝殻の化石がなぜ山の高いところで見つかることがあるのか』という問いへのその答えから着想を得たと言われている。それ以前の答えは非常に複雑なものだった。しかし19世紀の地質学者たちは、そうした化石が見つかる場所はかつて海の底にあり、その海底が地質学的な力によって少しずつ隆起し、やがて山になったことに気づいた。このことから他の科学者たちは、複雑な説明を作り出すよりも、いくつかの重要な原理を探す方が有用であると気づくようになった。実際、今や(4)科学的思考における重要な考え方は、自然の原理は変わらないということ、そして自然に見られるものは、ある原理が自然現象に長期にわたって作用した結果として説明できるということである。言い換えれば、混乱していたり極めて複雑に見えたりする現象の背後には、単純な原理があるはずなのだ。ダーウィン自身も、進化の背後にある原理もおそらく単純なものだろうと推論した。",
+    "付け加えると、19世紀には、世界とその中のすべてのものは神によって創造され、人間は神による特別な創造物であるとするキリスト教的な説明を否定することは、まだ危険なことだった。ダーウィンが62歳のとき、彼は(5)人間の起源についての本を出版し、その中で人間は実際には他の動物の子孫であると主張した。当時のキリスト教の影響のため、この本は非常に物議を醸したが、今ではダーウィンの最も偉大な業績の一つとみなされている。"
+  ],
+  questions:[
+    {num:1,label:"⑴ 挿入文の位置",type:'mcq',prompt:"次の文を［Ａ］〜［Ｄ］のどこに入れるのが最も適切か選べ。<br>\"Some companies even call an improvement to their products an evolution.\"",opts:["A","B","C","D"],ans:2,exp:"「企業が自社製品の改良を『進化』と呼ぶことさえある」という文は、スポーツ選手や将棋の棋士の例に続く追加の具体例として［Ｃ］の位置に入る。"},
+    {num:2,label:"⑵ 下線部(1)和訳",type:'write',model:"個体の特徴は、それが人間であれ植物であれ動物であれ、生涯のうちに変化したとしても、それは科学的な意味での進化ではないということを心に留めておかなければならない。",exp:"文構造：We must keep in mind that S+V「〜ということを心に留めておかねばならない」。even if S+V は「たとえ〜でも」という譲歩。whether A, B, or C は「AであれBであれCであれ」と3つの主語（humans, plants, animals）を並べる譲歩の言い方。over the course of their lives「生涯を通じて」。"},
+    {num:3,label:"⑶ 空所(2)（共通1語）",type:'fill',prompt:"空所( 2 )（2箇所とも共通の1語）に入る最も適切な1語を答えよ。",answer:"generations",exp:"generations「世代」。直前の Evolution happens between generations.（進化は世代と世代の間で起こる）を受けて、all new generations「すべての新しい世代（の個体）」が2文にわたって主語となる。2箇所とも同じ1語が入る点に注意。"},
+    {num:4,label:"⑷ 下線部(4)和訳",type:'write',model:"今や科学的思考における重要な考え方は、自然の原理は変わらないということ、そして自然に見られるものは、ある原理が自然現象に長期にわたって作用した結果として説明できるということである。",exp:"文構造：a key idea in scientific thought is that S1+V1, and that S2+V2 という同格のthat節が2つ並ぶ形。what is seen in nature「自然の中で見られるもの」は関係代名詞whatに導かれ、2つ目のthat節内の主語になっている。as a result of A acting over time on B「AがBに長期間作用した結果として」。"},
+    {num:5,label:"⑸ 下線部(3)について",type:'write',prompt:"下線部(3) \"its answer to the question\" について、①どのような問いか、②その答えは何か、それぞれ30字程度の日本語で説明せよ。",model:"①（約30字）貝殻の化石がなぜ山の高いところで見つかることがあるのかという問い<br>②（約30字）そこはかつて海底で、地質学的な力により少しずつ隆起し山になったから",exp:"its は its answer の its で、直前の the science of geology（地質学）を指す。①はコロンの直後の \"Why are fossils of seashells sometimes found high up in mountains?\" がそのまま問いの内容。②は次の文 Geologists in the nineteenth century, however, realized that... 以降が答えの根拠。"},
+    {num:6,label:"⑹ 下線部(5)の書物の出版年",type:'fill',prompt:"下線部(5)の書物が出版されたのは西暦何年か、数字で答えよ。",answer:"1871",exp:"ダーウィンは1809年生まれ（2009年が生誕200年＝The year 2009 was the 200th anniversary of the birth of Charles Darwin.より）。When Darwin was sixty-two「ダーウィンが62歳のとき」なので、1809＋62＝1871年。年号を本文の情報から計算させる問題。"},
+    {num:7,label:"⑺ 内容一致",type:'write',prompt:"本文の内容と一致するものを選ぶ設問。選択肢の英文は原本未収録。本文の主旨を振り返ってみよう。",model:"正解の記号：ウ（選択肢自体の英文は原本未収録）",exp:"選択肢の英文自体は原本未収録のため断定はできないが、本文全体の流れ（①「進化」の日常的な誤用と科学的定義の違い／②進化は世代間で起こること／③ダーウィンが地質学の考え方――複雑な現象の背後に単純な原理を見出す発想――から着想を得たこと／④『人間の起源についての本』が当時は物議を醸したが今では高く評価されていること）のいずれかと一致する記述が正解の根拠になっていると考えられる。特に最終段落の内容と関連が深い。"}
+  ]
+},
+2024:{
+  title:"純粋科学 vs 応用科学",
+  passage:`There is no denying that our present civilization receives great benefit from ( 1 ). You are in an air-conditioned and well-lit room. You are wearing comfortable clothes that came from factories. You can easily get information from your TV and can communicate with your friends using digital devices. You can get clean water from the tap and can take a hot bath anytime you want. These are only a few examples. Thinking about what science itself is will also help you to understand what science is for and what its goals are.
+Some people are typically attracted most by the possibility of understanding how the world works, or that is to say, understanding the secrets of nature. <u>(2)While most scientists hope that their research will be useful for society, what is truly important for them is not whether their investigations will benefit the world, but whether they can understand it more deeply.</u> In other words, they are mainly interested in doing "pure science," or science for the sake of understanding.
+On the other hand, there are also people who think that most science should be "applied science," or science that is applicable to daily life, and done for practical reasons. They argue scientific research costs a lot of money, and that this money often comes from taxes. That is why, in their view, <u>(3)scientists should investigate things which are most likely to bring clear benefits to society.</u> In other words, such individuals believe that scientists should think first about how to use science to contribute directly to human well-being.
+The conflict between the two opposing attitudes is not a new one. Let's take a look at a famous example. In the 1850s, there was a big dispute over the management of the Smithsonian Institution, which had just been established as a museum and research center. Stephen A. Douglas, a senator from Illinois, criticized the Smithsonian for wasting its funds on such things as studies of the moon rather than on useful things like agricultural research. Joseph Henry, a famous scientist who was then the Smithsonian's Secretary, responded that Douglas's criticism might be true, if the highest hopes of the human soul were limited to the desire for ( 4 ).
+Henry expressed his belief in the value of all scientific research, and in the connection between it and later application. <u>(5)He argued that all knowledge was ultimately practical, even if its application might seem distant, and that someday scientific research would prove its value in satisfying the practical needs of mankind.</u> As an example, he offered Benjamin Franklin's experiments with electricity, which, he pointed out, were the foundation for the invention of the telegraph.
+The debate goes on even today. Especially, in deep economic depressions, those in charge of the distribution of budget are more inclined to want ( 6 a ) outcomes. But, as Henry argued, it is quite difficult to predict the application of research beforehand, and if it were not for fundamental research of science, our whole civilization would soon come to a deadlock. This doesn't mean that applied science isn't ( 6 b ). What is truly desired is a well-thought-out balance between the two types of science.`,
+  note:"senator＝上院議員　come to a deadlock＝行き詰まる",
+  trans:[
+    "私たちの現在の文明が(1)科学から大きな恩恵を受けていることは否定できない。あなたは冷暖房が効いた明るい部屋にいる。工場で作られた快適な衣服を身につけている。テレビから簡単に情報を得て、デジタル機器で友人と連絡を取り合うこともできる。蛇口から清潔な水を得られ、いつでも熱いお風呂に入ることができる。これらはほんの一例に過ぎない。科学そのものが何であるかを考えることは、科学が何のためにあり、その目標が何であるかを理解する助けにもなるだろう。",
+    "一部の人々は、世界の仕組みを理解できる可能性、いわば自然の秘密を理解できる可能性に、特に魅力を感じる。(2)ほとんどの科学者は自分の研究が社会の役に立つことを望んでいるが、彼らにとって本当に重要なのは、その研究が世界の利益になるかどうかではなく、より深く理解できるかどうかである。言い換えれば、彼らは主に「純粋科学」、すなわち理解のための科学を行うことに関心があるのだ。",
+    "一方で、科学のほとんどは「応用科学」、すなわち日常生活に応用可能で、実用的な理由で行われる科学であるべきだと考える人々もいる。彼らは、科学研究には多額の費用がかかり、その資金はしばしば税金から出ていると主張する。だからこそ彼らの考えでは、(3)科学者は社会に明確な利益をもたらす可能性が最も高いものを研究すべきなのだ。言い換えれば、そうした人々は、科学者はまず、人類の幸福に直接貢献するために科学をどう使うかを考えるべきだと考えている。",
+    "この二つの対立する立場の衝突は、新しいものではない。有名な例を見てみよう。1850年代、博物館・研究センターとして設立されたばかりのスミソニアン協会の運営をめぐって大きな論争があった。イリノイ州選出の上院議員スティーブン・A・ダグラスは、スミソニアン協会が農業研究のような有用なことではなく、月の研究のようなことに資金を浪費していると批判した。当時スミソニアン協会の事務局長だった著名な科学者ジョセフ・ヘンリーは、もし人間の魂の最高の望みが(4)良いジャガイモへの欲求だけに限られるのであれば、ダグラスの批判は正しいかもしれない、と応じた。",
+    "ヘンリーはあらゆる科学研究の価値と、それが後の応用と結びついていることへの信念を表明した。(5)彼は、たとえ応用がすぐには見えなくても、あらゆる知識は究極的には実用的なものであり、いつか科学研究は人類の実際的なニーズを満たす上でその価値を証明するだろうと論じた。例として、彼はベンジャミン・フランクリンの電気の実験を挙げ、それが電信の発明の基礎になったと指摘した。",
+    "この論争は今日でも続いている。特に深刻な経済不況の時期には、予算配分を担当する人々は(6a)短期的な成果を求めがちになる。しかしヘンリーが論じたように、研究の応用をあらかじめ予測することは非常に難しく、もし科学の基礎研究がなければ、私たちの文明全体はやがて行き詰まってしまうだろう。これは応用科学が(6b)重要でないという意味ではない。本当に望まれているのは、二種類の科学のあいだの、よく考え抜かれたバランスなのである。"
+  ],
+  questions:[
+    {num:1,label:"⑴ 空所(1)（1語抜き出し）",type:'fill',prompt:"空所( 1 )に入る最も適切な1語を、同じ段落から抜き出して答えよ。",answer:"science",exp:"同じ段落に「エアコンの効いた部屋」「工場で作られた衣服」「デジタル機器」「清潔な水」など、科学の恩恵の具体例が並ぶ。それらをまとめる語として science が入る。There is no denying that 〜「〜であることは否定できない」。"},
+    {num:2,label:"⑵ 下線部(2)和訳",type:'write',model:"ほとんどの科学者は自分の研究が社会の役に立つことを望んでいるが、彼らにとって本当に重要なのは、その研究が世界の利益になるかどうかではなく、より深く理解できるかどうかである。",exp:"文構造：While S+V（譲歩「〜だが」）, what is truly important for them is not A but B（AではなくB）の形。not whether... but whether... と2つのwhether節が対比されている点に注意。"},
+    {num:3,label:"⑶ 下線部(3)の理由",type:'write',prompt:"下線部(3)のように考える理由を40字以内の日本語で説明せよ。",model:"科学研究には多くの税金が使われているため、その恩恵を明確にすべきだと考えるから。（39字）",exp:"直前の文 They argue scientific research costs a lot of money, and that this money often comes from taxes.（科学研究には多額の費用がかかり、その資金はしばしば税金から出ていると主張する）が理由の根拠。That is why 〜「だから〜だ」という因果の合図に注目する。"},
+    {num:4,label:"⑷ 空所(4)",type:'fill',prompt:"空所( 4 )に入る最も適切な語句を答えよ。",answer:"good potatoes",exp:"ヘンリーの皮肉：もし人間の魂の最高の望みがジャガイモのような実利だけなら、という反語。直前でダグラスが「月の研究より農業研究（agricultural research）の方が役立つ」と批判したことを受け、卑近な実利の象徴としてgood potatoesが選ばれている。"},
+    {num:5,label:"⑸ 下線部(5)和訳",type:'write',model:"彼は、たとえ応用がすぐには見えなくても、あらゆる知識は究極的には実用的なものであり、いつか科学研究は人類の実際的なニーズを満たす上でその価値を証明するだろうと論じた。",exp:"文構造：He argued that S1+V1, and that S2+V2 の並列。even if its application might seem distant は挿入的な譲歩節「応用がすぐには見えなくても」。prove its value in satisfying A「Aを満たす点でその価値を証明する」。"},
+    {num:6,label:"⑹ 空所(6a)",type:'fill',prompt:"空所( 6 a )に入る最も適切な1語を答えよ。",answer:"short-term",exp:"in deep economic depressions「深刻な不況期には」という文脈で、予算配分の担当者ほどすぐに結果が出る「短期的な（short-term）」成果を求めがちになる、という内容。次の文But以下で「しかし応用は予測しづらい」と反論が続く構成。"},
+    {num:7,label:"⑺ 空所(6b)",type:'fill',prompt:"空所( 6 b )に入る最も適切な1語を答えよ。",answer:"important",exp:"This doesn't mean that applied science isn't ( 6b ).「だからといって応用科学が（6b）でないわけではない」という二重否定的な文。直後の What is truly desired is a well-thought-out balance between the two types of science.（両方のバランスが望ましい）とつながるよう、応用科学の重要性を否定しないimportantが入る。"},
+    {num:8,label:"⑻ 内容一致",type:'write',prompt:"本文の内容と一致するものを選ぶ設問。選択肢の英文は原本未収録。",model:"正解の記号：エ（選択肢自体の英文は原本未収録）",exp:"選択肢の英文自体は原本未収録だが、本文の結論部分（最終文 What is truly desired is a well-thought-out balance between the two types of science.＝純粋科学と応用科学のどちらか一方でなく、よく考え抜かれたバランスが大切だという主張）と一致する内容が正解になっていると考えられる。"}
+  ]
+},
+2025:{
+  title:"脳の老化（Dr. Vickeryの研究）",
+  passage:`The human brain sets our species apart. Over the past seven million years or so, <u>(1)it has grown in size and complexity, enabling us to use language, make plans for the future and cooperate with one another, on a scale never seen before in the history of life.</u>
+But our brains came with a downside, according to a study published last week. The regions that expanded the most in human evolution become extremely damaged as we grow old.
+The human brain's 86 billion neurons form hundreds of regions, and they are further divided into smaller ones. Evolutionary biologists studied these to trace their evolution from primate ancestors like chimpanzees.
+The human brain is three times as large as that of chimpanzees. However, this doesn't mean all parts of our brain grew at the same speed. It is <u>(2)like a map drawn on inflating balloon</u>—some parts of the map stretch only a little, while other parts stretch a lot more, which creates uneven growth across the surface.
+Dr. Vickery's team created a computer program to analyze brain scans from 189 chimpanzees and 480 humans. They discovered both species have 17 brain regions, though some, like one involved in decision-making, are much larger in humans. The researchers also studied aging brains, noting that human neurons begin losing connections by their 30s, causing brain shrinkage. However, comparing human brain-aging with other apes is difficult due to humans' longer lifespans.
+Since chimpanzees rarely live beyond 50, the scientists picked out humans of comparable age to examine how their brains grow old. They analyzed human volunteers ages 20 to 58, as well as chimpanzees ages 9 to 50. In both species, the researchers found, the brain shrinks over the years. But ( 3 ). In humans, the fastest-shrinking regions were the decision-making and other parts of the brain that have expanded the most over the past few million years. One evolutionary biologist noted that research has yet to show why recently expanded parts of the brain shrink so easily as we get older.
+<u>(4)One possibility, Dr. Vickery said, has to do with the fact that the fastest-expanding parts of our brain make our most complex thinking possible.</u> It's possible that the neurons that carry out these thoughts wear out quickly, which causes the regions to shrink.
+Ironically, it's our ( 5 ) that help us to live decades longer than chimpanzees. They allowed our species to ensure a steadier supply of food, to figure out the importance of clean water and to invent new kinds of medicine. But in our extra years, our brains continue to shrink. And Dr. Vickery's study suggests that the very regions that help us live longer are shrinking fastest.
+In other words, the frustrations of growing old—trouble recalling words, for example, or switching from one task to another—may just be a legacy of our evolution. "You have this amazing brain," Dr. Vickery said, "but it comes ( 6 )."`,
+  note:"neuron＝ニューロン；神経単位　shrinkage＝縮小",
+  trans:[
+    "人間の脳は、私たちの種を他とは異なる存在にしている。過去700万年ほどの間に、(1)それは大きさと複雑さを増し、私たちが言語を使い、将来の計画を立て、互いに協力することを、生命の歴史上かつてない規模で可能にした。",
+    "しかし、先週発表されたある研究によれば、私たちの脳には代償も伴っていた。人類の進化の過程で最も拡大した領域は、年をとるにつれて極端に損傷を受けるのだ。",
+    "人間の脳にある860億個のニューロンは何百もの領域を形成し、それらはさらに細かい領域に分かれている。進化生物学者たちは、チンパンジーのような霊長類の祖先からの進化をたどるため、これらの領域を研究した。",
+    "人間の脳はチンパンジーの脳の3倍の大きさがある。しかし、これは脳のすべての部分が同じ速度で成長したことを意味しない。それは(2)膨らむ風船に描かれた地図のようなもので――地図上のある部分はわずかしか伸びないが、他の部分ははるかに大きく伸び、表面全体に不均一な成長を生み出す。",
+    "ビッケリー博士のチームは、189頭のチンパンジーと480人の人間の脳スキャンを分析するコンピュータプログラムを開発した。彼らは、両種がともに17の脳領域を持つことを発見したが、意思決定に関わる領域など、一部は人間の方がはるかに大きかった。研究者たちはまた、老化する脳についても調べ、人間のニューロンは30代から接続を失い始め、脳の縮小を引き起こすことに気づいた。しかし、人間の寿命はより長いため、他の類人猿との脳の老化の比較は難しい。",
+    "チンパンジーが50歳を超えて生きることはめったにないため、科学者たちは脳がどのように老化するかを調べるため、比較可能な年齢の人間を選んだ。彼らは20歳から58歳までの人間のボランティアと、9歳から50歳までのチンパンジーを分析した。両方の種において、研究者たちは、脳が年月とともに縮小することを発見した。しかし、(3)ある領域は他の領域よりも速く縮小した。人間では、最も速く縮小した領域は、過去数百万年の間に最も拡大した意思決定などの脳の部分だった。ある進化生物学者は、なぜ最近拡大した脳の部分が年齢とともにこれほど容易に縮小するのか、研究はまだ明らかにしていないと指摘した。",
+    "(4)ビッケリー博士によれば、ひとつの可能性は、脳の中で最も急速に拡大した部分が、私たちの最も複雑な思考を可能にしているという事実と関係がある。これらの思考を担うニューロンが早く摩耗し、それが領域の縮小を引き起こしている可能性がある。",
+    "皮肉なことに、私たちがチンパンジーより何十年も長く生きられるのを助けているのは、まさにその(5)脳なのだ。脳のおかげで、人類はより安定した食料供給を確保し、清潔な水の重要性を理解し、新しい種類の医薬品を発明することができた。しかし、この余分に得た年月の間も、私たちの脳は縮小し続ける。そしてビッケリー博士の研究は、私たちがより長く生きるのを助けているまさにその領域が、最も速く縮小していることを示唆している。",
+    "言い換えれば、年をとることに伴う苛立たしさ――例えば言葉を思い出せなかったり、一つの作業から別の作業へ切り替えられなかったりすること――は、私たちの進化の遺産にすぎないのかもしれない。「あなたはこの驚くべき脳を持っている」とビッケリー博士は言う。「しかし、それは(6)代償を伴って手に入れたものなのだ」"
+  ],
+  questions:[
+    {num:1,label:"⑴ 下線部(1)和訳",type:'write',prompt:"下線部(1)を、itが指す内容を明確にして和訳せよ。",model:"（人間の脳は）過去700万年ほどの間に大きさと複雑さを増し、私たちが言語を使い、将来の計画を立て、互いに協力することを、生命の歴史上かつてない規模で可能にした。",exp:"itは文頭の The human brain（人間の脳）を指す。文構造：it has grown in size and complexity, enabling us to use language, make plans for the future and cooperate with one another の enabling 以下は分詞構文で「その結果〜を可能にした」という意味。on a scale never seen before in the history of life「生命の歴史上かつてない規模で」は文末の副詞句。"},
+    {num:2,label:"⑵ 下線部(2)の説明",type:'write',prompt:"下線部(2)はどのようなことを説明しているか、40字程度と20字程度の日本語でそれぞれ説明せよ。",model:"(a)（約40字）膨らむにつれて、地図上のある部分はわずかしか伸びないが、他の部分は大きく伸びる（ため均一に広がらない）<br>(b)（約20字）脳の部位によって成長の速さが異なる",exp:"like a map drawn on inflating balloon「膨らむ風船の上に描かれた地図のようなもの」という比喩表現。drawn on inflating balloon は map を修飾する過去分詞句。ダッシュ（—）以下の some parts... while other parts... という対比構造が(a)の解答根拠、それを脳の成長速度の違いに一般化したものが(b)の解答根拠。"},
+    {num:3,label:"⑶ 第5段落の内容と一致するもの",type:'write',prompt:"第5段落の内容と一致するものを選ぶ設問。選択肢の英文は原本未収録。",model:"正解の記号：イ（寿命の違いのため人間とチンパンジーの老化比較は難しい、という内容と一致。選択肢自体の英文は原本未収録）",exp:"第5段落最終文 However, comparing human brain-aging with other apes is difficult due to humans' longer lifespans.（人間の寿命がより長いため、他の類人猿との脳の老化比較は難しい）が根拠。due to A「Aが原因で」。なお同段落前半の「両種とも17の脳領域を持つが、一部（意思決定に関わる領域など）は人間の方が大きい」という記述と矛盾する選択肢（例：大きさが同じ、というような内容）は誤りと判断できる。"},
+    {num:4,label:"⑷ 空所(3)",type:'fill',prompt:"空所( 3 )に入る最も適切な語句を答えよ。",answer:"some regions shrink faster than others",exp:"直前の In both species, the researchers found, the brain shrinks over the years.（両種とも脳は年月とともに縮小する）に対し、But（しかし）で始まるため、そこからさらに一歩踏み込んだ内容が続く。直後の In humans, the fastest-shrinking regions were the decision-making and other parts...（人間では、最も速く縮小した領域は〜）が、まさに「領域によって縮小速度が異なる」ことの具体例になっている。"},
+    {num:5,label:"⑸ 下線部(4)和訳",type:'write',model:"ビッケリー医師によれば、ひとつの可能性は、脳の中で最も急速に拡大した部分が、私たちの最も複雑な思考を可能にしているという事実と関係がある。",exp:"文構造：One possibility ... has to do with the fact that S+V「〜という事実と関係がある」。Dr. Vickery said は文中に挿入された言い方（he said に相当）。make A possible「Aを可能にする」がmake our most complex thinking possibleの形で使われている。"},
+    {num:6,label:"⑹ 空所(5)（1語抜き出し）",type:'fill',prompt:"空所( 5 )に入る最も適切な1語を、同じ段落から抜き出して答えよ。",answer:"brains",exp:"Ironically, it's our ( 5 ) that help us to live decades longer than chimpanzees. は it is 〜 that... の強調構文。「私たちがチンパンジーより何十年も長生きできる手助けをしているのは、まさに私たちの脳だ」という文脈で、同段落の内容（脳のおかげで食料確保・清潔な水の重要性理解・新薬発明ができた）ともつながる。"},
+    {num:7,label:"⑺ 空所(6)",type:'fill',prompt:"空所( 6 )に入る最も適切な語句を答えよ。",answer:"at a cost",exp:"come at a cost「代償を伴って手に入る」という熟語。\"You have this amazing brain,\" ... \"but it comes ( 6 ).\" で、素晴らしい脳を持っている一方で、老化に伴う物忘れなどの不便さという代償も伴う、という本文全体のまとめの一文。"}
+  ]
+}
+};
+
+// ═══════════════════════════════════════════
+// Q3 DATA（大問3・語順整序＋英作文）
+// ═══════════════════════════════════════════
+const Q3 = {
+2023:{
+  A:[
+    {jp:"あなたの意見について私が賛成できないのはこの点です。",pre:"",suf:"your argument.",tiles:["This","is","where","I","do not","agree","with"],exp:"「This is where S+V」＝「これが〜する点だ」の構文。where は抽象的な「点・箇所」を表す関係副詞的用法。agree with A「Aに同意する」。"},
+    {jp:"こんなことは言いたくないけど，君の勧めてくれた映画は退屈だったよ。",pre:"I",suf:", but the movie you recommended was boring.",tiles:["wish","I","didn't","have","to","say","this"],exp:"I wish + 仮定法過去（didn't have to say）で「〜しなくて済めばいいのに」。have to の否定は「〜する必要がない」の意味。"},
+    {jp:"そんなに落ち込むなよ。ものは考えようさ。",pre:"Don't get so depressed. It",suf:"it.",tiles:["depends","on","how","you","look","at"],exp:"depend on A「Aによる」。how you look at it「それをどう見るか（捉え方次第）」という間接疑問がAにあたる。"},
+    {jp:"そういう発想はこれまで他に誰も思いついた人はいなかった。",pre:"That's",suf:"else.",tiles:["the idea","that","never","occurred","to","anyone"],exp:"occur to A「Aの心に浮かぶ」。that は the idea を先行詞とする関係代名詞で、never occurred to anyone else「他の誰の心にも浮かんだことがない」とつながる。"},
+    {jp:"寝ている子どもの無邪気な顔ほどかわいいものはない。",pre:"",suf:"of a sleeping child.",tiles:["There","is","nothing","so","sweet","as","the innocent face"],exp:"There is nothing so 形容詞 as A「Aほど〜なものはない」＝最上級相当の比較表現。"}
+  ],
+  B:[
+    {jp:"あなたが私たちのためにしてくれた仕事に対していくらお支払いすればいいのか教えてもらえますか？",ans:"Could you tell me how much I should pay you for the work you did for us?",exp:"①Could you tell me 〜?で丁寧に依頼する、②how much I should pay you の間接疑問（疑問文の語順にしない点に注意）、③the work you did for us は関係詞（that/which）省略の後置修飾。"},
+    {jp:"彼女はまだ小学生だが，両親が共働きなので，最近では料理を覚えようとしている。",ans:"She is still an elementary school student, but since both of her parents work, she has recently been trying to learn how to cook.",exp:"①still「まだ」、②since「〜なので」の理由節、③has recently been trying to（現在完了進行形）で「最近〜しようとしている」を表す、④learn how to cook「料理の仕方を覚える」。"}
+  ]
+},
+2024:{
+  A:[
+    {jp:"失敗続きの人生でもそこから学ぶことはある。",pre:"You can still",suf:"",tiles:["learn","something","from","a life","full","of","mistakes"],exp:"learn something from A「Aから何かを学ぶ」。a life full of mistakes「失敗だらけの人生」（full of 〜が life を後置修飾）。"},
+    {jp:"旅行をするといつも，やはり我が家がいちばんだと感じる。",pre:"Traveling always",suf:"home after all.",tiles:["reminds","me","that","there's","no place","like"],exp:"remind A that S+V「Aに〜ということを思い出させる」。there's no place like home「我が家に勝る場所はない」は決まり文句。"},
+    {jp:"給料のことで上司に文句なんか言わない方がよかったのに。",pre:"You",suf:"your salary.",tiles:["shouldn't","have","complained","to","your boss","about"],exp:"shouldn't have + 過去分詞「〜すべきではなかったのに（実際はした）」という過去の後悔・非難を表す形。complain to A about B「BについてAに文句を言う」。"},
+    {jp:"アジアでいちばん人口密度が高いのはどこですか。",pre:"",suf:"populated?",tiles:["What","part","of","Asia","is","most","densely"],exp:"What part of A「Aのどの部分が」が主語。be densely populated「人口密度が高い」に最上級 most を付けた形。"},
+    {jp:"「自分の才能を活かす仕事を見つけろ」が先生の口癖だった。",pre:"My teacher",suf:"of my talents.",tiles:["used to","tell me","to find","a job","that","makes","use"],exp:"used to do「（昔はよく）〜したものだ」。tell A to do「Aに〜するよう言う」。make use of A「Aを活用する」。that は a job を先行詞とする関係代名詞。"}
+  ],
+  B:[
+    {jp:"うちの娘は週末までに宿題をすると言ってたけど，今月曜日なのにまだ終わっていないようだ。",ans:"My daughter said she would finish her homework by the weekend, but it's Monday now, and it doesn't seem to be finished yet.",exp:"①時制の一致（said she would〜）、②by the weekend「週末までに」の期限表現、③it doesn't seem to be finished「終わっていないようだ」（it seems構文または類似表現）。"},
+    {jp:"英語の文章を理解するためには，単語をたくさん覚えることは大切だ。同時に，書き手の意図をつかむことを忘れてはならない。",ans:"In order to understand English texts, it is important to memorize a lot of words. At the same time, we must not forget to grasp the writer's intention.",exp:"①in order to do「〜するために」、②it is important to do の構文、③must not forget to do「〜することを忘れてはならない」、④writer's intention「書き手の意図」の表現。"}
+  ]
+},
+2025:{
+  A:[
+    {jp:"あまりにも多くの宿題があると，学生は自分自身で学ぶ機会を持てない。",pre:"Too many",suf:"their own.",tiles:["assignments","deprive","students","of","the opportunity","to learn","on"],exp:"deprive A of B「AからBを奪う」。the opportunity to do「〜する機会」。on one's own「自分自身の力で」。"},
+    {jp:"その時，彼と一緒にいた人たちは，彼がシャツを裏返しに着ていることに気付かなかった。",pre:"Then, those",suf:"out.",tiles:["with","him","didn't notice","he","was wearing","his shirt","inside"],exp:"those with him「彼と一緒にいた人たち」（those who were with him の省略）。notice (that) S+V「〜に気付く」でthatが省略されている。inside out「裏返しに」。"},
+    {jp:"単に自分の意見を言うことは，お互いに意思疎通することと必ずしも同じではありません。",pre:"Just expressing yourself",suf:"other.",tiles:["isn't","necessarily","the same","as","communicating","with","each"],exp:"not necessarily「必ずしも〜ではない」（部分否定）。the same as A「Aと同じ」。communicate with each other「お互いに意思疎通する」。"},
+    {jp:"人は一般に，財布を盗まれるより，家に置き忘れることの方が多い。",pre:"In general, you are more likely to leave",suf:"stolen.",tiles:["it","at home","than","to","have","your wallet"],exp:"be more likely to do A than to do B「BするよりAする可能性が高い」。have + O + 過去分詞「Oを〜される」（have your wallet stolen＝財布を盗まれる、被害の受身）。"},
+    {jp:"彼の報告が正しいと信じているのかどうか，お聞かせください。",pre:"Please let",suf:"is true.",tiles:["me","know","whether","you","are","sure","his report"],exp:"let A know「Aに知らせる」。whether S+V「〜かどうか」の名詞節。be sure (that) S+V「〜だと確信している」。"}
+  ],
+  B:[
+    {jp:"学生時代，彼は実際より若く見られていたが，今ではなるべく若く見えるように心掛けている。",ans:"When he was a student, he looked younger than he actually was, but now he tries to look as young as possible.",exp:"①比較級 younger than he actually was「実際より若い」、②try to do「〜しようと努める」、③as 形容詞 as possible「できるだけ〜」。"},
+    {jp:"人が何と言おうと，学問が人生で最も重要な要素の1つであることは否定できません。",ans:"Whatever people may say, it cannot be denied that learning is one of the most important elements in life.",exp:"①Whatever S may V「たとえ〜しようとも」（譲歩の複合関係代名詞）、②it cannot be denied that S+V「〜は否定できない」の形式主語構文、③one of the 最上級 + 複数名詞「最も〜なものの一つ」。"}
+  ]
+}
+};
+
+// ═══════════════════════════════════════════
+// Q4 DATA（大問4・文法＋共通語）
+// ═══════════════════════════════════════════
+const Q4 = {
+2023:{
+  A:[
+    {q:"Sunday is the day ( ) I spend watching movies and relaxing.",type:'mcq',opts:["in which","on which","when","which"],ans:3,exp:"和訳：日曜日は、私が映画を見たりくつろいだりして過ごす日だ。\"spend the day Ving\"のdayは他動詞spendの直接目的語であり，前置詞つきの関係詞（in which／on which）は不可。目的格の関係代名詞whichが正しく、whenのような関係副詞も目的語の欠落を説明できないため不可。"},
+    {q:"The boys running on the track ( ). I think they have a lot of potential.",type:'mcq',opts:["at full speed","belong to our team","every time I see them","you see over there"],ans:1,exp:"和訳：トラックを走っている少年たちは私たちのチームに所属している。彼らには大きな可能性があると思う。主語 The boys running on the track に対する述語動詞が必要。ア・ウ・エは副詞句や節にすぎず述語になれない。イ belong to our team「私たちのチームに所属している」だけが文として成立する。"},
+    {q:"( ) Tom decide to major in medicine?",type:'mcq',opts:["For what reason","How come did","What made","Why was"],ans:2,exp:"和訳：何がトムに医学を専攻することを決めさせたのか（＝なぜトムは医学を専攻することにしたのか）。\"What made A do\"＝AにVさせたものは何か、という使役動詞構文。madeの後は原形decide。アFor what reasonやエWhy wasは後ろがTom decideという平叙文語順のままでは疑問文にならず不可。イHow come didはHow come自体が「なぜ」の意味で平叙文語順を取るため、didを重ねると誤り。"},
+    {q:"What do you say to ( ) the lake? It has already frozen over.",type:'mcq',opts:["go skating on","go skating to","going skating on","going skating to"],ans:2,exp:"和訳：湖でスケートをするのはどうですか。もう凍っていますよ。\"What do you say to Ving\"＝〜するのはどうですか、という提案表現。toは前置詞なので後ろは動名詞（going）が必要。go skating on the lake「湖の上でスケートをする」のonが正しく、toでは「湖に向かってスケートで行く」という不自然な意味になる。"},
+    {q:"\"I saw Sara shopping in Harajuku yesterday afternoon.\" \"The girl you saw ( ) Sara! She was with me all day yesterday.\"",type:'mcq',opts:["can't have been","couldn't be","was impossible to be","was unable to be"],ans:0,exp:"和訳：「昨日の午後、原宿で買い物しているサラを見たよ」「あなたが見た女の子はサラのはずがない！昨日は一日中私と一緒にいたもの」。過去の事実を強く否定する\"cannot have + 過去分詞\"＝〜だったはずがない、という推量表現。イ couldn't beは現在・仮定的な不可能を表し過去の事実の否定推量には合わず、ウ・エも同様の理由で不自然。"}
+  ],
+  B:[
+    {a:"…She is always very ( ) to others.",b:"What ( ) of work do you want to do after graduating?",answer:"kind",exp:"(a)「彼女はいつも他人にとても親切だ」kind「親切な」（形容詞）。(b)「卒業後どんな種類の仕事をしたいですか」kind of A「Aの種類」（名詞）。同じkindの形容詞用法と名詞用法を両方問う問題。"},
+    {a:"As the elevator was out of ( ), we had to take the stairs.",b:"I opened the door in ( ) to let my cat out.",answer:"order",exp:"out of order＝故障中／in order to＝〜するために"},
+    {a:"His speech moved all the people who were ( ) at the meeting.",b:"Looking at the ( ) situation, we should take action immediately.",answer:"present",exp:"(a)「彼のスピーチは会議に出席していたすべての人々を感動させた」be present at A＝Aに出席している。(b)「現在の状況を見ると、私たちはすぐに行動すべきだ」present「現在の」（名詞の前に置く形容詞用法）。「出席している」と「現在の」という2つの意味を持つpresentを問う問題。"},
+    {a:"You should ( ) in your homework by Friday.",b:"…Can you give me a ( )?",answer:"hand",exp:"hand in＝提出する／give a hand＝手を貸す"},
+    {a:"I wonder why my father ( ) to everything I want to do.",b:"Galileo found that all ( ) fall at the same speed.",answer:"objects",exp:"object to＝反対する／objects＝物体"}
+  ]
+},
+2024:{
+  A:[
+    {q:"I'm very busy preparing a presentation; otherwise, I ( ) to the party with you tonight.",type:'mcq',opts:["will go","won't go","would go","wouldn't go"],ans:2,exp:"和訳：プレゼンの準備でとても忙しい。そうでなければ、今夜あなたと一緒にパーティーに行くのに。otherwiseによる仮定法過去＝「もし（忙しく）なければ〜するのに」という現在の事実に反する仮定を表すため、would+動詞の原形。will/won't/wouldn'tでは意味が直説法になったり結果が逆になったりして不可。"},
+    {q:"He looks at everything only from an economic viewpoint. I think that's ( ) he is wrong.",type:'mcq',opts:["that","what","where","which"],ans:2,exp:"和訳：彼はすべてを経済的な観点からしか見ない。それが彼の間違っている点だと思う。\"that's where 〜\"＝それが〜という点だ、の意味。whereは抽象的な「点・箇所」を表す関係副詞的用法。that/what/whichではこの構文にならない。"},
+    {q:"In those days, people ( ) for America to escape unfair treatment because of their religion.",type:'mcq',opts:["called Puritans headed","calling Puritans headed","were called Puritans heading","were calling Puritans heading"],ans:0,exp:"和訳：当時、ピューリタンと呼ばれた人々は、宗教のために受ける不当な扱いから逃れるためアメリカへ向かった。people (who were) called Puritans「ピューリタンと呼ばれた人々」という過去分詞の後置修飾（受け身の意味）。主動詞はheaded（head for A＝Aに向かう、の過去形）。イ・エはcallingという能動の分詞になり「（人々を）呼んでいる」という誤った意味になる。ウはbe動詞wereが余分で、主動詞になるべきheadingが動詞として機能しない。"},
+    {q:"I wonder ( ) that artist.",type:'mcq',opts:["how everyone feel about","how the company managed to contact with","what has become of","what is it like to be a man like"],ans:2,exp:"和訳：あの芸術家はどうなったのだろうか。\"I wonder what has become of 〜\"＝〜がどうなったのだろうか、という現在完了の定型表現。アは\"everyone feel\"が三単現不一致、イは\"contact with\"のwithが不要（contactは他動詞）、エは構文が破綻しており、いずれも文法的に不可。"},
+    {q:"The ( ) turned out to be false.",type:'mcq',opts:["news that the famous couple was going to get divorced was","news, which a friend of mine announced me the other day, was","rumor that the criminal had already dead in a foreign country","rumor, which had buzzed around the world in less than a day,"],ans:3,exp:"和訳：世界中で1日足らずのうちに広まった噂は、嘘だと判明した。主語＋turned out to be falseという文の主語部分を選ぶ問題。ア・イはwasがturned outと重複してしまい1つの文に動詞が2つ並ぶ形になり不可。ウはhad already deadという誤文法（be動詞が必要、had already been dead）を含むため不可。エrumor, which had buzzed around the world in less than a day,（関係代名詞の非制限用法で説明を挿入した形）だけが正しい主語になる。"}
+  ],
+  B:[
+    {a:"…I often ( ) into that girl on my way to school.",b:"My parents ( ) several shops.",answer:"run",exp:"run into＝出くわす／run a shop＝経営する"},
+    {a:"Light travels much faster than ( ).",b:"…I haven't been getting ( ) sleep.",answer:"sound",exp:"光は音より速い／sound sleep＝ぐっすりした眠り"},
+    {a:"One, three, and five are odd numbers, whereas two, four and six are ( ) numbers.",b:"He was thinking of quitting his job, ( ) though it was a job he had long wanted.",answer:"even",exp:"(a)「1、3、5は奇数であるのに対し、2、4、6は偶数である」even numbers＝偶数（⇔odd numbers＝奇数）。(b)「それは長年望んでいた仕事だったにもかかわらず、彼は仕事を辞めようかと考えていた」even though＝〜だけれども、という譲歩の接続詞。"},
+    {a:"…she can't ( ) the hot and humid weather.",b:"A ( ) appeared in my town, barricaded itself in a warehouse and ate all the food stored there.",answer:"bear",exp:"bear＝耐える／bear＝熊"},
+    {a:"His speech moved ( ) present at the ceremony.",b:"His fingerprints proved to be exactly the same as ( ) of the suspect.",answer:"those",exp:"those present＝出席していた人々／those of A＝Aのもの（代名詞のthose）"}
+  ]
+},
+2025:{
+  A:[
+    {q:"The station building, ( ) the famous architect designed more than 100 years ago, is still used by about one million passengers per day.",type:'mcq',opts:["what","when","where","which"],ans:3,exp:"和訳：その有名な建築家が100年以上前に設計した駅舎は、今も1日約100万人の乗客に利用されている。非限定用法（コンマ+関係詞）の関係代名詞which。the famous architect designed [ ] more than 100 years agoの空所（designの目的語）に当たる部分がwhichに置き換わっている。where/whenは目的語の欠落を説明できず、whatは先行詞（the station building）を取れないため不可。"},
+    {q:"Last month, my mother got very sick and ( ) in bed for a week.",type:'mcq',opts:["have lain","laid","lay","was lying"],ans:2,exp:"和訳：先月、母はひどく体調を崩し、1週間ベッドに横たわっていた。lie-lay-lain（自動詞「横たわる」）の変化。andで結ばれたgot（過去形）に合わせ、自動詞lieの過去形layが正しい。laidは他動詞lay-laid-laid「〜を横たえる」の過去形で目的語が必要なため不可。"},
+    {q:"In those days, various old-fashioned conventionalities and biases ( ) higher education.",type:'mcq',opts:["kept girls from receiving","made girls to receive","prevented girls from receiving","promoted girls receiving"],ans:[0,2],uncertain:true,exp:"和訳：当時、さまざまな旧弊な慣習や偏見が、女性が高等教育を受けることを妨げていた（と推定される）。イは\"make + O + to do\"が不可のため除外、エは意味が逆（推進）のため除外できる。ア（kept girls from receiving）・ウ（prevented girls from receiving）はいずれも文法的に成立しうるため、正答は未確定。"},
+    {q:"Cacao produced in that area ( ).",type:'mcq',opts:["as early as 1,900 B.C.","famous for its high quality","sells for a high price","with cooperation from an NPO"],ans:2,exp:"和訳：その地域で生産されるカカオは高値で取引される。主語Cacao produced in that areaに対する述語動詞が必要。ア・イ・エは前置詞句や形容詞句にすぎず述語動詞を欠くため文として成立しない。ウsells for a high price「高値で売れる」だけが正しい述語になる。"},
+    {q:"( ) met that famous novelist?",type:'mcq',opts:["Did you say where had you","Do you think when she","Who did you say had","Who do you think have"],ans:2,exp:"和訳：あなたは誰があの有名な小説家に会ったと言いましたか。\"Who did you say had met 〜?\"＝間接疑問の主語がwhoのため倒置は不要。アはwhereを問う内容に合わず語順もhad youと倒置され不可。イはsheという特定の人物を先に置いており「誰が」を尋ねる文にならない。エは\"have\"がthat famous novelist（単数）に主語一致せず不可。"}
+  ],
+  B:[
+    {a:"Not only you ( ) I am also wrong.",b:"Excuse me, ( ) is this the right bus to go to the East Park?",answer:"but",exp:"(a)「あなただけでなく私も間違っている」not only A but also B＝AだけでなくBも。(b)「すみませんが、これはイーストパークへ行く正しいバスですか」Excuse me, but 〜?＝すみませんが〜、と丁寧に切り出す決まり文句のbut。"},
+    {a:"We couldn't ( ) laughing at his joke.",b:"Without your ( ) we wouldn't have succeeded.",answer:"help",exp:"cannot help doing＝〜せずにいられない／help＝助け"},
+    {a:"Tell me how ( ) it took you to read through such a thick novel.",b:"I'll never forget your kindness as ( ) as I live.",answer:"long",exp:"(a)「そんなに分厚い小説を読み通すのにどれくらい時間がかかったか教えて」how long it took＝どれくらい時間がかかったか。(b)「私は生きている限り、あなたの親切を決して忘れません」as long as I live＝生きている限り。"},
+    {a:"…He didn't break the vase ( ) purpose.",b:"…I fell asleep with all the lights ( ).",answer:"on",exp:"on purpose＝わざと／lights on＝明かりがついた状態"},
+    {a:"As a storm was coming, the ship ( ) for the port.",b:"Wine is ( ) from grapes.",answer:"made",exp:"make for＝〜を目指して進む／be made from＝〜から作られる"}
+  ]
+}
+};
+
+const QDATA = {q1:Q1, q2:Q2};
+
+// ═══════════════════════════════════════════
+// 汎用ヘルパー
+// ═══════════════════════════════════════════
+function normalize(s){ return (s||'').toString().trim().toLowerCase().replace(/\s+/g,' '); }
+function shuffleArr(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+function highlightBlanks(s){
+  return s.replace(/\(\s*[0-9]+\s*[a-z]?\s*\)/g, m => `<span class="p-blank">${m}</span>`);
+}
+
+// ═══════════════════════════════════════════
+// 読解（Q1/Q2）共通レンダリング
+// ═══════════════════════════════════════════
+function buildPassageBlock(prefix, year, d) {
+  const paras = d.passage.split('\n').filter(l => l.trim());
+  const passageHtml = paras.map(l => `<p>${highlightBlanks(l)}</p>`).join('');
+  let transHtml = '';
+  if (d.trans && d.trans.length) {
+    const rows = paras.map((enP, i) => {
+      const jaP = d.trans[i] || '';
+      return `<div class="trans-row-en">${highlightBlanks(enP)}</div><div class="trans-row-ja">${jaP}</div>`;
+    }).join('');
+    transHtml = `<div class="trans-grid" id="tg-${prefix}-${year}" style="display:none">
+      <div class="trans-col-head en">英語（本文）</div><div class="trans-col-head">日本語（対訳）</div>
+      ${rows}
+    </div>`;
+  }
+  return `<div class="passage-wrap">
+    <div class="passage-title">
+      <span>▶ 本文</span>
+      ${d.trans ? `<button class="trans-btn" id="tb-${prefix}-${year}" onclick="toggleTrans('${prefix}',${year})">対訳を見る</button>` : ''}
+    </div>
+    <div class="passage-body" id="pb-${prefix}-${year}">${passageHtml}</div>
+    ${transHtml}
+    ${d.note ? `<div class="passage-note">注　${d.note}</div>` : ''}
+  </div>`;
+}
+
+function toggleTrans(prefix, year) {
+  const grid = document.getElementById(`tg-${prefix}-${year}`);
+  const body = document.getElementById(`pb-${prefix}-${year}`);
+  const btn = document.getElementById(`tb-${prefix}-${year}`);
+  const open = grid.style.display === 'grid';
+  grid.style.display = open ? 'none' : 'grid';
+  body.style.display = open ? 'block' : 'none';
+  btn.textContent = open ? '対訳を見る' : '本文に戻る';
+  btn.classList.toggle('active', !open);
+}
+
+function renderQItem(prefix, year, q) {
+  const rid = `${prefix}-${year}-${q.num}`;
+  let h = `<div class="q-block"><div class="q-num">${q.label || ('問 ' + q.num)}</div>`;
+  if (q.prompt) h += `<div class="q-text">${q.prompt}</div>`;
+  if (q.type === 'mcq') {
+    h += q.opts.map((o,i)=>`<label class="option-label"><input type="radio" name="rd-${rid}" value="${i}"> ${o}</label>`).join('');
+    h += `<button class="btn-check" onclick="checkQItem('${prefix}',${year},${q.num})">確認</button><div class="mcq-result" id="res-${rid}"></div>`;
+  } else if (q.type === 'fill') {
+    h += `<input type="text" class="text-fill" id="in-${rid}" placeholder="ここに入力…">
+    <button class="btn-check" onclick="checkQItem('${prefix}',${year},${q.num})">確認</button><div class="mcq-result" id="res-${rid}"></div>`;
+  } else {
+    h += `<textarea class="memo-area" placeholder="書いてみよう…（提出不要）"></textarea>
+    <button class="btn-model" id="mb-${rid}" onclick="toggleModel('${rid}')">✅ 模範解答を見る</button>
+    <div class="model-wrap" id="mw-${rid}"><div class="model-head">模範解答</div><div class="model-body">${q.model}</div>${q.exp ? `<div class="model-pt"><div class="model-pt-head">解説</div>${q.exp}</div>` : ''}</div>`;
+  }
+  h += `</div>`;
+  return h;
+}
+
+function checkQItem(prefix, year, num) {
+  const q = QDATA[prefix][year].questions.find(x => x.num === num);
+  if (!q) return;
+  const rid = `${prefix}-${year}-${num}`;
+  const res = document.getElementById(`res-${rid}`);
+  if (q.type === 'mcq') {
+    const sel = document.querySelector(`input[name="rd-${rid}"]:checked`);
+    const sv = sel ? parseInt(sel.value) : -1;
+    const idxs = Array.isArray(q.ans) ? q.ans : [q.ans];
+    const ok = idxs.includes(sv);
+    const correctText = idxs.map(i => q.opts[i]).join(' または ');
+    res.innerHTML = `<div class="r-item ${ok?'r-ok':'r-ng'}"><span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span>正解: <strong>${correctText}</strong>　あなた: ${sv>=0?q.opts[sv]:'未回答'}<details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${q.exp||''}</div></details></div>`;
+  } else if (q.type === 'fill') {
+    const el = document.getElementById(`in-${rid}`);
+    const iv = el ? el.value : '';
+    const ok = normalize(iv) === normalize(q.answer);
+    res.innerHTML = `<div class="r-item ${ok?'r-ok':'r-ng'}"><span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span>正解: <strong>${q.answer}</strong>　あなた: ${iv.trim()?iv:'未回答'}${q.exp ? `<details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${q.exp}</div></details>` : ''}</div>`;
+  }
+  res.style.display = 'block';
+}
+
+// ═══════════════════════════════════════════
+// Q1／Q2 画面
+// ═══════════════════════════════════════════
+function openQ1(year) {
+  markDone('q1-' + year);
+  prevScreen = 'q1';
+  const d = Q1[year];
+  let h = buildPassageBlock('q1', year, d);
+  h += `<div class="q-section"><div class="q-sec-title">設問</div>`;
+  d.questions.forEach(q => h += renderQItem('q1', year, q));
+  h += `</div>`;
+  document.getElementById('q1y-title').textContent = `大問 1　物語文読解（${year}年度）`;
+  document.getElementById('q1y-sub').textContent = d.title;
+  document.getElementById('q1y-body').innerHTML = h;
+  showScreen('q1y');
+}
+
+function openQ2(year) {
+  markDone('q2-' + year);
+  prevScreen = 'q2';
+  const d = Q2[year];
+  let h = buildPassageBlock('q2', year, d);
+  h += `<div class="q-section"><div class="q-sec-title">設問</div>`;
+  d.questions.forEach(q => h += renderQItem('q2', year, q));
+  h += `</div>`;
+  document.getElementById('q2y-title').textContent = `大問 2　論説文読解（${year}年度）`;
+  document.getElementById('q2y-sub').textContent = d.title;
+  document.getElementById('q2y-body').innerHTML = h;
+  showScreen('q2y');
+}
+
+// ═══════════════════════════════════════════
+// TILE REORDER（大問3 A）
+// ═══════════════════════════════════════════
+const roState = {};
+
+function placeTile(rid, tileId) {
+  const s = roState[rid];
+  if (!s || s.checked) return;
+  const pidx = s.pool.findIndex(t => t.id === tileId);
+  if (pidx >= 0) {
+    const tile = s.pool.splice(pidx, 1)[0];
+    s.placed.push(tile);
+  } else {
+    const idx = s.placed.findIndex(t => t.id === tileId);
+    if (idx >= 0) {
+      const tile = s.placed.splice(idx, 1)[0];
+      s.pool.push(tile);
+    }
+  }
+  renderTiles(rid);
+}
+
+function renderTiles(rid) {
+  const s = roState[rid];
+  const poolEl = document.getElementById(`pool-${rid}`);
+  poolEl.innerHTML = s.pool.map(t =>
+    `<span class="tile" onclick="placeTile('${rid}',${t.id})">${t.text}</span>`
+  ).join('') || '<span style="font-size:.75rem;font-family:sans-serif;color:#9ca3af">（全て配置済み）</span>';
+  const ansEl = document.getElementById(`ans-${rid}`);
+  ansEl.innerHTML = s.placed.length === 0
+    ? '<span style="color:#c4b5fd;font-family:sans-serif;font-size:.8rem">ここに語句が並びます（上からクリック）</span>'
+    : s.placed.map(t =>
+        `<span class="tile placed" onclick="placeTile('${rid}',${t.id})">${t.text}</span>`
+      ).join('');
+}
+
+function checkReorder(rid) {
+  const s = roState[rid];
+  if (!s) return;
+  if (s.placed.length !== s.ansTiles.length) {
+    const res = document.getElementById(`ro-res-${rid}`);
+    res.innerHTML = `<div class="r-item r-ng">まだ全ての語句が並んでいません（${s.placed.length}/${s.ansTiles.length}語配置済み）</div>`;
+    res.style.display = 'block';
+    return;
+  }
+  s.checked = true;
+  const ansEl = document.getElementById(`ans-${rid}`);
+  ansEl.innerHTML = s.placed.map((t, i) => {
+    const ok = t.text.toLowerCase() === s.ansTiles[i].toLowerCase();
+    return `<span class="tile ${ok?'correct':'incorrect'}">${t.text}</span>`;
+  }).join('');
+  const allOk = s.placed.every((t,i) => t.text.toLowerCase() === s.ansTiles[i].toLowerCase());
+  const res = document.getElementById(`ro-res-${rid}`);
+  res.innerHTML = allOk
+    ? `<div class="r-item r-ok"><span class="tag-c">✓ 正解</span>正しく並べられました！</div>`
+    : `<div class="r-item r-ng"><span class="tag-w">✗ 不正解</span>正しい順番: <strong>${s.ansTiles.join(' ')}</strong></div>`;
+  res.style.display = 'block';
+}
+
+function resetReorder(rid) {
+  const s = roState[rid];
+  if (!s) return;
+  s.pool = [...s.pool, ...s.placed];
+  s.placed = [];
+  s.checked = false;
+  shuffleArr(s.pool);
+  renderTiles(rid);
+  const res = document.getElementById(`ro-res-${rid}`);
+  if (res) { res.style.display = 'none'; res.innerHTML = ''; }
+}
+
+// ═══════════════════════════════════════════
+// Q3 画面（語順整序＋英作文）
+// ═══════════════════════════════════════════
+function openQ3(year) {
+  markDone('q3-' + year);
+  prevScreen = 'q3';
+  const d = Q3[year];
+  let h = `<div class="q-section"><div class="q-sec-title">A　語順整序（各5問）</div>`;
+  d.A.forEach((item, qi) => {
+    const rid = `q3a-${year}-${qi}`;
+    const poolTiles = item.tiles.map((t,i) => ({id:i, text:t}));
+    shuffleArr(poolTiles);
+    roState[rid] = {pool: poolTiles, placed: [], ansTiles: item.tiles, checked: false};
+    h += `<div class="q-block">
+      <div class="q-num">問 ${qi+1}</div>
+      <div class="q-text">${item.jp}</div>
+      <div class="reorder-frame">${item.pre ? item.pre+' ' : ''}<span style="color:#9ca3af;font-style:italic">（　語句を並べよう　）</span>${item.suf ? ' '+item.suf : ''}</div>
+      <div style="font-size:.75rem;font-family:sans-serif;color:#6b7280;margin-bottom:5px">↓ 語句をクリックして並べる（配置後クリックで戻す）</div>
+      <div class="tile-answer-area" id="ans-${rid}"><span style="color:#c4b5fd;font-family:sans-serif;font-size:.8rem">ここに語句が並びます（上からクリック）</span></div>
+      <div class="tile-pool" id="pool-${rid}">${poolTiles.map(t=>`<span class="tile" onclick="placeTile('${rid}',${t.id})">${t.text}</span>`).join('')}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+        <button class="btn-check" onclick="checkReorder('${rid}')">答え合わせ</button>
+        <button class="btn-reset" onclick="resetReorder('${rid}')">リセット</button>
+      </div>
+      <div class="mcq-result" id="ro-res-${rid}"></div>
+      <button class="btn-model" id="mb-${rid}" onclick="toggleModel('${rid}')">✅ 完成文を見る</button>
+      <div class="model-wrap" id="mw-${rid}">
+        <div class="model-head">完成文</div>
+        <div class="model-body">${item.pre ? item.pre+' ' : ''}${item.tiles.join(' ')}${item.suf ? ' '+item.suf : ''}</div>
+        ${item.exp ? `<div class="model-pt"><div class="model-pt-head">解説</div>${item.exp}</div>` : ''}
+      </div>
+    </div>`;
+  });
+  h += `</div>`;
+
+  h += `<div class="q-section"><div class="q-sec-title">B　和文英訳（各2問）</div>`;
+  d.B.forEach((item, qi) => {
+    const id = `q3b-${year}-${qi}`;
+    h += `<div class="q-block">
+      <div class="q-num">問 ${qi+1}</div>
+      <div class="q-text">${item.jp}</div>
+      <textarea class="memo-area" placeholder="英訳をここに書いてみよう…（提出不要）"></textarea>
+      <button class="btn-model" id="mb-${id}" onclick="toggleModel('${id}')">✅ 模範解答を見る</button>
+      <div class="model-wrap" id="mw-${id}">
+        <div class="model-head">模範解答</div>
+        <div class="model-body">${item.ans}</div>
+        ${item.exp ? `<div class="model-pt"><div class="model-pt-head">メモ</div>${item.exp}</div>` : ''}
+      </div>
+    </div>`;
+  });
+  h += `</div>`;
+
+  document.getElementById('q3y-title').textContent = `大問 3　語順整序＋英作文（${year}年度）`;
+  document.getElementById('q3y-sub').textContent = 'A 語順整序 / B 和文英訳';
+  document.getElementById('q3y-body').innerHTML = h;
+  showScreen('q3y');
+}
+
+// ═══════════════════════════════════════════
+// Q4 画面（文法＋共通語）
+// ═══════════════════════════════════════════
+function openQ4(year) {
+  markDone('q4-' + year);
+  prevScreen = 'q4';
+  const d = Q4[year];
+  const labels = ['ア','イ','ウ','エ'];
+  let h = `<div class="q-section"><div class="q-sec-title">A　4択・空所補充（各5問）</div>`;
+  d.A.forEach((q,i) => {
+    h += `<div class="q-block"><div class="q-num">問 ${i+1}</div><div class="q-text">${q.q}</div>`;
+    if (q.type === 'mcq') {
+      h += q.opts.map((o,j)=>`<label class="option-label"><input type="radio" name="q4a-${year}-${i}" value="${j}"> ${labels[j]}　${o}</label>`).join('');
+      if (q.uncertain) h += `<div class="reorder-note">⚠️ 正答未確定（複数の選択肢が文法的に成立しうるため）</div>`;
+    } else {
+      h += `<input type="text" class="text-fill" id="q4a-in-${year}-${i}" placeholder="空所に入る語句を入力…">`;
+    }
+    h += `</div>`;
+  });
+  h += `<button class="btn-check" onclick="checkQ4A(${year})">答え合わせ</button><div class="mcq-result" id="q4a-res-${year}"></div></div>`;
+
+  h += `<div class="q-section"><div class="q-sec-title">B　共通語補充（各5問・1語）</div>`;
+  d.B.forEach((item,i) => {
+    h += `<div class="q-block"><div class="q-num">問 ${i+1}</div>
+      <div class="q-text">(a) ${item.a}<br>(b) ${item.b}</div>
+      <input type="text" class="text-fill" id="q4b-in-${year}-${i}" placeholder="(a)(b)に共通する1語…">
+    </div>`;
+  });
+  h += `<button class="btn-check" onclick="checkQ4B(${year})">答え合わせ</button><div class="mcq-result" id="q4b-res-${year}"></div></div>`;
+
+  document.getElementById('q4y-title').textContent = `大問 4　文法＋共通語（${year}年度）`;
+  document.getElementById('q4y-sub').textContent = 'A 4択・空所補充 / B 共通語補充';
+  document.getElementById('q4y-body').innerHTML = h;
+  showScreen('q4y');
+}
+
+function checkQ4A(year) {
+  const d = Q4[year].A;
+  const labels = ['ア','イ','ウ','エ'];
+  let correct = 0, h = '';
+  d.forEach((q,i) => {
+    let ok = false, yourText = '未回答', correctText;
+    if (q.type === 'mcq') {
+      const sel = document.querySelector(`input[name="q4a-${year}-${i}"]:checked`);
+      const sv = sel ? parseInt(sel.value) : -1;
+      const idxs = Array.isArray(q.ans) ? q.ans : [q.ans];
+      ok = idxs.includes(sv);
+      correctText = idxs.map(x => labels[x]+' '+q.opts[x]).join(' または ');
+      yourText = sv>=0 ? labels[sv]+' '+q.opts[sv] : '未回答';
+    } else {
+      const el = document.getElementById(`q4a-in-${year}-${i}`);
+      const iv = el ? el.value : '';
+      ok = normalize(iv) === normalize(q.answer);
+      correctText = q.answer;
+      yourText = iv.trim() ? iv : '未回答';
+    }
+    if (ok) correct++;
+    h += `<div class="r-item ${ok?'r-ok':'r-ng'}"><span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span><strong>問 ${i+1}</strong>　正解: <strong>${correctText}</strong>　あなた: ${yourText}${q.uncertain?'<br><span style="color:#b45309">⚠️ 正答未確定（複数の選択肢が文法的に成立しうるため）</span>':''}<details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${q.exp||''}</div></details></div>`;
+  });
+  const res = document.getElementById(`q4a-res-${year}`);
+  res.innerHTML = `<div style="font-size:.9rem;font-family:sans-serif;margin-bottom:10px;font-weight:bold;color:#1a3a5c">${correct} / ${d.length} 正解</div>${h}`;
+  res.style.display = 'block';
+}
+
+function checkQ4B(year) {
+  const d = Q4[year].B;
+  let correct = 0, h = '';
+  d.forEach((item,i) => {
+    const el = document.getElementById(`q4b-in-${year}-${i}`);
+    const iv = el ? el.value : '';
+    const ok = normalize(iv) === normalize(item.answer);
+    if (ok) correct++;
+    h += `<div class="r-item ${ok?'r-ok':'r-ng'}"><span class="${ok?'tag-c':'tag-w'}">${ok?'✓ 正解':'✗ 不正解'}</span><strong>問 ${i+1}</strong>　正解: <strong>${item.answer}</strong>　あなた: ${iv.trim()?iv:'未回答'}${item.exp?`<details class="hint-detail"><summary>解説を見る</summary><div class="hint-body">${item.exp}</div></details>`:''}</div>`;
+  });
+  const res = document.getElementById(`q4b-res-${year}`);
+  res.innerHTML = `<div style="font-size:.9rem;font-family:sans-serif;margin-bottom:10px;font-weight:bold;color:#1a3a5c">${correct} / ${d.length} 正解</div>${h}`;
+  res.style.display = 'block';
+}
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+let prevScreen = 'home';
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.getElementById('btn-back').style.display = id === 'home' ? 'none' : 'inline-block';
+  const titles = {home:'駿台模試 英語対策（高1・10月）',q1:'大問1 物語文読解',q1y:'大問1 物語文読解',q2:'大問2 論説文読解',q2y:'大問2 論説文読解',q3:'大問3 語順整序＋英作文',q3y:'大問3 語順整序＋英作文',q4:'大問4 文法＋共通語',q4y:'大問4 文法＋共通語'};
+  document.getElementById('topbar-title').textContent = titles[id] || '駿台模試 英語対策';
+  window.scrollTo(0,0);
+}
+function goBack() { showScreen(prevScreen); }
+function goHome() { prevScreen = 'home'; showScreen('home'); updateHomeBadges(); }
+function goSection(id) { prevScreen = 'home'; showScreen(id); updateYearBadges(id); }
+
+// ═══════════════════════════════════════════
+// MODEL TOGGLE
+// ═══════════════════════════════════════════
+function toggleModel(id) {
+  const w = document.getElementById('mw-'+id);
+  const b = document.getElementById('mb-'+id);
+  const open = w.style.display === 'block';
+  w.style.display = open ? 'none' : 'block';
+  b.classList.toggle('open', !open);
+}
+
+// ═══════════════════════════════════════════
+// PROGRESS TRACKING
+// ═══════════════════════════════════════════
+function getDoneSet() {
+  try { return new Set(JSON.parse(localStorage.getItem('sundai-progress') || '[]')); } catch { return new Set(); }
+}
+function markDone(key) {
+  const s = getDoneSet(); s.add(key);
+  localStorage.setItem('sundai-progress', JSON.stringify([...s]));
+}
+function updateYearBadges(section) {
+  const done = getDoneSet();
+  YEARS.forEach(yr => {
+    const el = document.getElementById(`ycb-${section}-${yr}`);
+    if (!el) return;
+    el.innerHTML = done.has(`${section}-${yr}`) ? '<span class="year-card-badge">✓ 済み</span>' : '';
+  });
+}
+function updateHomeBadges() {
+  const done = getDoneSet();
+  SECTIONS.forEach(q => {
+    const el = document.getElementById(`hcs-${q}`);
+    if (!el) return;
+    const count = YEARS.filter(y => done.has(`${q}-${y}`)).length;
+    el.innerHTML = count > 0 ? `<span class="home-card-progress">✓ ${count} / 3 完了</span>` : '';
+  });
+}
+
+// ═══════════════════════════════════════════
+// FONT SIZE
+// ═══════════════════════════════════════════
+const FS_MAP={s:{fs:'0.92rem',lh:'1.85'},m:{fs:'1.05rem',lh:'1.9'},l:{fs:'1.2rem',lh:'2.0'}};
+function setFs(sz) {
+  const v=FS_MAP[sz];
+  document.documentElement.style.setProperty('--fs',v.fs);
+  document.documentElement.style.setProperty('--lh',v.lh);
+  ['s','m','l'].forEach(s=>document.getElementById('fs-'+s).style.background=s===sz?'rgba(255,255,255,.38)':'rgba(255,255,255,.15)');
+  localStorage.setItem('sundaiFs',sz);
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  showScreen('home');
+  setFs(localStorage.getItem('sundaiFs')||'m');
+  updateHomeBadges();
+});
+</script>
+</body>
+</html>
