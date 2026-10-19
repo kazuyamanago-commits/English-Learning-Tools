@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>11月進研模試に向けた学習アプリ（高1）</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--fs:1.05rem;--lh:1.9;--main:#0f4c5c;--acc:#e36414;--acc-l:#fff4ec;--ok:#16a34a;--ng:#ea580c}
+body{font-family:'Georgia','Times New Roman',serif;background:#f4f6f7;color:#222;line-height:var(--lh)}
+.container{max-width:840px;margin:0 auto;padding:70px 16px 60px}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--main);color:#fff;display:flex;align-items:center;gap:8px;padding:8px 16px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.topbar-title{flex:1;font-size:.92rem;font-weight:bold;font-family:sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fs-controls{display:flex;align-items:center;gap:4px}
+.fs-label{font-size:.7rem;color:rgba(255,255,255,.6);font-family:sans-serif;margin-right:2px}
+.fs-btn,.btn-back{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:4px;cursor:pointer;font-family:sans-serif;padding:3px 8px;line-height:1.3;font-size:.8rem}
+.fs-btn.on{background:rgba(255,255,255,.4)}
+.btn-back{display:none}
+.home-hero{background:linear-gradient(135deg,var(--main) 0%,#5f0f40 100%);color:#fff;border-radius:14px;padding:24px 28px;margin-bottom:20px}
+.home-hero h1{font-size:1.35rem;margin-bottom:4px}
+.home-hero .sub{opacity:.85;font-size:.86rem;font-family:sans-serif;margin-top:5px;line-height:1.7}
+.home-cards{display:flex;flex-direction:column;gap:12px}
+.home-card{background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:flex-start;gap:14px;border:2px solid transparent;transition:transform .15s,border-color .15s}
+.home-card:hover{transform:translateY(-2px);border-color:var(--acc)}
+.card-icon{font-size:1.9rem;width:42px;text-align:center}
+.card-body{flex:1}
+.card-num{font-size:.7rem;font-family:sans-serif;font-weight:bold;letter-spacing:2px;color:#9ca3af}
+.card-title{font-size:.98rem;font-weight:bold;color:var(--main);margin-bottom:3px}
+.card-desc{font-size:.8rem;color:#6b7280;font-family:sans-serif;line-height:1.6}
+.prog{font-size:.72rem;font-family:sans-serif;font-weight:bold;color:var(--ok);margin-top:5px}
+.screen{display:none}.screen.active{display:block}
+.sec-hero{background:var(--main);color:#fff;border-radius:12px;padding:16px 24px;margin-bottom:16px}
+.sec-hero h2{font-size:1.12rem}
+.sec-hero .hero-sub{font-size:.8rem;opacity:.8;font-family:sans-serif;margin-top:4px;line-height:1.6}
+.year-cards{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.year-card{background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,.07);cursor:pointer;flex:1;min-width:150px;text-align:center;border:2px solid transparent}
+.year-card:hover{border-color:var(--acc)}
+.year-card-yr{font-size:1.1rem;font-weight:bold;color:var(--main)}
+.year-card-sub{font-size:.72rem;font-family:sans-serif;color:#6b7280;line-height:1.5}
+.badge{font-size:.62rem;font-family:sans-serif;font-weight:bold;padding:2px 8px;border-radius:10px;margin-top:5px;display:inline-block;background:#dcfce7;color:#15803d}
+.box{background:#fff;border-radius:10px;padding:20px 24px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:14px}
+.box-title{font-size:.92rem;font-weight:bold;color:var(--main);padding-bottom:8px;border-bottom:2px solid #e5e7eb;margin-bottom:14px;font-family:sans-serif;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.lead{font-size:.82rem;font-family:sans-serif;color:#4b5563;line-height:1.75;margin-bottom:10px}
+.q-block{margin-bottom:22px;padding-bottom:20px;border-bottom:1px solid #eef2f4}
+.q-block:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.q-num{font-size:.74rem;font-family:sans-serif;font-weight:bold;color:var(--acc);margin-bottom:3px}
+.q-skill{font-size:.66rem;font-family:sans-serif;color:#6b7280;background:#f3f4f6;border-radius:8px;padding:1px 7px;margin-left:6px;font-weight:normal}
+.q-text{font-size:var(--fs);margin-bottom:8px;line-height:1.75}
+.dlg{font-size:var(--fs);line-height:1.8;margin:4px 0 10px;padding:10px 14px;background:#f8fafb;border-radius:8px}
+.dlg .ln{display:flex;gap:8px}.dlg .sp{font-weight:bold;color:var(--main);min-width:5.5em;font-family:sans-serif;font-size:.86em}
+.blank{display:inline-block;background:var(--acc-l);color:var(--acc);font-weight:bold;border-radius:4px;padding:0 6px;font-family:sans-serif}
+.opt{display:flex;align-items:flex-start;gap:10px;margin:4px 0;cursor:pointer;padding:5px 10px;border-radius:6px;font-size:calc(var(--fs) - .04rem)}
+.opt:hover{background:var(--acc-l)}
+.opt input{margin-top:6px;accent-color:var(--acc)}
+.opt.right{background:#f0fdf4}.opt.wrong{background:#fff1ec}
+.btn{display:inline-block;padding:8px 20px;border-radius:7px;border:none;font-size:.86rem;cursor:pointer;font-family:sans-serif;font-weight:bold;background:var(--acc);color:#fff;margin:8px 8px 0 0}
+.btn:hover{opacity:.88}
+.btn.sub{background:#fff;color:var(--main);border:2px solid var(--main)}
+.btn.sub.open{background:var(--main);color:#fff}
+.btn.play{background:var(--main)}
+.btn:disabled{opacity:.45;cursor:default}
+.res{display:none;margin-top:10px;padding:10px 14px;border-radius:7px;font-size:.84rem;line-height:1.75;font-family:sans-serif}
+.res.ok{display:block;background:#f0fdf4;border-left:4px solid var(--ok)}
+.res.ng{display:block;background:#fff7ed;border-left:4px solid var(--ng)}
+.exp{display:none;margin-top:10px;background:#fbfbf8;border:1px solid #e7e5d8;border-radius:8px;padding:12px 16px;font-size:.84rem;font-family:sans-serif;line-height:1.85;color:#374151}
+.exp.show{display:block}
+.exp h4{font-size:.74rem;letter-spacing:1px;color:var(--main);margin:8px 0 3px}
+.exp h4:first-child{margin-top:0}
+.exp .model{font-family:Georgia,serif;font-size:calc(var(--fs) - .03rem);color:#0f3a46;background:#f0fdf4;border-left:3px solid var(--ok);padding:6px 10px;margin:4px 0;border-radius:4px}
+.exp .ja-dlg div{margin:1px 0}
+.exp ul{padding-left:1.2em}
+.text-in{font-family:sans-serif;font-size:.9rem;padding:7px 11px;border:2px solid #e5e7eb;border-radius:6px;margin:4px 0;width:100%;max-width:520px}
+.text-in:focus,.memo:focus{outline:none;border-color:var(--acc)}
+.memo{width:100%;min-height:84px;padding:9px 12px;border:2px solid #e5e7eb;border-radius:8px;font-size:calc(var(--fs) - .04rem);line-height:1.7;font-family:Georgia,serif;resize:vertical;margin-top:6px}
+.wc{font-size:.74rem;font-family:sans-serif;color:#6b7280;margin-top:2px}
+.wc.good{color:var(--ok);font-weight:bold}
+.sel{font-family:sans-serif;font-size:.85rem;padding:4px 6px;border:2px solid #e5e7eb;border-radius:6px;margin:0 4px}
+.optlist{font-size:calc(var(--fs) - .06rem);margin:8px 0;padding:10px 14px;background:#f8fafb;border-radius:8px;line-height:1.8}
+.passage{font-size:var(--fs);line-height:var(--lh);border-left:3px solid #f2b38a;padding-left:14px}
+.passage p{margin-bottom:.7em;text-indent:1em}
+.passage u{text-decoration-color:var(--acc);text-decoration-thickness:2px}
+.notes{font-size:.74rem;font-family:sans-serif;color:#6b7280;margin-top:10px;padding-top:8px;border-top:1px dashed #e5e7eb}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
+.tgrid .en{padding:9px 13px;font-size:calc(var(--fs) - .1rem);line-height:1.8;border-bottom:1px solid #eef2f4;border-right:1px solid #e5e7eb}
+.tgrid .en p{margin-bottom:.5em}
+.tgrid .ja{padding:9px 13px;font-size:calc(var(--fs) - .14rem);line-height:1.85;border-bottom:1px solid #eef2f4;background:#fafafa;font-family:sans-serif}
+@media(max-width:600px){.tgrid{grid-template-columns:1fr}.tgrid .en{border-right:none;background:#fff8f2}}
+.svgfig{margin:6px 0;max-width:100%;overflow-x:auto}.svgfig svg{max-width:100%;height:auto}
+.fig{max-width:100%;border:1px solid #e5e7eb;border-radius:6px;margin:6px 0;display:block}
+.tbl{border-collapse:collapse;font-size:.8rem;font-family:sans-serif;margin:6px 0;width:100%}
+.tbl th,.tbl td{border:1px solid #e5e7eb;padding:5px 8px;text-align:left;vertical-align:top}
+.tbl th{background:#f3f6f7;color:var(--main)}
+.tile-pool,.tile-ans{display:flex;flex-wrap:wrap;gap:7px;min-height:48px;padding:10px;border-radius:8px;margin-bottom:8px}
+.tile-pool{background:#f8fafc;border:2px solid #e5e7eb}
+.tile-ans{background:#fffaf5;border:2px dashed #f2b38a}
+.tile{padding:5px 11px;border-radius:6px;border:2px solid var(--acc);background:#fff;color:var(--acc);font-size:calc(var(--fs) - .08rem);cursor:pointer;user-select:none;font-family:sans-serif;font-weight:bold}
+.tile.placed{border-color:var(--main);color:var(--main);background:#e6f2f4}
+.frame{font-size:var(--fs);margin-bottom:8px;color:var(--main);padding:8px 12px;background:#f3f8f9;border-radius:8px}
+.player{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 10px;font-family:sans-serif;font-size:.8rem;color:#4b5563}
+.player .cnt{font-size:.74rem;color:#6b7280}
+.tts-warn{font-size:.76rem;font-family:sans-serif;background:#fffbeb;color:#92400e;border-radius:8px;padding:8px 12px;margin-bottom:12px;line-height:1.7}
+.nav-bottom{margin-top:22px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.btn-nav{padding:9px 22px;border-radius:7px;border:none;font-size:.86rem;cursor:pointer;font-family:sans-serif;font-weight:bold;background:var(--main);color:#fff}
+.footer-note{font-size:.72rem;font-family:sans-serif;color:#9ca3af;line-height:1.9;padding:14px 16px;text-align:center;margin-top:6px}
+.col{background:#f3f8f9;border-radius:8px;padding:10px 14px;font-size:.8rem;font-family:sans-serif;line-height:1.8;margin-top:10px}
+.col b{color:var(--main)}
+.score{font-family:sans-serif;font-size:.84rem;font-weight:bold;color:var(--main);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="btn-back" id="btn-back" onclick="goBack()">← 戻る</button>
+  <div class="topbar-title" id="topbar-title">11月進研模試に向けた学習アプリ（高1）</div>
+  <div class="fs-controls">
+    <span class="fs-label">文字</span>
+    <button class="fs-btn" id="fs-s" onclick="setFs('s')">小</button>
+    <button class="fs-btn on" id="fs-m" onclick="setFs('m')">中</button>
+    <button class="fs-btn" id="fs-l" onclick="setFs('l')">大</button>
+  </div>
+</div>
+<div class="container">
+
+<div id="screen-home" class="screen active">
+  <div class="home-hero">
+    <h1>11月 進研模試（ベネッセ総合学力テスト）英語</h1>
+    <div class="sub">高校1年生 / 11月実施（80分・100点）<br>大問1（リスニング）・2（会話表現）は<b>どちらか1題を選択</b>、3〜6は必答。解答・解説・全訳つき。</div>
+  </div>
+  <div class="home-cards" id="home-cards"></div>
+  <div class="footer-note" id="footer-note">
+    ※このアプリは，高１11月進研模試の3年分（2023〜2025年度）を分析し，<b>よく出題される事項・語彙レベル・文法レベルを明らかにしたうえで</b>作成しています。分析の結果は「高１11月進研模試の傾向」にまとめています。<br>
+    ※問題・解答解説はベネッセコーポレーションの著作物です。授業・自習のために使い，内容の転載・再配布はしないでください。<br>
+    ※大問1の音声はブラウザの読み上げ機能（機械音声）です。本物の音声はマナビジョンで確認できます。<br>
+    ※図・イラストは問題冊子から切り出したものです。
+  </div>
+</div>
+
+<div id="screen-sec" class="screen">
+  <div class="sec-hero"><h2 id="sec-title"></h2><div class="hero-sub" id="sec-sub"></div></div>
+  <div class="year-cards" id="sec-years"></div>
+  <div id="sec-extra"></div>
+  <div class="nav-bottom"><button class="btn-nav" onclick="goHome()">← 大問一覧</button></div>
+</div>
+
+<div id="screen-detail" class="screen">
+  <div class="sec-hero"><h2 id="det-title"></h2><div class="hero-sub" id="det-sub"></div></div>
+  <div id="det-body"></div>
+  <div class="nav-bottom">
+    <button class="btn-nav" id="det-back-sec">← 年度一覧</button>
+    <button class="btn-nav" onclick="goHome()">← 大問一覧</button>
+  </div>
+</div>
+
+<div id="screen-trend" class="screen">
+  <div class="sec-hero"><h2>高１11月進研模試の傾向</h2><div class="hero-sub">2023〜2025年度の3年分を分析：よく出題される事項・語彙レベル・文法レベル</div></div>
+  <div id="trend-body"></div>
+  <div class="nav-bottom"><button class="btn-nav" onclick="goHome()">← 大問一覧</button></div>
+</div>
+
+</div>
+
+<script>
+const D={};
+// 模試前練習問題（オリジナル）
+// 2023〜2025年度の高１11月進研模試の出題意図（設問形式・ねらい・文法事項）をもとに新しく作った問題。
+// 模試の英文・選択肢・解説・訳は使っていない。設計は 00. WORK/高校英語/模試と入試の分析/11月進研模試/模試前練習問題_設計.md
+
+// ── 図をアプリの中で描く（SVG） ──
+function svgBars(title,labels,values,max,w,h){
+  w=w||300;h=h||190;const L=34,B=h-34,T=34,W=w-L-12,n=values.length,bw=W/n*0.55;
+  let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" font-family="sans-serif"><rect x="0.5" y="0.5" width="${w-1}" height="${h-1}" fill="#fff" stroke="#9ca3af"/><text x="${w/2}" y="20" text-anchor="middle" font-size="12" font-weight="bold">${title}</text>`;
+  for(let g=0;g<=max;g+=max/5){const y=B-(B-T)*g/max;s+=`<line x1="${L}" y1="${y}" x2="${L+W}" y2="${y}" stroke="#e5e7eb"/><text x="${L-4}" y="${y+4}" text-anchor="end" font-size="9">${g}</text>`;}
+  values.forEach((v,i)=>{const x=L+W/n*i+(W/n-bw)/2,y=B-(B-T)*v/max;s+=`<rect x="${x}" y="${y}" width="${bw}" height="${B-y}" fill="#4b5563"/><text x="${x+bw/2}" y="${B+13}" text-anchor="middle" font-size="9">${labels[i]}</text>`;});
+  return s+`<line x1="${L}" y1="${B}" x2="${L+W}" y2="${B}" stroke="#111"/></svg>`;
+}
+function svgLine(title,labels,values,max,unit,w,h){
+  w=w||320;h=h||200;const L=40,B=h-30,T=34,W=w-L-16,n=values.length;
+  let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" font-family="sans-serif"><rect x="0.5" y="0.5" width="${w-1}" height="${h-1}" fill="#fff" stroke="#9ca3af"/><text x="${w/2}" y="20" text-anchor="middle" font-size="12" font-weight="bold">${title}</text><text x="6" y="${T-6}" font-size="9">${unit||''}</text>`;
+  for(let g=0;g<=max;g+=max/4){const y=B-(B-T)*g/max;s+=`<line x1="${L}" y1="${y}" x2="${L+W}" y2="${y}" stroke="#e5e7eb"/><text x="${L-4}" y="${y+4}" text-anchor="end" font-size="9">${g}</text>`;}
+  const pts=values.map((v,i)=>[L+W*(i+0.5)/n,B-(B-T)*v/max]);
+  s+=`<polyline points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#111" stroke-width="2"/>`;
+  pts.forEach((p,i)=>{s+=`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#111"/><text x="${p[0]}" y="${B+14}" text-anchor="middle" font-size="9">${labels[i]}</text>`;});
+  return s+`</svg>`;
+}
+function grid4(svgs){return `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px">${svgs.map((s,i)=>`<div><b style="font-family:sans-serif">${i+1}</b><br>${s}</div>`).join('')}</div>`;}
+const COMMUTE=['Bike','Walk','Bus','Car'];
+
+D.P={name:'模試前練習問題',
+labels:{l:'オリジナル問題　Part 1×7・Part 2×2・Part 3×2',c:'オリジナル問題　A×8・B×1',g:'オリジナル問題　A×15（3年分の文法事項すべて）・B×6',r4:'オリジナル問題　物語「The Captain’s Key」',r5:'オリジナル問題　説明文「Light Pollution」',w:'オリジナル問題　A×4・B×2'},
+
+// ═══ 大問1 リスニング ═══
+l:{
+p1:[
+ {no:1,skill:'ねらい：会話の場所',g:{Man:'m',Woman:'f'},lines:[['Man','Excuse me.  I’d like to borrow these three books.'],['Woman','Sure.  May I see your student card?'],['Man','Here you are.  Can I also use a computer here?'],['Woman','Yes.  The computers are on the second floor, next to the study room.']],
+  qAudio:['Where are the man and woman?'],choices:['At a bookstore.','At a computer shop.','At a library.','At a school office.'],ans:3,
+  jaQ:'質問「男性と女性はどこにいるか？」\n１「書店に。」　２「パソコンショップに。」　３「図書館に。」（正解）　４「学校の事務室に。」',
+  exp:'男性は最初に「これらの３冊の本を借りたい」と言っている。本を「借りる」ことができ，コンピュータや自習室もある場所なので，３が最も適当。書店では本は「買う」もので，借りられないので１は不適当。コンピュータの話は出ているが，男性は「使えるか」を聞いているだけなので２は不適当。学生証（student card）を見せているが，本を借りる手続きなので４は不適当。\n【ここに注意】場所を問う問題は，**１つの単語ではなく会話全体の行動**（borrow＝借りる）から判断する。',
+  pts:'・borrow「～を借りる」　・Here you are.「はい，どうぞ。」',
+  ja:['男性：すみません。この３冊の本を借りたいのですが。','女性：はい。学生証を見せていただけますか？','男性：どうぞ。ここでコンピュータも使えますか？','女性：はい。コンピュータは２階の，自習室の隣にあります。']},
+ {no:2,skill:'ねらい：次にすること（順番）',g:{Boy:'m',Mother:'f'},lines:[['Mother','Dinner’s ready.  Can you set the table?'],['Boy','Sure, Mom.  But I need to finish this e-mail to my coach first.  It’ll only take two minutes.'],['Mother','OK.  And could you feed the cat after that?'],['Boy','I already did.  She’s sleeping now.']],
+  qAudio:['What will the boy do first?'],choices:['Eat dinner.','Feed the cat.','Finish an e-mail.','Set the table.'],ans:3,
+  jaQ:'質問「男の子は最初に何をするか？」\n１「夕食を食べる。」　２「ネコにえさをやる。」　３「メールを書き終える。」（正解）　４「食卓の準備をする。」',
+  exp:'母親に「食卓の準備をしてくれる？」と頼まれた男の子は，「いいよ。でも**まず**コーチへのメールを書き終えないといけない」と答えている。したがって最初にするのは３。食卓の準備はメールのあとなので４は不適当。ネコのえさは「もうやった」と言っているので２は不適当。夕食はさらにそのあとなので１は不適当。\n【ここに注意】first・already・after that など**順番を表す語**が出たら，行動を時間の順に並べ直す。',
+  pts:'・set the table「食卓の準備をする」　・feed「～にえさをやる」',
+  ja:['母親：夕食ができたわよ。食卓の準備をしてくれる？','男の子：いいよ，お母さん。でもまずコーチへのこのメールを書き終えないと。２分しかかからないよ。','母親：わかったわ。それから，そのあとでネコにえさをあげてくれる？','男の子：もうあげたよ。今は寝ているよ。']},
+ {no:3,skill:'ねらい：主な話題（mainly）',g:{Man:'m',Woman:'f'},lines:[['Man','Did you see the new poster for the art club?'],['Woman','Yes, it’s beautiful!  Who made it?'],['Man','Ken did.  He drew it on one of the school’s new tablets.'],['Woman','Really?  I’d love to try those tablets.'],['Man','You can ask Ms. Brown.  She’s in charge of them.']],
+  qAudio:['What are the man and woman mainly talking about?'],choices:['A poster for the art club.','How to use a tablet.','Joining the art club.','Ms. Brown’s lessons.'],ans:1,
+  jaQ:'質問「男性と女性は主に何について話しているか？」\n１「美術部のポスター。」（正解）　２「タブレットの使い方。」　３「美術部に入ること。」　４「ブラウン先生の授業。」',
+  exp:'会話は「美術部の新しいポスターを見た？」で始まり，「きれい」「誰が作ったの？」「ケンがタブレットで描いた」と，ポスターについて話が進む。したがって１が最も適当。タブレットやブラウン先生の話も出てくるが，ポスターの話の一部として出てきただけで「主に」話している内容ではないので２・４は不適当。美術部に入る話はしていないので３は不適当。\n【ここに注意】mainly の問題は，**会話の最初の話題**と**何度も出てくる話題**を選ぶ。途中で少し出た話題はダミー。',
+  pts:'・in charge of ～「～を担当して」',
+  ja:['男性：美術部の新しいポスターを見た？','女性：うん，きれいね！　誰が作ったの？','男性：ケンだよ。学校の新しいタブレットで描いたんだ。','女性：本当？　そのタブレットを使ってみたいな。','男性：ブラウン先生に頼めばいいよ。先生が担当しているから。']},
+ {no:4,skill:'ねらい：「今」の状況（このあとすることがダミー）',g:{Tom:'m',Woman:'f'},lines:[['Woman','Hi, Tom.  Are you still at the station?'],['Tom','No, I’m on the bus now.  I got on at ten past five.'],['Woman','Great.  Don’t forget to buy some milk on your way home.'],['Tom','OK.  I’ll stop at the store near the bus stop.']],
+  qAudio:['What is Tom doing now?'],choices:['He is waiting at the station.','He is riding on a bus.','He is buying milk at a store.','He is walking home from the bus stop.'],ans:2,
+  jaQ:'質問「トムは今，何をしているか？」\n１「駅で待っている。」　２「バスに乗っている。」（正解）　３「店で牛乳を買っている。」　４「バス停から歩いて家に帰っている。」\n※本番では４つの絵から選ぶ形式。ここでは場面を文で示しています。',
+  exp:'「まだ駅にいるの？」と聞かれたトムは「いいや，**今**バスに乗っている」と答えているので２が最も適当。駅にいたのは前のことなので１は不適当。牛乳を買うのは，バスを降りたあとに店に寄ってからすることなので３は不適当。歩いて帰るのはさらにそのあとなので４は不適当。\n【ここに注意】絵の問題では，**前にしたこと・このあとすること**が描かれた絵がダミーになる。now がどの文にあるかを聞き逃さない。',
+  pts:'・get on ～「（乗り物）に乗る」　・on one’s way home「帰る途中で」　・stop at ～「～に立ち寄る」',
+  ja:['女性：もしもし，トム。まだ駅にいるの？','トム：いや，今バスに乗っているよ。５時10分に乗ったんだ。','女性：よかった。帰りに牛乳を買うのを忘れないでね。','トム：わかった。バス停の近くの店に寄るよ。']},
+ {no:5,skill:'ねらい：グラフ（順位・倍数）',g:{Man:'m',Woman:'f'},
+  svg:grid4([svgBars('How do you come to school?',COMMUTE,[35,40,20,5],50),svgBars('How do you come to school?',COMMUTE,[40,20,35,5],50),svgBars('How do you come to school?',COMMUTE,[40,35,20,5],50),svgBars('How do you come to school?',COMMUTE,[40,35,10,15],50)]),
+  lines:[['Man','Look at this graph.  It shows how students in our class come to school.'],['Woman','Is walking the most popular?'],['Man','No, riding a bike is.  Walking is second, just behind bikes.  And twice as many students ride a bike as take the bus.'],['Woman','I see.  Only five students come by car.']],
+  qAudio:['Which graph is correct?'],ans:3,
+  jaQ:'質問「どのグラフが正しいか？」（グラフ：「どのように学校に来ますか？」Bike＝自転車，Walk＝徒歩，Bus＝バス，Car＝車）',
+  exp:'①一番多いのは自転車（徒歩ではない）→ 徒歩が一番多い１は不適当。②徒歩は自転車のすぐ後の２位 → 徒歩が３位の２は不適当。③自転車はバスの**２倍**（twice as many ... as）→ 自転車40・バス20の３が合う。４はバスが10で４倍になっているうえ，車が15で「車は５人だけ」とも合わない。したがって３が最も適当。\n【ここに注意】グラフ問題は，**１位・順位・倍数・具体的な数**の４つの情報を１つずつ当てはめて消していく。',
+  pts:'・twice as many ～ as ...「…の２倍の数の～」　・just behind ～「～のすぐ後ろ（次）に」',
+  ja:['男性：このグラフを見て。うちのクラスの生徒がどうやって学校に来ているかを示しているよ。','女性：歩きが一番多いの？','男性：いや，自転車だよ。歩きは２番目で，自転車のすぐ後ろだ。それに，自転車の生徒はバスの生徒の２倍いるよ。','女性：なるほど。車で来るのは５人だけね。']},
+ {no:6,skill:'ねらい：数字の言い換え',g:{Man:'m',Woman:'f'},lines:[['Woman','How many people came to the school festival this year?'],['Man','About twelve hundred.  That’s twice as many as last year.'],['Woman','Wow!  What about the year before last?'],['Man','Around eight hundred, I think.']],
+  qAudio:['About how many people came to the festival last year?'],choices:['About 400.','About 600.','About 800.','About 1,200.'],ans:2,
+  jaQ:'質問「昨年は約何人が文化祭に来たか？」\n１「約400人。」　２「約600人。」（正解）　３「約800人。」　４「約1,200人。」',
+  exp:'今年は約1,200人（twelve hundred）で，「それは**昨年の２倍**」と言っている。したがって昨年は1,200÷２＝約600人で，２が最も適当。800人は**一昨年**（the year before last）の数なので３は不適当。1,200人は今年の数なので４は不適当。\n【ここに注意】数字の問題は，聞こえた数字がそのまま答えになるとは限らない。twice・half・the year before last など，**計算や時の言い換え**に注意。',
+  pts:'・twelve hundred＝1,200　・the year before last「一昨年」',
+  ja:['女性：今年は文化祭に何人来たの？','男性：約1,200人だよ。昨年の２倍だね。','女性：すごい！　一昨年はどうだったの？','男性：約800人だったと思うよ。']},
+ {no:7,skill:'ねらい：合計・割り勘',g:{Man:'m',Woman:'f'},lines:[['Man','How much do I owe you for today?'],['Woman','I bought two movie tickets.  They were fifteen hundred yen each.  And the popcorn was six hundred yen.'],['Man','OK.  Let’s split everything in half.'],['Woman','Sounds good.']],
+  qAudio:['How much should the man pay?'],choices:['1,500 yen.','1,800 yen.','2,100 yen.','3,600 yen.'],ans:2,
+  jaQ:'質問「男性はいくら払うべきか？」\n１「1,500円。」　２「1,800円。」（正解）　３「2,100円。」　４「3,600円。」',
+  exp:'映画のチケットが1,500円×２枚＝3,000円，ポップコーンが600円で，合計3,600円。男性は「全部を半分に分けよう」と言っているので，3,600÷２＝1,800円。したがって２が最も適当。１はチケット１枚分，３はチケット１枚分にポップコーン代を全部足した額，４は合計額なので不適当。',
+  pts:'・owe「～に借りがある」How much do I owe you?「いくら払えばいい？」　・split ～ in half「～を半分に分ける」',
+  ja:['男性：今日の分，いくら払えばいい？','女性：映画のチケットを２枚買ったの。１枚1,500円だったわ。それとポップコーンが600円。','男性：わかった。全部半分ずつにしよう。','女性：いいわね。']}
+],
+p2:{intro:'Ken と Lisa の会話を聞いて，質問の答えとして最も適当なものを選ぼう。（ねらい：提案 → 断る → 決定 の流れ）',g:{Ken:'m',Lisa:'f'},
+ lines:[['Ken','Lisa, do you want to study for the math test together this weekend?'],['Lisa','Sure.  How about Saturday morning at the city library?'],['Ken','I have soccer practice until noon on Saturday.  Is Sunday OK?'],['Lisa','I’m visiting my grandmother on Sunday afternoon, but the morning is fine.'],['Ken','Great.  But the library doesn’t open until ten on Sundays.'],['Lisa','Then let’s meet at the café next to it at nine.  They have big tables.'],['Ken','Perfect.  I’ll bring my notes from class.  Could you bring the practice problems?'],['Lisa','OK.  I’ll print them out tonight.']],
+ qAudio:['Question No. 1.  When will Ken and Lisa study together?','Question No. 2.  Where will they meet?','Question No. 3.  What will Lisa do tonight?'],
+ qs:[
+  {q:'Question No. 1　When will Ken and Lisa study together?',choices:['On Saturday morning.','On Saturday afternoon.','On Sunday morning.','On Sunday afternoon.'],ans:3,
+   jaQ:'「ケンとリサはいつ一緒に勉強するか？」\n１「土曜日の午前に。」　２「土曜日の午後に。」　３「日曜日の午前に。」（正解）　４「日曜日の午後に。」',
+   exp:'リサは土曜日の午前を提案したが，ケンは「土曜日は正午までサッカーの練習がある」と断り，日曜日を提案した。リサは「日曜日の午後は祖母に会いに行くけど，午前なら大丈夫」と答えている。したがって３が最も適当。\n【ここに注意】**最初の提案は断られることが多い**。最後に決まった内容を答える。'},
+  {q:'Question No. 2　Where will they meet?',choices:['At the city library.','At a café.','At Ken’s house.','At Lisa’s grandmother’s house.'],ans:2,
+   jaQ:'「彼らはどこで会うか？」\n１「市立図書館で。」　２「カフェで。」（正解）　３「ケンの家で。」　４「リサの祖母の家で。」',
+   exp:'ケンが「日曜日は図書館が10時まで開かない」と言うと，リサは「それなら図書館の隣のカフェで９時に会おう」と提案し，ケンは「完璧だ」と応じている。したがって２が最も適当。図書館は最初の案で，開館時間の都合でやめたので１は不適当。'},
+  {q:'Question No. 3　What will Lisa do tonight?',choices:['Go to soccer practice.','Print out the practice problems.','Copy Ken’s notes.','Visit her grandmother.'],ans:2,
+   jaQ:'「リサは今夜何をするか？」\n１「サッカーの練習に行く。」　２「練習問題を印刷する。」（正解）　３「ケンのノートを写す。」　４「祖母を訪ねる。」',
+   exp:'ケンに「練習問題を持ってきてくれる？」と頼まれたリサは，「今夜印刷する」と答えている。したがって２が最も適当。サッカーの練習はケンの予定なので１は不適当。祖母を訪ねるのは日曜日の午後なので４は不適当。'}
+ ],
+ pts:'・not ～ until ...「…まで～ない」→「…になってやっと～する」　・print ～ out「～を印刷する」',
+ ja:['ケン：リサ，今週末一緒に数学のテストの勉強をしない？','リサ：いいわよ。土曜日の午前に市立図書館でどう？','ケン：土曜日は正午までサッカーの練習があるんだ。日曜日は大丈夫？','リサ：日曜日の午後は祖母に会いに行くけど，午前なら大丈夫よ。','ケン：よかった。でも日曜日は図書館が10時まで開かないんだ。','リサ：それなら，隣のカフェで９時に会いましょう。大きなテーブルがあるの。','ケン：完璧だね。僕は授業のノートを持っていくよ。練習問題を持ってきてくれる？','リサ：わかった。今夜印刷しておくわ。'],
+ extra:{intro:'Aya と ALT の Mr. Smith の会話を聞いて，質問の答えとして最も適当なものを選ぼう。（ねらい：理由・予定を聞き取る）',g:{Aya:'f','Mr. Smith':'m'},
+  lines:[['Aya','Mr. Smith, can I talk to you about the speech contest?'],['Mr. Smith','Of course, Aya.  Have you chosen a topic?'],['Aya','I was going to talk about my trip to Australia, but my friend Mika chose the same topic.'],['Mr. Smith','That’s OK.  Two people can talk about the same thing.'],['Aya','I know, but I want to say something different.  What about food waste at school?'],['Mr. Smith','That’s a great idea.  You did a survey about it in your science class, right?'],['Aya','Yes.  I can use the results in my speech.'],['Mr. Smith','Good.  Write your first draft by Friday, and I’ll check it on Monday.']],
+  qAudio:['Question No. 1.  Why does Aya want to change her topic?','Question No. 2.  What will Aya use in her speech?','Question No. 3.  When will Mr. Smith check Aya’s draft?'],
+  qs:[
+   {q:'Question No. 1　Why does Aya want to change her topic?',choices:['Mr. Smith didn’t like her first topic.','She has never been to Australia.','She wants to talk about something different from Mika.','The topic was too difficult for her.'],ans:3,
+    jaQ:'「アヤはなぜ話題を変えたいのか？」\n１「スミス先生が最初の話題を気に入らなかった。」　２「オーストラリアに行ったことがない。」　３「ミカとは違うことを話したい。」（正解）　４「話題が難しすぎた。」',
+    exp:'アヤは「オーストラリア旅行について話すつもりだったが，友達のミカが同じ話題を選んだ」と言い，スミス先生が「同じでも大丈夫」と言ったあとも「でも違うことを言いたい」と答えている。したがって３が最も適当。スミス先生は同じ話題でもよいと言っているので１は不適当。旅行の話をするつもりだったので２は不適当。\n【ここに注意】理由を問う問題は，**but のあと**に本当の理由が来ることが多い。'},
+   {q:'Question No. 2　What will Aya use in her speech?',choices:['Photos from her trip.','Mika’s speech.','The results of a survey.','Her science textbook.'],ans:3,
+    jaQ:'「アヤはスピーチで何を使うか？」\n１「旅行の写真。」　２「ミカのスピーチ。」　３「アンケートの結果。」（正解）　４「理科の教科書。」',
+    exp:'スミス先生の「理科の授業でそれについてアンケートをしたよね？」に，アヤは「はい。その結果をスピーチに使えます」と答えている。したがって３が最も適当。理科の授業の話は出るが，使うのは教科書ではなくアンケートの結果なので４は不適当。'},
+   {q:'Question No. 3　When will Mr. Smith check Aya’s draft?',choices:['Today.','On Friday.','On the weekend.','On Monday.'],ans:4,
+    jaQ:'「スミス先生はいつアヤの下書きを確認するか？」\n１「今日。」　２「金曜日に。」　３「週末に。」　４「月曜日に。」（正解）',
+    exp:'スミス先生は最後に「金曜日までに最初の下書きを書いて，月曜日に私が確認する」と言っている。したがって４が最も適当。金曜日はアヤが下書きを書き終える期限なので２は不適当。\n【ここに注意】**誰が・いつ**するのかを区別する（by Friday はアヤ，on Monday は先生）。'}
+  ],
+  pts:'・first draft「最初の下書き」　・by ～「～までに（期限）」',
+  ja:['アヤ：スミス先生，スピーチコンテストについてお話ししてもいいですか？','スミス先生：もちろんだよ，アヤ。話題は決めたかい？','アヤ：オーストラリア旅行について話すつもりだったんですが，友達のミカが同じ話題を選んだんです。','スミス先生：それは大丈夫だよ。２人が同じことを話してもいいんだ。','アヤ：わかっています，でも違うことを言いたいんです。学校での食品ロスはどうでしょう？','スミス先生：それはすばらしい考えだね。理科の授業でそれについてアンケートをしたよね？','アヤ：はい。その結果をスピーチに使えます。','スミス先生：いいね。金曜日までに最初の下書きを書いて，月曜日に私が確認するよ。']}},
+p3:{score:'各3点（目安）',intro:'あなたはバスケットボール部の部員である。コーチの Davis 先生から部員への留守番電話のメッセージを聞いて，チームメイトの Yuta へのメッセージの空所①・②に当てはまる内容を英語で補おう。（①は6語程度，②は5語程度）（ねらい：空所の前の形に合わせて書く）',
+ task:`Hi, Yuta.  Coach Davis left a message.  Tomorrow’s practice match will start at 1:00, not at 10:00, because [[①]].  We need to come to the gym by 12:30.  Also, we should [[②]], because the match will be outside and it’ll be cold.`,
+ g:{Coach:'m'},lines:[['Coach','Hi, everyone.  This is Coach Davis.  Tomorrow’s practice match against Kita High School will start at one o’clock, not at ten.  That’s because their bus will arrive late.  So please come to the gym by twelve thirty.  Also, it’s going to be cold tomorrow, so bring a warm jacket.  The match will be held outside, on the north field.  See you tomorrow.']],
+ blanks:[{lab:'①',words:'6語程度',models:['Kita High School’s bus will arrive late（7語）','the other team’s bus will be late（7語）']},{lab:'②',words:'5語程度',models:['bring a warm jacket（4語）','bring something warm to wear（5語）']}],
+ exp:'空所①は because のあとなので，**主語と動詞のある節**で理由を書く。放送文第３文「それは彼ら（＝北高校）のバスが遅れて着くからだ」から，Kita High School’s bus will arrive late などとする。their は「北高校の」なので，メッセージでは Kita High School’s や the other team’s に言い換える。\n空所②は should のあとなので，**動詞の原形**で始める。放送文第５文「明日は寒くなるので，暖かい上着を持ってきなさい」から，bring a warm jacket などとする。\n【ここに注意】Part 3 は，放送文の言葉をそのまま書くのではなく，**空所の前の語（because・should など）とメッセージを書く人の立場**に合わせて形を変える。',
+ pts:'・practice match「練習試合」　・hold「～を開く」（be held「開かれる」）',
+ ja:'【放送文】みなさん，こんにちは。コーチのデイビスです。明日の北高校との練習試合は，10時ではなく１時に始まります。それは，向こうのバスが遅れて着くからです。だから，12時30分までに体育館に来てください。また，明日は寒くなるので，暖かい上着を持ってきてください。試合は屋外の，北グラウンドで行います。では明日。\n\n【メッセージ】やあ，ユウタ。デイビス先生から伝言があったよ。明日の練習試合は10時ではなく１時に始まるよ，（①北高校のバスが遅れて着く）からだって。12時30分までに体育館に来る必要があるよ。それと，（②暖かい上着を持ってくる）べきだよ，試合は外で寒くなるからね。',
+ extra:{intro:'【Part 3 その２】あなたは英語の授業で，クラスメイトの Ryo の意見発表を聞いて【発表のまとめ】を書いている。空所①・②に当てはまる内容を，それぞれ５語程度の英語で補おう。',
+  task:`【発表のまとめ】\nRyo’s opinion is that our school should [[①]] in the morning.\nREASON：Scientists say that teenagers [[②]], so they will be able to focus better in class.`,
+  g:{Ryo:'m'},lines:[['Ryo','Here is my opinion.  I think our school should start classes thirty minutes later in the morning.  Many students in our class go to bed late because of club activities and homework.  So they are very sleepy in the first class.  Some people say we will have to finish school later, and that is true.  But scientists say teenagers need more sleep than adults.  If we can sleep longer, we will be able to focus better in class.  Thank you.']],
+  blanks:[{lab:'①',words:'5語程度',models:['start classes thirty minutes later（5語）','begin classes half an hour later（6語）']},{lab:'②',words:'5語程度',models:['need more sleep than adults（5語）']}],
+  exp:'空所①は should のあとなので動詞の原形で始める。放送文第２文から start classes thirty minutes later とする。in the morning は空所のあとにあるので書かなくてよい。\n空所②は that 節の中で，主語 teenagers に続く**動詞から**書く。放送文第６文「科学者は，10代の若者は大人より多くの睡眠が必要だと言っている」から，need more sleep than adults とする。\n【ここに注意】空所のあとにすでにある語句（in the morning／so they will ...）と**重ならないように**書く。',
+  ja:'【放送文】これが私の意見です。私たちの学校は，朝の授業を30分遅く始めるべきだと思います。私たちのクラスの多くの生徒が，部活動や宿題のために遅く寝ています。そのため，１時間目はとても眠いのです。学校の終わりが遅くなると言う人もいて，それは本当です。しかし，科学者は，10代の若者は大人より多くの睡眠が必要だと言っています。もっと長く眠ることができれば，授業により集中できるようになるでしょう。ありがとうございました。'}},
+col:{t:'聞く前に「空所の前の語」を見ておこう',b:'Part 3 では，音声が流れる前に20秒ほど英文を読む時間がある。その間に，空所の直前の語（because／should／wants to／than など）に印をつけておくと，「節で書く」「動詞の原形で書く」など，答えの形が先にわかる。聞きながら「どの情報を待てばよいか」がはっきりするので，聞き取りの負担も減る。'}
+},
+
+// ═══ 大問2 会話表現 ═══
+c:{
+A:[
+ {scene:'荷物を運ぶ手伝いを申し出る場面（ねらい：直後の応答から逆算）',dlg:[['Mei','These boxes are so heavy.'],['Tom','[[　　]]'],['Mei','Thanks.  Could you carry this one to the car?']],
+  choices:['Do you need some help?','I don’t know what’s inside.','Where did you buy them?','You should buy fewer things.'],ans:1,
+  exp:'空所のあとでメイは「ありがとう。これを車まで運んでくれる？」と頼んでいるので，トムは手伝いを申し出たとわかる。１「手伝おうか？」が最も適当。２「中に何が入っているか知らない」，３「どこで買ったの？」，４「もっと少なく買うべきだよ」では，メイが「ありがとう」と言って運ぶのを頼む流れにならない。',
+  ja:['メイ：この箱，すごく重いわ。','トム：１手伝おうか？','メイ：ありがとう。これを車まで運んでくれる？']},
+ {scene:'誘いを断る場面',dlg:[['Ann','We’re having a barbecue on Sunday.  Can you come?'],['Sota','[[　　]]  My family is going to Osaka that day.'],['Ann','That’s too bad.  Maybe next time.']],
+  choices:['I’ve never been to a barbecue.','I’d love to, but I can’t.','Sure.  What time should I come?','Who is going to cook the meat?'],ans:2,
+  exp:'空所のあとでソウタは「その日は家族で大阪に行く」と言い，アンは「残念ね。また今度」と応じているので，ソウタは誘いを断ったとわかる。２「ぜひ行きたいけど，行けないんだ」が最も適当。３「もちろん。何時に行けばいい？」は誘いを受ける返事なので不適当。１・４は断る理由につながらない。\n【ここに注意】I’d love to, but ～. は**ていねいに断る**ときの決まった言い方。',
+  ja:['アン：日曜日にバーベキューをするの。来られる？','ソウタ：２ぜひ行きたいけど，行けないんだ。その日は家族で大阪に行くんだよ。','アン：それは残念ね。また今度ね。']},
+ {scene:'わからない言葉の意味を聞く場面',dlg:[['Lucy','The weather forecast says it’ll be “partly cloudy” tomorrow.'],['Kenta','[[　　]]'],['Lucy','It means there will be some clouds, but we’ll see the sun, too.']],
+  choices:['Where did you hear that?','Why is it always cloudy here?','What does “partly cloudy” mean?','Will it rain all day?'],ans:3,
+  exp:'空所のあとでルーシーは「それは，雲はいくらかあるけれど太陽も見えるという意味よ」と説明している。したがってケンタは言葉の意味を尋ねたとわかるので，３「partly cloudy ってどういう意味？」が最も適当。１・２・４では，ルーシーが It means ... と意味を説明する流れにならない。',
+  ja:['ルーシー：天気予報によると，明日は「partly cloudy」になるって。','ケンタ：３「partly cloudy」ってどういう意味？','ルーシー：雲はいくらかあるけれど，太陽も見えるっていう意味よ。']},
+ {scene:'試合の前に願いを言う場面',dlg:[['Rina','Our team’s final game is tomorrow.'],['Mark','Are you nervous?'],['Rina','A little.  [[　　]]  We’ve practiced hard for this.'],['Mark','I’m sure you will.']],
+  choices:['I hope it rains tomorrow.','I hope the game is canceled.','I hope I can watch it on TV.','I hope we win.'],ans:4,
+  exp:'リナは「このために一生懸命練習してきた」と言い，マークは「きっとそうなるよ（＝きっと勝つよ）」と応じている。I’m sure you will. の will のあとには，空所の動詞（win）が省略されている。したがって４「勝てるといいな」が最も適当。１「明日雨が降るといいな」，２「試合が中止になるといいな」は練習してきたことと合わない。３は自分の試合なので不適当。\n【ここに注意】応答の **you will／I do などの省略**は，前の文の動詞を補って考える。',
+  ja:['リナ：私たちのチームの最後の試合が明日なの。','マーク：緊張している？','リナ：少しね。４勝てるといいな。このために一生懸命練習してきたから。','マーク：きっと勝てるよ。']},
+ {scene:'朝早く出かける理由を説明する場面',dlg:[['Mother','You’re up early today.'],['Jun','[[　　]]  I want to review my notes at school.'],['Mother','Good luck!  Don’t forget your lunch.']],
+  choices:['I don’t have school today.','I have a test in the first period.','I’ll sleep until noon.','I went to bed very late.'],ans:2,
+  exp:'空所のあとでジュンは「学校でノートを見直したい」と言い，母親は「頑張ってね！」と応じている。早起きした理由として，２「１時間目にテストがあるんだ」が最も適当。１「今日は学校がない」はあとの「学校で」と合わない。３「正午まで寝る」は早起きと合わない。４「とても遅く寝た」は早起きの理由にならない。',
+  ja:['母親：今日は早起きね。','ジュン：２１時間目にテストがあるんだ。学校でノートを見直したいんだ。','母親：頑張ってね！　お弁当を忘れないでね。']},
+ {scene:'出発の時刻を計算する場面',dlg:[['Aya','The concert starts at seven.'],['Ben','When should we leave home?'],['Aya','[[　　]]  So let’s leave at six.'],['Ben','OK.  I’ll be ready by then.']],
+  choices:['It takes about two hours to get there.','It takes 45 minutes to get there, and I want to arrive 15 minutes early.','The concert will last two hours.','I want to arrive just in time.'],ans:2,
+  exp:'コンサートは７時開始で，「だから６時に出よう」と言っているので，出発から開始まで１時間必要な理由が空所に入る。２「そこまで45分かかって，15分早く着きたい」なら45分＋15分＝１時間で計算が合うので，これが最も適当。１は２時間かかるので６時出発では間に合わない。３はコンサートの長さで出発時刻とは関係がない。４「ちょうどに着きたい」なら１時間前に出る理由にならない。\n【ここに注意】時刻の問題は，**空所の前後の時刻から逆算**して計算が合うものを選ぶ。',
+  ja:['アヤ：コンサートは７時に始まるわ。','ベン：家を何時に出ればいい？','アヤ：２そこまで45分かかるし，15分早く着きたいの。だから６時に出ましょう。','ベン：わかった。それまでに準備しておくよ。']},
+ {scene:'行き方を尋ねる場面',dlg:[['Visitor','Excuse me.  I’m looking for the music room.'],['Student','It’s on the third floor.'],['Visitor','[[　　]]'],['Student','It’s over there, next to the library.  But the stairs are faster.']],
+  choices:['How many music rooms are there?','Is it open on Sundays?','Where are the stairs?','Where is the elevator?'],ans:4,
+  exp:'空所のあとで生徒は「あそこの図書館の隣です。**でも階段の方が速いですよ**」と言っている。「でも階段の方が」と言っていることから，訪問者は階段以外の行き方，つまりエレベーターの場所を尋ねたとわかる。４「エレベーターはどこですか？」が最も適当。３「階段はどこですか？」では，「でも階段の方が速い」とつながらない。',
+  ja:['訪問者：すみません。音楽室を探しているのですが。','生徒：３階にあります。','訪問者：４エレベーターはどこですか？','生徒：あそこの，図書館の隣です。でも階段の方が速いですよ。']},
+ {scene:'母の誕生日プレゼントを決める場面',dlg:[['Ryo','What should we give Mom for her birthday?'],['Emi','How about flowers?'],['Ryo','[[　　]]'],['Emi','You’re right.  Let’s give her something different this year.']],
+  choices:['Flowers are very cheap.','Her birthday is next week.','She loves flowers more than anything.','We gave her flowers last year.'],ans:4,
+  exp:'空所のあとでエミは「その通りね。今年は何か違うものをあげましょう」と言っている。「違うもの」とあるので，リョウは花をやめる理由を言ったとわかる。４「去年，花をあげたよ」が最も適当。３「母は何よりも花が好きだ」なら花をあげる流れになるので不適当。１・２は「違うものにしよう」の理由にならない。',
+  ja:['リョウ：お母さんの誕生日に何をあげようか？','エミ：花はどう？','リョウ：４去年，花をあげたよ。','エミ：その通りね。今年は何か違うものをあげましょう。']}
+],
+B:{scene:'図書館のカウンターで本を借りる場面（ねらい：用件 → 確認 → 相談 → 質問 の流れ）',
+ lines:[['Librarian','Hello.  How can I help you?'],['Student','[[ア]]'],['Librarian','Sure.  May I see your library card?'],['Student','Here you are.  How long can I keep them?'],['Librarian','For two weeks.  [[イ]]'],['Student','Hmm, I’m going on a school trip next week.  [[ウ]]'],['Librarian','Yes.  You can extend the period once, online or here at the counter.'],['Student','Great.  [[エ]]'],['Librarian','Just log in to the library website with your card number.'],['Student','Thank you so much.']],
+ opts:['Can I keep them a little longer?','How do I do that online?','I’d like to borrow these three books.','I’d like to return these books.','So please bring them back by May 20th.','Sorry, you can’t borrow more than two books.','Can I buy these books here?','Where are you going on your trip?'],
+ ans:{ア:3,イ:5,ウ:1,エ:2},
+ exp:'ア　司書は空所のあとで「かしこまりました。図書館カードを見せてください」と言い，生徒は「どのくらいの間借りられますか？」と続けている。したがって生徒は本を借りに来たとわかり，３「この３冊の本を借りたいのですが」が最も適当。４「返却したい」は，あとで貸出期間を聞いていることと合わない（似ているが反対のダミー）。\nイ　「２週間です」のあとなので，返却の期限を伝える５「ですから，５月20日までに返してください」が最も適当。６「２冊より多くは借りられません」は，司書がすでに「かしこまりました」と応じていることと合わない。\nウ　生徒は「来週修学旅行に行く」と言い，司書は「はい。期間を１回延長できます」と答えているので，１「もう少し長く借りられますか？」が最も適当。\nエ　司書は「カード番号で図書館のウェブサイトにログインするだけです」と，オンラインでの延長の方法を説明しているので，２「オンラインではどうやってするのですか？」が最も適当。\nほかの選択肢：７「ここでこれらの本を買えますか？」，８「旅行はどこに行くのですか？」\n【ここに注意】Bは，空所の**直後の発言が答えの手がかり**になる。似ているが反対の内容（borrow／return）のダミーに注意。',
+ ja:['司書：こんにちは。どのようなご用件ですか？','生徒：３この３冊の本を借りたいのですが。','司書：かしこまりました。図書館カードを見せていただけますか？','生徒：どうぞ。どのくらいの間借りられますか？','司書：２週間です。５ですから，５月20日までに返してください。','生徒：うーん，来週修学旅行に行くんです。１もう少し長く借りられますか？','司書：はい。オンラインか，ここのカウンターで，期間を１回延長できます。','生徒：よかった。２オンラインではどうやってするのですか？','司書：カード番号で図書館のウェブサイトにログインするだけです。','生徒：本当にありがとうございます。']}
+},
+
+// ═══ 大問3 文法・語法 ═══
+g:{
+A:[
+ {tag:'時制：ago',q:'My grandfather moved to this town fifty years [[　　]].',choices:['ago','long','past','since'],ans:1,ja:'「私の祖父は50年前にこの町に引っ越してきた。」',
+  exp:'過去形（moved）の文で「（今から）～前に」は＜期間＋ago＞で表す。したがって１が最も適当。long は「長い」で期間のあとに置いて「～前」の意味にはならない。since は「～以来」で現在完了と使う。past は「～を過ぎて」。'},
+ {tag:'時制：It has been ～ since …',q:'It [[　　]] three years since we started this project.',choices:['is passed','has been','has passed','was'],ans:2,ja:'「私たちがこの計画を始めてから３年になる。」',
+  exp:'＜It has been＋期間＋since ～＞で「～してから（期間）になる」。主語が It なので２が最も適当。＜期間＋have passed since ～＞（Three years have passed since ～）の形もあるが，主語が It の場合は使えないので３は不適当。'},
+ {tag:'前置詞：for＋期間',q:'We waited at the bus stop [[　　]] twenty minutes, but the bus never came.',choices:['by','during','for','until'],ans:3,ja:'「私たちはバス停で20分間待ったが，バスは来なかった。」',
+  exp:'twenty minutes という「時間の長さ」の前には＜for＋期間＞「～の間」を使うので３が最も適当。during は＜during＋特定の期間（the summer vacation など）＞で，時間の長さには使わない。by は「～までに（期限）」，until は「～まで（ずっと）」で，時点を表す語と使う。'},
+ {tag:'準動詞：keep O -ing',q:'The noise outside kept the baby [[　　]] for an hour.',choices:['cry','cried','crying','to cry'],ans:3,ja:'「外の騒音のせいで，赤ちゃんは１時間泣き続けた。」',
+  exp:'＜keep＋O＋-ing＞で「O を～している状態にしておく」。the baby が「泣いている」状態が続いたので３が最も適当。keep O の後ろに原形・to 不定詞は置けない。'},
+ {tag:'準動詞：remember -ing と remember to ～',q:'I clearly remember [[　　]] this song at my first piano recital when I was six.',choices:['play','played','playing','to play'],ans:3,ja:'「私は６歳のときの最初のピアノの発表会でこの曲を弾いたことをはっきり覚えている。」',
+  exp:'when I was six とあるので，「（過去に）～したことを覚えている」の＜remember -ing＞を使う。３が最も適当。＜remember to ～＞は「忘れずに～する（これからすること）」なので４は不適当。'},
+ {tag:'準動詞：形容詞＋enough to ～',q:'This bag is [[　　]] carry all my textbooks.',choices:['big enough to','enough big to','big to enough','enough to big'],ans:1,ja:'「このかばんは私の教科書を全部運べるほど大きい。」',
+  exp:'＜形容詞＋enough to ～＞「～するのに十分…」の語順にするので１が最も適当。enough は形容詞・副詞を修飾するときは**後ろ**に置く。'},
+ {tag:'受動態：助動詞＋be＋過去分詞',q:'The results of the speech contest [[　　]] on the school website next Monday.',choices:['will announce','will be announced','will be announcing','will have announced'],ans:2,ja:'「スピーチコンテストの結果は来週の月曜日に学校のウェブサイトで発表される。」',
+  exp:'主語は「結果」で，結果は「発表される」側なので受動態にする。未来の受動態は＜will be＋過去分詞＞なので２が最も適当。１・３・４はいずれも能動態で，「結果が発表する」という意味になってしまう。'},
+ {tag:'関係詞：前置詞＋関係代名詞',q:'This is the room [[　　]] the students practice the piano every day.',choices:['that','which','in that','in which'],ans:4,ja:'「ここは生徒たちが毎日ピアノを練習する部屋だ。」',
+  exp:'the students practice the piano every day **in the room** の the room が先行詞になった形なので，＜前置詞＋関係代名詞＞の in which を使う（関係副詞 where でも同じ意味）。４が最も適当。＜前置詞＋that＞の形はないので３は不適当。１・２は前置詞 in がないので不適当。'},
+ {tag:'関係詞：what',q:'[[　　]] surprised me most was the size of the stadium.',choices:['That','What','Which','It'],ans:2,ja:'「私を最も驚かせたのは，スタジアムの大きさだった。」',
+  exp:'「～すること・もの」の意味で文の主語になる関係代名詞は what。What surprised me most「私を最も驚かせたもの」が主語，was が動詞になる。２が最も適当。'},
+ {tag:'比較：倍数表現',q:'Our new gym is [[　　]] the old one.',choices:['as large three times as','three times as large as','three as large times as','as three times large as'],ans:2,ja:'「私たちの新しい体育館は古い体育館の３倍の大きさだ。」',
+  exp:'「～の X 倍…」は＜X times as＋形容詞＋as ～＞の語順なので２が最も適当。倍数（three times）は最初の as の**前**に置く。'},
+ {tag:'数量：so many と so much',q:'There were [[　　]] people at the festival that we couldn’t find our friends.',choices:['so many','so much','such','such a'],ans:1,ja:'「祭りにはとても多くの人がいたので，私たちは友達を見つけられなかった。」',
+  exp:'people は数えられる名詞（複数扱い）なので＜so many＋複数名詞＋that ...＞「とても多くの～なので…」を使う。１が最も適当。so much は数えられない名詞に使う。such a は単数名詞に使い，such を使うなら such a lot of people となる。'},
+ {tag:'数量：almost と most',q:'[[　　]] all the students in my class have a smartphone.',choices:['Almost','Almost of','Most','Most of'],ans:1,ja:'「私のクラスのほとんどすべての生徒がスマートフォンを持っている。」',
+  exp:'空所のあとに all があるので，副詞の almost で all を修飾して＜almost all the＋複数名詞＞「ほとんどすべての～」とする。１が最も適当。Most は名詞を直接修飾するので most students となり，all とは一緒に使わない。'},
+ {tag:'語法・コロケーション：keep an eye on',q:'Could you [[　　]] an eye on my bag while I go to the restroom?',choices:['have','keep','make','take'],ans:2,ja:'「私がお手洗いに行く間，かばんを見ていてくれませんか？」',
+  exp:'keep an eye on ～で「～から目を離さないでいる，～を見張る」。２が最も適当。決まった語の組み合わせ（コロケーション）は，動詞ごと覚えておく。'},
+ {tag:'語法・コロケーション：heavy rain',q:'We had [[　　]] rain last night, and some roads were closed.',choices:['big','heavy','strong','thick'],ans:2,ja:'「昨夜は大雨が降り，いくつかの道路が通行止めになった。」',
+  exp:'「大雨」は heavy rain で表す（heavy traffic「激しい交通量」，heavy snow「大雪」と同じ）。２が最も適当。big rain・strong rain とは言わない（strong wind「強風」は言う）。'},
+ {tag:'語法：put up with',q:'I can’t [[　　]] up with his rude jokes anymore.',choices:['come','get','keep','put'],ans:4,ja:'「私はもう彼の失礼な冗談には我慢できない。」',
+  exp:'put up with ～で「～を我慢する」（＝stand・bear）。４が最も適当。come up with ～は「～を思いつく」，keep up with ～は「～についていく」。'}
+],
+B:[
+ {tag:'There ＋be＋名詞＋-ing',lead:'',pre:'There',post:'the bus.',tiles:['were','a few','students','waiting','for'],ans:'were a few students waiting for',ja:'「バスを待っている生徒が何人かいた。」',
+  exp:'There で始まるので＜There were＋複数名詞＞「～がいた」の形にする。a few students のあとに，現在分詞 waiting for ～「～を待っている」を続けて，students を後ろから修飾する。'},
+ {tag:'間接疑問',lead:'',pre:'Do you know',post:'?',tiles:['where','Mom','put','the key','to the car'],ans:'where Mom put the key to the car',ja:'「お母さんが車のかぎをどこに置いたか知っている？」',
+  exp:'know の目的語を＜疑問詞＋主語＋動詞＞の間接疑問にする。where Mom put the key（お母さんがかぎをどこに置いたか）とし，to the car「車の」を key のあとに置く。疑問文の語順（did Mom put）にしない。'},
+ {tag:'否定の位置：don’t think',lead:'Kenta has a bad cold.',pre:'I',post:'the party.',tiles:['think','he','don’t','come','will','to'],ans:'don’t think he will come to',ja:'「ケンタはひどい風邪をひいている。彼はパーティーに来ないと思う。」',
+  exp:'英語では「～しないと思う」を＜don’t think (that)＋S＋V＞で表し，否定を think の側に置く。I don’t think he will come to the party. とする。'},
+ {tag:'tell＋O＋to ～',lead:'',pre:'My teacher',post:'carefully.',tiles:['me','told','to','my','check','answers'],ans:'told me to check my answers',ja:'「先生は私に，答えを注意深く確かめるように言った。」',
+  exp:'＜tell＋O＋to ～＞「O に～するように言う」の形にする（advise O to ～・ask O to ～と同じ形）。told me to check my answers carefully となる。'},
+ {tag:'as ～ as possible',lead:'',pre:'Please',post:'.',tiles:['reply','to this e-mail','as','soon','as','possible'],ans:'reply to this e-mail as soon as possible',ja:'「このメールにできるだけ早く返信してください。」',
+  exp:'Please のあとに動詞の原形 reply を置き，reply to ～「～に返信する」とする。最後に＜as＋副詞＋as possible＞「できるだけ～」を続ける。'},
+ {tag:'help (to) ～・keep O C',lead:'',pre:'Walking every morning',post:'.',tiles:['helps','to','keep','you','healthy'],ans:'helps to keep you healthy',ja:'「毎朝歩くことは，あなたを健康に保つのに役立つ。」',
+  exp:'主語は Walking every morning（動名詞・三人称単数）なので，動詞は helps。＜help (to)＋動詞の原形＞「～するのに役立つ」と＜keep＋O＋C＞「O を C に保つ」を組み合わせて helps to keep you healthy とする。'}
+]
+},
+
+// ═══ 大問4 物語 ═══
+r4:{title:'The Captain’s Key',score:'目安22点（問1・2・6：各3点／問3：4点／問4：6点／問5：3点）',src:'オリジナル（Claude 作成）',
+ paras:[
+  {en:['Sora had wanted to quit the basketball club since the second week of April.  He was the shortest player on the team, and he missed almost every shot in practice.  The other first-year students seemed to get better every day, but Sora felt he was always one step behind.','One evening after practice, he walked slowly to the captain, Daiki, a third-year student.  “Daiki, I have something to tell you,” Sora said with [[ア]] in his voice.  “I don’t think I’m good enough for this team.  I’m going to quit.”','Daiki did not look surprised.  He took a small key out of his bag.  “This is the key to the gym,” he said.  “Come here at seven tomorrow morning.  If you still want to quit after that, I won’t stop you.”'],
+   ja:'①　ソラは４月の２週目からずっとバスケットボール部をやめたいと思っていた。彼はチームで一番背の低い選手で，練習ではほとんどすべてのシュートを外していた。ほかの１年生は毎日うまくなっていくように見えたが，ソラは自分がいつも一歩遅れていると感じていた。\n　ある日の練習のあと，彼はゆっくりとキャプテンの３年生，ダイキのところへ歩いて行った。「ダイキ先輩，話したいことがあります」とソラは落胆した声で言った。「僕はこのチームにふさわしいほどうまくないと思います。やめるつもりです。」\n　ダイキは驚いた様子ではなかった。彼はかばんから小さなかぎを取り出した。「これは体育館のかぎだ」と彼は言った。「明日の朝７時にここに来い。そのあとでまだやめたいなら，止めないよ。」'},
+  {en:['The next morning, the gym was cold and quiet.  Daiki was already there, holding a basketball.  He did not ask Sora to run or to practice difficult plays.  Instead, he asked him to shoot from only one spot, very close to the basket.','“That’s too easy,” Sora said.','“Then it should be easy to make ten in a row,” Daiki answered.','It was not easy.  Sora needed almost thirty minutes to make ten shots in a row.  When he finally did it, Daiki smiled.  “Tomorrow, one step farther,” he said.'],
+   ja:'②　翌朝，体育館は寒くて静かだった。ダイキはもうそこにいて，ボールを持っていた。彼はソラに走れとも，難しいプレーを練習しろとも言わなかった。その代わりに，ゴールのすぐ近くの１か所だけからシュートするように言った。\n　「それは簡単すぎます」とソラは言った。\n　「それなら，10本連続で入れるのも簡単なはずだな」とダイキは答えた。\n　簡単ではなかった。ソラは10本連続で入れるのにほぼ30分かかった。ついにそれができたとき，ダイキはほほえんだ。「明日は，一歩後ろからだ」と彼は言った。'},
+  {en:['For the next two months, they met every morning.  Each day, Sora moved one step farther from the basket.  Some days he could not make ten in a row, and he went to class feeling tired and frustrated.  But Daiki never said “Try harder.”  He just said, “Same spot tomorrow,” and handed him the key.','One morning in June, Sora found an old photo on the wall of the club room.  It showed a very small boy in a team uniform.  “Who is this?” he asked.','Daiki laughed.  “That’s me in my first year.  I was the shortest player on the team, and I wanted to quit, too.  The captain at that time gave me the key.”','Sora looked at the photo for a long time.  __(イ)Suddenly the key in his pocket felt heavier.__'],
+   ja:'③　その後の２か月間，彼らは毎朝会った。毎日，ソラはゴールから一歩ずつ離れていった。10本連続で入れられない日もあり，彼は疲れていらいらした気持ちで授業に向かった。しかし，ダイキは一度も「もっと頑張れ」とは言わなかった。彼はただ「明日も同じ場所な」と言って，かぎを手渡した。\n　６月のある朝，ソラは部室の壁に古い写真を見つけた。そこにはチームのユニフォームを着たとても小さな少年が写っていた。「これは誰ですか？」と彼は尋ねた。\n　ダイキは笑った。「１年生のときの俺だよ。チームで一番背が低くて，俺もやめたかったんだ。そのときのキャプテンが俺にかぎをくれたのさ。」\n　ソラは長い間その写真を見つめた。突然，ポケットの中のかぎが重く感じられた。'},
+  {en:['In July, the team played its last tournament before the third-year students retired.  In the second half of the final game, one of the players hurt his ankle, and the coach looked at the bench.  “Sora, you’re in,” he said.','Sora’s hands were shaking.  With ten seconds left, the ball came to him.  He was standing at a spot he knew very well — the place where he had practiced every morning in June.  He did not think.  He just shot.  The ball went in.','The team lost the game by one point.  But on the bus home, Daiki sat next to Sora and put something in his hand.  It was the key.','“From tomorrow, you open the gym,” Daiki said.  “Someday, there will be another first-year student who wants to quit.  When that happens, you’ll know what to do.”','Sora held the key tightly.  He understood now that the key was not only for the gym.  It was a way of [[ウ]].'],
+   ja:'④　７月，チームは３年生が引退する前の最後の大会に出場した。決勝戦の後半，選手の１人が足首を痛め，監督はベンチを見た。「ソラ，出番だ」と彼は言った。\n　ソラの手は震えていた。残り10秒で，ボールが彼のところへ来た。彼が立っていたのは，よく知っている場所 ― ６月に毎朝練習した場所だった。彼は考えなかった。ただシュートを打った。ボールは入った。\n　チームは１点差で試合に負けた。しかし帰りのバスで，ダイキはソラの隣に座り，彼の手に何かを置いた。それはかぎだった。\n　「明日からは，お前が体育館を開けるんだ」とダイキは言った。「いつか，やめたがっている別の１年生が来るだろう。そうなったら，どうすればいいかわかるはずだ。」\n　ソラはかぎを強く握りしめた。彼は今，そのかぎは体育館のためだけのものではないとわかった。それは，自分が受けた支えを次の選手へとつないでいく方法だったのだ。'}
+ ],
+ qs:[
+  {type:'mcq',skill:'ねらい：心情を表す語（論理展開の把握力）',q:'本文中の空所（ア）に入れるのに最も適当なものを選べ。',choices:['disappointment','excitement','pride','surprise'],ans:1,
+   jaQ:'１「落胆」（正解）　２「興奮」　３「誇り」　４「驚き」',
+   exp:'空所の前の第１段落で，ソラは「チームで一番背が低く，ほとんどすべてのシュートを外していた」「いつも一歩遅れていると感じていた」と述べられている。空所のあとでも「僕はこのチームにふさわしいほどうまくない。やめるつもりだ」と言っている。この状況で部をやめると伝えるときの声の調子として，１が最も適当。２・３は前向きな気持ちなので合わない。４は，驚くようなできごとが起きていないので不適当。\n【ここに注意】心情の語は，**空所の前の状況**と**空所のあとのセリフ**の両方と合うものを選ぶ。'},
+  {type:'write',lang:'ja',skill:'ねらい：下線部の内容の説明（論旨の解釈力）',q:'下線部（イ）Suddenly the key in his pocket felt heavier. とあるが，かぎが重く感じられたのはなぜか。本文の内容に即して日本語で説明せよ。',
+   models:['かぎは，かつてやめたかったダイキが当時のキャプテンから受け取り，今度は自分に託されたものだと知り，その意味の大きさに気づいたから。'],
+   exp:'下線部の直前で，ソラは部室の古い写真が１年生のときのダイキだと知る。ダイキは「俺もチームで一番背が低くて，やめたかった。そのときのキャプテンが俺にかぎをくれた」と話している。つまり，かぎは「やめたかった１年生を支えるために，キャプテンから受け継がれてきたもの」であり，ソラはそれが自分に託されていると気づいた。かぎそのものの重さが変わったのではなく，**かぎの持つ意味の大きさ**に気づいたことを表している。\n【採点のポイント】①ダイキも以前やめたかったこと ②当時のキャプテンからかぎを受け取ったこと ③そのかぎ（の意味）が自分に託されていると気づいたこと　が入っていればよい。'},
+  {type:'write',skill:'ねらい：Question に英語で答える（答えの形の指定）',q:'次の Question に対する Answer となるように，空所に当てはまる適当な英語を補え。\nQuestion：How did Daiki help Sora improve his shooting?\nAnswer：By （　　　　）.',
+   models:['By (practicing with him every morning and moving one step farther from the basket each day).','By (having him shoot from one spot until he made ten shots in a row).'],
+   exp:'Question は「ダイキはどのようにしてソラがシュートを上達させるのを助けたか」。Answer は By ～「～することによって」なので，**動名詞（-ing）で始める**。第２・３場面から，ダイキは毎朝一緒に練習し，ゴールの近くの１か所から10本連続で入れさせ，毎日一歩ずつ離れさせた。この内容を practicing ... や having him shoot ... などの動名詞句で書く。\n【ここに注意】By のあとに he practiced のような**主語＋動詞を書かない**。'},
+  {type:'mcq',skill:'ねらい：心情の変化（概要把握力）',q:'Sora の気持ちの変化を次の順番で表すとき，A〜E のうち空所に入れるべき３つの順番として最も適当なものを選べ。\n（　）→（　）→（　）→ moved（心を動かされた）\nA：confident　B：discouraged　C：frustrated　D：proud　E：surprised',choices:['B → C → E','B → E → D','C → B → A','E → C → B'],ans:1,
+   jaQ:'A「自信のある」　B「落ち込んだ」　C「いらいらした」　D「誇らしい」　E「驚いた」',
+   exp:'第１場面：シュートが入らず，部をやめようとしている → B discouraged「落ち込んだ」。第３場面：10本連続で入れられない日は「疲れていらいらした（frustrated）気持ちで」授業に向かった → C。同じ場面で，写真の小さな少年がダイキだと知る → E surprised「驚いた」。最後にかぎを受け取り，その意味を理解する → moved。したがって B → C → E の１が最も適当。\n【ここに注意】心情の変化は，**場面ごとに気持ちを表す語・行動**（frustrated／looked at the photo for a long time など）に印をつけて追う。'},
+  {type:'text',skill:'ねらい：本文からの抜き出し',q:'Daiki が Sora に毎朝かけていた言葉を，本文中から英語３語で抜き出して答えよ。',ans:['Same spot tomorrow','Same spot tomorrow.'],
+   exp:'第３場面第１段落に「ダイキは一度も『もっと頑張れ』とは言わなかった。彼はただ “Same spot tomorrow,” と言って，かぎを手渡した」とある。“Try harder.” は「言わなかった」言葉なので注意。\n【ここに注意】抜き出し問題は，**語数の指定**と，否定（never said）に気をつける。'},
+  {type:'mcq',skill:'ねらい：主題（概要把握力）',q:'本文中の空所（ウ）に入れるのに最も適当なものを選べ。',choices:['keeping the gym clean for the team','making sure that nobody quits the club','passing on the support he had received to the next player','winning the next tournament for the team'],ans:3,
+   jaQ:'１「チームのために体育館をきれいに保つこと」\n２「誰も部をやめないようにすること」\n３「自分が受けた支えを次の選手へ受け継ぐこと」（正解）\n４「チームのために次の大会で勝つこと」',
+   exp:'かぎは，やめたかったダイキが当時のキャプテンから受け取り，それがソラに渡された。ダイキは「いつか，やめたがっている別の１年生が来る。そうなったら，どうすればいいかわかるはずだ」と言っている。つまり，かぎは「支えてもらったことを次の後輩へつないでいくもの」なので３が最も適当。２は，ダイキも「やめたいなら止めない」と言っていたので不適当。１・４は本文の中心の内容ではない。'}
+ ],
+ summary:[['第1場面','部をやめたいソラ','一番背が低くシュートも入らないソラは，キャプテンのダイキに部をやめると伝える。ダイキは体育館のかぎを渡し，翌朝７時に来るように言う。'],['第2場面','朝の練習の始まり','ダイキはゴールのすぐ近くの１か所から10本連続で入れさせる。ソラは30分かかってやっと成功する。'],['第3場面','受け継がれてきたかぎ','２か月間，毎朝一歩ずつ離れて練習した。部室の写真から，ダイキも１年生のときやめたかったこと，当時のキャプテンからかぎを受け取ったことを知る。'],['第4場面','かぎを託される','最後の大会でソラは練習した場所からシュートを決める。試合には負けたが，ダイキはソラにかぎを渡し，次の１年生を支えるよう伝える。']],
+ words:['quit「（～を）やめる」','one step behind「一歩遅れて」','good enough for ～「～にふさわしいほど上手な」','in a row「連続で」','farther「より遠くに」（far の比較級）','frustrated「いらいらした」','hand「～を手渡す」','retire「引退する」','by one point「１点差で」','pass on ～「～を受け継ぐ，伝える」']
+},
+
+// ═══ 大問5 説明文 ═══
+r5:{title:'Light Pollution',score:'目安24点（問1・2・4：各3点／問3：各2点／問5：各4点）',src:'オリジナル（Claude 作成）',
+ notes:'*ecosystem ＝生態系　*hatchling ＝（卵からかえったばかりの）ひな，子ガメ',
+ paras:[
+  {en:['When people talk about pollution, they usually mean dirty air, water, or soil.  But there is another kind of pollution that we see every night without noticing it.  It is light pollution: too much artificial light at night.'],ja:'①　人々が汚染について話すとき，たいていは汚れた空気や水，土のことを言っている。しかし，私たちが毎晩，気づかないまま目にしている別の種類の汚染がある。それは光害，つまり夜の多すぎる人工の光である。'},
+  {en:['Street lights, signs, and buildings make our cities bright and safe.  However, much of this light goes up into the sky instead of down to the ground where people need it.  As a result, the night sky over many cities is so bright that only a few stars can be seen.'],ja:'②　街灯や看板，建物は，私たちの街を明るく安全にしている。しかし，この光の多くは，人々が必要とする地面の方ではなく空へと上がっていく。その結果，多くの都市の夜空はとても明るいので，ほんのいくつかの星しか見えない。'},
+  {en:['A high school student in Japan tried a simple project to see this problem with her own eyes.  On three clear nights in the same week, she counted the stars she could see from three places: the center of her city, a quiet area in the suburbs, and a mountain village.  From the city center, she counted only about ten stars.  In the suburbs, the number rose to about sixty.  In the mountain village, there were so many stars that she stopped counting at three hundred.  (See __(イ)Figure 1__.)'],ja:'③　日本のある高校生が，この問題を自分の目で確かめるために簡単な研究を行った。同じ週の晴れた３つの夜に，彼女は，市の中心部，郊外の静かな地域，山あいの村の３か所から見える星を数えた。市の中心部からは，約10個しか数えられなかった。郊外ではその数は約60個に増えた。山あいの村では星があまりに多かったので，彼女は300個で数えるのをやめた（図１参照）。'},
+  {en:['Light pollution is not only a problem for people who love stars.  It also affects animals and their *ecosystems.  Many birds travel at night and use the moon and stars to find their way.  Bright city lights can confuse them, and some of them fly into tall buildings.  [[ア]], sea turtle *hatchlings that are born on beaches at night usually move toward the brightest light, which is normally the sea.  When there are hotels and roads near the beach, they sometimes go the wrong way.'],ja:'④　光害は星が好きな人々だけの問題ではない。それは動物とその生態系にも影響を与える。多くの鳥は夜に移動し，月や星を使って道を見つける。都市の明るい光は鳥を混乱させることがあり，中には高い建物に飛び込んでしまうものもいる。それに加えて，夜に浜辺で生まれるウミガメの子は，ふつう一番明るい光の方，つまり通常は海の方へ進む。浜辺の近くにホテルや道路があると，子ガメたちは間違った方向へ進んでしまうことがある。'},
+  {en:['Our own health can also be affected.  Our bodies have a natural clock that tells us when to sleep.  Strong light at night, especially blue-white light from screens and some street lights, can make it harder for this clock to work well.  Some scientists believe that this may be one reason why many people today do not get enough sleep.'],ja:'⑤　私たち自身の健康も影響を受けることがある。私たちの体には，いつ眠るべきかを教えてくれる自然の時計がある。夜の強い光，特に画面や一部の街灯から出る青白い光は，この時計がうまく働くのを難しくすることがある。現代の多くの人が十分な睡眠をとれていない理由の一つは，これかもしれないと考える科学者もいる。'},
+  {en:['The good news is that light pollution is one of the easiest kinds of pollution to reduce.  First, lights can be designed to point down, so that they light only the ground.  Second, lights that are not needed can be turned off, or sensors can turn them on only when someone is near.  Third, warmer, orange-colored lights can be used instead of blue-white ones.  Some towns that have made these changes say that their night sky is now darker and their electricity bills are lower.'],ja:'⑥　良い知らせは，光害は最も減らしやすい種類の汚染の一つだということである。第一に，照明は下向きになるように設計することができ，そうすれば地面だけを照らすことになる。第二に，必要のない照明は消すことができるし，センサーを使えば人が近くにいるときだけ照明をつけることもできる。第三に，青白い光の代わりに，より温かみのあるオレンジ色の光を使うことができる。こうした変更を行ったいくつかの町は，今では夜空がより暗くなり，電気代も安くなったと言っている。'},
+  {en:['Unlike other kinds of pollution, light pollution can disappear the moment we switch off a light.  If we think a little more about how we use light at night, we may be able to see the stars again — and help the animals that share the night with us.'],ja:'⑦　ほかの種類の汚染とは違い，光害は私たちが明かりを消したその瞬間に消すことができる。夜の光の使い方についてもう少し考えれば，私たちは再び星を見ることができるかもしれない ― そして，夜を私たちと共にしている動物たちを助けることもできるかもしれない。'}
+ ],
+ qs:[
+  {type:'mcq',skill:'ねらい：つなぎ語（論理展開の把握力）',q:'本文中の空所（ア）に入れるのに最も適当なものを選べ。',choices:['For example','In addition','In short','On the other hand'],ans:2,
+   jaQ:'１「例えば」　２「それに加えて」（正解）　３「要するに」　４「その一方で」',
+   exp:'空所の前では「鳥」が光で混乱する例，空所のあとでは「ウミガメの子」が光で間違った方向へ進む例が述べられている。どちらも段落の最初の文「光害は動物とその生態系にも影響を与える」の具体例で，２つ目の例を**付け加えている**ので，２が最も適当。１「例えば」は最初の例を出すときに使う。３「要するに」はまとめ，４「その一方で」は対比で，いずれも合わない。\n【ここに注意】つなぎ語は，空所の前後が「原因と結果」「例の追加」「逆接」「対比」のどれかを先に決めてから選ぶ。'},
+  {type:'mcq',skill:'ねらい：図表を選ぶ（詳細理解力）',q:'下線部（イ）Figure 1 の内容として最も適当なものを選べ。',
+   svg:grid4([svgBars('Stars a student could see',['City','Suburbs','Village'],[60,10,300],300,260,180),svgBars('Stars a student could see',['City','Suburbs','Village'],[10,60,300],300,260,180),svgBars('Stars a student could see',['City','Suburbs','Village'],[10,300,60],300,260,180),svgBars('Stars a student could see',['City','Suburbs','Village'],[10,30,150],300,260,180)]),
+   choices:['グラフ１','グラフ２','グラフ３','グラフ４'],ans:2,
+   exp:'第３段落で，見えた星の数は「市の中心部：約10個」「郊外：約60個」「山あいの村：300個で数えるのをやめた（＝300個以上）」と述べられている。この３つがすべて合うのは２。１は市と郊外が逆，３は郊外と村が逆，４は郊外と村の数が本文より少ない。\n【ここに注意】図表を選ぶ問題は，**本文の数字を全部メモしてから**グラフと照らし合わせる。'},
+  {type:'write',lang:'ja',skill:'ねらい：本文の内容を日本語でまとめる（概要把握力）',q:'光害を減らすために本文で述べられている方法を，次のようにまとめたい。空所①〜③に当てはまる適当な日本語を補え。\nWays to Reduce Light Pollution\ni　照明を（　①　）ように設計する。\nii　必要のない照明は消すか，（　②　）。\niii　青白い光の代わりに（　③　）を使う。',blanks:[{lab:'①'},{lab:'②'},{lab:'③'}],
+   models:['① 下向きにして地面だけを照らす','② センサーで人が近くにいるときだけつく','③ 温かみのあるオレンジ色の光'],
+   exp:'第６段落の First／Second／Third で３つの方法が挙げられている。①は第２文「照明は下向きになるように設計でき，そうすれば地面だけを照らす」，②は第３文「センサーが，人が近くにいるときだけ照明をつけることができる」，③は第４文「より温かみのあるオレンジ色の光」から答える。\n【ここに注意】First／Second／Third などの**列挙の目印**を見つけると，まとめの表の空所の場所がすぐわかる。'},
+  {type:'mcq',skill:'ねらい：内容一致（概要把握力）',q:'本文の内容と合致するものを選べ。',choices:['Light pollution is a problem only for people who enjoy looking at stars.','Most of the light from cities goes down to the ground where people need it.','Some towns have darker night skies and pay less for electricity after changing their lights.','Sea turtle hatchlings always find the sea, even when there are hotels near the beach.'],ans:3,
+   jaQ:'１「光害は星を見るのが好きな人々だけの問題である。」\n２「都市の光のほとんどは，人々が必要とする地面へ向かう。」\n３「照明を変えたあと，夜空が暗くなり，電気代が安くなった町がある。」（正解）\n４「ウミガメの子は，浜辺の近くにホテルがあっても必ず海を見つける。」',
+   exp:'第６段落最終文「こうした変更を行ったいくつかの町は，今では夜空がより暗くなり，電気代も安くなったと言っている」と合うので３が最も適当。１は第４段落第１文「星が好きな人々だけの問題ではない」と合わない。２は第２段落第２文「光の多くは地面ではなく空へ上がっていく」と合わない。４は第４段落最終文「浜辺の近くにホテルや道路があると，間違った方向へ進むことがある」と合わない。\n【ここに注意】only・always・most などの**言い過ぎの語**がある選択肢は，本文と照らし合わせて慎重に判断する。'},
+  {type:'write',skill:'ねらい：本文を踏まえて英語で書く（思考力・判断力・表現力）',q:'次の会話は，本文を読んだ父親と，本文を読んでいない娘の会話である。あなたが父親の立場なら娘に対してどのように声をかけるべきか。空所①・②に当てはまる内容を，本文の内容に必ず言及して英語で補え。（それぞれ２文以上になってもかまわない）',
+   html:`<div class="dlg"><div class="ln"><span class="sp">Daughter</span><span>I can’t sleep well these days.  I usually watch videos on my phone in bed.</span></div><div class="ln"><span class="sp">Father</span><span>I read an article about light at night.  It said that <span class="blank">（ ① ）</span>.</span></div><div class="ln"><span class="sp">Daughter</span><span>Really?  I didn’t know that.  Should I change my phone settings?</span></div><div class="ln"><span class="sp">Father</span><span>That may help.  But according to the article, light pollution is easy to reduce.  So you should <span class="blank">（ ② ）</span>.</span></div><div class="ln"><span class="sp">Daughter</span><span>OK.  I’ll try that tonight.</span></div></div>`,
+   blanks:[{lab:'① It said that （　　）.'},{lab:'② So you should （　　）.'}],
+   models:['① It said that (strong blue-white light from screens at night can make it hard for our natural body clock to work well).','① It said that (light at night can stop our bodies from knowing when to sleep).','② So you should (turn off your phone before you go to bed).','② So you should (stop using your phone in bed and use warmer, orange-colored light in your room).'],
+   exp:'空所①：娘は「最近よく眠れない。ベッドでスマートフォンの動画を見ている」と言っている。第５段落第２・３文「体にはいつ眠るべきかを教える自然の時計がある。夜の強い光，特に画面からの青白い光は，この時計がうまく働くのを難しくすることがある」に言及して，It said that のあとに**主語＋動詞の節**で書く。\n空所②：父親は「光害は減らしやすい」と言ってから，should のあとで助言している。第６段落の方法（必要のない光を消す／オレンジ色の光を使う）や第７段落「明かりを消したその瞬間に消すことができる」をもとに，**動詞の原形**で始めて「寝る前にスマートフォンを消す」などと書く。\n【ここに注意】本文の内容に**必ず言及**する（自分の意見だけを書かない）。should のあとは動詞の原形。',
+   ja:['娘：最近よく眠れないの。たいていベッドでスマホの動画を見ているんだけど。','父親：夜の光についての記事を読んだよ。それには，（①夜の画面からの強い青白い光は，体の自然な時計がうまく働くのを難しくすることがある）と書いてあったよ。','娘：本当？　知らなかった。スマホの設定を変えるべき？','父親：それも役に立つかもしれない。でも記事によると，光害は減らしやすいそうだ。だから，（②寝る前にスマホの電源を切る）べきだよ。','娘：わかった。今夜やってみる。']}
+ ],
+ summary:[['第1段落','光害とは','空気や水の汚染のほかに，夜の多すぎる人工の光という汚染がある。'],['第2段落','光が空へ向かう','光の多くが地面でなく空へ向かうため，都市の夜空は明るく，星がほとんど見えない。'],['第3段落','高校生の研究','市の中心部・郊外・山あいの村で見える星を数えると，約10個・約60個・300個以上だった。'],['第4段落','動物への影響','夜に移動する鳥は明るい光で混乱し，ウミガメの子は浜辺近くの光で間違った方向へ進むことがある。'],['第5段落','健康への影響','夜の強い光，特に青白い光は体内時計のはたらきを妨げ，睡眠不足の一因かもしれない。'],['第6段落','光害の減らし方','照明を下向きにする，不要な照明を消す・センサーを使う，オレンジ色の光を使う。夜空が暗くなり電気代も下がった町もある。'],['第7段落','まとめ','光害は明かりを消せばすぐ消える。光の使い方を考えれば，星を取り戻し，動物も助けられる。']],
+ words:['pollution「汚染，公害」　artificial「人工の」','instead of ～「～の代わりに」','as a result「その結果」','so ～ that ...「とても～なので…」','suburbs「郊外」','affect「～に影響を与える」　confuse「～を混乱させる」','in addition「それに加えて」','make it harder for A to ～「A が～するのをより難しくする」（it は形式目的語）','one reason why ～「～である理由の一つ」','reduce「～を減らす」　design「～を設計する」','sensor「センサー」　electricity bill「電気代」','unlike ～「～と違って」　the moment ～「～するとすぐに」']
+},
+
+// ═══ 大問6 表現力 ═══
+w:{
+A:{jp:`次の日本文の下線部を英語になおせ。（各問，解説の「読みかえ」の手順で考えよう）\n(1) __駅から歩いて５分のところに新しい図書館がある。__　(2) 子どもの頃，__よく祖父と川へ釣りに行ったものだ。__\n(3) __困ったときに相談できる友達がいるのは心強い。__　(4) __ごみを減らすために何ができるか，みんなで考えるべきだ。__`,
+ items:[
+  {lab:'1',q:'駅から歩いて５分のところに新しい図書館がある。',
+   models:['There is a new library (within) a five-minute walk from the station.','You can find a new library if you walk five minutes from the station.'],
+   exp:'【読みかえ】「駅から徒歩５分の範囲に新しい図書館がある」→ There is ～ の文にする。「徒歩５分」は a five-minute walk（five-minute とハイフンでつなぎ，minute は単数）または five minutes’ walk。\nまた「駅から５分歩けば，新しい図書館が見つかる」と読みかえ，You can find ～ if you walk five minutes from the station. としてもよい。',
+   pts:'・There is ＋単数名詞「～がある」　・a five-minute walk ＝ five minutes’ walk「徒歩５分」'},
+  {lab:'2',q:'よく祖父と川へ釣りに行ったものだ。',
+   models:['When I was a child, I used to go fishing in the river with my grandfather.','I often went fishing in the river with my grandfather when I was little.'],
+   exp:'【読みかえ】主語「私は」を補う。「よく～したものだ」は＜used to＋動詞の原形＞（過去の習慣）。「釣りに行く」は go fishing。「川へ釣りに行く」は go fishing **in** the river（to the river にしない）。often と過去形で表してもよい。',
+   pts:'・used to ～「よく～したものだ」　・go fishing in the river「川へ釣りに行く」'},
+  {lab:'3',q:'困ったときに相談できる友達がいるのは心強い。',
+   models:['It is encouraging to have a friend I can talk to when I am in trouble.','Having friends to talk to when I have a problem makes me feel safe.'],
+   exp:'【読みかえ】「困ったときに話せる友達を持っていることは，私を安心させる」。形式主語 It を使って It is ～ to have a friend ... とする。「相談できる友達」は a friend (who) I can talk to（関係代名詞）または a friend to talk to（形容詞用法の不定詞）。to のあとの前置詞（talk **to**）を落とさない。「心強い」は encouraging，または makes me feel safe と言いかえる。',
+   pts:'・It is ～ to ...「…することは～だ」　・a friend to talk to「相談する友達」　・be in trouble「困っている」'},
+  {lab:'4',q:'ごみを減らすために何ができるか，みんなで考えるべきだ。',
+   models:['We should think together about what we can do to reduce waste.','Everyone should consider what to do to reduce garbage.'],
+   exp:'【読みかえ】主語を「私たちは」と補う。「何ができるか」は間接疑問 what we can do，または＜疑問詞＋to 不定詞＞what to do。「～するために」は to 不定詞（副詞用法）。「ごみを減らす」は reduce waste [garbage]。',
+   pts:'・what we can do「私たちに何ができるか」　・reduce waste「ごみを減らす」'}
+ ]},
+B:{type:'write',q:'【B-1】あなたは，クラスの調べ学習で「１か月に１冊以上本を読みますか」について，校内でアンケートをとり，結果を下の表にまとめた。空所（X）には表から読みとれることを，空所（Y）には（X）の理由として考えられることについてのあなたの考えを，それぞれ **15語程度** の英語で書け。\n【B-2】下の２つのグラフは，ある高校の「マイボトルを持ってくる生徒の割合」と「校内の自動販売機で１か月に売れたペットボトルの本数」である。グラフから読みとれることをまとめたうえで，ペットボトルをさらに減らすためにどのような取り組みをすればよいかについて，あなたの考えを **30〜35語程度** の英語で書け。',
+ html:`<table class="tbl" style="max-width:520px"><tr><th colspan="3">【B-1】１か月に１冊以上本を読みますか？（●＝５人）</th></tr><tr><th>学年</th><th>はい</th><th>いいえ</th></tr><tr><td>中学１年</td><td>●●●●●●●●●</td><td>●●●</td></tr><tr><td>中学３年</td><td>●●●●●●●</td><td>●●●●●</td></tr><tr><td>高校１年</td><td>●●●●●</td><td>●●●●●●●</td></tr><tr><td>高校３年</td><td>●●●</td><td>●●●●●●●●●</td></tr></table>
+<div class="dlg">Based on the results of the survey, <span class="blank">（ X ）</span>.<br>I think it is because <span class="blank">（ Y ）</span>.</div>
+<div class="lead" style="margin-top:10px">【B-2】</div><div class="svgfig" style="display:flex;flex-wrap:wrap;gap:8px">${svgLine('Students who bring their own bottles',['2023','2024','2025','2026'],[20,35,50,65],100,'(%)',300,190)}${svgLine('Plastic bottles sold at school (per month)',['2023','2024','2025','2026'],[900,880,870,860],1000,'(bottles)',300,190)}</div>`,
+ blanks:[{lab:'B-1　X',words:'15語程度',min:11,max:19},{lab:'B-1　Y',words:'15語程度',min:11,max:19},{lab:'B-2',words:'30〜35語程度',min:28,max:38}],
+ models:['B-1　X：(older students tend to read fewer books than younger students do)（11語）／Y：(older students are busier with club activities and studying for tests, so they have less free time)（17語）','B-1　X：(the number of students who read at least one book a month goes down as they get older)（18語）／Y：(older students spend more time on their smartphones and less time reading books)（13語）','B-2：The number of students who bring their own bottles has been increasing, but the number of plastic bottles sold has hardly changed.  Our school should put water servers so that students can refill their bottles.（35語）','B-2：More and more students bring their own bottles, but almost the same number of plastic bottles are still sold.  I think the school store should sell drinks in cans or paper cartons instead.（33語）'],
+ exp:'【完答への道のり】\n❶ 図表の設定を理解する：B-1 は学年別の回答数（●１つ＝５人）。学年が上がるほど「はい」が減っている。B-2 は，左のグラフ（マイボトルの割合）が増えているのに，右のグラフ（ペットボトルの本数）は**ほとんど減っていない**。\n❷ 条件を満たす：B-1 は X に読み取り，Y にその理由（自分の考え）。B-2 は読み取りをまとめたうえで，取り組みの提案を書く。**２つのグラフを両方**使う。\n❸ 見直し：主語と動詞の一致・時制・比較級の形を確認する。\n\n【使える表現】\n・傾向：tend to ～「～する傾向がある」，be more likely to ～「～する可能性が高い」，as they get older「学年が上がるにつれて」\n・数量の変化：the number of ～ has been increasing「～の数が増え続けている」，more and more ～「ますます多くの～」，hardly change「ほとんど変わらない」\n・提案：Our school should ～「学校は～すべきだ」，so that ～ can ...「～が…できるように」，instead of ～「～の代わりに」\n\n【よくある減点】\n・B-2 で片方のグラフしか説明していない／提案がない。\n・X に理由まで書いてしまう（X は読み取り，Y は理由と役割が分かれている）。',
+ pts:'・the number of ～は単数扱い（The number ... **has** been ...）　・few ＋複数名詞「ほとんど～ない」'}
+}
+};
+
+// 高１11月進研模試の傾向（2023〜2025年度の3年分を分析）
+// 語彙の数字は tools/shinken11/analysis/vocab.js で計算（速単必修編・教科書新出語のリストと照合。語形は簡易判定のため目安）
+const TREND=`
+<div class="box"><div class="box-title">この分析について</div>
+<div class="lead">2023〜2025年度の3年分の問題と解答解説を分析し，<b>よく出題される事項・語彙レベル・文法レベル</b>を明らかにしました。下の「練習問題」は，この分析をもとに作ったオリジナル問題です（模試の問題文はそのまま使っていません）。</div></div>
+
+<div class="box"><div class="box-title">① 試験の形（3年間ほぼ同じ・80分／100点）</div>
+<table class="tbl">
+<tr><th>大問</th><th>内容</th><th>配点</th><th>設問の形</th></tr>
+<tr><td>1（選択）</td><td>リスニング</td><td>22</td><td>Part 1：短い会話5問（No.4 は「今の状況」の絵，No.5 はグラフ）・1回読み／Part 2：長めの会話3問・2回／Part 3：モノローグを聞いて，メモ・メール・SNSの空所を英語5〜10語で補う</td></tr>
+<tr><td>2（選択）</td><td>会話表現</td><td>22</td><td>A：会話の空所に入る1文（4択×5）／B：長めの会話の空所4つに8つから選ぶ</td></tr>
+<tr><td>3</td><td>文法・語法</td><td>11</td><td>A：4択×5（各1点）／B：語句整序×2（各3点）</td></tr>
+<tr><td>4</td><td>長文（物語・伝記）</td><td>20〜22</td><td>空所補充・下線部の説明（日本語）・Question に英語で答える・心情・本文からの抜き出し</td></tr>
+<tr><td>5</td><td>長文（説明文）</td><td>24〜26</td><td>つなぎ語・図表を選ぶ・日本語でまとめる・内容一致・<b>本文を踏まえて英語で書く</b></td></tr>
+<tr><td>6</td><td>表現力</td><td>21</td><td>A：和文英訳（下線部2か所・6点＋7点）／B：絵・表・グラフを読み取って書く（8点）</td></tr>
+</table>
+<div class="col"><b>ポイント</b>　大問1と2はどちらか1題。<b>英語で書く問題が毎年30点前後</b>（大問1 Part 3・大問4・5の英語記述・大問6）。記述の練習がそのまま点数につながります。</div></div>
+
+<div class="box"><div class="box-title">② 語彙レベル</div>
+<table class="tbl">
+<tr><th>パート</th><th>語数</th><th>1文の平均語数</th><th>速単必修編に載っている語のうち<br>Stage 1〜3 ／ Stage 1〜6</th></tr>
+<tr><td>大問4 物語（3年平均）</td><td>約620語</td><td>約11語</td><td>59% ／ 91%</td></tr>
+<tr><td>大問5 説明文（3年平均）</td><td>約550語</td><td>約14語</td><td>68% ／ 93%</td></tr>
+<tr><td>大問1 リスニング（全Part）</td><td>約470語</td><td>約7語</td><td>59% ／ 89%</td></tr>
+<tr><td>大問2 会話表現</td><td>約290語</td><td>約7語</td><td>71% ／ 88%</td></tr>
+</table>
+<div class="col"><b>わかったこと</b><br>
+・本文の大部分は<b>中学で習った語</b>と<b>速単必修編の Stage 1〜6</b>（今の授業で進めているところまで）の語でできている。速単に載っている語の<b>約9割が Stage 6 まで</b>。<br>
+・難しい語には<b>注（*）</b>がつく（専門的な語・固有の名称など）。注がない難しめの語は，<b>前後から意味を推測</b>できるように書かれている（例：難しい語のすぐあとに，やさしい英語での言い換えが続く）。<br>
+・<b>説明文は1文が長い</b>（平均14語）。物語は短い文と会話文が多い。リスニング・会話は1文7語前後。<br>
+・題材ごとの専門語（楽器名・体の器官・社会問題の用語など）は，本文中で説明されるか注がつく。<br>
+<span style="font-size:.72rem;color:#6b7280">※速単必修編（ステージ1〜7）・教科書の新出語リストと照合した目安です（語形の判定は簡易的）。</span></div></div>
+
+<div class="box"><div class="box-title">③ 文法レベル</div>
+<table class="tbl">
+<tr><th>どこで</th><th>出てくる文法</th></tr>
+<tr><td>大問3（文法問題）</td><td>高1で学ぶ範囲が中心：時制（ago／It has been ～ since／for＋期間）・準動詞（keep O -ing／remember to と -ing／形容詞＋enough to／help to／make O C／without being 過去分詞）・受動態（will be held）・関係詞（with which／what）・比較（twice as much ～ as／as many ～ as possible）・数量（so much／most と almost）</td></tr>
+<tr><td>長文の中</td><td>分詞構文（文頭の -ing ～, や文末の , -ing ～）・関係代名詞の非制限用法（, which ～）・過去完了・so ～ that ...・make it impossible for ～ to ...（形式目的語）・as if・<b>答えの形を指定する記述</b>（By ～ing／It was that ～）</td></tr>
+<tr><td>英作文（大問6）</td><td>There is ～／used to ～／疑問詞＋to 不定詞（what to do）・間接疑問（what we should do）・形容詞用法の不定詞（someone to consult）・関係代名詞（people who ～）・比較級（more likely to ～）</td></tr>
+</table>
+<div class="col"><b>わかったこと</b>　文法の難しさは<b>高1の教科書・VQ Ultimate の範囲</b>。ただし長文には分詞構文や非制限用法など「まだ習っていないかもしれない形」も少し出るので，<b>意味のまとまりで読む</b>練習が大事。</div></div>
+
+<div class="box"><div class="box-title">④ よく出題される事項</div>
+<table class="tbl">
+<tr><th>大問</th><th>よく出ること（3年間）</th></tr>
+<tr><td>1 リスニング</td><td>「<b>このあとすること</b>」と「<b>今していること</b>」の区別／主な話題（mainly）／数字の言い換え（about half that number）・合計／Part 3 は空所の前の形（because・want to・should・than）に合わせて書く</td></tr>
+<tr><td>2 会話表現</td><td>空所の<b>直後の返事から逆算</b>（Thank you, but I can manage. → 手伝いの申し出）／B は8つのうち4つがダミー</td></tr>
+<tr><td>3 文法</td><td><b>語法・コロケーション</b>が毎年2問前後（do O a favor／out of order／heavy traffic／stand）／可算・不可算（homework, gas）／比較・倍数</td></tr>
+<tr><td>4 物語</td><td>心情を表す語（excitement など）／心情の変化の順番／Question に英語で答える（答えの形が指定）／日本語でまとめる（字数制限あり）／本文から抜き出し</td></tr>
+<tr><td>5 説明文</td><td>つなぎ語（As a result／However ― Also）／<b>図表を選ぶ</b>（2024・2025）／「第○段落第○文」を日本語にまとめる／<b>本文を踏まえて英語で書く</b>（要約・会話の空所）</td></tr>
+<tr><td>6 表現力</td><td>A：<b>日本語を英語にしやすく読みかえる</b>（主語を補う・There is・used to）／B：<b>図表を読み取る → 理由や提案</b>の2段構成。2025は30〜35語に増えた</td></tr>
+</table></div>
+
+<div class="box"><div class="box-title">⑤ 模試までにやること</div>
+<div class="col">
+1. <b>大問6B</b>：「読み取り1文＋理由または提案1〜2文」の型で1回書く。the number of ～／more and more ～／tend to ～／be likely to ～ を使えるように。<br>
+2. <b>長文の英語記述</b>：答えの形（By ～ing／It was that ～／動詞の原形）を設問に合わせる練習。<br>
+3. <b>文法</b>：語法・コロケーションと，可算・不可算の区別を確認。<br>
+4. <b>リスニングを選ぶ人</b>：「今」と「このあと」の区別，数字の言い換えに注意して聞く。<br>
+5. <b>語彙</b>：速単必修編 Stage 1〜6 の復習がそのまま本文の理解につながる。
+</div></div>
+`;
+
+const IMG={};
+const YEARS=Object.keys(D);
+const ylab=y=>/^\d+$/.test(y)?y+'年度':(D[y].name||y);
+const HAS_PAST=YEARS.some(y=>/^\d+$/.test(y));
+
+// ───────── 共通 ─────────
+const SECS=[
+ {id:'l',num:'大問 1（選択）',icon:'🎧',title:'リスニング',desc:'Part 1（短い会話×5・1回読み）／Part 2（長めの会話×3問・2回読み）／Part 3（モノローグを聞いてメモ・メールの空所を英語で補う）。読み上げ機能で聞けます。',sub:'▶ を押すと会話と質問が読み上げられます。本番は Part 1 が1回、Part 2・3 が2回。'},
+ {id:'c',num:'大問 2（選択）',icon:'💬',title:'会話表現',desc:'A：会話の空所に入る1文（4択×5）／B：長めの会話の空所4つに8つの選択肢から選ぶ。',sub:'A：4択×5問／B：8つから4つ選ぶ'},
+ {id:'g',num:'大問 3',icon:'🔤',title:'文法・語法',desc:'A：空所補充の4択×5（1点ずつ）／B：語句整序×2（3点ずつ）。',sub:'A：4択×5問／B：並べかえ×2問'},
+ {id:'r4',num:'大問 4',icon:'📖',title:'長文読解（物語・伝記）',desc:'空所補充・下線部の説明・Question への英語の答え・心情の変化など。日本語記述と英語記述が両方出ます。',sub:'本文（全訳つき）→ 設問'},
+ {id:'r5',num:'大問 5',icon:'📰',title:'長文読解（説明文）',desc:'図表を選ぶ問題・日本語でまとめる問題・内容一致・本文を踏まえて英語で書く問題（思考力）。',sub:'本文（全訳つき）→ 設問'},
+ {id:'w',num:'大問 6',icon:'✍️',title:'表現力（英作文）',desc:'A：和文英訳（下線部2か所）／B：絵・表・グラフを読み取って書く自由英作文（15語×2 または 30〜35語）。',sub:'A：和文英訳×2／B：自由英作文'}
+];
+const esc=s=>(s??'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+// 本文用の簡易マークアップ：[[ア]]→空所，__x__→下線，**x**→太字
+function mk(s){
+  return esc(s).replace(/\[\[(.+?)\]\]/g,'<span class="blank">（ $1 ）</span>')
+    .replace(/__(.+?)__/g,'<u>$1</u>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+}
+function norm(s){return (s||'').toString().toLowerCase().replace(/[’‘]/g,"'").replace(/[.,!?;:"()]/g,' ').replace(/\s+/g,' ').trim();}
+function wcount(s){const m=(s||'').trim().match(/[A-Za-z0-9'’\-]+/g);return m?m.length:0;}
+let curSec=null,curYear=null,prevScreen='home';
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  document.getElementById('btn-back').style.display=id==='home'?'none':'inline-block';
+  window.scrollTo(0,0);
+}
+function goHome(){stopTTS();prevScreen='home';show('home');renderHome();document.getElementById('topbar-title').textContent='11月進研模試に向けた学習アプリ（高1）';}
+function goBack(){stopTTS();if(document.getElementById('screen-detail').classList.contains('active'))openSec(curSec);else goHome();}
+function store(){try{return JSON.parse(localStorage.getItem('shinken11_done')||'{}')}catch(e){return {}}}
+function markDone(k){try{const d=store();d[k]=1;localStorage.setItem('shinken11_done',JSON.stringify(d))}catch(e){}}
+
+function renderHome(){
+  if(!HAS_PAST)document.querySelector('.home-hero').innerHTML='<h1>高１ 11月進研模試　模試前練習問題</h1><div class="sub">3年分（2023〜2025年度）を分析した「傾向」と，それをもとに作ったオリジナルの練習問題（大問1〜6）。<br>大問1（リスニング）・2（会話表現）は本番ではどちらか1題を選択、3〜6は必答。解答・解説・全訳つき。</div>';
+  if(!HAS_PAST)document.getElementById('footer-note').innerHTML='※このアプリは，高１11月進研模試の3年分（2023〜2025年度）を分析し，<b>よく出題される事項・語彙レベル・文法レベルを明らかにしたうえで</b>作成しています。分析の結果は「高１11月進研模試の傾向」にまとめています。<br>※練習問題は，出題の傾向（出題形式・ねらい・文法事項）をもとに作った<b>オリジナル問題</b>です。模試の問題文・解説は使っていません。<br>※大問1の音声はブラウザの読み上げ機能（機械音声）です。';
+  const d=store();
+  let h=SECS.map(s=>{
+    const n=YEARS.filter(y=>d[s.id+'-'+y]).length;const N=YEARS.length;
+    return `<div class="home-card" onclick="openSec('${s.id}')"><div class="card-icon">${s.icon}</div><div class="card-body"><div class="card-num">${s.num}</div><div class="card-title">${s.title}</div><div class="card-desc">${s.desc}</div>${n?`<div class="prog">✔ ${n}/${N} 取り組み済み</div>`:''}</div></div>`;
+  }).join('');
+  h=`<div class="home-card" onclick="openTrend()"><div class="card-icon">📊</div><div class="card-body"><div class="card-num">分析</div><div class="card-title">高１11月進研模試の傾向</div><div class="card-desc">3年分を分析して，よく出題される事項・語彙レベル・文法レベルをまとめました。まずここから。</div></div></div>`+h;
+  document.getElementById('home-cards').innerHTML=h;
+}
+function openSec(id){
+  stopTTS();curSec=id;const s=SECS.find(x=>x.id===id);const d=store();
+  document.getElementById('topbar-title').textContent=s.num+'　'+s.title;
+  document.getElementById('sec-title').textContent=s.num+'　'+s.title;
+  document.getElementById('sec-sub').textContent=s.sub;
+  document.getElementById('sec-years').innerHTML=YEARS.map(y=>{
+    const lab=(D[y]&&D[y].labels&&D[y].labels[id])||'';
+    return `<div class="year-card" onclick="openDetail('${id}','${y}')"><div class="year-card-yr">${ylab(y)}</div><div class="year-card-sub">${esc(lab)}</div>${d[id+'-'+y]?'<div class="badge">✔ 取り組み済み</div>':''}</div>`;
+  }).join('');
+  document.getElementById('sec-extra').innerHTML=id==='l'?ttsNote():'';
+  show('sec');
+}
+function openDetail(id,y){
+  stopTTS();curSec=id;curYear=y;const s=SECS.find(x=>x.id===id);
+  document.getElementById('det-title').textContent=`${ylab(y)}　${s.num}　${s.title}`;
+  document.getElementById('det-sub').textContent=(D[y].labels&&D[y].labels[id])||'';
+  document.getElementById('det-back-sec').onclick=()=>openSec(id);
+  const R={l:renderL,c:renderC,g:renderG,r4:renderR,r5:renderR,w:renderW};
+  document.getElementById('det-body').innerHTML=R[id](D[y][id],y,id);
+  markDone(id+'-'+y);
+  show('detail');
+}
+
+// ───────── 設問の部品 ─────────
+let QID=0;const QS={};
+function expHTML(o){
+  let h='';
+  if(o.models&&o.models.length)h+='<h4>解答例</h4>'+o.models.map(m=>`<div class="model">${mk(m)}</div>`).join('');
+  if(o.jaQ)h+=`<h4>設問・選択肢の意味</h4><div>${mk(o.jaQ)}</div>`;
+  if(o.exp)h+=`<h4>解説</h4><div>${mk(o.exp)}</div>`;
+  if(o.pts)h+=`<h4>ポイント</h4><div>${mk(o.pts)}</div>`;
+  if(o.ja)h+=`<h4>和訳</h4><div class="ja-dlg">${Array.isArray(o.ja)?o.ja.map(l=>`<div>${mk(l)}</div>`).join(''):mk(o.ja)}</div>`;
+  return h;
+}
+function mcq(o,label){
+  const id='q'+(++QID);QS[id]=o;
+  const opts=o.choices.map((c,i)=>`<label class="opt" id="${id}-o${i+1}"><input type="radio" name="${id}" value="${i+1}"><span>${i+1}　${mk(c)}</span></label>`).join('');
+  return `<div class="q-block">${label?`<div class="q-num">${label}${o.skill?`<span class="q-skill">${esc(o.skill)}</span>`:''}</div>`:''}${o.q?`<div class="q-text">${mk(o.q)}</div>`:''}${o.dlg?dlgHTML(o.dlg):''}${o.img?`<img class="fig" src="${IMG[o.img]}" alt="図">`:''}${o.svg?`<div class="svgfig">${o.svg}</div>`:''}${opts}
+  <button class="btn" onclick="checkMCQ('${id}')">答え合わせ</button><div class="res" id="${id}-r"></div><div class="exp" id="${id}-e">${expHTML(o)}</div></div>`;
+}
+function checkMCQ(id){
+  const o=QS[id];const v=document.querySelector(`input[name="${id}"]:checked`);
+  const r=document.getElementById(id+'-r');
+  if(!v){r.className='res ng';r.textContent='選択肢を選んでください。';return;}
+  const ok=+v.value===o.ans;
+  document.querySelectorAll(`[id^="${id}-o"]`).forEach(e=>e.classList.remove('right','wrong'));
+  document.getElementById(`${id}-o${o.ans}`).classList.add('right');
+  if(!ok)document.getElementById(`${id}-o${v.value}`).classList.add('wrong');
+  r.className='res '+(ok?'ok':'ng');
+  r.innerHTML=ok?`⭕ 正解！（正解：${o.ans}）`:`❌ 不正解。正解は <b>${o.ans}</b> です。下の解説を読もう。`;
+  document.getElementById(id+'-e').classList.add('show');
+  if(o.after)o.after();
+}
+function writeQ(o,label){
+  const id='q'+(++QID);QS[id]=o;
+  const boxes=(o.blanks||[{lab:''}]).map((b,i)=>`${b.lab?`<div class="q-num" style="color:#4b5563">${mk(b.lab)}</div>`:''}<textarea class="memo" id="${id}-t${i}" placeholder="${o.lang==='ja'?'日本語で書いてみよう':'英語で書いてみよう'}" oninput="wc('${id}',${i})"></textarea><div class="wc" id="${id}-w${i}">${o.lang==='ja'?'':'0 語'}${b.words?`（目安：${esc(b.words)}）`:''}</div>`).join('');
+  return `<div class="q-block">${label?`<div class="q-num">${label}${o.skill?`<span class="q-skill">${esc(o.skill)}</span>`:''}</div>`:''}${o.q?`<div class="q-text">${mk(o.q)}</div>`:''}${o.img?`<img class="fig" src="${IMG[o.img]}" alt="図">`:''}${o.svg?`<div class="svgfig">${o.svg}</div>`:''}${o.html||''}${boxes}
+  <button class="btn sub" id="${id}-b" onclick="toggleExp('${id}')">解答例・解説を見る</button><div class="exp" id="${id}-e">${expHTML(o)}</div></div>`;
+}
+function wc(id,i){
+  const o=QS[id];const t=document.getElementById(`${id}-t${i}`).value;const el=document.getElementById(`${id}-w${i}`);
+  if(o.lang==='ja'){el.textContent=`${t.replace(/\s/g,'').length} 字`;return;}
+  const b=(o.blanks||[])[i]||{};const n=wcount(t);el.textContent=`${n} 語`+(b.words?`（目安：${b.words}）`:'');
+  el.classList.toggle('good',!!(b.min&&n>=b.min&&(!b.max||n<=b.max)));
+}
+function toggleExp(id){const e=document.getElementById(id+'-e');const b=document.getElementById(id+'-b');e.classList.toggle('show');b.classList.toggle('open');b.textContent=e.classList.contains('show')?'解答例・解説を閉じる':'解答例・解説を見る';}
+function textQ(o,label){
+  const id='q'+(++QID);QS[id]=o;
+  return `<div class="q-block">${label?`<div class="q-num">${label}${o.skill?`<span class="q-skill">${esc(o.skill)}</span>`:''}</div>`:''}<div class="q-text">${mk(o.q)}</div><input class="text-in" id="${id}-t" placeholder="英語で入力">
+  <button class="btn" onclick="checkText('${id}')">答え合わせ</button><div class="res" id="${id}-r"></div><div class="exp" id="${id}-e">${expHTML(o)}</div></div>`;
+}
+function checkText(id){
+  const o=QS[id];const v=norm(document.getElementById(id+'-t').value);const r=document.getElementById(id+'-r');
+  const ok=o.ans.some(a=>norm(a)===v);
+  r.className='res '+(ok?'ok':'ng');r.innerHTML=ok?'⭕ 正解！':`❌ 正解は <b>${esc(o.ans[0])}</b> です。`;
+  document.getElementById(id+'-e').classList.add('show');
+}
+function dlgHTML(lines){
+  return `<div class="dlg">${lines.map(l=>`<div class="ln"><span class="sp">${esc(l[0])}</span><span>${mk(l[1])}</span></div>`).join('')}</div>`;
+}
+function qItem(o,label){
+  if(o.type==='write')return writeQ(o,label);
+  if(o.type==='text')return textQ(o,label);
+  return mcq(o,label);
+}
+
+// ───────── 並べかえ ─────────
+const RO={};
+function reorderQ(o,label){
+  const id='q'+(++QID);QS[id]=o;
+  const tiles=o.tiles.map((t,i)=>({t,i}));
+  for(let i=tiles.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[tiles[i],tiles[j]]=[tiles[j],tiles[i]];}
+  RO[id]={pool:tiles,ans:[]};
+  return `<div class="q-block"><div class="q-num">${label}</div>${o.lead?`<div class="q-text">${mk(o.lead)}</div>`:''}
+  <div class="frame">${mk(o.pre)} <b>（　…　）</b> ${mk(o.post)}</div>
+  <div class="lead">語群をクリックして並べよう（並べた語をクリックすると戻せます）。</div>
+  <div class="tile-ans" id="${id}-a"></div><div class="tile-pool" id="${id}-p"></div>
+  <button class="btn" onclick="checkRO('${id}')">答え合わせ</button><button class="btn sub" onclick="resetRO('${id}')">やり直す</button>
+  <div class="res" id="${id}-r"></div><div class="exp" id="${id}-e">${expHTML(o)}</div></div>`;
+}
+function drawRO(id){
+  const s=RO[id];
+  document.getElementById(id+'-p').innerHTML=s.pool.map((t,k)=>`<span class="tile" onclick="moveRO('${id}','p',${k})">${esc(t.t)}</span>`).join('');
+  document.getElementById(id+'-a').innerHTML=s.ans.map((t,k)=>`<span class="tile placed" onclick="moveRO('${id}','a',${k})">${esc(t.t)}</span>`).join('');
+}
+function moveRO(id,from,k){const s=RO[id];if(from==='p')s.ans.push(s.pool.splice(k,1)[0]);else s.pool.push(s.ans.splice(k,1)[0]);drawRO(id);}
+function resetRO(id){const s=RO[id];s.pool=s.pool.concat(s.ans);s.ans=[];drawRO(id);document.getElementById(id+'-r').className='res';}
+function checkRO(id){
+  const o=QS[id],s=RO[id];const r=document.getElementById(id+'-r');
+  if(s.pool.length){r.className='res ng';r.textContent='すべての語を並べてから答え合わせしよう。';return;}
+  const ok=norm(s.ans.map(t=>t.t).join(' '))===norm(o.ans);
+  r.className='res '+(ok?'ok':'ng');r.innerHTML=(ok?'⭕ 正解！':'❌ 惜しい！')+`<br>正解：${esc(o.pre)} <b>${esc(o.ans)}</b> ${esc(o.post)}`;
+  document.getElementById(id+'-e').classList.add('show');
+}
+function initTiles(){Object.keys(RO).forEach(id=>{if(document.getElementById(id+'-p'))drawRO(id);});}
+
+// ───────── 読み上げ（Web Speech API） ─────────
+let VOICES=[];
+function loadVoices(){try{VOICES=speechSynthesis.getVoices().filter(v=>/^en[-_]/i.test(v.lang));}catch(e){VOICES=[];}}
+if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+function pickVoice(g){
+  if(!VOICES.length)return null;
+  const us=VOICES.filter(v=>/en[-_](US|GB)/i.test(v.lang));const pool=us.length?us:VOICES;
+  const fem=/female|zira|aria|jenny|samantha|susan|hazel|libby|sonia|michelle|emma|ava|allison|karen|google us english|google uk english female/i;
+  const mal=/male|david|guy|mark|daniel|george|ryan|christopher|eric|alex|fred|google uk english male/i;
+  let c=pool.filter(v=>g==='f'?fem.test(v.name)&&!/\bmale\b/i.test(v.name.replace(/female/i,'')):mal.test(v.name)&&!/female/i.test(v.name));
+  if(!c.length)c=pool;
+  return g==='f'?c[0]:c[c.length>1?1:0];
+}
+let RATE=0.9;
+function ttsNote(){
+  const ok='speechSynthesis' in window;
+  return `<div class="tts-warn">${ok?'🔊 読み上げはパソコン・タブレットの英語の音声を使います（Chrome・Edge 推奨）。声は機械音声なので、本番の聞こえ方とは少し違います。':'⚠️ このブラウザは読み上げに対応していません。Chrome または Edge で開いてください。'}<br>速さ：<select class="sel" onchange="RATE=+this.value"><option value="0.75">ゆっくり</option><option value="0.9" selected>ふつう</option><option value="1.05">本番に近い</option></select></div>`;
+}
+let ttsToken=0;
+function stopTTS(){ttsToken++;try{speechSynthesis.cancel();}catch(e){}}
+function speakSeq(items,onEnd){
+  // items: [{t, g}] を順に読む。g='f'|'m'|'n'（ナレーター）
+  stopTTS();const my=ttsToken;let i=0;
+  const next=()=>{
+    if(my!==ttsToken)return;
+    if(i>=items.length){onEnd&&onEnd();return;}
+    const it=items[i++];
+    if(it.pause){setTimeout(next,it.pause);return;}
+    const u=new SpeechSynthesisUtterance(it.t);u.lang='en-US';u.rate=RATE;
+    const v=pickVoice(it.g==='m'?'m':'f');if(v)u.voice=v;
+    if(it.g==='n'){u.pitch=0.9;}
+    u.onend=()=>setTimeout(next,350);u.onerror=()=>setTimeout(next,200);
+    speechSynthesis.speak(u);
+  };
+  next();
+}
+const PLAYS={};
+function playItem(id,times){
+  const o=QS[id];if(!('speechSynthesis' in window)){alert('このブラウザは読み上げに対応していません。');return;}
+  PLAYS[id]=(PLAYS[id]||0)+1;
+  const seq=[];
+  for(let k=0;k<times;k++){
+    if(k>0)seq.push({pause:1500});
+    o.lines.forEach(l=>seq.push({t:l[1],g:(o.g&&o.g[l[0]])||'f'}));
+    (o.qAudio||[]).forEach(q=>{seq.push({pause:700});seq.push({t:q,g:'n'});});
+  }
+  const st=document.getElementById(id+'-st');
+  st.textContent='▶ 再生中…';
+  speakSeq(seq,()=>{st.textContent=`再生 ${PLAYS[id]} 回目が終わりました`;});
+}
+function playerHTML(id,times,label){
+  return `<div class="player"><button class="btn play" onclick="playItem('${id}',${times})">▶ ${label||'聞く'}</button><button class="btn sub" onclick="stopTTS();document.getElementById('${id}-st').textContent='停止しました'">■ 止める</button><span class="cnt" id="${id}-st">本番は ${times} 回読まれます</span></div>`;
+}
+
+// ───────── 大問1 リスニング ─────────
+function scriptHTML(o){
+  return `<h4>スクリプト</h4>${dlgHTML(o.lines)}${o.qAudio?`<div><b>Question:</b> ${o.qAudio.map(esc).join('<br>')}</div>`:''}`;
+}
+function renderL(d,y){
+  let h=ttsNote();
+  h+=`<div class="box"><div class="box-title">Part 1　短い会話（No.1〜5）<span class="q-skill">各2点・会話と質問は1回だけ</span></div><div class="lead">会話を聞いて、質問の答えとして最も適当なものを選ぼう。<b>本番は1回しか読まれません。</b>まずは1回で答えてみよう。</div>`;
+  d.p1.forEach(o=>{
+    const id='q'+(++QID);QS[id]=o;
+    const opts=o.choices?o.choices.map((c,i)=>`<label class="opt" id="${id}-o${i+1}"><input type="radio" name="${id}" value="${i+1}"><span>${i+1}　${mk(c)}</span></label>`).join(''):
+      [1,2,3,4].map(i=>`<label class="opt" id="${id}-o${i}"><input type="radio" name="${id}" value="${i}"><span>${i}</span></label>`).join('');
+    h+=`<div class="q-block"><div class="q-num">No. ${o.no}${o.skill?`<span class="q-skill">${esc(o.skill)}</span>`:''}</div>${playerHTML(id,1)}${o.img?`<img class="fig" src="${IMG[o.img]}" alt="図">`:''}${o.svg?`<div class="svgfig">${o.svg}</div>`:''}${opts}
+    <button class="btn" onclick="checkMCQ('${id}')">答え合わせ</button><div class="res" id="${id}-r"></div><div class="exp" id="${id}-e">${scriptHTML(o)}${expHTML(o)}</div></div>`;
+  });
+  h+='</div>';
+  [d.p2,d.p2.extra].filter(Boolean).forEach((p2,k)=>{
+    const id='q'+(++QID);QS[id]=p2;
+    h+=`<div class="box"><div class="box-title">Part 2　長めの会話${k?'（その２）':''}（Questions No.1〜3）<span class="q-skill">各2点・2回読まれる</span></div><div class="lead">${mk(p2.intro)}</div>${playerHTML(id,2,'会話を聞く（2回）')}
+    <div class="lead">※質問（Question No.1〜3）は会話のあとに音声で読まれます。答え合わせをすると質問の英文が見られます。</div>`;
+    p2.qs.forEach((q,j)=>{h+=mcq(Object.assign({},q,{q:'',jaQ:q.q+'\n'+(q.jaQ||'')}),`Question No. ${j+1}`);});
+    h+=`<button class="btn sub" id="${id}-b" onclick="toggleExp('${id}')">スクリプト・全訳を見る</button><div class="exp" id="${id}-e">${scriptHTML({lines:p2.lines})}${expHTML({ja:p2.ja,pts:p2.pts})}</div></div>`;
+  });
+  [d.p3,d.p3.extra].filter(Boolean).forEach((p3,k)=>{
+    const id='q'+(++QID);QS[id]=Object.assign({},p3,{lines:p3.lines});
+    h+=`<div class="box"><div class="box-title">Part 3　モノローグ${k?'（その２）':''}<span class="q-skill">${esc(p3.score||d.p3.score||'')}・2回読まれる</span></div><div class="lead">${mk(p3.intro)}</div><div class="dlg">${mk(p3.task)}</div><div class="lead">本番では、上の英文を読む時間（20秒）のあとに音声が流れます。</div>${playerHTML(id,2,'放送を聞く（2回）')}`;
+    p3.blanks.forEach(b=>{h+=`<div class="q-num">${esc(b.lab)}（${esc(b.words)}）</div><input class="text-in" placeholder="英語で書いてみよう">`;});
+    h+=`<br><button class="btn sub" id="${id}-b" onclick="toggleExp('${id}')">解答例・スクリプト・解説を見る</button><div class="exp" id="${id}-e"><h4>解答例</h4>${p3.blanks.map(b=>`<div><b>${esc(b.lab)}</b> ${b.models.map(m=>`<div class="model">${mk(m)}</div>`).join('')}</div>`).join('')}${scriptHTML({lines:p3.lines})}${expHTML({exp:p3.exp,ja:p3.ja,pts:p3.pts})}</div>`;
+    if(d.col&&k===(d.p3.extra?1:0))h+=`<div class="col"><b>COLUMN　${esc(d.col.t)}</b><br>${mk(d.col.b)}</div>`;
+    h+='</div>';
+  });
+  return h;
+}
+
+// ───────── 大問2 会話表現 ─────────
+function renderC(d){
+  let h=`<div class="box"><div class="box-title">A　会話の空所に入る1文<span class="q-skill">各2点</span></div>`;
+  d.A.forEach((o,k)=>{h+=mcq(Object.assign({},o,{q:o.scene?`〔${o.scene}〕`:''}),`問${k+1}`);});
+  h+='</div>';
+  const B=d.B;const id='q'+(++QID);QS[id]=B;
+  h+=`<div class="box"><div class="box-title">B　長めの会話の空所（ア）〜（エ）<span class="q-skill">各3点・同じ番号は使えない</span></div>${B.scene?`<div class="lead">〔${esc(B.scene)}〕</div>`:''}${dlgHTML(B.lines)}
+  <div class="optlist">${B.opts.map((o,i)=>`${i+1}　${esc(o)}`).join('<br>')}</div>
+  <div>${['ア','イ','ウ','エ'].map(k=>`（${k}）<select class="sel" id="${id}-${k}"><option value="">–</option>${B.opts.map((o,i)=>`<option value="${i+1}">${i+1}</option>`).join('')}</select>`).join(' ')}</div>
+  <button class="btn" onclick="checkB('${id}')">答え合わせ</button><div class="res" id="${id}-r"></div><div class="exp" id="${id}-e">${expHTML({exp:B.exp,ja:B.ja})}</div></div>`;
+  return h;
+}
+function checkB(id){
+  const B=QS[id];let n=0,out=[];
+  ['ア','イ','ウ','エ'].forEach(k=>{const v=+document.getElementById(`${id}-${k}`).value;const ok=v===B.ans[k];if(ok)n++;out.push(`（${k}）${ok?'⭕':'❌'} 正解 ${B.ans[k]}`);});
+  const r=document.getElementById(id+'-r');r.className='res '+(n===4?'ok':'ng');r.innerHTML=`${n}/4 問正解　`+out.join('　');
+  document.getElementById(id+'-e').classList.add('show');
+}
+
+// ───────── 大問3 文法・語法 ─────────
+function renderG(d){
+  let h=`<div class="box"><div class="box-title">A　空所補充（4択）<span class="q-skill">各1点</span></div>`;
+  d.A.forEach((o,k)=>{h+=mcq(o,`問${k+1}${o.tag?`<span class="q-skill">${esc(o.tag)}</span>`:''}`);});
+  h+=`</div><div class="box"><div class="box-title">B　語句整序<span class="q-skill">各3点</span></div>`;
+  d.B.forEach((o,k)=>{h+=reorderQ(o,`問${k+1}${o.tag?`<span class="q-skill">${esc(o.tag)}</span>`:''}`);});
+  h+='</div>';
+  setTimeout(initTiles,0);
+  return h;
+}
+
+// ───────── 大問4・5 長文 ─────────
+const TR={};
+function renderR(d,y,sid){
+  const id='p'+(++QID);TR[id]=d;
+  let h=`<div class="box"><div class="box-title"><span>本文${d.title?`：${esc(d.title)}`:''}</span><button class="btn sub" style="margin:0" id="${id}-tb" onclick="toggleTR('${id}')">📖 全訳を並べて表示</button></div>`;
+  h+=`<div id="${id}-en" class="passage">${d.paras.map(b=>b.en.map(p=>`<p>${mk(p)}</p>`).join('')).join('')}</div>`;
+  h+=`<div id="${id}-tr" style="display:none"><div class="tgrid">${d.paras.map(b=>`<div class="en">${b.en.map(p=>`<p>${mk(p)}</p>`).join('')}</div><div class="ja">${mk(b.ja)}</div>`).join('')}</div></div>`;
+  if(d.notes)h+=`<div class="notes">注）${mk(d.notes)}</div>`;
+  if(d.src)h+=`<div class="notes">出典：${esc(d.src)}</div>`;
+  h+='</div>';
+  h+=`<div class="box"><div class="box-title">設問<span class="q-skill">${esc(d.score||'')}</span></div>`;
+  d.qs.forEach((o,k)=>{h+=qItem(o,`問${k+1}`);});
+  h+='</div>';
+  if(d.summary||d.words){
+    h+=`<div class="box"><div class="box-title">復習：${sid==='r4'?'場面':'段落'}ごとの要旨と重要語句</div>`;
+    if(d.summary)h+=`<table class="tbl"><tr><th>${sid==='r4'?'場面':'段落'}</th><th>テーマ</th><th>要旨</th></tr>${d.summary.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</table>`;
+    if(d.words)h+=`<div class="col"><b>WORDS & PHRASES</b><br>${d.words.map(esc).join('<br>')}</div>`;
+    h+='</div>';
+  }
+  return h;
+}
+function toggleTR(id){const a=document.getElementById(id+'-en'),b=document.getElementById(id+'-tr'),t=document.getElementById(id+'-tb');const on=b.style.display==='none';b.style.display=on?'block':'none';a.style.display=on?'none':'block';t.classList.toggle('open',on);t.textContent=on?'📖 英文だけ表示':'📖 全訳を並べて表示';}
+
+// ───────── 大問6 英作文 ─────────
+function renderW(d){
+  let h=`<div class="box"><div class="box-title">A　和文英訳<span class="q-skill">（ア）6点・（イ）7点</span></div><div class="q-text" style="font-family:sans-serif;font-size:calc(var(--fs) - .04rem)">${mk(d.A.jp)}</div>`;
+  d.A.items.forEach(o=>{h+=writeQ(Object.assign({},o,{blanks:[{lab:''}],q:''}),`（${o.lab}）${esc(o.q||'')}`);});
+  h+=`</div><div class="box"><div class="box-title">B　自由英作文<span class="q-skill">8点</span></div>`;
+  h+=writeQ(Object.assign({},d.B),'');
+  h+='</div>';
+  return h;
+}
+
+// ───────── 傾向と対策 ─────────
+function openTrend(){
+  stopTTS();
+  document.getElementById('topbar-title').textContent='高１11月進研模試の傾向';
+  document.getElementById('trend-body').innerHTML=TREND;
+  show('trend');
+}
+
+// ───────── 文字サイズ ─────────
+const FS={s:['.94rem','1.85'],m:['1.05rem','1.9'],l:['1.2rem','2.0']};
+function setFs(k){document.documentElement.style.setProperty('--fs',FS[k][0]);document.documentElement.style.setProperty('--lh',FS[k][1]);['s','m','l'].forEach(x=>document.getElementById('fs-'+x).classList.toggle('on',x===k));try{localStorage.setItem('shinken11_fs',k)}catch(e){}}
+try{const k=localStorage.getItem('shinken11_fs');if(k&&FS[k])setFs(k);}catch(e){}
+renderHome();
+</script>
+</body>
+</html>
