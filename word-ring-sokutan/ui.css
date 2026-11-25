@@ -1,0 +1,33 @@
+/* 語彙アプリ 見本（mock）の共通の見た目。色・文字は ui-plan 4章 */
+@font-face {
+  font-family: "Lexend";
+  src: url("assets/fonts/Lexend-wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  /* 案A：ふだん */
+  --paper: #FBFBF8;
+  --desk: #E7ECEF;
+  --grid: #CFE0EC;
+  --pen: #1E2A44;
+  --red: #E03A3E;
+  --green: #2E9E6B;
+  /* 案B：スタジアム */
+  --pitch: #0F3B2A;
+  --chalk: #F2F5F0;
+  --board: #FFC83D;
+  --en: "Lexend", "Segoe UI", Arial, sans-serif;
+  --ja: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--ja); color: var(--pen); }
+.en { font-family: var(--en); font-size-adjust: from-font; }
+button { font: inherit; color: inherit; cursor: pointer; }
+.ic { width: 1.25em; height: 1.25em; vertical-align: -0.2em; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.mock-note {
+  position: fixed; left: 12px; bottom: 10px; font-size: 12px; opacity: .65;
+}

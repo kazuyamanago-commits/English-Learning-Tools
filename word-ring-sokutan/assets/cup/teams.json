@@ -1,0 +1,90 @@
+[
+ {
+  "id": 1,
+  "name": "Comma City",
+  "abbr": "CC",
+  "colors": [
+   "#5B8DEF",
+   "#FFFFFF"
+  ],
+  "level": 1,
+  "emblem": "team1.svg"
+ },
+ {
+  "id": 2,
+  "name": "Noun Rovers",
+  "abbr": "NR",
+  "colors": [
+   "#F2A541",
+   "#1E2A44"
+  ],
+  "level": 2,
+  "emblem": "team2.svg"
+ },
+ {
+  "id": 3,
+  "name": "Verb United",
+  "abbr": "VU",
+  "colors": [
+   "#E03A3E",
+   "#FFFFFF"
+  ],
+  "level": 3,
+  "emblem": "team3.svg"
+ },
+ {
+  "id": 4,
+  "name": "Adjective Athletic",
+  "abbr": "AA",
+  "colors": [
+   "#8E6CCF",
+   "#FFC83D"
+  ],
+  "level": 4,
+  "emblem": "team4.svg"
+ },
+ {
+  "id": 5,
+  "name": "Phonics Wanderers",
+  "abbr": "PW",
+  "colors": [
+   "#2BB3A3",
+   "#1E2A44"
+  ],
+  "level": 5,
+  "emblem": "team5.svg"
+ },
+ {
+  "id": 6,
+  "name": "Idiom Rangers",
+  "abbr": "IR",
+  "colors": [
+   "#1E2A44",
+   "#FFC83D"
+  ],
+  "level": 6,
+  "emblem": "team6.svg"
+ },
+ {
+  "id": 7,
+  "name": "Syntax FC",
+  "abbr": "SY",
+  "colors": [
+   "#111111",
+   "#E03A3E"
+  ],
+  "level": 7,
+  "emblem": "team7.svg"
+ },
+ {
+  "id": 8,
+  "name": "Lexicon Lions",
+  "abbr": "LL",
+  "colors": [
+   "#2E9E6B",
+   "#FFC83D"
+  ],
+  "level": 8,
+  "emblem": "team8.svg"
+ }
+]
