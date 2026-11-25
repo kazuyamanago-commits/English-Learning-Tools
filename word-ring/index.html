@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Word Ring — 教科書の単語</title>
+<link rel="icon" href="assets/app/icon-32.png">
+<link rel="stylesheet" href="ui.css">
+<style>
+/* 本体（2026-11-25 見本A〜D を組み込み）。色・文字は ui.css（ui-plan 4章：案A 単語カード） */
+:root {
+  color-scheme: light dark;
+  --bg: var(--desk); --surface: var(--paper); --ink: var(--pen); --muted: #56627a; --line: var(--grid);
+  --pitch: var(--green); --on-pitch: #fff; --bad: var(--red); --warn: #8a5a00; --star: #b88a14; --tint: #E1EFE8;
+  --font-ja: var(--ja); --font-en: var(--en);
+  --target: 24px;
+  @media (pointer: coarse) { --target: 44px; }
+  @media (prefers-color-scheme: dark) {
+    --desk: #141b22; --paper: #1f2831; --grid: #33424f; --pen: #e6ebf0; --muted: #a4b1bd;
+    --green: #4fc58c; --red: #ff8a80; --warn: #f5b94f; --star: #ffc14d; --tint: #173527;
+  }
+  accent-color: var(--pitch);
+  scroll-padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+}
+body {
+  background: var(--bg); color: var(--ink); line-height: 1.6; overflow-wrap: break-word;
+  background-image: linear-gradient(#ffffff40 1px, transparent 1px), linear-gradient(90deg, #ffffff40 1px, transparent 1px);
+  background-size: 28px 28px;
+  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  @media (prefers-color-scheme: dark) { background-image: none; }
+}
+h1, h2, h3 { text-wrap: balance; line-height: 1.3; }
+p, li { text-wrap: pretty; }
+main { width: min(720px, 100% - 24px); margin-inline: auto; padding: 18px 0 1rem; }
+:where(button, input:not([type=checkbox],[type=radio]), select, summary, label:has(input)) { min-block-size: var(--target); min-inline-size: var(--target); }
+button, input, select { font: inherit; font-size: max(1rem, 1em); color: inherit; }
+button { border: 1.5px solid var(--line); background: var(--surface); border-radius: 10px; padding: .6rem 1rem; }
+button.primary { background: var(--pitch); color: var(--on-pitch); border: 0; font-weight: 700; border-radius: 999px; box-shadow: 0 3px 0 #1f6e4b; }
+button.primary:active { translate: 0 2px; box-shadow: 0 1px 0 #1f6e4b; }
+button.quiet { background: transparent; }
+button:disabled { opacity: .5; cursor: default; }
+:focus-visible { outline: 3px solid var(--pitch); outline-offset: 2px; }
+input[type=text], input[type=search], select { border: 1.5px solid #8593a3; border-radius: 10px; padding: .6rem .75rem; background: #fff; min-block-size: 48px; inline-size: 100%; }
+@media (prefers-color-scheme: dark) { input[type=text], input[type=search], select { background: #121920; } }
+.visually-hidden { position: absolute; clip-path: inset(50%); overflow: hidden; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; white-space: nowrap; }
+.screen[hidden] { display: none; }
+.stack { display: grid; gap: .75rem; }
+.row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+.muted { color: var(--muted); }
+.note { font-size: .9rem; color: var(--muted); }
+.note:empty, .hint:empty { display: none; }
+.paper { background: var(--paper); border-radius: 14px; box-shadow: 0 1px 0 #fff2 inset, 0 10px 24px -12px #1e2a4455, 0 2px 4px #1e2a4422; }
+
+/* ---------- ホーム（見本C） ---------- */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand .logo { width: 40px; height: 40px; border-radius: 10px; background: var(--paper); display: grid; place-items: center; box-shadow: 0 2px 6px #1e2a4422; position: relative; }
+.brand .logo::before { content: ""; position: absolute; left: 6px; top: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--desk); box-shadow: inset 0 1px 2px #0003; }
+.brand .logo span { font: 700 18px var(--en); margin: 4px 0 0 6px; }
+.brand h1 { font: 600 20px var(--en); margin: 0; }
+.brand small { display: block; font-size: 12px; color: var(--muted); }
+.streak { display: flex; align-items: center; gap: 6px; background: var(--paper); border-radius: 999px; padding: 6px 14px 6px 10px; font-size: 14px; box-shadow: 0 2px 6px #1e2a4418; white-space: nowrap; }
+.streak .ic { color: #E8742C; width: 20px; height: 20px; }
+.streak b { font: 700 18px var(--en); }
+.streak small { color: var(--green); font-weight: 700; }
+.today { position: relative; isolation: isolate; margin-top: 18px; padding: 22px 24px 22px 44px; display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; align-items: end;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px); background-size: 100% 32px; background-position: 0 58px; }
+.today::before, .today::after { content: ""; position: absolute; inset: 0; border-radius: 14px; background: var(--paper); z-index: -1; box-shadow: 0 2px 6px #1e2a4422; }
+.today::before { rotate: -2.2deg; translate: -4px 6px; }
+.today::after { rotate: 1.6deg; translate: 5px 9px; filter: brightness(.97); }
+.ring { position: absolute; left: 15px; top: 18px; width: 18px; height: 18px; border-radius: 50%; background: var(--desk); box-shadow: inset 0 2px 3px #0003; }
+.today h2 { grid-column: 1 / -1; margin: 0; font-size: 15px; display: flex; justify-content: space-between; gap: 8px; }
+.today h2 .tag { font-size: 12px; font-weight: 400; padding: 2px 10px; border-radius: 999px; background: #FFF3C4; color: #4a3a00; }
+.recall { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.recall b { font: 600 64px/1 var(--en); letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--green); }
+.recall .of { font: 500 24px var(--en); opacity: .55; }
+.recall .lbl { font-size: 15px; font-weight: 700; flex-basis: 100%; margin-top: 2px; }
+.meter { display: flex; gap: 2px; margin-top: 8px; height: 12px; max-width: 360px; }
+.meter i { flex: 1; border-radius: 2px; background: var(--grid); }
+.meter i.on { background: var(--green); }
+.todo { margin-top: 10px; font-size: 14px; }
+.todo b { font-size: 18px; }
+.vp { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; text-decoration: none; color: var(--ink); background: var(--paper); border: 1.5px solid var(--grid); border-radius: 999px; padding: 5px 12px 5px 6px; }
+.vp:hover { border-color: var(--ink); }
+.vp .chip { display: flex; align-items: center; gap: 6px; }
+.vp .chip i { font: 700 12px var(--en); font-style: normal; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; color: #fff; }
+.vp .chip.v i { background: #1E2A44; }
+.vp .chip.p i { background: #E8742C; }
+.vp .chip b { font: 700 17px var(--en); font-variant-numeric: tabular-nums; }
+.vp .chip small { font-size: 12px; opacity: .75; }
+.vp > .ic { width: 20px; height: 20px; color: var(--star); }
+.hello { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.hello img { width: 112px; height: auto; filter: drop-shadow(0 6px 8px #1e2a4433); }
+.bubble { position: relative; background: #fff; color: #1E2A44; border: 2px solid #1E2A44; border-radius: 14px; padding: 6px 12px; font-size: 14px; font-weight: 700; white-space: nowrap; }
+.hello .bubble::after { content: ""; position: absolute; left: 50%; bottom: -8px; width: 12px; height: 12px; background: #fff; border-right: 2px solid #1E2A44; border-bottom: 2px solid #1E2A44; rotate: 45deg; translate: -50% 0; }
+h2.q { font-size: 14px; margin: 28px 0 10px; display: flex; align-items: center; gap: 8px; }
+h2.q .q-note { font-weight: 400; font-size: 12px; color: var(--muted); }
+/* レッスンの棚（ふせんのついたカードの束）。押すたびにえらぶ／はずす */
+.shelf { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.shelf button { position: relative; display: grid; gap: 2px; justify-items: start; text-align: left; padding: 10px 10px 8px; border: 0; border-radius: 10px; background: var(--paper);
+  box-shadow: 0 2px 0 #1e2a441f, 0 1px 3px #1e2a4422; border-left: 5px solid var(--grid); min-height: 62px; }
+.shelf button b { font: 600 18px/1.1 var(--en); }
+.shelf button small { font-size: 11px; color: var(--muted); font-family: var(--en); }
+.shelf button .mbar { width: 100%; height: 4px; border-radius: 2px; background: var(--grid); overflow: hidden; }
+.shelf button .mbar i { display: block; height: 100%; background: var(--green); }
+.shelf button[aria-pressed=true] { border-left-color: var(--green); outline: 2.5px solid var(--ink); outline-offset: 1px; }
+.shelf button:disabled { opacity: .45; box-shadow: none; background: transparent; border: 1.5px dashed #1e2a4433; cursor: default; }
+.shelf-note { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; margin-top: 10px; padding: 10px 14px; border-radius: 12px; background: #FFF3C4; color: #4a3a00; font-size: 14px; }
+.shelf-note[hidden] { display: none; }
+.shelf-note .ic { width: 20px; height: 20px; flex: none; }
+.shelf-note button { border: 1.5px solid #4a3a00; background: #fff8dc; color: #4a3a00; border-radius: 999px; padding: 4px 12px; font-size: 13px; font-weight: 700; }
+.list li.grp { display: block; padding: 8px 14px 4px; font: 600 13px var(--en); color: var(--muted); background: color-mix(in srgb, var(--paper) 60%, var(--desk)); }
+h2.q .no { font: 700 12px var(--en); width: 22px; height: 22px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; }
+.scope { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.scope button { position: relative; background: var(--paper); border: 0; border-radius: 10px; padding: 12px 10px 10px; text-align: left; box-shadow: 0 2px 0 #1e2a441f, 0 1px 3px #1e2a4422; border-top: 6px solid var(--grid); min-height: 70px; }
+.scope button b { display: block; font: 600 24px/1.1 var(--en); }
+.scope button span { font-size: 13px; }
+.scope button[data-scope=today] { border-top-color: #F2C14E; }
+.scope button[data-scope=weak] { border-top-color: var(--red); }
+.scope button[data-scope=star] { border-top-color: var(--green); }
+.scope button[aria-pressed=true] { outline: 3px solid var(--ink); outline-offset: 1px; translate: 0 -2px; }
+.how { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tile { position: relative; border: 0; border-radius: 16px; padding: 18px; text-align: left; min-height: 150px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; box-shadow: 0 3px 0 #1e2a4426, 0 8px 18px -10px #1e2a4466; transition: translate .15s; }
+.tile b { font-size: 19px; }
+.tile small { font-size: 13px; opacity: .8; }
+.tile[aria-pressed=true] { outline: 3px solid var(--ink); outline-offset: 2px; translate: 0 -3px; }
+.tile.card-t { background: var(--paper); background-image: linear-gradient(var(--grid) 1px, transparent 1px); background-size: 100% 26px; background-position: 0 14px; }
+.tile.card-t .mini { position: absolute; right: 18px; top: 16px; width: 92px; height: 62px; }
+.tile.card-t .mini i { position: absolute; inset: 0; border-radius: 8px; background: #fff; color: #1E2A44; box-shadow: 0 2px 5px #1e2a4433; display: grid; place-items: center; font: 600 15px var(--en); }
+.tile.card-t .mini i:nth-child(1) { rotate: -8deg; translate: -10px 4px; background: #F3F5F2; }
+.tile.card-t .mini i:nth-child(2) { rotate: 6deg; }
+.tile.stadium { background: #0B2A1E url("assets/cup/stadium.svg") center / cover; color: var(--chalk); }
+.tile.stadium::before { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 20%, #061a12dd); }
+.tile.stadium > * { position: relative; }
+.tile.stadium .ballimg { position: absolute; right: 18px; top: 16px; width: 54px; height: 54px; }
+@media (prefers-reduced-motion: no-preference) { .tile.stadium:hover .ballimg { animation: spin 1.4s linear infinite; } }
+@keyframes spin { to { rotate: 1turn; } }
+.tile.stadium[aria-pressed=true] { outline-color: var(--board); }
+.tile.sort { grid-column: 1 / -1; min-height: 0; padding: 14px 18px 14px 74px; background: var(--paper); border-left: 8px solid var(--red); }
+.tile.sort .sort-ic { position: absolute; left: 20px; top: 50%; translate: 0 -50%; width: 40px; height: 40px; border-radius: 50%; background: var(--red); color: #fff; display: grid; place-items: center; }
+.tile.sort .sort-ic .ic { width: 24px; height: 24px; }
+.tile .badge { align-self: flex-start; font: 600 11px var(--en); letter-spacing: .08em; padding: 2px 8px; border-radius: 999px; background: var(--board); color: #111; margin-bottom: 4px; }
+.match-mode { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; padding: 10px; border-radius: 14px; background: #0F3B2A; }
+.match-mode[hidden] { display: none; }
+.match-mode button { background: #16324A; border: 2px solid #2F5B7E; border-radius: 10px; color: var(--chalk); padding: 8px 6px; font-size: 14px; display: grid; justify-items: center; gap: 2px; }
+.match-mode button .ic { width: 22px; height: 22px; }
+.match-mode button small { opacity: .75; font-size: 11px; }
+.match-mode button[aria-pressed=true] { border-color: var(--board); background: #22405C; box-shadow: 0 0 0 2px #ffc83d55; }
+.go { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-top: 26px; border: 0; border-radius: 999px; padding: 18px; font: 700 22px var(--ja); color: #fff; background: var(--green); box-shadow: 0 5px 0 #1f6e4b, 0 12px 24px -10px #2E9E6B99; }
+.go:active { translate: 0 3px; box-shadow: 0 2px 0 #1f6e4b; }
+.go .ic { width: 26px; height: 26px; }
+.go.match { background: var(--board); color: #111; box-shadow: 0 5px 0 #b88a14, 0 12px 24px -10px #FFC83D99; }
+.go-note { text-align: center; font-size: 13px; color: var(--muted); margin-top: 10px; }
+#home-msg { text-align: center; font-weight: 700; color: var(--ink); }
+
+/* ---------- 練習（見本A：単語カード） ---------- */
+.topbar { display: flex; gap: 12px; align-items: center; justify-content: space-between; margin-block-end: 12px; font-size: 15px; }
+.topbar .left { display: flex; gap: 12px; align-items: center; min-width: 0; flex-wrap: wrap; }
+.bar { width: 140px; height: 8px; border-radius: 4px; background: var(--grid); overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--green); border-radius: 4px; transition: width .3s; }
+#p-left { font-size: 13px; color: var(--muted); }
+.topbar #quit { flex: none; border: 1.5px solid var(--ink); border-radius: 999px; padding: 4px 14px; font-size: 14px; background: transparent; }
+.combo { color: var(--pitch); font-weight: 700; }
+.card { position: relative; padding: 26px 26px 24px 42px; min-height: 360px;
+  background-color: var(--paper); background-image: linear-gradient(var(--grid) 1px, transparent 1px); background-size: 100% 34px; background-position: 0 92px; }
+.card .kind { font-size: 14px; display: flex; justify-content: space-between; gap: .5rem; margin: 0; }
+.card .kind .tag { font-size: 12px; padding: 2px 10px; border-radius: 999px; background: #FFF3C4; color: #4a3a00; }
+.card .kind .tag:empty { display: none; }
+.card p { margin: .45rem 0; }
+.big { font-family: var(--font-en); font-size: clamp(40px, 9vw, 56px); font-weight: 500; letter-spacing: .01em; margin: 26px 0 6px !important; line-height: 1.15; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.bigja { font-size: clamp(1.5rem, 6vw, 2rem); font-weight: 700; margin: 26px 0 6px !important; }
+.sentence { font-family: var(--font-en); font-size: 1.2rem; line-height: 34px; }
+.sentence input { display: inline-block; inline-size: auto; min-inline-size: 6ch; padding: .1rem .4rem; min-block-size: 32px; font-family: var(--font-en); }
+.ja { color: var(--muted); }
+mark { background: var(--tint); color: inherit; font-weight: 700; padding: 0 .1em; border-radius: 3px; }
+.blank { display: inline-block; min-inline-size: 4em; border-bottom: 2px solid var(--ink); }
+.choices { display: grid; gap: 12px; grid-template-columns: 1fr; margin-top: 26px; }
+@media (min-width: 30rem) { .choices { grid-template-columns: 1fr 1fr; } }
+.choices button { text-align: start; padding: 14px; min-block-size: 52px; background: #fff; font-size: 18px; display: flex; gap: 10px; align-items: center; }
+@media (prefers-color-scheme: dark) { .choices button { background: #172029; } }
+.choices button:hover:not(:disabled) { border-color: var(--ink); }
+.choices button[data-state=right] { border: 2px solid var(--pitch); background: var(--tint); }
+.choices button[data-state=wrong] { border: 2px solid var(--bad); text-decoration: line-through; }
+.say { display: inline-flex; align-items: center; gap: .4rem; }
+.say.icon { border: 0; background: none; padding: 6px; border-radius: 50%; }
+.say.icon:hover { background: var(--desk); }
+.say.icon .ic { width: 30px; height: 30px; }
+.say.huge { font-size: 1.2rem; padding: 1rem 1.5rem; margin-top: 20px; }
+.actions { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1rem; align-items: center; }
+.actions .primary { flex: 1 1 10rem; padding: 12px 24px; font-size: 18px; }
+.actions .give { border: 0; background: none; text-decoration: underline; font-size: 14px; color: var(--muted); }
+.retry-msg { font-weight: 700; color: var(--warn); }
+
+/* 裏（答え）：カードがめくれる */
+.card.back { @media (prefers-reduced-motion: no-preference) { animation: flip .32s ease-out; } }
+@keyframes flip { from { rotate: y 90deg; } to { rotate: y 0deg; } }
+.perspective { perspective: 1400px; }
+.result .verdict { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; align-items: center; font-size: 15px; margin: 0; }
+.result .verdict b { white-space: nowrap; }
+.result .verdict b { display: flex; gap: 6px; align-items: center; }
+.result .verdict.ok b { color: var(--pitch); } .result .verdict.ng b { color: var(--bad); } .result .verdict.hard b { color: var(--warn); }
+.result .due { font-size: 14px; color: var(--muted); }
+.sticky { position: absolute; z-index: 2; right: 28px; top: -10px; background: var(--red); color: #fff; padding: 6px 14px 6px 12px; font-size: 14px; box-shadow: 0 3px 6px #0003; }
+.head { display: flex; align-items: center; gap: 4px 12px; flex-wrap: wrap; margin: 22px 0 0; }
+.head .w { font-family: var(--en); font-size: clamp(32px, 8vw, 40px); font-weight: 500; }
+.pos { font-size: 13px; border: 1px solid var(--ink); border-radius: 4px; padding: 0 6px; }
+.meaning { font-size: 22px; }
+.yours { font-size: 15px; margin-top: 8px !important; }
+.yours .en { font-family: var(--en); }
+.ex { font-family: var(--en); font-size: 19px; line-height: 34px; margin: 16px 0 0 !important; }
+.ex mark, .exja mark { background: none; color: var(--pitch); font-weight: 600; border-bottom: 3px solid color-mix(in srgb, var(--pitch) 45%, transparent); }
+.exja { font-size: 15px; line-height: 34px; margin: 0 !important; }
+.phr { font-size: 14px; line-height: 34px; opacity: .85; margin: 0 !important; }
+.buddy { display: flex; justify-content: flex-end; align-items: flex-end; gap: 6px; margin-top: 8px; }
+.buddy img { width: 84px; height: auto; }
+.buddy .bubble { margin-bottom: 40px; }
+.next-row { display: flex; justify-content: center; gap: 16px; align-items: center; margin-top: 18px; }
+.next-row .next { flex: 0 1 auto; padding: 12px 40px; font-size: 18px; }
+.star { background: none; border: 0; padding: 6px; color: var(--ink); }
+.star .ic { width: 28px; height: 28px; }
+.star[aria-pressed=true] { color: var(--star); }
+
+/* ---------- 単語帳・記録・設定 ---------- */
+.screen > h2 { font-size: 20px; }
+.list { list-style: none; padding: 0; margin: 0; background: var(--paper); border-radius: 14px; box-shadow: 0 2px 6px #1e2a4418; }
+.list li { display: grid; grid-template-columns: auto 1fr auto auto; gap: .5rem; align-items: center; padding: .6rem .75rem; border-bottom: 1px solid var(--line); }
+.list li:last-child { border-bottom: 0; }
+.list .w { font-family: var(--font-en); font-weight: 600; }
+.list .m { font-size: .9rem; color: var(--muted); }
+/* 赤シート：赤い文字を、赤い半とうめいのシートでかくす（本物と同じしかけ）。押すとシートがずれて見える */
+.list .sheet { display: inline-block; border: 0; padding: 0 .4rem; min-block-size: 1.6em; min-inline-size: 5em; border-radius: 3px; text-align: left; cursor: pointer;
+  color: #D9363E; background: linear-gradient(rgb(224 58 62 / .97), rgb(212 44 52 / .97)); box-shadow: 0 1px 2px #0003; transition: background .2s, color .2s; }
+.list .w .sheet { font: inherit; }
+.list .sheet.lift { background: transparent; box-shadow: inset 0 -3px 0 rgb(224 58 62 / .35); color: inherit; }
+.sheet-seg { margin: 0; flex: 1 1 18rem; }
+.sheet-seg legend { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.sheet-seg span { min-height: 40px; font-size: 14px; }
+.list li > button { border: 0; background: none; padding: 4px; }
+.list .ic { width: 22px; height: 22px; }
+.dot { inline-size: .8rem; block-size: .8rem; border-radius: 50%; border: 2px solid var(--muted); }
+.dot[data-s=learning] { border-color: #F2C14E; background: #F2C14E; }
+.dot[data-s=known] { border-color: var(--pitch); background: var(--pitch); }
+.dot[data-s=leech] { border-color: var(--bad); background: var(--bad); border-radius: .15rem; }
+.legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .85rem; color: var(--muted); }
+.legend span { display: inline-flex; gap: .3rem; align-items: center; }
+.filters { display: flex; gap: .25rem; flex-wrap: wrap; }
+.filters button[aria-pressed=true] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: .5rem; }
+.stats div { background: var(--paper); border-radius: 12px; padding: .75rem; box-shadow: 0 2px 6px #1e2a4418; }
+.stats b { display: block; font-family: var(--font-en); font-size: 1.8rem; font-variant-numeric: tabular-nums; }
+fieldset { border: 1.5px solid var(--line); border-radius: 12px; padding: .75rem 1rem; background: var(--paper); }
+legend { font-weight: 700; padding: 0 .25rem; }
+fieldset label { display: inline-flex; align-items: center; gap: .4rem; margin-inline-end: 1rem; }
+
+/* ---------- 記録・設定（2026-11-25 作りなおし） ---------- */
+.sc-h { display: flex; align-items: center; gap: 8px; font-size: 20px; margin: 4px 0 14px; }
+.sc-h .ic { width: 24px; height: 24px; }
+.rec-hero { position: relative; padding: 22px 22px 18px 44px; display: grid; gap: 16px; }
+.rec-hero .ring { left: 15px; }
+.rec-recall .recall { margin-top: 0; }
+.rec-vp { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.vpbox { border: 1.5px solid var(--grid); border-radius: 12px; padding: 12px 14px; background: color-mix(in srgb, var(--paper) 70%, var(--desk)); }
+.vpbox p { margin: 0; }
+.vp-h { display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 14px; }
+.vp-h i { font: 700 12px var(--en); font-style: normal; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; color: #fff; }
+.vpbox.v .vp-h i { background: #1E2A44; } .vpbox.p .vp-h i { background: #E8742C; }
+.vp-h small { font-weight: 400; color: var(--muted); font-size: 11px; }
+.vp-n { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin: 6px 0 !important; }
+.vp-n b { font: 600 34px/1 var(--en); font-variant-numeric: tabular-nums; }
+.vp-n span { font-size: 13px; color: var(--muted); }
+.lvbar { height: 8px; border-radius: 4px; background: var(--grid); overflow: hidden; }
+.lvbar i { display: block; height: 100%; background: #1E2A44; border-radius: 4px; }
+@media (prefers-color-scheme: dark) { .lvbar i { background: var(--pen); } }
+.vpbox .note { font-size: 12px; margin-top: 6px !important; }
+.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.week span { display: grid; justify-items: center; gap: 2px; font-size: 11px; color: var(--muted); }
+.week i { display: block; width: 100%; max-width: 26px; aspect-ratio: 1; border-radius: 50%; border: 2px solid var(--grid); }
+.week i.on { background: #E8742C; border-color: #E8742C; }
+.week span.wk-today b { color: var(--ink); text-decoration: underline 2px var(--pitch); text-underline-offset: 3px; }
+.rank-link { justify-self: start; display: inline-flex; align-items: center; gap: 6px; color: var(--ink); text-decoration: none; font-weight: 700; font-size: 14px; border: 1.5px solid var(--ink); border-radius: 999px; padding: 6px 14px; }
+.rank-link .ic { width: 18px; height: 18px; color: var(--star); }
+.rec-box { padding: 14px 18px; margin-top: 14px; }
+.rec-box h3, .set-box h3 { font-size: 15px; margin: 0 0 10px; }
+.stack-bar { display: flex; height: 18px; border-radius: 9px; overflow: hidden; background: var(--grid); }
+.stack-bar i { display: block; height: 100%; }
+.stack-bar i[data-s=new] { background: var(--grid); } .stack-bar i[data-s=learning] { background: #F2C14E; }
+.stack-bar i[data-s=known] { background: var(--pitch); } .stack-bar i[data-s=leech] { background: var(--bad); }
+.legend b { font-family: var(--en); color: var(--ink); }
+.days7 { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; align-items: end; height: 132px; }
+.days7 .col { display: grid; grid-template-rows: auto 1fr auto; justify-items: center; height: 100%; gap: 4px; font-size: 11px; color: var(--muted); }
+.days7 .col .n { font: 600 12px var(--en); color: var(--ink); }
+.days7 .bar7 { width: 70%; max-width: 30px; align-self: end; display: flex; flex-direction: column-reverse; border-radius: 6px 6px 2px 2px; overflow: hidden; background: transparent; }
+.days7 .bar7 i { display: block; }
+.days7 .bar7 .ok { background: var(--pitch); } .days7 .bar7 .ng { background: color-mix(in srgb, var(--bad) 55%, var(--grid)); }
+.days7 .col.today { color: var(--ink); font-weight: 700; }
+#records .stats { margin-top: 14px; }
+.set-box { padding: 16px 18px; }
+.seg { border: 0; padding: 0; margin: 0 0 8px; background: none; display: flex; flex-wrap: wrap; gap: 0; }
+.seg legend { font-size: 14px; font-weight: 400; padding: 0; margin-bottom: 8px; }
+.seg label { display: flex; margin: 0; flex: 1 1 0; min-inline-size: 0; }
+.seg span { flex: 1; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg span { display: grid; place-items: center; min-height: 44px; padding: 0 10px; border: 1.5px solid var(--grid); background: var(--paper); font-weight: 700; cursor: pointer; white-space: nowrap; }
+.seg label:first-of-type span { border-radius: 10px 0 0 10px; } .seg label:last-of-type span { border-radius: 0 10px 10px 0; }
+.seg label + label span { border-left: 0; }
+.seg input:checked + span { background: var(--pitch); color: #fff; border-color: var(--pitch); }
+.seg input:focus-visible + span { outline: 3px solid var(--ink); outline-offset: 2px; }
+.switch { display: flex !important; align-items: center; gap: 12px; margin: 10px 0 0 !important; cursor: pointer; }
+.switch input { appearance: none; flex: none; width: 46px; height: 26px; border-radius: 13px; background: var(--grid); position: relative; margin: 0; cursor: pointer; transition: background .15s; min-inline-size: 46px; min-block-size: 26px; }
+.switch input::after { content: ""; position: absolute; left: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px #0004; transition: translate .15s; }
+.switch input:checked { background: var(--pitch); }
+.switch input:checked::after { translate: 20px 0; }
+.nick-row input { max-width: 22rem; font-family: var(--en); }
+details.set-box summary { font-weight: 700; font-size: 15px; cursor: pointer; }
+details.set-box .checks { border: 0; padding: 10px 0 0; background: none; }
+.saved { text-align: center; font-weight: 700; color: var(--pitch); }
+#settings > .set-box { margin-top: .75rem; }
+button.danger { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 50%, var(--line)); }
+.about { text-align: center; margin-top: 16px; }
+@media (max-width: 560px) { .rec-vp { grid-template-columns: 1fr; } .rec-hero { padding: 20px 16px 16px 38px; } }
+
+/* 下のタブ */
+nav.tabs { position: fixed; inset-inline: 0; bottom: 0; display: flex; justify-content: center; gap: 4px; background: color-mix(in srgb, var(--paper) 93%, transparent); backdrop-filter: blur(6px); border-top: 1px solid #1e2a441a; padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px)); z-index: 5; }
+nav.tabs :is(button, a) { flex: 0 1 110px; display: grid; justify-items: center; gap: 2px; font-size: 12px; text-decoration: none; color: var(--ink); padding: 6px 4px; border: 0; border-radius: 10px; background: transparent; opacity: .7; }
+nav.tabs .ic { width: 22px; height: 22px; }
+nav.tabs [aria-current=page] { opacity: 1; font-weight: 700; background: var(--tint); color: var(--pitch); }
+
+dialog { border: 0; border-radius: 16px; background: var(--paper); color: var(--ink); max-inline-size: min(26rem, 92vw); box-shadow: 0 20px 50px #0004; }
+dialog::backdrop { background: rgb(30 42 68 / .45); }
+#end { text-align: center; padding: 24px 32px; }
+#end h2 { margin: 8px 0; }
+#end .row { justify-content: center; }
+
+/* キーの表示 */
+kbd { font-family: var(--font-en); font-size: .75em; border: 1px solid currentColor; border-bottom-width: 2px; border-radius: .3rem; padding: 0 .35em; margin-inline: .35em 0; opacity: .75; line-height: 1.4; }
+.choices kbd { margin: 0; font-size: 13px; width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; border-width: 1.5px; padding: 0; flex: none; }
+.keys { font-size: .8rem; color: var(--muted); margin: .75rem 0 0 !important; }
+.keys kbd { margin-inline: 0 .1em; }
+@media (pointer: coarse) { .keys, button kbd:not(.choices kbd) { display: none; } }
+
+@media (max-width: 560px) {
+  .today { grid-template-columns: 1fr; padding: 20px 18px 20px 40px; }
+  .hello { position: absolute; right: 12px; top: 34px; }
+  .hello img { width: 78px; }
+  .hello .bubble { display: none; }
+  .today h2 .tag { display: none; }
+  .scope, .match-mode { grid-template-columns: repeat(2, 1fr); }
+  .shelf { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .shelf button { padding: 8px 6px 6px; min-height: 54px; }
+  .shelf button b { font-size: 15px; }
+  .how { grid-template-columns: 1fr; }
+  .tile { min-height: 116px; }
+  .card { padding: 22px 18px 20px 38px; }
+  .streak { padding: 6px 10px; }
+}
+</style>
+</head>
+<body>
+<div id="sprite"></div>
+<main>
+  <section class="screen" id="home" aria-labelledby="home-h">
+    <header class="top">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>W</span></div>
+        <div><h1 id="home-h">Word Ring</h1><small id="brand-sub">教科書の単語</small></div>
+      </div>
+      <div class="streak" title="今週練習した日（週4日で達成）"><svg class="ic" aria-hidden="true"><use href="#i-flame"/></svg>今週 <b id="wdays">0</b>日<small id="wgoal"></small></div>
+    </header>
+
+    <section class="today paper" aria-labelledby="today-h">
+      <div class="ring" aria-hidden="true"></div>
+      <h2 id="today-h">今日のカード <span class="tag" id="topic"></span></h2>
+      <div>
+        <div class="recall"><b id="n-known">0</b><span class="of">/ <span id="n-all">38</span></span><span class="lbl">思い出せる語</span></div>
+        <div class="meter" id="meter" aria-hidden="true"></div>
+        <div class="todo">今日 <b class="en" id="c-new">0</b> 新しい語 ・ <b class="en" id="c-review">0</b> 復習<span class="visually-hidden">・練習中 <span id="c-learn">0</span></span></div>
+        <a class="vp" href="ranking.html" aria-label="VP ランキングを見る">
+          <span class="chip v"><i>V</i><b id="vp-v">0</b><small id="vp-lv">ルーキー</small></span>
+          <span class="chip p"><i>P</i><b id="vp-p">0</b><small>今週 <span id="vp-rank">—</span>位</small></span>
+          <svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg>
+        </a>
+      </div>
+      <div class="hello" aria-hidden="true">
+        <div class="bubble" id="hello">おかえり！</div>
+        <img src="assets/char/A7_hello.png" alt="">
+      </div>
+    </section>
+
+    <h2 class="q"><span class="no">1</span>どのレッスン <small class="q-note">いくつでも えらべます</small></h2>
+    <div class="shelf" id="shelf" role="group" aria-label="レッスンをえらぶ（いくつでも）"></div>
+    <div class="shelf-note" id="shelf-note" role="status" hidden></div>
+
+    <h2 class="q"><span class="no">2</span>なにを</h2>
+    <div class="scope" role="group" aria-label="なにを練習するか">
+      <button type="button" data-scope="today"><b id="c-today">0</b><span>今日の分（おまかせ）</span></button>
+      <button type="button" data-scope="weak" id="start-leech"><b id="n-leech">0</b><span>苦手な語</span></button>
+      <button type="button" data-scope="star" id="start-star"><b id="n-star">0</b><span>★ My単語帳</span></button>
+      <button type="button" data-scope="all"><b id="n-all2">38</b><span>えらんだレッスン ぜんぶ</span></button>
+    </div>
+
+    <h2 class="q"><span class="no">3</span>どうやって</h2>
+    <div class="how" role="group" aria-label="どうやって練習するか">
+      <button class="tile card-t" type="button" data-how="card">
+        <span class="mini" aria-hidden="true"><i></i><i>effort</i></span>
+        <b>カードで練習</b><small>めくって覚える・毎日の基本</small>
+      </button>
+      <button class="tile stadium" type="button" data-how="stadium">
+        <img class="ballimg" src="assets/cup/ball.svg" alt="">
+        <span class="badge">GAME</span>
+        <b>スタジアムで試合</b><small>10語で1試合・時間との勝負</small>
+      </button>
+      <button class="tile sort" type="button" data-how="sort">
+        <span class="sort-ic" aria-hidden="true"><svg class="ic"><use href="#i-check"/></svg></span>
+        <b>入門テスト（仕分け）</b><small>ランダムに出題。もうできている語を見つけて、練習から外す</small>
+      </button>
+    </div>
+    <div class="match-mode" id="match-mode" role="group" aria-label="試合の種類" hidden>
+      <button type="button" data-mode="choice"><svg class="ic" aria-hidden="true"><use href="#i-cards"/></svg>意味4択<small>6秒</small></button>
+      <button type="button" data-mode="spell"><svg class="ic" aria-hidden="true"><use href="#i-keyboard"/></svg>スペル<small>日本語→英語</small></button>
+      <button type="button" data-mode="dict"><svg class="ic" aria-hidden="true"><use href="#i-speaker"/></svg>語のディクテ<small>語を聞いて打つ</small></button>
+      <button type="button" data-mode="clause"><svg class="ic" aria-hidden="true"><use href="#i-mic"/></svg>節のディクテ<small>節を聞いて打つ</small></button>
+    </div>
+
+    <button class="go" type="button" id="start"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg><span id="go-label">始める</span></button>
+    <p class="go-note" id="home-msg" role="status"></p>
+    <p class="go-note">Enter キーでも始められます。前回えらんだものを覚えています。1回は約20枚（5〜10分）</p>
+  </section>
+
+  <section class="screen" id="practice" aria-labelledby="practice-h" hidden>
+    <h2 id="practice-h" class="visually-hidden">練習</h2>
+    <div class="topbar">
+      <div class="left"><span>のこり <b class="en" id="p-count">20</b></span><div class="bar" aria-hidden="true"><i id="p-bar"></i></div><span id="p-left"></span></div>
+      <button type="button" id="quit">やめる</button>
+    </div>
+    <div class="perspective" id="card-slot"></div>
+  </section>
+
+  <section class="screen" id="words" aria-labelledby="words-h" hidden>
+    <h2 id="words-h">単語帳</h2>
+    <div class="stack">
+      <search>
+        <label for="q">さがす（英語・日本語）</label>
+        <input type="search" id="q" name="q" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="search">
+      </search>
+      <div class="row" style="justify-content:space-between">
+        <div class="filters" role="group" aria-label="しぼりこみ">
+          <button type="button" data-f="all" aria-pressed="true">すべて</button>
+          <button type="button" data-f="leech" aria-pressed="false">苦手</button>
+          <button type="button" data-f="star" aria-pressed="false">★</button>
+        </div>
+        <fieldset class="seg sheet-seg" id="redsheet">
+          <legend>赤シート</legend>
+          <label><input type="radio" name="sheet" value="off" checked><span>なし</span></label>
+          <label><input type="radio" name="sheet" value="ja"><span>日本語をかくす</span></label>
+          <label><input type="radio" name="sheet" value="en"><span>英語をかくす</span></label>
+        </fieldset>
+      </div>
+      <p class="legend" aria-hidden="true"><span><i class="dot" data-s="new"></i>まだ</span><span><i class="dot" data-s="learning"></i>練習中</span><span><i class="dot" data-s="known"></i>覚えた</span><span><i class="dot" data-s="leech"></i>苦手</span></p>
+      <ul class="list" id="word-list"></ul>
+    </div>
+  </section>
+
+  <section class="screen" id="records" aria-labelledby="records-h" hidden>
+    <h2 id="records-h" class="sc-h"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg>記録</h2>
+    <section class="paper rec-hero" aria-label="いまの力">
+      <span class="ring" aria-hidden="true"></span>
+      <div class="rec-recall">
+        <div class="recall"><b id="r-known">0</b><span class="of">/ <span id="r-all">38</span></span><span class="lbl">思い出せる語</span></div>
+        <div class="meter" id="r-meter" aria-hidden="true"></div>
+      </div>
+      <div class="rec-vp">
+        <div class="vpbox v">
+          <p class="vp-h"><i>V</i>語彙 <small>Vocabulary</small></p>
+          <p class="vp-n"><b id="r-v">0</b><span id="r-lv">ルーキー</span></p>
+          <div class="lvbar" aria-hidden="true"><i id="r-lvbar"></i></div>
+          <p class="note" id="r-next"></p>
+        </div>
+        <div class="vpbox p">
+          <p class="vp-h"><i>P</i>ねばり <small>Perseverance・今週</small></p>
+          <p class="vp-n"><b id="r-p">0</b><span>今週 <span id="r-days">0</span>日</span></p>
+          <div class="week" id="r-week" aria-label="今週やった日"></div>
+          <p class="note">週4日で達成・月曜 0:00 に P は 0 から</p>
+        </div>
+      </div>
+      <a class="rank-link" href="ranking.html"><svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg>ランキングを見る</a>
+    </section>
+
+    <section class="paper rec-box" aria-labelledby="r-st-h">
+      <h3 id="r-st-h">語のようす</h3>
+      <div class="stack-bar" id="r-bar" aria-hidden="true"></div>
+      <p class="legend" id="r-legend"></p>
+    </section>
+
+    <section class="paper rec-box" aria-labelledby="r-7-h">
+      <h3 id="r-7-h">この7日 <small class="muted">答えた数（緑＝正解）</small></h3>
+      <div class="days7" id="r-days7"></div>
+    </section>
+
+    <div class="stats" id="stats"></div>
+    <p class="note">記録はこの端末の中だけにあります（先生や学校には送られません）。機種変更のときは「設定」から書き出してください。</p>
+  </section>
+
+  <section class="screen" id="settings" aria-labelledby="settings-h" hidden>
+    <h2 id="settings-h" class="sc-h"><svg class="ic" aria-hidden="true"><use href="#i-gear"/></svg>設定</h2>
+    <form id="settings-form" class="stack">
+      <section class="paper set-box" aria-labelledby="set-1">
+        <h3 id="set-1">練習</h3>
+        <fieldset class="seg">
+          <legend>1日の新しい語の数</legend>
+          <label><input type="radio" name="newPerDay" value="5"><span>5</span></label>
+          <label><input type="radio" name="newPerDay" value="10"><span>10</span></label>
+          <label><input type="radio" name="newPerDay" value="15"><span>15</span></label>
+          <label><input type="radio" name="newPerDay" value="20"><span>20</span></label>
+        </fieldset>
+        <p class="note">多いほど早く進みますが、次の日からの復習も増えます。ふつうは 10。</p>
+      </section>
+
+      <section class="paper set-box" aria-labelledby="set-2">
+        <h3 id="set-2">音</h3>
+        <fieldset class="seg">
+          <legend>読み上げの速さ</legend>
+          <label><input type="radio" name="rate" value="0.8"><span>ゆっくり</span></label>
+          <label><input type="radio" name="rate" value="1"><span>ふつう</span></label>
+          <label><input type="radio" name="rate" value="1.2"><span>はやい</span></label>
+        </fieldset>
+        <label class="switch"><input type="checkbox" name="autoEx" role="switch"><span>答えのあと、例文を自動で読む</span></label>
+        <label class="switch"><input type="checkbox" name="sfx" role="switch"><span>効果音（正解・まちがい・カードをめくる音）</span></label>
+        <label class="switch"><input type="checkbox" name="typesound" role="switch"><span>タイプ音（英語を打つときのキーの音）</span></label>
+      </section>
+
+      <section class="paper set-box" aria-labelledby="set-3">
+        <h3 id="set-3">ランキングの名前</h3>
+        <div class="nick-row">
+          <label for="s-nick" class="visually-hidden">ニックネーム</label>
+          <input type="text" id="s-nick" name="nick" data-typesound="off" maxlength="16" placeholder="例：SwiftFox" autocomplete="off" autocapitalize="none" spellcheck="false">
+        </div>
+        <p class="note">本名や出席番号は書かないでね（16文字まで）。いまは自分の画面にだけ出ます。</p>
+      </section>
+
+      <details class="paper set-box">
+        <summary>くわしい設定：練習する問題の種類</summary>
+        <fieldset class="checks">
+          <legend class="visually-hidden">練習する問題の種類</legend>
+          <label><input type="checkbox" name="w2m"> 意味を選ぶ</label>
+          <label><input type="checkbox" name="listen"> 聞いて書く</label>
+          <label><input type="checkbox" name="cloze"> 例文の空所</label>
+          <label><input type="checkbox" name="m2w"> 意味から書く</label>
+        </fieldset>
+        <p class="note">ふだんはぜんぶオンのままで大丈夫です。</p>
+      </details>
+      <p class="note saved" id="settings-msg" role="status"></p>
+    </form>
+
+    <section class="paper set-box" aria-labelledby="set-4">
+      <h3 id="set-4">記録の引っこし・消す</h3>
+      <div class="row">
+        <button type="button" id="export">記録を書き出す</button>
+        <label for="import-file" class="visually-hidden">記録ファイルを選ぶ</label>
+        <input type="file" id="import-file" accept="application/json,.json" hidden>
+        <button type="button" id="import">記録を読みこむ</button>
+        <button type="button" id="reset" class="danger">記録を消す</button>
+      </div>
+      <p class="note">書き出したファイルを新しい端末で読みこむと、覚えた語・★・VP がそのまま移ります。</p>
+      <p class="note" id="io-msg" role="status"></p>
+    </section>
+    <p class="note about" id="about">Word Ring（教科書 Lesson 6・7）。例文・意味はすべて自作です。<br>
+      音声：例文の録音は AI の合成音声（Deepgram Aura 2）で作ったものです（人の声ではありません）。録音のない語・例文は、端末の読み上げ機能で読みます。<br>
+      文字：Lexend（SIL Open Font License 1.1）。記録はこの端末の中だけに保存され、先生には送られません。</p>
+  </section>
+</main>
+
+<nav class="tabs" aria-label="画面">
+  <button type="button" data-go="home" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-cards"/></svg>ホーム</button>
+  <button type="button" data-go="words"><svg class="ic" aria-hidden="true"><use href="#i-ring"/></svg>単語帳</button>
+  <a href="ranking.html"><svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg>ランキング</a>
+  <button type="button" data-go="records"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg>記録</button>
+  <button type="button" data-go="settings"><svg class="ic" aria-hidden="true"><use href="#i-gear"/></svg>設定</button>
+</nav>
+
+<dialog id="end" aria-labelledby="end-h">
+  <img src="assets/char/A8_sleepy.png" alt="" width="120">
+  <h2 id="end-h">今日はここまで</h2>
+  <p id="end-msg"></p>
+  <p class="note">まちがえた語は、少しあとにもう一度出ます</p>
+  <form method="dialog" class="row">
+    <button value="again" id="end-again">もう1回</button>
+    <button value="home" class="primary" autofocus>ホームへ</button>
+  </form>
+</dialog>
+
+<dialog id="reset-dialog" aria-labelledby="reset-h" closedby="any">
+  <h2 id="reset-h">記録をすべて消しますか？</h2>
+  <p>覚えた語・苦手語・★・続いた日数・VP が消えます。元にもどせません。</p>
+  <form method="dialog" class="row">
+    <button value="cancel" autofocus>やめる</button>
+    <button value="reset">消す</button>
+  </form>
+</dialog>
+
+<script src="deck.js"></script>
+<script src="audio-list.js"></script>
+<script src="config.js"></script>
+<script src="core.js"></script>
+<script src="vp.js"></script>
+<script src="book.js"></script>
+<script src="typesound.js"></script>
+<script src="assets/icons/icons.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

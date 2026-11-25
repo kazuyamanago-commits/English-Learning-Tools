@@ -1,0 +1,2 @@
+// 自動生成：python dev/tools/vocab_srs/make_audio_list.py（録音がある語・例文・節の一覧）
+window.AUDIO_HAVE = new Set(["L6-01_ex", "L6-02_ex", "L6-03_ex", "L6-04_ex", "L6-05_ex", "L6-06_ex", "L6-07_ex", "L6-08_ex", "L6-09_ex", "L6-10_ex", "L6-11_ex", "L6-12_ex", "L6-13_ex", "L6-14_ex", "L6-15_ex", "L6-16_ex", "L6-17_ex", "L6-18_ex", "L6-19_ex", "L6-20_ex", "L6-21_ex", "L6-22_ex", "L6-23_ex", "L6-24_ex", "L6-25_ex", "L6-26_ex", "L6-27_ex", "L6-28_ex", "L6-29_ex", "L6-30_ex", "L6-31_ex", "L6-32_ex", "L6-33_ex", "L6-34_ex", "L6-35_ex", "L6-36_ex", "L6-38_ex"]);

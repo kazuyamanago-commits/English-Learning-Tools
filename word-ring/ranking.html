@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>見本D ランキング — 語彙アプリ</title>
+<link rel="icon" href="assets/app/icon-32.png">
+<link rel="stylesheet" href="ui.css">
+<style>
+  /* 見本D：VP（Vocabulary / Perseverance）のランキング。紙が基本、上の掲示板だけスタジアム */
+  body {
+    background: var(--desk); min-height: 100svh;
+    background-image: linear-gradient(#ffffff55 1px, transparent 1px), linear-gradient(90deg, #ffffff55 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .wrap { width: min(720px, 100% - 32px); margin: 0 auto; padding: 18px 0 110px; }
+  .top { display: flex; align-items: center; gap: 10px; }
+  .top a { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--paper); color: var(--pen); box-shadow: 0 2px 6px #1e2a4422; }
+  .top h1 { margin: 0; font: 600 22px var(--en); }
+  .top h1 small { font: 400 13px var(--ja); opacity: .7; margin-left: 6px; }
+
+  /* 電光掲示板：自分の今 */
+  .board {
+    margin-top: 14px; border-radius: 16px; padding: 18px 20px; color: var(--chalk);
+    background: #0B2A1E url("assets/cup/stadium.svg") center / cover; position: relative; overflow: hidden;
+    display: grid; grid-template-columns: auto 1fr 1fr; gap: 16px; align-items: center;
+  }
+  .board::before { content: ""; position: absolute; inset: 0; background: #061a12cc; }
+  .board > * { position: relative; }
+  .board .me-char { width: 74px; height: auto; filter: drop-shadow(0 4px 6px #0008); }
+  .stat { background: #111A26cc; border: 2px solid #2A3850; border-radius: 12px; padding: 10px 14px; }
+  .stat .k { font: 600 12px var(--en); letter-spacing: .14em; color: #ffffffaa; display: flex; justify-content: space-between; }
+  .stat .val { font: 700 34px/1.1 var(--en); color: var(--board); text-shadow: 0 0 12px #ffc83d55; font-variant-numeric: tabular-nums; }
+  .stat .sub { font-size: 13px; }
+  .stat .sub b { color: var(--board); }
+  .lvbar { height: 6px; border-radius: 3px; background: #ffffff22; margin-top: 6px; overflow: hidden; }
+  .lvbar i { display: block; height: 100%; background: var(--board); border-radius: 3px; }
+  .vp-say { grid-column: 1 / -1; font-size: 12px; opacity: .75; margin: -4px 0 0; }
+
+  /* 部門のタブ */
+  .tabs-dept { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 18px; background: #1e2a4414; border-radius: 14px; padding: 4px; }
+  .tabs-dept button { border: 0; background: none; border-radius: 10px; padding: 10px; font-size: 15px; font-weight: 700; display: grid; gap: 2px; }
+  .tabs-dept button small { font-weight: 400; font-size: 12px; opacity: .7; }
+  .tabs-dept button[aria-selected="true"] { background: var(--paper); box-shadow: 0 2px 6px #1e2a4422; }
+  .tabs-dept .en { font-size: 17px; }
+
+  /* 今週の賞 */
+  .awards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .award { background: var(--paper); border-radius: 14px; padding: 12px 14px; display: flex; gap: 10px; align-items: center; box-shadow: 0 2px 0 #1e2a441f, 0 1px 3px #1e2a4422; }
+  .award img { width: 38px; height: 38px; flex: none; }
+  .award .t { font-size: 12px; opacity: .7; }
+  .award .n { font: 600 16px var(--en); }
+  .award .n small { font: 400 12px var(--ja); opacity: .8; }
+
+  /* 表 */
+  .list { margin-top: 14px; background: var(--paper); border-radius: 16px; padding: 6px 0; box-shadow: 0 1px 0 #fff inset, 0 14px 30px -14px #1e2a4466, 0 2px 4px #1e2a4422; }
+  .row { display: grid; grid-template-columns: 46px 1fr auto 94px; align-items: center; gap: 10px; padding: 9px 16px; border-bottom: 1px solid var(--grid); }
+  .row:last-child { border-bottom: 0; }
+  .row .rk { font: 700 18px var(--en); text-align: center; }
+  .row .rk img { width: 30px; height: 30px; display: block; margin: auto; }
+  .row .nm { font: 500 16px var(--en); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .row .nm small { font: 400 12px var(--ja); opacity: .65; margin-left: 6px; }
+  .row .pt { font: 700 20px var(--en); font-variant-numeric: tabular-nums; text-align: right; }
+  .row .pt small { font: 400 11px var(--ja); opacity: .65; margin-left: 2px; }
+  .dots { display: flex; gap: 3px; justify-content: flex-end; }
+  .dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--grid); }
+  .dots i.on { background: var(--green); }
+  .row.me { background: #E1EFE8; box-shadow: inset 4px 0 0 var(--green); }
+  .row.me .nm { font-weight: 700; color: #1f6e4b; }
+  .gap { text-align: center; letter-spacing: .4em; opacity: .4; padding: 2px 0; border-bottom: 1px solid var(--grid); }
+  .foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 12px; font-size: 13px; opacity: .75; }
+
+  /* ニックネーム */
+  .nick { margin-top: 18px; background: var(--paper); border-radius: 14px; padding: 12px 14px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 14px; }
+  .nick input { flex: 1; min-width: 140px; font: 500 16px var(--en); padding: 8px 12px; border: 1.5px solid var(--grid); border-radius: 10px; background: #fff; color: var(--pen); }
+  .nick button { border: 0; border-radius: 999px; background: var(--green); color: #fff; padding: 8px 18px; font-weight: 700; }
+  .nick small { flex-basis: 100%; opacity: .65; font-size: 12px; }
+  .proto { margin-top: 14px; font-size: 12px; text-align: center; opacity: .6; }
+
+  nav.tabs {
+    position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; gap: 4px;
+    background: #FBFBF8ee; backdrop-filter: blur(6px); border-top: 1px solid #1e2a441a; padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  }
+  nav.tabs a { flex: 0 1 100px; display: grid; justify-items: center; gap: 2px; font-size: 12px; text-decoration: none; color: var(--pen); padding: 6px 4px; border-radius: 10px; opacity: .7; }
+  nav.tabs a .ic { width: 22px; height: 22px; }
+  nav.tabs a[aria-current="page"] { opacity: 1; font-weight: 700; background: #E1EFE8; color: #1f6e4b; }
+
+  @media (max-width: 560px) {
+    .board { grid-template-columns: 1fr 1fr; }
+    .board .me-char { display: none; }
+    .stat .val { font-size: 28px; }
+    .awards { grid-template-columns: 1fr; }
+    .row { grid-template-columns: 34px 1fr auto; padding: 9px 12px; }
+    .row .dots { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="sprite"></div>
+<div class="wrap">
+  <header class="top">
+    <a href="index.html" aria-label="ホームへ"><svg class="ic"><use href="#i-back"/></svg></a>
+    <h1>VP RANKING<small id="wk"></small></h1>
+  </header>
+
+  <section class="board" aria-label="自分の VP">
+    <img class="me-char" src="assets/char/A4_streak.png" alt="">
+    <div class="stat">
+      <div class="k"><span>V ・ VOCABULARY</span><span id="v-rank"></span></div>
+      <div class="val" id="v-val">0</div>
+      <div class="sub"><b id="v-lv">ルーキー</b> <span id="v-next"></span></div>
+      <div class="lvbar"><i id="v-bar"></i></div>
+    </div>
+    <div class="stat">
+      <div class="k"><span>P ・ PERSEVERANCE</span><span id="p-rank"></span></div>
+      <div class="val" id="p-val">0</div>
+      <div class="sub">今週 <b id="p-days">0</b> 日 ・ <span id="p-reset"></span></div>
+      <div class="lvbar"><i id="p-bar"></i></div>
+    </div>
+    <p class="vp-say">VP ＝ Vocabulary（語彙の力）と Perseverance（続けるねばり）を数字にしたもの</p>
+  </section>
+
+  <div class="tabs-dept" role="tablist" aria-label="部門">
+    <button type="button" role="tab" data-dept="p" aria-selected="true"><span><span class="en">P</span> ねばり部門</span><small>今週の取り組み・月曜にリセット</small></button>
+    <button type="button" role="tab" data-dept="v" aria-selected="false"><span><span class="en">V</span> 語彙部門</span><small>思い出せる語の力・積み上げ</small></button>
+  </div>
+
+  <div class="awards">
+    <div class="award"><img src="assets/cup/trophy.svg" alt=""><div><div class="t">今週いちばん伸びた人（V）</div><div class="n" id="aw-grew">—</div></div></div>
+    <div class="award"><img src="assets/cup/medal-gold.svg" alt=""><div><div class="t">7日つづけた人</div><div class="n" id="aw-seven">—</div></div></div>
+  </div>
+
+  <div class="list" id="list" role="table" aria-label="ランキング"></div>
+  <div class="foot"><span id="count"></span><span id="reset"></span></div>
+
+  <div class="nick">
+    <label for="nick-in">ニックネーム</label>
+    <input id="nick-in" maxlength="16" placeholder="例 SwiftOtter" autocomplete="off">
+    <button type="button" id="nick-save">決める</button>
+    <small>本名・出席番号は使わないでください。ランキングに出るのはニックネームと点だけです</small>
+  </div>
+  <p class="proto">試作：ほかの人は架空です（本物のクラスの集計は、学校の許可のあとで）</p>
+</div>
+
+<nav class="tabs" aria-label="画面">
+  <a href="index.html"><svg class="ic"><use href="#i-cards"/></svg>ホーム</a>
+  <a href="index.html"><svg class="ic"><use href="#i-ring"/></svg>単語帳</a>
+  <a href="ranking.html" aria-current="page"><svg class="ic"><use href="#i-trophy"/></svg>ランキング</a>
+  <a href="index.html"><svg class="ic"><use href="#i-calendar"/></svg>記録</a>
+  <a href="index.html"><svg class="ic"><use href="#i-gear"/></svg>設定</a>
+</nav>
+
+<script src="deck.js"></script>
+<script src="config.js"></script>
+<script src="core.js"></script>
+<script src="vp.js"></script>
+<script src="book.js"></script>
+<script src="vp-store.js"></script>
+<script src="assets/icons/icons.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const fmt = n => n.toLocaleString("ja-JP");
+  const DEPT_KEY = "vocab-mock-rank-dept";
+  let dept = "p";
+  try { dept = localStorage.getItem(DEPT_KEY) || "p"; } catch {}
+
+  function render() {
+    const s = VPStore.snapshot(), now = s.now;
+    const myNick = s.nick || "あなた";
+    const me = { nick: myNick, p: s.week.p, v: s.v, vGain: s.week.vGain, days: s.week.days, active: s.week.active, me: true };
+    const entries = VP.rivals(now).concat([me]);
+    const bp = VP.board(entries.map(e => ({ ...e })), "p"), bv = VP.board(entries.map(e => ({ ...e })), "v");
+
+    // 掲示板
+    $("wk").textContent = VP.weekKey(now).replace("-W", " 第") + "週";
+    $("v-val").textContent = fmt(s.v); $("p-val").textContent = fmt(s.week.p);
+    $("v-rank").textContent = `${bv.myRank}位`; $("p-rank").textContent = `${bp.myRank}位`;
+    $("v-lv").textContent = s.level.name;
+    $("v-next").textContent = s.level.next ? `あと ${fmt(s.level.next.at - s.v)} で ${s.level.next.name}` : "最高の段階！";
+    $("v-bar").style.width = s.level.next ? `${Math.round(100 * (s.v - s.level.from) / (s.level.next.at - s.level.from))}%` : "100%";
+    $("p-days").textContent = s.week.days;
+    const leftDays = Math.ceil((VP.weekStart(now) + 7 * VP.DAY - now) / VP.DAY);
+    $("p-reset").textContent = `リセットまで ${leftDays}日`;
+    $("p-bar").style.width = `${Math.min(100, Math.round(100 * s.week.p / 180))}%`;   // 目安：週 180（1日 45 × 4日）
+
+    // 賞
+    const aw = VP.awards(entries);
+    $("aw-grew").innerHTML = aw.grew ? `${esc(aw.grew.nick)} <small>+${fmt(aw.grew.vGain)}</small>` : "まだいません";
+    $("aw-seven").innerHTML = aw.seven.length ? `${aw.seven.map(e => esc(e.nick)).join("、")}` : "まだいません <small>（月〜日 ぜんぶやると入る）</small>";
+
+    // 表
+    const b = dept === "p" ? bp : bv, key = dept;
+    const medal = r => r <= 3 ? `<img src="assets/cup/medal-${["gold", "silver", "bronze"][r - 1]}.svg" alt="${r}位">` : r;
+    const row = e => `<div class="row${e.me ? " me" : ""}" role="row">
+      <span class="rk" role="cell">${medal(e.rank)}</span>
+      <span class="nm" role="cell">${esc(e.nick)}${e.me ? "<small>（あなた）</small>" : dept === "v" ? `<small>${VP.level(e.v).name}</small>` : ""}</span>
+      <span class="pt" role="cell">${fmt(e[key])}<small>${key.toUpperCase()}</small></span>
+      <span class="dots" role="cell" aria-label="今週やった日 ${e.days}日">${(e.active || []).map(a => `<i class="${a ? "on" : ""}"></i>`).join("")}</span>
+    </div>`;
+    $("list").innerHTML = b.rows.map(row).join("") + (b.me ? `<div class="gap">…</div>` + row(b.me) : "");
+    $("count").textContent = `${b.total}人中 ${b.myRank}位`;
+    $("reset").textContent = dept === "p" ? "P は月曜 0:00 に 0 にもどります" : "V は積み上げ（復習しないと少しずつ減ります）";
+    for (const t of document.querySelectorAll("[data-dept]")) t.setAttribute("aria-selected", t.dataset.dept === dept);
+    if (document.activeElement !== $("nick-in")) $("nick-in").value = s.nick;
+  }
+
+  for (const t of document.querySelectorAll("[data-dept]")) t.addEventListener("click", () => {
+    dept = t.dataset.dept; try { localStorage.setItem(DEPT_KEY, dept); } catch {} render();
+  });
+  $("nick-save").addEventListener("click", () => { VPStore.setNick($("nick-in").value); $("nick-in").blur(); render(); });
+  $("nick-in").addEventListener("keydown", e => { if (e.key === "Enter") $("nick-save").click(); });
+  render();
+</script>
+</body>
+</html>

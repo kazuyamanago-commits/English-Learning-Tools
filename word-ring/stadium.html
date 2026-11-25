@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>見本B スタジアム — 語彙アプリ</title>
+<link rel="icon" href="assets/app/icon-32.png">
+<link rel="stylesheet" href="ui.css">
+<style>
+  body { background: #08121F; color: var(--chalk); min-height: 100svh; display: grid; place-items: start center; }
+  .wrap { width: min(760px, 100% - 16px); padding: 14px 0 60px; }
+  /* 電光掲示板 */
+  .board {
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px;
+    background: #111A26; border: 2px solid #2A3850; border-radius: 12px; padding: 10px 16px; font-family: var(--en);
+  }
+  .team { display: flex; align-items: center; gap: 10px; font-size: 15px; }
+  .team.away { justify-content: flex-end; }
+  .team img { width: 38px; height: 38px; }
+  .team .me { width: 38px; height: 38px; border-radius: 50%; background: var(--paper); display: grid; place-items: center; overflow: hidden; }
+  .team .me img { width: 30px; height: auto; }
+  .score { font-size: 34px; font-weight: 700; color: var(--board); letter-spacing: .08em; text-shadow: 0 0 12px #ffc83d66; }
+  .meta { display: flex; justify-content: space-between; margin: 8px 4px 0; font-family: var(--en); font-size: 14px; color: var(--board); }
+  .meta span { display: flex; gap: 6px; align-items: center; }
+
+  /* ピッチ */
+  .pitch {
+    position: relative; height: min(52svh, 400px); margin-top: 10px; border-radius: 14px; overflow: hidden;
+    background: url("assets/cup/stadium.svg") center / cover no-repeat;
+    box-shadow: inset 0 0 0 2px #ffffff22;
+  }
+  .goalline { position: absolute; left: 0; right: 0; bottom: 34px; height: 6px; background: var(--red); box-shadow: 0 0 10px var(--red); }
+  .goalline::after { content: "GOAL LINE"; position: absolute; right: 10px; top: 8px; font: 600 11px var(--en); letter-spacing: .2em; color: #fff9; }
+  /* ボール：位置はプログラムで動かす（落ちてくること自体が「のこり時間」なので、動きを減らす設定でも動かす） */
+  .ball {
+    position: absolute; left: 50%; top: 0; translate: -50% var(--y, 10px);
+    display: flex; align-items: center; gap: 10px; padding: 8px 18px 8px 8px;
+    background: var(--paper); color: var(--pen); border-radius: 999px; box-shadow: 0 6px 16px #0008;
+    font: 500 30px var(--en); will-change: translate;
+  }
+  .ball img { width: 40px; height: 40px; }
+  /* 回転とシュートは飾りなので、動きを減らす設定では出さない */
+  @media (prefers-reduced-motion: no-preference) {
+    .ball.rolling img { animation: spin 1.2s linear infinite; }
+    .ball.shot { transition: translate .45s ease-in, scale .45s ease-in, opacity .45s; translate: -50% -120px; scale: .5; opacity: .2; }
+  }
+  .ball.shot { opacity: .35; }
+  @keyframes spin { to { rotate: 1turn; } }
+  .buddy { position: absolute; left: 14px; bottom: 46px; width: 92px; height: auto; filter: drop-shadow(0 4px 6px #0008); }
+  .say { position: absolute; left: 112px; bottom: 112px; background: var(--paper); color: var(--pen); border-radius: 12px; padding: 5px 12px; font-size: 15px; font-weight: 700; }
+
+  /* 答える場所 */
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .choice {
+    background: #16324A; border: 2px solid #2F5B7E; border-radius: 12px; color: var(--chalk);
+    padding: 14px; font-size: 19px; text-align: left; display: flex; gap: 10px; align-items: center;
+    box-shadow: 0 4px 0 #0B1B2A;
+  }
+  .choice:hover { border-color: var(--board); }
+  .choice:active { translate: 0 3px; box-shadow: 0 1px 0 #0B1B2A; }
+  .choice b { font: 700 14px var(--en); width: 24px; height: 24px; border-radius: 6px; background: var(--board); color: #111; display: grid; place-items: center; flex: none; }
+  .choice.right { background: var(--green); border-color: #7FE0B0; }
+  .choice.wrong { background: #5A1E22; border-color: var(--red); }
+  .hint { text-align: center; font-size: 13px; opacity: .6; margin-top: 10px; }
+  [hidden] { display: none !important; }
+  /* 打ちこみ（スペル・ディクテーション） */
+  .ball.ja { font: 700 22px var(--ja); max-width: 92%; }
+  .ball .ic { width: 34px; height: 34px; }
+  .type { display: grid; gap: 10px; margin-top: 14px; }
+  .slots { text-align: center; font: 600 26px var(--en); letter-spacing: .35em; color: var(--board); min-height: 34px; }
+  .type-row { display: flex; gap: 10px; }
+  .type input {
+    flex: 1; min-width: 0; font: 500 26px var(--en); padding: 10px 16px; border-radius: 12px;
+    border: 2px solid #2F5B7E; background: #0E2236; color: var(--chalk); outline: none;
+  }
+  .type input:focus { border-color: var(--board); }
+  .type input.right { background: var(--green); border-color: #7FE0B0; }
+  .type input.wrong { background: #5A1E22; border-color: var(--red); }
+  .type .go { flex: none; background: var(--board); color: #111; border: 0; border-radius: 12px; padding: 0 20px; font: 700 17px var(--ja); box-shadow: 0 3px 0 #b88a14; }
+  .type .again { flex: none; background: #16324A; color: var(--chalk); border: 2px solid #2F5B7E; border-radius: 12px; padding: 0 14px; display: flex; align-items: center; gap: 6px; font-size: 15px; }
+  .type .again .ic { width: 20px; height: 20px; }
+  .slots.clause { font-size: 17px; letter-spacing: .12em; line-height: 1.6; }
+  .answer .en.clause { display: block; font-size: 18px; margin: 4px 0; }
+  .answer { text-align: center; font-size: 17px; min-height: 24px; }
+  .answer .en { font: 700 22px var(--en); color: var(--board); margin: 0 6px; }
+  /* キックオフの遊び方えらび */
+  .modes[hidden] { display: none; }
+  .modes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 14px 0 4px; }
+  .mode { background: #16324A; border: 2px solid #2F5B7E; border-radius: 12px; color: var(--chalk); padding: 10px 6px; font-size: 14px; display: grid; justify-items: center; gap: 4px; }
+  .mode .ic { width: 26px; height: 26px; }
+  .mode small { opacity: .7; font-size: 12px; }
+  .mode[aria-pressed="true"] { border-color: var(--board); background: #22405C; box-shadow: 0 0 0 2px #ffc83d55; }
+
+  /* キックオフ・試合終了 */
+  dialog { border: 0; border-radius: 18px; padding: 26px 34px; text-align: center; color: var(--chalk); background: #111A26; box-shadow: 0 0 0 2px #2A3850, 0 24px 60px #000a; max-width: min(520px, 92vw); }
+  dialog::backdrop { background: #000a; }
+  dialog h2 { font: 700 30px var(--en); color: var(--board); margin: 6px 0; letter-spacing: .06em; }
+  .vs { display: flex; align-items: center; justify-content: center; gap: 18px; font: 600 18px var(--en); margin: 10px 0 6px; }
+  .vs img { width: 64px; height: 64px; }
+  .vs .me { width: 64px; height: 64px; border-radius: 50%; background: var(--paper); display: grid; place-items: center; }
+  .vs .me img { width: 50px; height: auto; }
+  .final { font: 700 54px var(--en); color: var(--board); }
+  .res-char { width: 110px; height: auto; }
+  .missed { text-align: left; margin: 12px auto 0; font-size: 15px; max-height: 30svh; overflow: auto; }
+  .missed li { padding: 3px 0; border-bottom: 1px solid #ffffff1a; }
+  .missed .en { font-weight: 600; margin-right: 8px; }
+  .btn { background: var(--board); color: #111; border: 0; border-radius: 999px; padding: 12px 36px; font: 700 18px var(--ja); margin-top: 16px; box-shadow: 0 3px 0 #b88a14; }
+  .btn:active { translate: 0 2px; box-shadow: 0 1px 0 #b88a14; }
+
+  /* 一時停止（11/25 先生「どのモードからでも中断して戻るメニュー」） */
+  .pause-btn {
+    position: absolute; right: 10px; top: 10px; z-index: 2; width: 44px; height: 44px; border-radius: 12px;
+    background: #111A26cc; border: 2px solid #ffffff44; color: var(--chalk); display: grid; place-items: center;
+  }
+  .pause-btn:hover { border-color: var(--board); color: var(--board); }
+  .pause-btn svg { width: 20px; height: 20px; }
+  /* 止めている間は問題を見えなくする（止めて考える、をさせない） */
+  .wrap.paused .pitch, .wrap.paused .choices, .wrap.paused .type { filter: blur(10px) brightness(.6); }
+  .menu { display: grid; gap: 10px; margin-top: 14px; }
+  .menu .btn { margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .menu .btn .ic, .menu .sub .ic { width: 22px; height: 22px; }
+  .menu .sub {
+    background: #16324A; color: var(--chalk); border: 2px solid #2F5B7E; border-radius: 999px; padding: 10px 24px;
+    font: 700 16px var(--ja); display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;
+  }
+  .menu .sub:hover { border-color: var(--board); }
+  .toggles { display: flex; justify-content: center; gap: 18px; margin-top: 14px; font-size: 15px; }
+  .toggles label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .toggles input { width: 18px; height: 18px; accent-color: var(--board); }
+  .gain { position: absolute; right: 64px; top: 16px; font: 700 22px var(--en); color: var(--board); text-shadow: 0 2px 8px #000a; opacity: 0; }
+  .gain.pop { animation: gain 1.1s ease-out; }
+  @keyframes gain { 0% { opacity: 0; translate: 0 10px; } 20% { opacity: 1; translate: 0 0; } 80% { opacity: 1; } 100% { opacity: 0; translate: 0 -12px; } }
+  @media (prefers-reduced-motion: reduce) { .gain.pop { animation: gainfade 1.1s; } @keyframes gainfade { 0%, 80% { opacity: 1; } 100% { opacity: 0; } } }
+  .ft-p a { color: var(--board); font-weight: 700; }
+  .home-link { color: var(--chalk); opacity: .75; font-size: 14px; }
+  .home-link:hover { opacity: 1; color: var(--board); }
+  .key-hint { font-size: 13px; opacity: .6; margin: 10px 0 0; }
+  .ko-mode { font-size: 15px; margin: 12px 0 4px; }
+  .ko-change { background: none; border: 1.5px solid currentColor; border-radius: 999px; color: inherit; padding: 2px 12px; font-size: 13px; margin-left: 6px; }
+  .ko-empty { color: #ffb4a8; font-size: 14px; }
+</style>
+</head>
+<body>
+<div id="sprite"></div>
+<div class="wrap">
+  <div class="board" aria-label="スコア">
+    <div class="team"><span class="me"><img src="assets/char/A0_base.png" alt=""></span><span>YOU</span></div>
+    <div class="score" aria-live="polite"><span id="s-me">0</span> - <span id="s-op">0</span></div>
+    <div class="team away"><span id="op-name">Verb United</span><img id="op-emb" src="assets/cup/team3.svg" alt=""></div>
+  </div>
+  <div class="meta">
+    <span><svg class="ic"><use href="#i-flame"/></svg>連続 <b id="streak">0</b></span>
+    <span><b id="qno">1</b> / <b id="qall">10</b> 問</span>
+    <span>のこり <b id="sec">6</b> 秒</span>
+  </div>
+
+  <div class="pitch" id="pitch">
+    <div class="goalline"></div>
+    <button class="pause-btn" type="button" id="pause-btn" aria-label="一時停止（Esc）" title="一時停止（Esc）"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg></button>
+    <div class="ball" id="word-ball"><img src="assets/cup/ball.svg" alt=""><span id="word">　</span></div>
+    <img class="buddy" id="buddy" src="assets/char/A5_cheer.png" alt="">
+    <div class="say" id="say">いけー！</div>
+    <div class="gain" id="gain" aria-live="polite"></div>
+  </div>
+
+  <div class="choices" id="choices"></div>
+  <form class="type" id="type" hidden autocomplete="off">
+    <div class="slots" id="slots" aria-hidden="true"></div>
+    <div class="type-row">
+      <input id="typed" type="text" inputmode="latin" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="英語でつづりを打つ">
+      <button class="again" type="button" id="replay" hidden><svg class="ic"><use href="#i-speaker"/></svg>もう一度</button>
+      <button class="go" type="submit">シュート</button>
+    </div>
+    <div class="answer" id="answer" aria-live="polite"></div>
+  </form>
+  <p class="hint" id="hint">1〜4 のキーでも答えられます。ボールがゴールラインをこえる前に！</p>
+</div>
+
+<dialog id="kickoff" aria-labelledby="ko-h">
+  <h2 id="ko-h">KICK OFF</h2>
+  <div class="vs"><span class="me"><img src="assets/char/A0_base.png" alt=""></span>YOU<span>vs</span><span id="ko-name">Verb United</span><img id="ko-emb" src="assets/cup/team3.svg" alt=""></div>
+  <p class="ko-mode" id="ko-mode" hidden>遊び方：<b id="ko-mode-name"></b> <button type="button" class="ko-change" id="ko-change">変える</button></p>
+  <div class="modes" id="ko-modes" role="group" aria-label="遊び方">
+    <button class="mode" type="button" data-mode="choice" aria-pressed="true"><svg class="ic"><use href="#i-cards"/></svg>意味4択<small>6秒</small></button>
+    <button class="mode" type="button" data-mode="spell" aria-pressed="false"><svg class="ic"><use href="#i-keyboard"/></svg>スペル<small>日本語→英語・12秒</small></button>
+    <button class="mode" type="button" data-mode="dict" aria-pressed="false"><svg class="ic"><use href="#i-speaker"/></svg>語のディクテーション<small>語を聞いて打つ・12秒</small></button>
+    <button class="mode" type="button" data-mode="clause" aria-pressed="false"><svg class="ic"><use href="#i-mic"/></svg>節のディクテーション<small>例文の節を聞いて打つ</small></button>
+  </div>
+  <p>ランダムに選んだ <b id="ko-n">10</b> 語で1試合。正解でゴール、まちがい・時間切れは相手のゴール。</p>
+  <p class="ko-empty" id="ko-empty" hidden>この遊び方で出せる語がまだありません。スペル・ディクテーションは、カードの「意味を選ぶ」を卒業した語だけが出ます。まず「意味4択」かカードで練習しよう</p>
+  <button class="btn" type="button" id="start">試合開始</button>
+  <p><a class="home-link" href="index.html">ホームへもどる</a></p>
+</dialog>
+
+<dialog id="fulltime" aria-labelledby="ft-h">
+  <h2 id="ft-h">FULL TIME</h2>
+  <img class="res-char" id="ft-char" src="assets/char/A6_champion.png" alt="">
+  <div class="final"><span id="ft-me">0</span> - <span id="ft-op">0</span></div>
+  <p id="ft-msg"></p>
+  <p class="ft-p"><a href="ranking.html" id="ft-p"></a></p>
+  <ul class="missed" id="ft-missed"></ul>
+  <button class="btn" type="button" id="again">もう1試合</button>
+  <p><a class="home-link" href="index.html">ホームへもどる</a></p>
+</dialog>
+
+<dialog id="pause" aria-labelledby="pz-h">
+  <h2 id="pz-h">PAUSE</h2>
+  <p>時計は止まっています</p>
+  <div class="menu">
+    <button class="btn" type="button" id="resume"><svg class="ic"><use href="#i-play"/></svg>つづける</button>
+    <button class="sub" type="button" id="quit"><svg class="ic"><use href="#i-back"/></svg>この試合をやめて、遊び方をえらびなおす</button>
+    <a class="sub" id="home" href="index.html"><svg class="ic"><use href="#i-cards"/></svg>ホームへ</a>
+  </div>
+  <div class="toggles">
+    <label><input type="checkbox" id="opt-keys" checked>タイプ音</label>
+    <label><input type="checkbox" id="opt-bgm" checked>BGM</label>
+  </div>
+  <p class="key-hint">Esc キーでも 止める／つづける</p>
+</dialog>
+
+
+<script src="deck.js"></script>
+<script src="audio-list.js"></script>
+<script src="config.js"></script>
+<script src="core.js"></script>
+<script src="vp.js"></script>
+<script src="book.js"></script>
+<script src="vp-store.js"></script>
+<script src="typesound.js"></script>
+<script src="assets/icons/icons.js"></script>
+<script>
+  const A = "assets/";
+  const $ = id => document.getElementById(id);
+  const sfx = n => { const a = new Audio(`${A}sfx/${n}.wav`); a.volume = .6; a.play().catch(() => {}); };
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const shuffle = a => { a = a.slice(); for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
+  const P = new URLSearchParams(location.search);
+  // 出す語：ホームの「なにを」（scope）でしぼる。打ちこみ版は③（意味を選ぶ）を卒業した語だけ（仕様 14章）
+  // 節のディクテーションは語句（give A a ride など）もふくめる（例文の節を聞くので）
+  const words = DECK.notes.filter(n => n.kind === "word");
+  function pool(mode) {
+    const st = VPStore.loadState(), now = Date.now(), scope = P.get("scope") || "all";
+    // えらんだレッスン（ホームの棚・?lessons=6,7）。なければ生徒が前にえらんだもの
+    const ls = (P.get("lessons") || "").split(",").map(Number).filter(Boolean);
+    const inL = WR.noteIn(ls.length ? ls : WR.lessons());
+    const base = (mode === "clause" ? DECK.notes.filter(n => n.clause) : words).filter(inL);
+    let list = base;
+    if (scope === "weak") list = base.filter(n => VocabCore.noteStatus(DECK, st, n.id) === "leech");
+    else if (scope === "star") list = base.filter(n => (st.stars || []).includes(n.id));
+    else if (scope === "today") {
+      const touched = list.filter(n => Object.keys(st.cards).some(id => id.startsWith(n.id + ":") && st.cards[id].due <= now));
+      if (touched.length >= 3) list = touched;   // 今日の復習が少ないときは、ぜんぶから
+    }
+    if (mode !== "choice") list = list.filter(n => VocabCore.graduated(st, n.id));
+    return list;
+  }
+  let notes = words;
+  // 遊び方：choice＝意味4択（6秒）／spell＝日本語→英語を打つ／dict＝音声だけ→打つ（打ちこみは12秒・先生 11/25）
+  // clause＝節のディクテーション（例文のうち、その語をふくむ節・2026-11-25 先生）。時間は長さで決める（clauseTime）
+  const LIMIT = { choice: 6, spell: 12, dict: 12, clause: 20 };
+  const clauseTime = n => Math.round(8 + 0.35 * n.clause.length);
+  const HINT = {
+    choice: "1〜4 のキーでも答えられます。ボールがゴールラインをこえる前に！",
+    spell: "日本語の意味を見て、英語のつづりを打って Enter。下線は文字数です",
+    dict: "聞こえた語を打って Enter。聞きなおしは「もう一度」（または Ctrl キー）",
+    clause: "聞こえた英語（節）を打って Enter。大文字・コンマ・ピリオドは気にしなくてよい。聞きなおしは「もう一度」（または Ctrl キー）",
+  };
+  let MODE = LIMIT[P.get("mode")] ? P.get("mode") : "choice";
+  // ホームで遊び方を選んできたときは、キックオフで聞きなおさない（「変える」で出す）
+  let askMode = !LIMIT[P.get("mode")];
+  const MODE_NAME = { choice: "意味4択", spell: "スペル", dict: "語のディクテーション", clause: "節のディクテーション" };
+  const N = Number(P.get("n")) || 10;  // 1試合の語の数
+  let TIME = LIMIT[MODE];
+  let matchP = 0, match = [], q = 0, me = 0, op = 0, streak = 0, missed = [], busy = true, voice = null, bgm = null, raf = 0, t0 = 0;
+  const typing = () => MODE !== "choice";
+  // 節：大文字・コンマ・ピリオド・アポストロフィの形は問わない
+  const loose = s => norm(s).replace(/[’‘`]/g, "'").replace(/[^a-z0-9' ]/g, " ").replace(/\s+/g, " ").trim();
+  const norm = s => s.trim().toLowerCase().replace(/\s+/g, " ");
+  // 語・節の音声（録音）。節の録音がまだないときはブラウザの読み上げ（Cloudflare で ID_clause.mp3 を作ったら自動でそちらに）
+  const tts = t => { if (!("speechSynthesis" in window)) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = "en-US"; u.rate = .95; speechSynthesis.speak(u); };
+  const say = n => {
+    if (voice) voice.pause(); if ("speechSynthesis" in window) speechSynthesis.cancel();
+    const kind = MODE === "clause" ? "clause" : "word";
+    if (window.AUDIO_HAVE && !AUDIO_HAVE.has(`${n.id}_${kind}`)) { voice = { pause() {}, src: `${A}audio/${n.id}_${kind}.mp3` }; return tts(kind === "clause" ? n.clause : n.word); }
+    const a = voice = new Audio(`${A}audio/${n.id}_${kind}.mp3`);
+    a.addEventListener("error", () => { if (voice === a && kind === "clause") tts(n.clause); });
+    a.play().catch(() => {});
+  };
+
+  // 一時停止：paused の間は時計を止める。gen＝試合の番号（やめたあとに古い「次の問題へ」が動かないように）
+  let paused = false, pausedAt = 0, pending = null, gen = 0;
+
+  // 設定（この端末だけに残す。読めなくても既定で動く）
+  const PREF_KEY = "vocab-mock-b-prefs";
+  const prefs = { bgm: true };
+  try { Object.assign(prefs, JSON.parse(localStorage.getItem(PREF_KEY) || "{}")); } catch {}
+  const savePrefs = () => { try { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); } catch {} };
+
+  const Keys = window.TypeSound;   // タイプ音は typesound.js（カードと共通）
+
+  function pause() {
+    if (paused || $("kickoff").open || $("fulltime").open) return;
+    paused = true; pausedAt = performance.now(); cancelAnimationFrame(raf);
+    if (bgm) bgm.pause(); if (voice) voice.pause();
+    document.querySelector(".wrap").classList.add("paused");
+    $("pause").showModal(); sfx("click");
+  }
+  function resume() {
+    if (!paused) return;
+    if ($("pause").open) $("pause").close();
+    document.querySelector(".wrap").classList.remove("paused");
+    paused = false; t0 += performance.now() - pausedAt;   // 止めていた時間はのこり時間に数えない
+    if (bgm && prefs.bgm) bgm.play().catch(() => {});
+    if (pending) { const f = pending; pending = null; setTimeout(f, 300); return; }
+    if (!busy) { raf = requestAnimationFrame(tick); if (typing()) $("typed").focus(); }
+  }
+  // 試合をやめて、キックオフ（遊び方えらび）へ
+  function quit() {
+    gen++; pending = null; paused = false; busy = true; cancelAnimationFrame(raf);
+    if ($("pause").open) $("pause").close();
+    document.querySelector(".wrap").classList.remove("paused");
+    if (bgm) bgm.pause(); if (voice) voice.pause();
+    $("word").textContent = "　"; $("word-ball").className = "ball"; $("word-ball").style.setProperty("--y", "10px");
+    $("choices").innerHTML = ""; $("answer").textContent = ""; $("typed").value = ""; $("sec").textContent = TIME;
+    askMode = true;   // 「遊び方をえらびなおす」なので、キックオフで選べるようにする
+    newMatch();
+  }
+
+  function setMode(m) {
+    try { const k = WR.keys.home, h = JSON.parse(localStorage.getItem(k) || "{}"); if (h.mode && h.mode !== m) { h.mode = m; localStorage.setItem(k, JSON.stringify(h)); } } catch {}
+    MODE = m; TIME = Number(P.get("t")) || LIMIT[m];
+    for (const b of document.querySelectorAll(".mode")) b.setAttribute("aria-pressed", b.dataset.mode === m);
+    $("choices").hidden = typing(); $("type").hidden = !typing();
+    $("replay").hidden = m !== "dict" && m !== "clause";
+    $("hint").textContent = HINT[m] + "（Esc で一時停止）";
+  }
+
+  function newMatch() {
+    notes = pool(MODE);
+    if (!notes.length && P.has("selftest")) notes = words;
+    $("ko-modes").hidden = !askMode; $("ko-mode").hidden = askMode; $("ko-mode-name").textContent = MODE_NAME[MODE];
+    $("ko-empty").hidden = notes.length > 0; $("start").disabled = !notes.length;
+    match = shuffle(notes).slice(0, N); matchP = 0; q = 0; me = 0; op = 0; streak = 0; missed = []; busy = true;
+    $("s-me").textContent = 0; $("s-op").textContent = 0; $("streak").textContent = 0; $("qall").textContent = match.length; $("ko-n").textContent = match.length;
+    $("kickoff").showModal();
+  }
+
+  function ask() {
+    if (paused) { pending = ask; return; }   // 止めている間に次の問題の時刻が来たら、つづけたときに出す
+    busy = false;
+    const n = match[q], ball = $("word-ball");
+    $("qno").textContent = q + 1;
+    ball.className = "ball rolling";
+    $("buddy").src = `${A}char/A5_cheer.png`; $("say").textContent = "いけー！";
+    if (MODE === "choice") {
+      $("word").textContent = n.word;
+      const right = n.choice || n.meaning;
+      const opts = shuffle([right, ...n.wrong]);
+      $("choices").innerHTML = opts.map((t, k) => `<button class="choice" type="button" data-ok="${t === right}"><b>${k + 1}</b>${esc(t)}</button>`).join("");
+      say(n);
+    } else {
+      // スペル：意味だけ見せる（先に音を聞かせると答えになるので、音は答えたあと）／ディクテーション：音だけ
+      if (MODE === "clause" && !P.get("t")) { TIME = clauseTime(n); $("sec").textContent = TIME; }
+      if (MODE === "spell") { ball.classList.add("ja"); $("word").textContent = n.meaning; }
+      else { $("word").innerHTML = `<svg class="ic"><use href="#i-speaker"/></svg>`; say(n); }
+      // 助け：スペルは「最初の1文字＋文字数の下線」、ディクテーションは「文字数の下線」だけ
+      // 節は語ごとの下線（文字数の目安）
+      const target = MODE === "clause" ? n.clause : n.word;
+      $("slots").classList.toggle("clause", MODE === "clause");
+      $("slots").textContent = [...target].map((c, k) => c === " " ? " " : /[,;:'’-]/.test(c) && MODE === "clause" ? c : k === 0 && MODE === "spell" ? c : "_").join("");
+      const inp = $("typed"); inp.value = ""; inp.className = ""; inp.readOnly = false; inp.focus();
+      $("answer").textContent = "";
+    }
+    t0 = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(tick);
+  }
+
+  // ボールの位置とのこり時間（毎フレーム）
+  function tick(now) {
+    const pass = Math.max(0, (now - t0) / 1000), left = Math.max(0, TIME - pass);
+    const h = $("pitch").clientHeight - 96;
+    $("word-ball").style.setProperty("--y", `${10 + (h - 10) * Math.min(1, pass / TIME)}px`);
+    $("sec").textContent = Math.ceil(left);
+    if (left <= 0) return end(false, true);
+    raf = requestAnimationFrame(tick);
+  }
+
+  function end(ok, timeout) {
+    if (busy) return; busy = true; cancelAnimationFrame(raf);
+    const n = match[q];
+    if (MODE === "choice") { for (const b of $("choices").children) if (b.dataset.ok === "true") b.classList.add("right"); }
+    else {
+      // 正しいつづりを必ず見せる（まちがったつづりを覚えないように）
+      const inp = $("typed"); inp.readOnly = true; inp.classList.add(ok ? "right" : "wrong");
+      $("word-ball").classList.remove("ja"); $("word").textContent = n.word;
+      $("answer").innerHTML = MODE === "clause"
+        ? `${ok ? "正解！" : "正しくは"}<span class="en clause">${esc(n.clause)}</span>${esc(n.word)}：${esc(n.meaning)}`
+        : `${ok ? "正解！" : "正しくは"}<span class="en">${esc(n.word)}</span>${esc(n.meaning)}`;
+      if (MODE === "spell") say(n);
+    }
+    // 練習の記録と P（スタジアムの遊び方 → カードの種類は vp.js の表）。同じ語は1日1回なので、2回目からは P が増えない
+    const got = VPStore.record({ noteId: n.id, type: VP.CONFIG.stadiumType[MODE], correct: ok });
+    matchP += got.p;
+    if (got.p) { const g = $("gain"); g.textContent = `P +${got.p}`; g.classList.remove("pop"); void g.offsetWidth; g.classList.add("pop"); }
+    if (ok) { me++; streak++; $("word-ball").classList.add("shot"); sfx("goal"); $("buddy").src = `${A}char/A4_streak.png`; $("say").textContent = "ゴール！"; }
+    else { op++; streak = 0; missed.push(n); sfx(timeout ? "whistle" : "wrong"); $("buddy").src = `${A}char/A2_wrong.png`; $("say").textContent = timeout ? "時間切れ…" : "おしい！"; }
+    $("s-me").textContent = me; $("s-op").textContent = op; $("streak").textContent = streak;
+    // 打ちこみは正しいつづりを読む時間を長めに
+    const g = gen;
+    const next = () => { if (g !== gen) return; if (paused) { pending = next; return; } q++; q < match.length ? ask() : fullTime(); };
+    setTimeout(next, typing() ? 2300 : 1500);
+  }
+
+  function fullTime() {
+    VPStore.bumpSession();   // 試合1試合＝練習1回（仕分けずみの語の抜き打ちは10回後）
+    if (bgm) bgm.pause();
+    const win = me > op, draw = me === op;
+    sfx(win ? "fanfare" : "whistle");
+    $("ft-me").textContent = me; $("ft-op").textContent = op;
+    $("ft-char").src = `${A}char/${win ? "A6_champion" : draw ? "A3_thinking" : "A2_wrong"}.png`;
+    $("ft-msg").textContent = win ? `勝利！ ${match.length}語中 ${me}語 正解` : draw ? "引き分け！ あと1点だった" : "負け… まちがえた語を見直して、もう1試合！";
+    $("ft-missed").innerHTML = missed.length
+      ? missed.map(n => `<li><span class="en">${esc(MODE === "clause" ? n.clause : n.word)}</span>${esc(MODE === "clause" ? n.word + "：" + n.meaning : n.meaning)}</li>`).join("")
+      : "<li>まちがえた語はありません。完ぺき！</li>";
+    $("ft-p").textContent = matchP ? `この試合で P +${matchP}` : "P は増えませんでした（今日はもう答えた語ばかり）";
+    $("fulltime").showModal();
+  }
+
+  $("start").addEventListener("click", () => {
+    $("kickoff").close(); sfx("whistle"); Keys.init();   // 音のしくみはクリックのときに用意する（ブラウザの決まり）
+    if (!bgm) { bgm = new Audio(`${A}bgm/stadium.wav`); bgm.loop = true; bgm.volume = .22; }
+    bgm.currentTime = 0; if (prefs.bgm) bgm.play().catch(() => {});
+    const g = gen; setTimeout(() => g === gen && ask(), 700);
+  });
+  // 一時停止メニュー
+  $("pause-btn").addEventListener("click", pause);
+  $("resume").addEventListener("click", resume);
+  $("quit").addEventListener("click", quit);
+  $("pause").addEventListener("cancel", e => { e.preventDefault(); resume(); });   // Esc ＝ つづける
+  for (const d of ["kickoff", "fulltime"]) $(d).addEventListener("cancel", e => e.preventDefault());  // Esc で閉じて止まらないように
+  document.addEventListener("visibilitychange", () => { if (document.hidden && !busy) pause(); });  // 別のタブに移ったら自動で止める
+  $("opt-keys").checked = Keys.on; $("opt-bgm").checked = prefs.bgm;
+  $("opt-keys").addEventListener("change", e => { Keys.on = e.target.checked; if (Keys.on) Keys.press("key"); });
+  $("opt-bgm").addEventListener("change", e => { prefs.bgm = e.target.checked; savePrefs(); });
+  // タイプ音（打ちこみ欄だけ。押しっぱなしのくり返しでは鳴らさない）
+  // （キーを押したときの音は typesound.js が鳴らす）
+  $("ko-change").addEventListener("click", () => { askMode = true; $("ko-modes").hidden = false; $("ko-mode").hidden = true; $("ko-modes").querySelector('[aria-pressed="true"]')?.focus(); });
+  $("again").addEventListener("click", () => { $("fulltime").close(); newMatch(); });
+  $("choices").addEventListener("click", e => {
+    const b = e.target.closest(".choice"); if (!b || busy) return;
+    if (b.dataset.ok !== "true") b.classList.add("wrong");
+    end(b.dataset.ok === "true", false);
+  });
+  $("type").addEventListener("submit", e => {
+    e.preventDefault();
+    if (busy) return;
+    const v = norm($("typed").value); if (!v) return;   // 空のままは数えない
+    const n = match[q];
+    if (MODE === "clause") return end(loose(v) === loose(n.clause), false);
+    end((n.answers || [n.word]).some(a => norm(a) === v), false);
+  });
+  $("replay").addEventListener("click", () => { if (!busy) { say(match[q]); $("typed").focus(); } });
+  for (const b of document.querySelectorAll(".mode")) b.addEventListener("click", () => { setMode(b.dataset.mode); if ($("kickoff").open) { $("kickoff").close(); newMatch(); } });
+  document.addEventListener("keydown", e => {
+    if ($("kickoff").open || $("fulltime").open || $("pause").open) return;
+    if (e.key === "Escape") { e.preventDefault(); return pause(); }
+    if ((MODE === "dict" || MODE === "clause") && e.key === "Control") return $("replay").click();
+    if (MODE === "choice" && /^[1-4]$/.test(e.key)) $("choices").children[e.key - 1]?.click();
+  });
+  setMode(MODE);
+  newMatch();
+
+  // 確かめ用：?selftest で、試合開始 → 全問を自動で答える（1問目だけまちがえる）→ 試合終了まで。結果を document.title に出す
+  if (P.has("selftest")) {
+    const log = [];
+    setTimeout(() => {
+      $("start").click();
+      let k = 0, y0 = null;
+      const step = () => {
+        if ($("fulltime").open) { log.push(`end=${$("ft-me").textContent}-${$("ft-op").textContent}`, `missed=${missed.length}`); document.title = "SELFTEST " + log.join(" "); return; }
+        if (!busy) {
+          const y = parseFloat($("word-ball").style.getPropertyValue("--y"));
+          if (y0 === null) { y0 = y; return setTimeout(step, 400); }
+          if (k === 0) log.push(`moved=${y > y0}`);
+          const want = k === 0 ? "false" : "true";
+          [...$("choices").children].find(b => b.dataset.ok === want).click(); k++; y0 = null;
+        }
+        setTimeout(step, 200);
+      };
+      setTimeout(step, 1000);
+    }, 300);
+  }
+</script>
+</body>
+</html>
